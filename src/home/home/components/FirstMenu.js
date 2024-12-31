@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 系统一级导航
+ * @version: 1.0.0
+ * @Author: 袁婕轩
+ * @Date: 2020-12-18 16:05:16
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 15:46:17
+ */
 import React, { useEffect, useState } from "react";
 import "./FirstMenu.scss";
 import { Layout } from "antd";
@@ -16,7 +24,6 @@ const FirstMenu = (props) => {
     const [themeClass, setThemeClass] = useState("first-sider-gray")
 
     useEffect(() => {
-        // sessionStorage.setItem("menuKey", "home")
         getThemeClass(theme)
         return null;
     }, [])
@@ -26,15 +33,20 @@ const FirstMenu = (props) => {
         return null;
     }, [path])
     /**
-         * 点击菜单跳转
-         * @param {菜单信息} item 
-         */
+     * 点击菜单跳转
+     * @param {菜单信息} item 
+     */
     const changeCurrentLink = item => {
         localStorage.removeItem("sprintId")
         props.history.push(item.to)
         sessionStorage.setItem("menuKey", item.key)
     }
 
+    /**
+     * 图标显示
+     * @param {*} type 
+     * @returns 
+     */
     const setActiveIcon = (type) => {
         let activeIcon = type + theme + "-active"
         switch (theme) {
@@ -69,13 +81,6 @@ const FirstMenu = (props) => {
             icon: 'repository-' + theme,
             actionIcon: setActiveIcon("repository-")
         }
-        // ,
-        // {
-        //     to: version=== "cloud" ?  '/setting/log' : '/setting/version',
-        //     title: '设置',
-        //     icon: 'set-' + theme,
-        //     actionIcon: setActiveIcon("set-")
-        // }
     ]
 
 
@@ -144,16 +149,17 @@ const FirstMenu = (props) => {
     }
 
     /**
-    * 跳转到系统设置
-    */
-    const goSet = () => {
-        props.history.push("/setting/version")
-        sessionStorage.setItem("menuKey", "set")
-    };
+     * 展开或者收起左侧导航
+     */
     const toggleCollapsed = () => {
         setIsShowText(!isShowText)
     }
 
+    /**
+     * 切换系统主题色
+     * @param {主题色} theme 
+     * @returns 
+     */
     const getThemeClass = (theme) => {
         let name = "default"
         switch (theme) {

@@ -4,7 +4,7 @@
  * @Author: 袁婕轩
  * @Date: 2021-08-09 09:18:21
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-10-22 15:38:49
+ * @LastEditTime: 2024-12-31 15:12:03
  */
 import React, { useEffect, useState } from "react";
 import { Provider, inject, observer } from "mobx-react";
@@ -48,6 +48,7 @@ const DocumentExamine = (props) => {
     const [loading, setLoading] = useState(true);
     const [document, setDocument] = useState()
 
+    // 获取文档详情
     useEffect(() => {
         setDocumentTitle()
         setValue()
@@ -113,10 +114,11 @@ const DocumentExamine = (props) => {
                 }
             })
         }
-
-
     }
 
+    /**
+     * 收藏文档
+     */
     const createFocus = () => {
         const params = {
             documentId: documentId,
@@ -133,6 +135,9 @@ const DocumentExamine = (props) => {
         })
     }
 
+    /**
+     * 取消收藏
+     */
     const deleteFocus = () => {
         const params = {
             documentId: documentId,
@@ -146,10 +151,14 @@ const DocumentExamine = (props) => {
         })
     }
 
+    // 跳转到编辑模式
     const goEdit = () => {
+        // 目录界面
         if (path === "doc") {
             props.history.push(`/repository/${repositoryId}/doc/rich/${documentId}/edit`)
         }
+
+        // 收藏界面
         if (path === "collect") {
             props.history.push(`/repository/${repositoryId}/collect/rich/${documentId}/edit`)
         }
@@ -198,7 +207,15 @@ const DocumentExamine = (props) => {
                                         <Row className="document-examine-row">
                                             <Col xl={{ span: 18, offset: 3 }} lg={{ span: 18, offset: 3 }} md={{ span: 20, offset: 2 }}>
                                                 <div className="document-previeweditor">
-                                                    <PreviewEditor value={value} relationWorkStore={relationWorkStore} base_url={upload_url} tenant={tenant} />
+                                                    <PreviewEditor 
+                                                        value={value} 
+                                                        relationWorkStore={relationWorkStore} 
+                                                        base_url={upload_url} 
+                                                        img_url = {upload_url}
+                                                        viewImageUrl = "/image"
+                                                        tenant={tenant} 
+                                                        
+                                                    />
                                                 </div>
                                             </Col>
                                         </Row>

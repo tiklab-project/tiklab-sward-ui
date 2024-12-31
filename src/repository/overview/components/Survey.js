@@ -1,3 +1,10 @@
+/*
+ * @Author: 袁婕轩
+ * @Date: 2023-01-05 19:06:34
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 17:04:25
+ * @Description: 知识库概况页面
+ */
 import React, { useState, useEffect, Fragment } from "react";
 import { Row, Col, Form, Dropdown, Menu, Empty, Spin } from 'antd';
 import { withRouter } from "react-router";

@@ -4,7 +4,7 @@
  * @Author: 袁婕轩
  * @Date: 2020-12-18 16:05:16
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2022-03-08 17:00:38
+ * @LastEditTime: 2024-12-23 15:05:09
  */
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
@@ -24,6 +24,8 @@ import { privilegeStores } from "tiklab-privilege-ui/es/store";
 import zhCN from 'antd/es/locale/zh_CN';
 import { ConfigProvider } from 'antd';
 import { useVersion } from "tiklab-eam-ui/es/utils";
+import { InitInstallProvider } from 'tiklab-eam-ui';
+
 enableAxios()
 const Index = observer(() => {
     const { i18n } = useTranslation();
@@ -35,15 +37,18 @@ const Index = observer(() => {
 
     useVersion()
     return (
-        <Provider {...allStore}>
-            <ConfigProvider locale={zhCN}>
-                <HashRouter >
-                    {
-                        renderRoutes(Routes)
-                    }
-                </HashRouter>
-            </ConfigProvider>
-        </Provider>
+        <InitInstallProvider bgroup={'sward'}>
+            <Provider {...allStore}>
+                <ConfigProvider locale={zhCN}>
+                    <HashRouter >
+                        {
+                            renderRoutes(Routes)
+                        }
+                    </HashRouter>
+                </ConfigProvider>
+            </Provider>
+        </InitInstallProvider>
+
     )
 });
 

@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 添加下拉框
+ * @version: 1.0.0
+ * @Author: 袁婕轩
+ * @Date: 2021-08-31 09:03:31
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 16:57:33
+ */
 import React, { useState } from "react";
 import { Form, Menu, Dropdown } from "antd";
 import CategoryAdd from "./CategoryAdd";
@@ -112,8 +120,6 @@ const AddDropDown = (props) => {
                 }
             })
         }
-
-
     }
     return (
         <div onClick={(event) => event.stopPropagation()} className="category-add">

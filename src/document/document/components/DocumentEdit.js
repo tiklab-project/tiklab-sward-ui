@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 
+ * @Descripttion: 文档编辑模式
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-08-09 09:18:21
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-09-13 13:13:00
+ * @LastEditTime: 2024-12-31 15:09:36
  */
 import React, { useEffect, useState, useRef } from "react";
 import { Row, Col, Input, message, Empty } from 'antd';
@@ -43,6 +43,9 @@ const DocumentEdit = (props) => {
     const [templateList, setTemplateList] = useState()
     const imgUrlArray = [weekly, weeklyNomal, todoWork, projectPlan, projectOperation]
     const path = props.location.pathname.split("/")[3];
+    /**
+     * 查找文档模版
+     */
     useEffect(() => {
         findDocumentTemplateList().then(data => {
             if (data.code === 0) {
@@ -52,6 +55,9 @@ const DocumentEdit = (props) => {
         return;
     }, [])
 
+    /**
+     * 查找文档详情接口
+     */
     useEffect(() => {
         setValue()
         findDocument(documentId).then((data) => {
@@ -73,7 +79,7 @@ const DocumentEdit = (props) => {
         if (value) {
             setValueIsEmpty(determineValue(value))
         }
-
+        return ;
     }, [value])
 
     const save = () => {
@@ -130,6 +136,11 @@ const DocumentEdit = (props) => {
         })
     }
 
+    /**
+     * 判断文档是否为空，为空显示文档模版
+     * @param {文档内容} value 
+     * @returns 
+     */
     const determineValue = (value) => {
         let isEmpty = true;
         const valueObject = JSON.parse(value);
@@ -154,6 +165,10 @@ const DocumentEdit = (props) => {
         return isEmpty;
     }
 
+    /**
+     * 选择模板
+     * @param {模板} item 
+     */
     const selectTemplate = (item) => {
         /**
          * detailText 没更新到
@@ -173,10 +188,16 @@ const DocumentEdit = (props) => {
         })
     }
 
+    /**
+     * 跳转到文档查看模式
+     */
     const goExamine = () => {
+        // 在目录界面
         if (path === "doc") {
             props.history.push(`/repository/${repositoryId}/doc/rich/${documentId}`)
         }
+
+        //在收藏界面
         if (path === "collect") {
             props.history.push(`/repository/${repositoryId}/collect/rich/${documentId}`)
         }
@@ -205,6 +226,8 @@ const DocumentEdit = (props) => {
                             onChange={value => updataDesc(value)}
                             relationWorkStore={relationWorkStore}
                             base_url={upload_url}
+                            img_url = {upload_url}
+                            viewImageUrl = "/image"
                             ticket={ticket}
                             tenant={tenant}
                         >

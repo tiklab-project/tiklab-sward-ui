@@ -1,3 +1,10 @@
+/*
+ * @Author: 袁婕轩
+ * @Date: 2023-01-05 19:06:34
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 17:04:25
+ * @Description: 动态列表
+ */
 import React, { useEffect, useState } from "react";
 import Breadcumb from "../../../common/breadcrumb/breadcrumb";
 import { inject, observer } from "mobx-react";
@@ -5,10 +12,8 @@ import { getUser } from "tiklab-core-ui";
 import { Row, Col, Empty } from "antd";
 import "./DynamicList.scss";
 import SurveyStore from "../store/SurveyStore";
-import DynamicListItem from "./DynamicItem";
 import DyncmicTimeAxis from "./DyncmicTimeAxis";
 import PaginationCommon from "../../../common/page/Page";
-import { nodata } from "../../../assets/image";
 const DynamicList = (props) => {
     const { findLogpage, logList, opLogCondition } = SurveyStore;
     const userId = getUser().userId;

@@ -1,3 +1,11 @@
+/*
+ * @Author: 袁婕轩
+ * @Date: 2023-12-13 17:04:39
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 17:03:55
+ * @Description: 动态项
+ */
+
 import React from "react";
 import "./DynamicItem.scss"
 import { withRouter } from "react-router";

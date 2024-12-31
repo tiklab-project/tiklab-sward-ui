@@ -1,16 +1,15 @@
 /*
- * @Descripttion: 
+ * @Descripttion: 分享的目录详情页面
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-08-31 09:03:31
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-12-22 14:04:36
+ * @LastEditTime: 2024-12-31 17:21:59
  */
 import React, { useState, useEffect, Fragment } from "react";
 import { Row, Col, Empty } from 'antd';
 import "./ShareCategoryDetail.scss"
 import { observer, inject } from "mobx-react";
-import { nodata } from "../../../assets/image";
 const ShareCategoryDetail = (props) => {
     const { shareStore } = props;
     const { findCategory, findNodeList } = shareStore;
@@ -21,23 +20,22 @@ const ShareCategoryDetail = (props) => {
     const shareId = props.match.params.shareId;
 
     useEffect(() => {
+        // 获取目录信息
         findCategory({ id: categoryId }).then(data => {
             if (data.code === 0) {
                 setLogDetail(data.data?.node)
             }
         })
+        // 获取目录下的子目录和文档
         findNodeList({ parentId: categoryId }).then(data => {
             setLogList(data.data)
         })
         return;
     }, [categoryId])
 
-    // 当前选中目录id
-    const [selectKey, setSelectKey] = useState();
 
-
+    // 跳转到文档
     const goToDocument = (item) => {
-        setSelectKey(item.id)
         if (item.type === "category") {
             props.history.push(`/share/${shareId}/category/${item.id}`)
         }

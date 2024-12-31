@@ -1,3 +1,10 @@
+/*
+ * @Author: 袁婕轩
+ * @Date: 2023-01-05 14:57:28
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 17:05:41
+ * @Description: 知识库添加详情
+ */
 import React, { Fragment, useEffect } from "react";
 import { Form, Input, message, Upload } from 'antd';
 import "./repositoryAddInfo.scss";

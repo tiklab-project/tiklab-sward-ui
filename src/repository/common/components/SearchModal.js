@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 搜索弹窗
+ * @version: 1.0.0
+ * @Author: 袁婕轩
+ * @Date: 2020-12-18 16:05:16
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 17:30:32
+ */
 import { Empty, Input, Modal } from 'antd';
 import React, { Fragment, useState, useEffect, useId, useRef } from 'react';
 import "./SearchModal.scss";
@@ -5,7 +13,6 @@ import { getUser } from 'tiklab-core-ui';
 import { withRouter } from 'react-router';
 import { inject, observer } from 'mobx-react';
 import { useDebounce } from '../../../common/utils/debounce';
-import { nodata } from '../../../assets/image';
 const SearchModal = (props) => {
     const { showSearchModal, setShowSearchModal, repositoryId, repositoryDetailStore } = props;
     const {findRecentList, searchRepositoryDocument, findNodeList} = repositoryDetailStore;

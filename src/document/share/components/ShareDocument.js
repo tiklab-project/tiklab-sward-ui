@@ -1,18 +1,11 @@
+
 /*
- * @Descripttion: 
- * @version: 1.0.0
- * @Author: 袁婕轩
- * @Date: 2021-09-14 11:20:08
- * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-09-16 09:14:44
- */
-/*
- * @Descripttion: 
+ * @Descripttion: 分享的文档页面
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-08-09 09:18:21
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-09-13 13:56:29
+ * @LastEditTime: 2024-12-31 15:32:37
  */
 import React, { useEffect, useState } from "react";
 import { inject, observer } from "mobx-react";
@@ -25,17 +18,19 @@ import { withRouter } from "react-router";
 import { getUser } from "tiklab-core-ui";
 const ShareDocument = (props) => {
     const { shareStore, relationWorkStore } = props;
-    const { documentView, commentView, judgeAuthCode } = shareStore;
+    const { documentView, commentView } = shareStore;
     const [showComment, setShowComment] = useState(false);
     const [value, setValue] = useState()
     const [docInfo, setDocInfo] = useState({ name: "", likenumInt: "", commentNumber: "" })
     const tenant = getUser().tenant;
     useEffect(() => {
+        // 获取评论列表
         commentView({ documentId: props.match.params.id }).then(data => {
             console.log(data)
             
         })
         
+        // 获取文档内容
         documentView({ documentId: props.match.params.id }).then((data) => {
             if (data.code === 0) {
                 setValue()
@@ -62,7 +57,13 @@ const ShareDocument = (props) => {
                     <Col className="repositorydetail-content-col" xl={{ span: 18, offset: 3 }} lg={{ span: 20, offset: 2 }}>
                         <div style={{paddingTop: "10px"}}>
                             {
-                                value && <PreviewEditor value={value} relationWorkStore = {relationWorkStore} base_url = {upload_url} tenant = {tenant}/>
+                                value && <PreviewEditor value={value} 
+                                    relationWorkStore = {relationWorkStore} 
+                                    base_url = {upload_url} 
+                                    img_url = {upload_url}
+                                    viewImageUrl = "/image"
+                                    tenant = {tenant}
+                                />
                     
                             }
                             </div>

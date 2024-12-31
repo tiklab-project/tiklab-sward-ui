@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 切换知识库弹窗
+ * @version: 1.0.0
+ * @Author: 袁婕轩
+ * @Date: 2021-09-03 15:21:13
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 17:29:36
+ */
 import React, { useEffect, useRef, useState } from "react";
 import "./RepositoryChangeModal.scss";
 import { withRouter } from "react-router";
@@ -18,6 +26,8 @@ const RepositoryChangeModal = (props) => {
     const modelRef = useRef()
     const setButton = useRef()
     const repositoryId = props.match.params.repositoryId;
+
+    // 显示切换弹窗
     const showMoreMenu = () => {
         setShowMenu(!showMenu)
         const params = {

@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 
+ * @Descripttion: 文档详情
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-08-09 09:18:21
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-09-29 09:14:34
+ * @LastEditTime: 2024-12-31 15:05:47
  */
 import React,{useState} from "react";
 import { Breadcrumb, message} from 'antd';
@@ -22,19 +22,28 @@ const DocumentDetail = (props)=>{
     
 
     const [editOrExamine,seteditOrExamine] = useState("examine")
+
+    /**
+     * 转到编辑模式
+     * @param {类型} type 
+     */
     const changePageType = (type) => {
         seteditOrExamine(type)
     }
     
     const documentId = props.match.params.id;
 
-    // 保存内容
+    // 保存内容，转到查看模式
     const save = (type) => {
         seteditOrExamine(type)
         saveDocument(value)
         // editRef.current.submit()
     }
 
+    /**
+     * 保存文档
+     * @param {*} value 
+     */
     const saveDocument = (value) => {
         setValue(value)
         const serialize = JSON.stringify(value)

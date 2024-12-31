@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 选择分享的弹窗
+ * @version: 1.0.0
+ * @Author: 袁婕轩
+ * @Date: 2020-12-18 16:05:16
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 15:35:03
+ */
 import { Tree, Modal, message } from 'antd';
 import React, { useState } from 'react';
 import "./ShareListModal.scss";
@@ -14,6 +22,7 @@ const ShareListModal = (props) => {
     const [checkedNodes, setCheckedNodes] = useState([])
 
 
+    // 展开关闭树形结构
     const isExpandedTree = (key) => {
         return expandedTree.some(item => item === key)
     }
@@ -28,21 +37,19 @@ const ShareListModal = (props) => {
         }
     }
 
-    const onSelect = (value, node, extra) => {
-        console.log('selected', value, node, extra);
-    };
+
+    // 选中
     const onCheck = (checkedKeys, info) => {
         console.log('onCheck', checkedKeys, info);
         const list = info.checkedNodes;
         setNodeIds(checkedKeys)
         setCheckedNodes(list)
-        // let nodeIds = []
-        // list.map(item => {
-        //     nodeIds.push(item.key)
-        // })
-        // setNodeIds(nodeIds)
 
     };
+
+    /**
+     * 提交
+     */
     const onFinish = () => {
         if (checkedNodes.length > 0) {
             console.log(checkedNodes)
@@ -144,7 +151,6 @@ const ShareListModal = (props) => {
                     <Tree
                         checkable
                         showIcon
-                        onSelect={onSelect}
                         onCheck={onCheck}
                         expandedKeys={expandedTree}
                         onExpand={(expandedKeys, expanded) => setOpenOrClose(expanded)}

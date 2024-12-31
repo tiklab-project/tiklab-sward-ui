@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 知识库详情页
+ * @Descripttion: 知识库内文档页面
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2020-12-18 16:05:16
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-08-30 15:06:15
+ * @LastEditTime: 2024-12-31 17:02:52
  */
 import React, { useState, useEffect } from "react";
 import { Empty, Layout } from 'antd';

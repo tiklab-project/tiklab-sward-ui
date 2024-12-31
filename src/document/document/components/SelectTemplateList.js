@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 
+ * @Descripttion: 模板列表弹窗组件
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-09-09 17:06:03
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-12-20 15:30:38
+ * @LastEditTime: 2024-12-31 15:13:50
  */
 import React, { useState, useEffect } from 'react';
 import { observer, inject } from "mobx-react";
@@ -20,9 +20,8 @@ const { Content, Sider } = Layout;
 
 const SelectTemplateList = (props) => {
     const { setTemplateVisible, templateVisible, documentId, documentStore, selectTemplate } = props;
-    const imageNames = ["template2.png", "template1.png", "template3.png", "template4.png"];
     const { updateDocument, findDocumentTemplateList } = documentStore;
-    const repositoryId = props.match.params.repositoryId;
+
 
     const [templateList, setTemplateList] = useState()
     const imgUrlArray = [weekly, weeklyNomal, todoWork, projectPlan, projectOperation]
@@ -36,6 +35,7 @@ const SelectTemplateList = (props) => {
     }, [])
 
 
+    // 选择模板
     const selectTemplateInModal = (item) => {
         
         selectTemplate(item)

@@ -1,10 +1,16 @@
+/*
+ * @Descripttion: 信息抽屉列表组件
+ * @version: 1.0.0
+ * @Author: 袁婕轩
+ * @Date: 2020-12-18 16:05:16
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 15:55:56
+ */
 import React, { useState, useRef } from 'react';
-import { Drawer, Tabs, Badge, Avatar, Empty, } from 'antd';
+import { Drawer, Tabs, Empty, } from 'antd';
 import { observer } from "mobx-react";
-import { MessageOutlined } from '@ant-design/icons';
 import "./MessageList.scss"
 import { withRouter } from 'react-router';
-import { useEffect } from 'react';
 import HomeStore from "../store/HomeStore";
 
 const MessageList = (props) => {
@@ -16,28 +22,11 @@ const MessageList = (props) => {
     const [open, setOpen] = useState(false);
     const messageRef = useRef()
     const [unReadMessage, setUnReadMessage] = useState(0)
-    const openDrawer = () => {
-        setOpen(true)
-        findMessageDispatchItemPage({ page: 1, status: currenTab })
-    }
-
-    // useEffect(() => {
-    //     window.addEventListener("mousedown", closeModal, false);
-    //     return () => {
-    //         window.removeEventListener("mousedown", closeModal, false);
-    //     }
-    // },[])
-
-    const closeModal = (e) => {
-        if (!messageRef.current) {
-            return;
-        }
-        if (!messageRef.current.contains(e.target) && messageRef.current !== e.target) {
-            setOpen(false)
-        }
-    }
 
 
+    /**
+     * 翻页
+     */
     const changePage = () => {
         const current = currentPage + 1
         setCurrentPage(current)
@@ -48,6 +37,8 @@ const MessageList = (props) => {
     const onClose = () => {
         setOpen(false);
     };
+
+    // tab 切换
     const onChange = (e) => {
         // setPlacement(e.target.value);
         setCurrentTab(e)
@@ -67,12 +58,6 @@ const MessageList = (props) => {
     }
     return (
         <div ref = {messageRef}>
-            {/* <a className="frame-header-language" data-title="消息提示" onClick={() => openDrawer()}>
-                <Badge count={0} size="small">
-                    <Avatar
-                        size="small" style={{ background: "transparent", fontSize: "22px" }} icon={<MessageOutlined style={{ color: "#2c2c2c" }} />} />
-                </Badge>
-            </a> */}
              {
                 isShowText ?
                     <div className="message-text first-menu-text-item" onClick={() => setOpen(true)}>

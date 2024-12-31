@@ -4,7 +4,7 @@
  * @Author: 袁婕轩
  * @Date: 2020-12-18 16:05:16
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-12-22 14:33:43
+ * @LastEditTime: 2024-12-31 15:29:42
  */
 
 import React, { Fragment, useState, useEffect, useId, useRef } from 'react';
@@ -43,24 +43,14 @@ const ShareAside = (props) => {
             shareId: shareLink,
             // dimensions: [1, 2]
         }
+        // 判断是否需要验证码
         judgeAuthCode(params).then(data => {
             if (data.data === "true") {
-                if (!props.location.state) {
-                    if(version !== "cloud"){
-                        window.location.href = `${origin}/#/passWord/${shareLink}`
-                    }
-                    if(version === "cloud"){
-                        window.location.href = `${origin}/#/passWord/${shareLink}?tenant=${tenant}`
-                    }
-                } else {
-                    findShareCategory(paramsData).then((data) => {
-                        if (data.code === 0) {
-                            setRepositoryCatalogueList(data.data)
-                            const item = data.data[0]
-                            setUrl(item)
-                            setSelectKey(item.id)
-                        }
-                    })
+                if(version !== "cloud"){
+                    window.location.href = `${origin}/#/passWord/${shareLink}`
+                }
+                if(version === "cloud"){
+                    window.location.href = `${origin}/#/passWord/${shareLink}?tenant=${tenant}`
                 }
             }
 
@@ -78,7 +68,7 @@ const ShareAside = (props) => {
         return;
     }, [shareLink])
 
-
+    // 跳转到对应页面
     const setUrl = (item) => {
         if (version !== "cloud") {
             if (item.type === "category") {
@@ -139,6 +129,7 @@ const ShareAside = (props) => {
         }
     }
 
+    
     const logTree = (fItems, item, levels, faid, index) => {
         let newLevels = 0;
         return <div className={`${isExpandedTree(faid) ? "" : 'repository-menu-submenu-hidden'}`}

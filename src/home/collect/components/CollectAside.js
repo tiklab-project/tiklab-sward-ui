@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 收藏文档左侧导航
+ * @version: 1.0.0
+ * @Author: 袁婕轩
+ * @Date: 2021-09-13 13:29:10
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 15:40:54
+ */
 import React, { useEffect, useState } from "react";
 import "./Collect.scss";
 import { Col, Empty, Layout, Row } from "antd";
@@ -10,6 +18,10 @@ const CollectAside = (props) => {
     const { focusDocumentList, selectKey, setSelectKey, findList } = props;
     const repositoryId = props.match.params.repositoryId;
 
+    /**
+     * 查看文档详情
+     * @param {文档信息} item 
+     */
     const goFocusDocumentDetail = item => {
         if (item.documentType === "document") {
             props.history.push(`/repository/${repositoryId}/collect/rich/${item.id}`)

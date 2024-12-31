@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 
+ * @Descripttion: 移动文档弹窗
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-09-03 15:21:13
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-12-20 14:35:10
+ * @LastEditTime: 2024-12-31 16:59:51
  */
 import React, { useEffect, useState } from 'react';
 import { Modal, message } from 'antd';
@@ -34,6 +34,7 @@ const MoveLogList = (props) => {
 
     }, [moveLogListVisible])
 
+    
     const onFinish = () => {
         if (!selectKey) {
             message.warning('请选择要引动到的目录');
@@ -77,13 +78,14 @@ const MoveLogList = (props) => {
         }
     }
 
+
     const clickOpenMenu = (category) => {
         setOpenOrClose(category.id)
         findCategoryChildren(category.id, category.dimension)
         // findCategoryChildren(category.id, category.dimension)
     }
 
-
+    // 获取下级目录
     const findCategoryChildren = (id, dimension) => {
         setSelectKey(id)
         const isRequested = requsetedCategory.some(category => category === id);
@@ -104,15 +106,12 @@ const MoveLogList = (props) => {
         }
     }
 
-    const selectMoveParent = (category) => {
-        // if(categoryId === moveCategoryId || categoryId === moveCategoryParentId){
-        //     return
-        // }else {
-        //     setSelectKey()
-        // }
-        setSelectKey(category)
 
+    const selectMoveParent = (category) => {
+        setSelectKey(category)
     }
+
+    
     const logTree = (data, levels, faid) => {
         let newLevels = 0;
         return data && data.length > 0 && data.map((category) => {

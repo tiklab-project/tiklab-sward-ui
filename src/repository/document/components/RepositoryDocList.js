@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 知识库详情页面左侧导航栏
+ * @Descripttion: 知识库目录页面左侧导航栏
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2020-12-18 16:05:16
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-12-22 14:33:43
+ * @LastEditTime: 2024-12-31 17:03:48
  */
 
 import React, { Fragment, useState, useEffect, useId, useRef } from 'react';

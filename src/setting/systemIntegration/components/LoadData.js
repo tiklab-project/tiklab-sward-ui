@@ -4,7 +4,7 @@
  * @Author: 袁婕轩
  * @Date: 2021-10-13 16:54:17
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2022-01-21 13:11:30
+ * @LastEditTime: 2024-12-31 17:47:55
  */
 import React, { Fragment, useEffect, useState } from "react";
 import { Upload, message, Button, Row, Col, Progress } from 'antd';
@@ -13,7 +13,8 @@ import "./LoadData.scss";
 import Breadcumb from "../../../common/breadcrumb/Breadcrumb";
 import { getUser } from 'tiklab-core-ui';
 import { observer } from "mobx-react";
-import UrlDataStore from "../store/UrlDataStore"
+import UrlDataStore from "../store/UrlDataStore";
+
 const LoadData = (props) => {
     const { findCfInputSchedule } = UrlDataStore;
     const ticket = getUser().ticket;
@@ -24,8 +25,7 @@ const LoadData = (props) => {
     // let timer;
     useEffect(() => {
         return () => clearInterval(timer)
-    }
-        , [])
+    }, [])
 
     const getJiraInputSchedule = () => {
         findCfInputSchedule().then(res => {
@@ -53,7 +53,6 @@ const LoadData = (props) => {
             }
         })
     }
-    const domain = window.location.host;
     const uploadProps = {
         name: 'uploadFile',
         action: `${upload_url}/importData/importConfluenceData`,
@@ -84,8 +83,6 @@ const LoadData = (props) => {
     };
 
     return (
-        // <Row >
-        //     <Col sm={24} md={24} lg={{ span: 24 }} xl={{ span: "18", offset: "3" }} xxl={{ span: "18", offset: "3" }}>
         <div className="load">
             <Breadcumb
                 firstText="Confluence集成"
@@ -104,10 +101,6 @@ const LoadData = (props) => {
                         <div className="load-precess-text"> 当前解析知识库：<span className="load-precess-name">{currentSchedule.wikiRepository?.name}</span>  <span>{currentSchedule.currentNum} / {currentSchedule.total}</span></div>
                     </div>
                 }
-
-               
-
-
             </div>
         </div>
         //     </Col>

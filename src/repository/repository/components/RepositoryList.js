@@ -1,3 +1,10 @@
+/*
+ * @Author: 袁婕轩
+ * @Date: 2023-01-05 14:57:28
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 17:05:41
+ * @Description: 知识库列表
+ */
 import React, { useEffect, useState, Fragment } from "react";
 import { Table, Space, Row, Col, Empty, Spin } from 'antd';
 import { observer, inject } from "mobx-react";
@@ -18,7 +25,6 @@ const RepositoryList = (props) => {
         findFocusRepositoryList, getFocusRepositoryList, deleteRepositoryFocusByCondition, 
         activeTabs, setActiveTabs, findRepositoryNum } = RepositoryStore;
     const userId = getUser().userId;
-    const tenant = getUser().tenant;
     const [focusRepositoryList, setFocusRepositoryList] = useState([])
     const [recentRepositoryDocumentList, setRecentRepositoryDocumentList] = useState([]);
     const [num, setNum] = useState();

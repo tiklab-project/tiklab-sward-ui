@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 
+ * @Descripttion: 分享文档的密码校验
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-09-14 14:27:39
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-09-16 09:20:33
+ * @LastEditTime: 2024-12-31 15:24:12
  */
 import React, { useEffect, useState } from "react";
 import { inject, observer } from "mobx-react";
@@ -22,6 +22,10 @@ const PassWord = (props) => {
     const change = (e) => {
         setValue(e.target.value)
     }
+
+    /**
+     * 校验密码
+     */
     const jump = ()=> {
         verifyAuthCode({shareLink:`${props.match.params.shareId}`,authCode:value.trim()}).then((data)=> {
             if(data.data === "true"){
@@ -35,6 +39,8 @@ const PassWord = (props) => {
             }
         })
     }
+
+    // sass 版本获取租户
     useEffect(()=> {
         setTenant(tenant)
         return;

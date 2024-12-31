@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 
+ * @Descripttion: 目录添加
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-09-03 09:42:40
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-12-22 13:56:14
+ * @LastEditTime: 2024-12-31 16:58:17
  */
 
 import React from 'react';
@@ -18,6 +18,7 @@ const CategoryAdd = (props) => {
         repositoryCatalogueList, expandedTree, setExpandedTree, findCategory } = repositoryDetailStore;
     const repositoryId = props.match.params.repositoryId;
 
+    // 关闭目录树
     const isExpandedTree = (key) => {
         return expandedTree.some(item => item === key)
     }

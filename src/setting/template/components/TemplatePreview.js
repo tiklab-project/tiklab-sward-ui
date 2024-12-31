@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 
+ * @Descripttion: 模板查看
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-09-07 10:20:57
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-09-09 09:10:16
+ * @LastEditTime: 2024-12-31 17:12:08
  */
 import React, { useState, useEffect } from "react";
 import { observer, inject } from "mobx-react";
@@ -51,7 +51,14 @@ const TemplatePreview = (props) => {
                         </div>
                     </div>
                     {
-                        value && <PreviewEditor value={value} relationWorkStore={relationWorkStore} base_url={upload_url} tenant={tenant} />
+                        value && <PreviewEditor 
+                            value={value} 
+                            relationWorkStore={relationWorkStore} 
+                            base_url={upload_url} 
+                            img_url = {upload_url}
+                            viewImageUrl = "/image"
+                            tenant={tenant} 
+                        />
                     }
                     
                 </div>

@@ -1,10 +1,17 @@
-
+/*
+ * @Descripttion: 分享页面的评论
+ * @version: 1.0.0
+ * @Author: 袁婕轩
+ * @Date: 2021-08-09 09:18:21
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 15:19:57
+ */
 import React, { useEffect, useState } from "react";
 import { inject, observer } from "mobx-react";
 import { Empty } from "antd";
 import "./CommentShare.scss"
 import UserIcon from "../../../common/UserIcon/UserIcon";
-import { nodata } from "../../../assets/image";
+
 const CommentShare = (props) => {
     const { commentStore, documentId, setShowComment, shareStore } = props;
     const { findCommentPage } = commentStore;
@@ -12,6 +19,8 @@ const CommentShare = (props) => {
     const [commonList, setCommonList] = useState();
     const [currentPage, setCurrentPage] = useState(10);
     const [totalPage, setTotalPage] = useState(0)
+    
+    // 获取评论列表
     useEffect(() => {
         const value = {
             documentId: documentId,
@@ -31,6 +40,7 @@ const CommentShare = (props) => {
     }, [documentId])
 
 
+    // 下一页
     const nextPageCommon = () => {
         const page = currentPage + 1;
         setCurrentPage(page)

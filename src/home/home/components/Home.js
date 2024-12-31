@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 系统首页
+ * @version: 1.0.0
+ * @Author: 袁婕轩
+ * @Date: 2020-12-18 16:05:16
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 15:53:28
+ */
 import React, { Fragment, useEffect, useState } from 'react';
 import "./home.scss";
 import { Row, Col, Empty, Pagination, Spin } from 'antd';
@@ -6,13 +14,11 @@ import { getUser } from 'tiklab-core-ui';
 import HomeStore from "../store/HomeStore";
 import UserIcon from '../../../common/UserIcon/UserIcon';
 import ImgComponent from '../../../common/imgComponent/ImgComponent';
-import { nodata } from '../../../assets/image';
 const Home = (props) => {
     const { findDocumentRecentList, findRecentRepositoryList } = HomeStore;
     const [recentViewDocumentList, setRecentViewDocumentList] = useState([]);
     const [recentRepositoryDocumentList, setRecentRepositoryDocumentList] = useState([]);
     const userId = getUser().userId;
-    const tenant = getUser().tenant;
     const [recentLoading, setRecentLoading] = useState(true);
     const [recentDocLoading, setRecentDocLoading] = useState(true);
     useEffect(() => {
@@ -28,6 +34,7 @@ const Home = (props) => {
         }
         setRecentLoading(true)
         setRecentDocLoading(true)
+        // 获取最近查看的文档
         findDocumentRecentList(recentDocumentParams).then(res => {
             console.log(res)
             if (res.code === 0) {
@@ -45,6 +52,7 @@ const Home = (props) => {
                 orderType: "desc"
             }]
         }
+        // 获取最近查看的知识库
         findRecentRepositoryList(recentRepositoryParams).then(res => {
             if (res.code === 0) {
                 setRecentRepositoryDocumentList(res.data.slice(0, 5))
@@ -54,10 +62,13 @@ const Home = (props) => {
         return;
     }, [])
 
+    // 跳转知识库详情页面
     const goRepositoryDetail = repository => {
         sessionStorage.setItem("menuKey", "repository")
         props.history.push(`/repository/${repository.id}/overview`)
     }
+
+    // 跳转文档详情
     const goDocumentDetail = item => {
         if (item.documentType === "document") {
             props.history.push(`/repository/${item.wikiRepository.id}/doc/rich/${item.id}`)

@@ -1,12 +1,14 @@
+/*
+ * @Author: 袁婕轩
+ * @Date: 2023-12-27 20:49:20
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 17:36:27
+ * @Description: 项目消息通知方案
+ */
 import React from "react";
 import {DomainMessageNotice} from "tiklab-message-ui";
 
-/**
- * 项目域消息通知方案
- * @param props
- * @returns {JSX.Element}
- * @constructor
- */
+
 const DomainMessageNoticeContent = props =>{
     const repositoryId = props.match.params.repositoryId;
     return (

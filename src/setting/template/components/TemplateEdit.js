@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 
+ * @Descripttion: 模版编辑
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-09-07 10:20:57
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-09-08 16:20:06
+ * @LastEditTime: 2024-12-31 17:11:43
  */
 import React, { useState, useEffect, useRef } from "react";
 import { observer, inject } from "mobx-react";
@@ -148,6 +148,8 @@ const TemplateEdit = (props) => {
                             value={editorValue}
                             onChange={value => setEditorValue(value)}
                             base_url = {upload_url}
+                            img_url = {upload_url}
+                            viewImageUrl = "/image"
                             ticket = {ticket}
                             tenant = {tenant}
                         >

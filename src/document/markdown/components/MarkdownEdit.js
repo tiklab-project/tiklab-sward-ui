@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 
+ * @Descripttion: markdown文档编辑
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-08-09 09:18:21
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-09-13 13:13:00
+ * @LastEditTime: 2024-12-31 15:19:57
  */
 import React, { useEffect, useState, useRef } from "react";
 import { withRouter } from "react-router-dom";
@@ -27,6 +27,7 @@ const MarkdownEdit = (props) => {
     const [value, setValue] = useState();
     const path = props.location.pathname.split("/")[3];
 
+    // 查找文档详情
     useEffect(() => {
         setValue()
         findDocument(documentId).then((data) => {
@@ -60,19 +61,32 @@ const MarkdownEdit = (props) => {
         return;
     }, [documentId])
 
+    // 保存文档
     const save = () => {
         console.log(value)
         saveDocument(value, "click")
 
         // editRef.current.submit()
     }
+
+    /**
+     * 获取文档中的文本， 文本用于搜索
+     * @param {*} nodes 
+     * @returns 
+     */
     const serialize = nodes => {
         const text = nodes.map(n => Node.string(n)).join('\n');
         return text;
     }
+
+    /**
+     * 保存文档
+     * @param {*} value 
+     * @param {*} type 
+     */
     const saveDocument = (value, type) => {
         setValue(value)
-        const serializeValue = serialize(value[0].children)
+        const serializeValue = serialize(value)
         console.log(serialize)
         const data = {
             id: documentId,
@@ -90,10 +104,18 @@ const MarkdownEdit = (props) => {
         })
     }
 
+    /**
+     * 节流保存，500ms 保存一次
+     */
     const changeEdit = useDebounce((value) => {
         saveDocument(value, "auto")
 
     }, [500])
+
+    /**
+     * 修改标题
+     * @param {} value 
+     */
     const changeTitle = (value) => {
         // setTitleValue(value.target.value)
         console.log(value)
@@ -118,6 +140,11 @@ const MarkdownEdit = (props) => {
         document.getElementById("examine-title").blur()
     }
     const [isFocus, setIsFocus] = useState()
+
+    /**
+     * 敲击回车保存标题
+     * @param {按键} event 
+     */
     const keyDown = (event) => {
 
         if (event.keyCode === 13) {
@@ -126,19 +153,27 @@ const MarkdownEdit = (props) => {
             changeTitle(event)
         }
     }
+
+    // 聚焦
     const focus = () => {
         document.getElementById("examine-title").focus()
         setIsFocus(true)
     }
 
+    // 跳转到查看界面
     const goExamine = () => {
+        // 在目录页面
         if (path === "doc") {
             props.history.push(`/repository/${repositoryId}/doc/markdown/${documentId}`)
         }
+        
+        // 在收藏页面
         if (path === "collect") {
             props.history.push(`/repository/${repositoryId}/collect/markdown/${documentId}`)
         }
     }
+
+    
     return <>
     {
         docInfo?.recycle === "0" ? <div className="document-markdown-edit">

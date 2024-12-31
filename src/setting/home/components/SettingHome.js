@@ -1,3 +1,4 @@
+// 弃用
 import React, { useState, useEffect } from "react";
 import { Row, Col } from "antd";
 import SettingHomeStore from "../store/SettingHomeStore";

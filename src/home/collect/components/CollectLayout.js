@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 知识库详情页
+ * @Descripttion: 收藏入口页面
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2020-12-18 16:05:16
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-08-30 15:06:15
+ * @LastEditTime: 2024-12-31 15:43:56
  */
 import React, { useState, useEffect } from "react";
 import { Empty, Layout, Spin } from 'antd';
@@ -19,7 +19,7 @@ const CollectLayout = (props) => {
     const { route } = props;
     const [focusDocumentList, setFocusDocumentList] = useState([]);
     const [allFocusDocumentList, setAllFocusDocumentList] = useState([]);
-    const { findDocumentFocusList, createRecent, documentCondition } = CollectStore;
+    const { findDocumentFocusList } = CollectStore;
     const [selectKey, setSelectKey] = useState(id);
     const userId = getUser().userId;
     const id = props.location.pathname.split("/")[3];
@@ -33,6 +33,7 @@ const CollectLayout = (props) => {
             name: null
         }
         setLoading(true);
+        // 获取全部的收藏的文档列表
         findDocumentFocusList(data).then(res => {
             if (res.code === 0) {
                 setAllFocusDocumentList(res.data)
@@ -42,6 +43,7 @@ const CollectLayout = (props) => {
         return
     }, [])
 
+    //获取文档收藏列表，也用于导航头部搜索
     const findList = (data) => {
         findDocumentFocusList(data).then(res => {
             if (res.code === 0) {

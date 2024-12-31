@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 首页跳转的收藏页面，暂时不用
+ * @version: 1.0.0
+ * @Author: 袁婕轩
+ * @Date: 2020-12-18 16:05:16
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 15:49:19
+ */
 import React, { useEffect, useState } from "react";
 import Breadcumb from "../../../common/breadcrumb/breadcrumb";
 import { inject, observer } from "mobx-react";
@@ -5,7 +13,6 @@ import { getUser } from "tiklab-core-ui";
 import { Row, Col, Empty, Pagination } from "antd";
 import "./FocusDocumentList.scss";
 import HomeStore from "../store/HomeStore";
-import { nodata } from "../../../assets/image";
 const FocusDocumentList = (props) => {
     const { findDocumentFocusPage, focusTotal, focusCondition } = HomeStore;
     const userId = getUser().userId;

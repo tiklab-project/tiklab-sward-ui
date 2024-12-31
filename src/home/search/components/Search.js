@@ -1,18 +1,25 @@
+/*
+ * @Descripttion: 搜索组件
+ * @version: 1.0.0
+ * @Author: 袁婕轩
+ * @Date: 2020-12-18 16:05:16
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 16:20:39
+ */
 import React, { Fragment, useEffect, useState, useRef } from "react";
-import { SearchOutlined } from '@ant-design/icons';
 import "../components/Search.scss"
 import SearchStore from "../store/Search";
 import { observer } from "mobx-react";
-import { useDebounce, useThrottle } from "../../../common/utils/debounce";
+import { useDebounce } from "../../../common/utils/debounce";
 import { getUser } from "tiklab-core-ui";
 import { Empty, Modal, Spin } from "antd";
 import { withRouter } from "react-router";
 import ImgComponent from "../../../common/imgComponent/ImgComponent";
-import { nodata } from "../../../assets/image";
+
 const Search = (props) => {
     const { isShowText, theme } = props;
 
-    const { getSearch, findRepositoryListByUser, findNodeList, searchDocumentList, searchWikiList, findDocumentRecentList,
+    const { findRepositoryListByUser, findNodeList, searchDocumentList, searchWikiList, findDocumentRecentList,
         findRecentRepositoryList } = SearchStore;
     const [searchModal, setSearchModal] = useState(false);
     const [isSeach, setIsSeach] = useState(false);
@@ -33,11 +40,14 @@ const Search = (props) => {
         }
         setDocloading(true)
         setRepositoryloading(true)
+        // 查找最近查看的文档
         findDocumentRecentList(recentParams).then(res => {
             if (res.code === 0) {
                 setDocloading(false)
             }
         })
+
+        // 查找最近查看的知识库
         findRecentRepositoryList({ model: "repository" }).then(res => {
             if (res.code === 0) {
                 setRepositoryloading(false)
@@ -52,37 +62,34 @@ const Search = (props) => {
         }
         return null;
     }, [searchModal])
-    // 输入中
-    const changeValue = (value) => {
 
+    // 搜索文档
+    const changeValue = (value) => {
         search(value)
     }
 
-    // 防抖
+    // 节流
     const search = useDebounce((value) => {
 
         const keyWord = value.target.value;
         if (keyWord) {
             setDocloading(true)
             setRepositoryloading(true)
+            // 搜索知识库
             findRepositoryListByUser({name: value.target.value}).then(res => {
                 if (res.code === 0) {
                     // setDocloading(false)
                     setRepositoryloading(false)
                 }
             })
+
+            // 搜索文档
             findNodeList({name: value.target.value, type: "document"}).then(res => {
                 if (res.code === 0) {
                     // setDocloading(false)
                     setDocloading(false)
                 }
             })
-            // getSearch(value.target.value).then(res => {
-            //     if (res.code === 0) {
-            //         setDocloading(false)
-            //         setRepositoryloading(false)
-            //     }
-            // })
             setIsSeach(true)
         } else {
             findRecent()
@@ -91,7 +98,7 @@ const Search = (props) => {
     }, 500)
 
 
-
+    
     const toRepository = (repository) => {
         props.history.push(`/repository/${repository.id}/overview`)
         setSearchModal(false)

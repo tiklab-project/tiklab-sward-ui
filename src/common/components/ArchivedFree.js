@@ -1,4 +1,10 @@
-
+/*
+ * @Author: 袁婕轩
+ * @Date: 2024-05-29 19:46:28
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 14:44:53
+ * @Description: 收费功能引导组件
+ */
 import React, { useState } from "react";
 import { Modal, Button } from 'antd';
 import "./ArchivedFree.scss";

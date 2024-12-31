@@ -1,18 +1,11 @@
+
 /*
- * @Descripttion: 
- * @version: 1.0.0
- * @Author: 袁婕轩
- * @Date: 2021-09-14 11:20:08
- * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-09-16 09:14:44
- */
-/*
- * @Descripttion: 
+ * @Descripttion: 分享的markdown文档
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-08-09 09:18:21
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-09-13 13:56:29
+ * @LastEditTime: 2024-12-31 15:35:24
  */
 import React, { useEffect, useState } from "react";
 import { inject, observer } from "mobx-react";
@@ -37,17 +30,19 @@ const initValue = [{
 }]
 const ShareMarkdown = (props) => {
     const { shareStore } = props;
-    const { documentView, commentView, judgeAuthCode } = shareStore;
+    const { documentView, commentView } = shareStore;
     const [showComment, setShowComment] = useState(false);
    
     
     const [value, setValue] = useState(initValue)
     const [docInfo, setDocInfo] = useState({ name: "", likenumInt: "", commentNumber: "" })
     useEffect(() => {
+        // 获取评论
         commentView({ documentId: props.match.params.id }).then(data => {
             console.log(data)
             
         })
+        // 获取文档详情
         documentView({ documentId: props.match.params.id }).then((data) => {
             if (data.code === 0) {
                 if (data.data?.details) {
@@ -62,6 +57,8 @@ const ShareMarkdown = (props) => {
         })
         return
     }, [props.match.params.id])
+
+    
     return (
         <div className="markdown-share-examine">
             <div className="examine-title">

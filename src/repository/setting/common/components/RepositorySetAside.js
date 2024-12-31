@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 项目详情页面左侧导航栏
+ * @Descripttion: 知识库设置导航
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2020-12-18 16:05:16
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2022-01-19 13:13:36
+ * @LastEditTime: 2024-12-31 17:07:38
  */
 
 import React, { Fragment, useState, useEffect } from 'react';

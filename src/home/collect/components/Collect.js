@@ -1,3 +1,12 @@
+
+/*
+ * @Descripttion: 收藏文档列表页面
+ * @version: 1.0.0
+ * @Author: 袁婕轩
+ * @Date: 2021-09-13 13:29:10
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 15:39:32
+ */
 import React, { useEffect, useState } from "react";
 import "./Collect.scss";
 import { Col, Empty, Row } from "antd";
@@ -8,16 +17,15 @@ import { useDebounce } from "../../../common/utils/debounce";
 import PaginationCommon from "../../../common/page/Page";
 
 const Collect = (props) => {
-    const { findDocumentFocusPage, findFocusRepositoryList, createRecent, documentCondition } = CollectStore;
+    const { findDocumentFocusPage, documentCondition } = CollectStore;
     const userId = getUser().userId;
-    const repositoryId = props.match.params.repositoryId;
     const [focusDocumentList, setFocusDocumentList] = useState([]);
-    const [focusRepositoryList, setFocusRepositoryList] = useState([]);
 
     useEffect(() => {
         const data = {
             masterId: userId
         }
+        // 获取收藏的文档列表
         findDocumentFocusPage(data).then(res => {
             if (res.code === 0) {
                 console.log(res)
@@ -26,16 +34,12 @@ const Collect = (props) => {
 
         })
 
-        findFocusRepositoryList({ masterId: userId }).then(res => {
-            if (res.code === 0) {
-                setFocusRepositoryList(res.data)
-            }
-        })
+
         return
     }, [])
 
 
-
+    // 跳转到文档页面
     const goFocusDocumentDetail = item => {
         if (item.documentType === "document") {
             props.history.push(`/repository/${item.wikiRepository.id}/collect/doc/${item.id}`)
@@ -46,6 +50,7 @@ const Collect = (props) => {
         sessionStorage.setItem("menuKey", "repository")
     }
 
+    // 搜索文档
     const onSearch = useDebounce(value => {
         const data = {
             name: value
@@ -58,6 +63,7 @@ const Collect = (props) => {
         })
     }, [500]);
 
+    // 翻页
     const onPageChange = (currentPage) => {
         const data = {
             pageParam: {

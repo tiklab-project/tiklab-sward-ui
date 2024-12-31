@@ -1,6 +1,14 @@
 
+/*
+ * @Descripttion: 文档评论组件
+ * @version: 1.0.0
+ * @Author: 袁婕轩
+ * @Date: 2021-08-09 09:18:21
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 17:18:07
+ */
 import React, { useEffect, useRef, useState } from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { Input, Empty, message } from "antd";
 import Button from "../../../common/button/button";
 import "./comment.scss"
@@ -8,7 +16,6 @@ import { getUser } from "tiklab-core-ui";
 import moment from "moment";
 import CommentStore from "../store/CommentStore"
 import UserIcon from "../../../common/UserIcon/UserIcon";
-import { nodata } from "../../../assets/image";
 const Comment = (props) => {
     const { documentId, setShowComment, commentNum, setCommentNum } = props;
     const { createComment, findCommentPage, deleteComment, deleteCommentCondition } = CommentStore;
@@ -22,6 +29,10 @@ const Comment = (props) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPage] = useState(0)
     const commonBox = useRef();
+
+    /**
+     * 获取评论列表
+     */
     useEffect(() => {
         const value = {
             documentId: documentId,
@@ -53,8 +64,11 @@ const Comment = (props) => {
         if (!commonBox.current.contains(e.target) && commonBox.current !== e.target) {
             setShowComment(false)
         }
-    }
+    }   
 
+    /**
+     * 发布评论
+     */
     const announce = () => {
         if (commentFirstContent) {
             const value = {
@@ -84,6 +98,12 @@ const Comment = (props) => {
     //回复评论
     const [reply, setReply] = useState()
 
+    /**
+     * 回复评论
+     * @param {被回复的评论的id} id 
+     * @param {*} index 
+     * @param {*} aimAtUser 
+     */
     const announceReply = (id, index, aimAtUser) => {
         if (commentSecondContent) {
             const value = {
@@ -114,6 +134,13 @@ const Comment = (props) => {
     }
 
     const [childrenReply, setChildrenReply] = useState()
+    /**
+     * 第三层回复
+     * @param {*} firstOneCommentId 
+     * @param {*} parentCommentId 
+     * @param {*} index 
+     * @param {*} aimAtUser 
+     */
     const announceThirdReply = (firstOneCommentId, parentCommentId, index, aimAtUser) => {
         if (commentThirdContent) {
             const value = {
@@ -142,7 +169,9 @@ const Comment = (props) => {
 
     }
 
-
+    /**
+     * 翻页
+     */
     const nextPageCommon = () => {
         const page = currentPage + 1;
         setCurrentPage(page)

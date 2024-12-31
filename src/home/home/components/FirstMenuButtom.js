@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 系统一级导航底部组件
+ * @version: 1.0.0
+ * @Author: 袁婕轩
+ * @Date: 2020-12-18 16:05:16
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 15:46:31
+ */
 import React, { Component, useState } from "react";
 import { AppLink, AvatarLink, HelpLink } from 'tiklab-licence-ui';
 import { AppLink as AppLinkCloud, AvatarLink as AvatarLinkCloud, HelpLink as HelpLinkCloud } from 'tiklab-licence-cloud-ui';

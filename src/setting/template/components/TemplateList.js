@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 
+ * @Descripttion: 模板列表
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-09-07 09:34:01
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-09-08 18:01:28
+ * @LastEditTime: 2024-12-31 17:11:57
  */
 import React, { useState, useEffect, Fragment } from "react";
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -24,7 +24,7 @@ import projectOperation from "../../../assets/images/projectOperation.png";
 const { confirm } = Modal;
 const Template = (props) => {
     const { findDocumentTemplateList, deleteDocumentTemplate, templateList } = TemplateStore;
-    const [editType, setEditType] = useState();
+
     const imgUrlArray = [weekly, weeklyNomal, todoWork, projectPlan, projectOperation]
     useEffect(() => {
         findDocumentTemplateList()

@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 
+ * @Descripttion: 知识库信息页面
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-12-07 14:59:04
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-12-08 09:24:33
+ * @LastEditTime: 2024-12-31 17:06:48
  */
 import React, { useEffect, useState } from "react";
 import { observer, inject } from "mobx-react";

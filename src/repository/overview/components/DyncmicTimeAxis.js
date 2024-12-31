@@ -1,4 +1,12 @@
-import React, { Children } from "react";
+/*
+ * @Author: 袁婕轩
+ * @Date: 2024-08-03 16:45:03
+ * @LastEditors: 袁婕轩
+ * @LastEditTime: 2024-12-31 17:04:35
+ * @Description: 动态时间轴
+ */
+
+import React from "react";
 import "./DyncmicTimeAxis.scss";
 import DyncmicItem from "./DynamicItem"
 import { observer } from "mobx-react";

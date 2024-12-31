@@ -1,18 +1,18 @@
 /*
- * @Descripttion: 
+ * @Descripttion: 分享链接弹窗组件
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-09-13 13:29:10
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2022-01-06 10:58:08
+ * @LastEditTime: 2024-12-31 15:36:16
  */
 import React, { useState, useEffect, useRef } from "react";
-import { Modal, Radio , Button, Input } from 'antd';
+import { Modal, Radio , Button } from 'antd';
 import "./shareModal.scss";
 import {getUser} from "tiklab-core-ui"
 const ShareModal = (props) => {
     const origin = location.origin;
-    const { shareVisible, setShareVisible, docInfo,createShare,updateShare, nodeIds, type } = props;
+    const { shareVisible, setShareVisible,createShare,updateShare, nodeIds, type } = props;
     
     const [value, setValue] = React.useState("publish");
     const [shareLink,setShareLink] = useState()
@@ -22,6 +22,7 @@ const ShareModal = (props) => {
     const user = getUser()
     const onChange = e => {
         setValue(e.target.value);
+        // 更新分享文档信息
         updateShare({id: shareLink,limits: e.target.value}).then(data=> {
             console.log(data)
             if(data.code === 0) {
@@ -42,6 +43,8 @@ const ShareModal = (props) => {
             }
         })
     };
+
+    // 创建分享
     useEffect(()=> {
         if(shareVisible === true) {
             console.log(nodeIds)
@@ -61,82 +64,7 @@ const ShareModal = (props) => {
         }
         return;
     },[shareVisible,nodeIds])
-    // 分享qq空间
-    const shareToQZon = (pic) => {
-        console.log(window.location.href)
-        var param = {
-            url: window.location.href,
-            /*分享地址(可选)*/
-            desc: '文档',
-            /*分享理由(可选)*/
-            title: docInfo?.name || "",
-            /*分享标题(可选)*/
-            summary: authCode ? `密码：${authCode}`: "",
-            /*分享描述(可选)*/
-            pics: pic || 'http://127.0.0.1:3001/images/logo.png',
-            /*分享图片(可选)*/
-        };
-        var temp = [];
-        for (var p in param) {
-            temp.push(p + '=' + encodeURIComponent(param[p] || ''))
-        }
-        var targetUrl = 'https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?' + temp.join('&');
-        window.open(targetUrl, 'sinaweibo', 'height=800, width=800');
-    }
 
-    /**
-     * 分享qq
-     */
-
-    const shareQQ = (url) => {
-        var param = {
-            url: window.location.href,
-            desc: '文档',
-            /*分享理由*/
-            title: docInfo?.name || '',
-            /*分享标题(可选)*/
-            summary: '分享',
-            /*分享描述(可选)*/
-            pics: 'http://127.0.0.1:3001/images/logo.png',
-            /*分享图片(可选)*/
-        };
-        var s = [];
-        for (var i in param) {
-            s.push(i + '=' + encodeURIComponent(param[i] || ''));
-        }
-        var targetUrl = "https://connect.qq.com/widget/shareqq.html?" + s.join('&');
-        window.open(targetUrl, '_blank', 'height=520, width=720');
-    }
-
-    // 新浪微博
-    const shareToSinaWeiBo = () => {
-        var param = {
-            url: window.location.href,
-            /*分享地址(可选)*/
-            type: '3',
-            count: '1',
-            /** 是否显示分享数，1显示(可选)*/
-            title: docInfo.name,
-            /** 分享的文字内容(可选，默认为所在页面的title)*/
-            pic: `${origin}/images/logo.png`,
-            /**分享图片的路径(可选)*/
-            rnd: new Date().valueOf()
-        }
-        var temp = [];
-        for (var p in param) {
-            temp.push(p + '=' + encodeURIComponent(param[p] || ''))
-        }
-        var targetUrl = 'http://service.weibo.com/share/share.php?' + temp.join('&');
-        window.open(targetUrl, 'sinaweibo', 'height=800, width=800');
-    }
-
-    // 分享微信
-    const shareWeixin = () => {
-        let url = window.location.href;
-        let encodePath = encodeURIComponent(url);
-        let targetUrl = 'http://zixuephp.net/inc/qrcode_img.php?text=' + encodePath;
-        window.open(targetUrl, 'weixin', 'height=320, width=320');
-    }
 
     // 复制
     const copy = () => {
@@ -186,41 +114,7 @@ const ShareModal = (props) => {
             <div style={{textAlign: "right"}}>
                 <Button onClick={()=>copy()} >复制</Button>
             </div>
-            {/* <div className="share-title">
-                分享到：
-            </div>
-            <div className="share-box">
-                <div className="share-item" onClick={() => shareWeixin()}>
-                    <svg className="share-icon" aria-hidden="true">
-                        <use xlinkHref="#icon-weixin"></use>
-                    </svg>
-                    <span className="share-name">微信好友</span>
-                </div>
-                <div className="share-item" >
-                    <svg className="share-icon" aria-hidden="true">
-                        <use xlinkHref="#icon-friend"></use>
-                    </svg>
-                    <span className="share-name">朋友圈</span>
-                </div>
-                <div className="share-item" onClick={() => shareQQ()}>
-                    <svg className="share-icon" aria-hidden="true">
-                        <use xlinkHref="#icon-QQ"></use>
-                    </svg>
-                    <span className="share-name">QQ好友</span>
-                </div>
-                <div className="share-item" onClick={() => shareToQZon()}>
-                    <svg className="share-icon" aria-hidden="true">
-                        <use xlinkHref="#icon-QQspace"></use>
-                    </svg>
-                    <span className="share-name">空间</span>
-                </div>
-                <div className="share-item" onClick={() => shareToSinaWeiBo()}>
-                    <svg className="share-icon" aria-hidden="true">
-                        <use xlinkHref="#icon-weibo"></use>
-                    </svg>
-                    <span className="share-name">微博</span>
-                </div>
-            </div> */}
+            
         </Modal>
     )
 }

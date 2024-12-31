@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 
+ * @Descripttion: markdown 查看
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-08-09 09:18:21
  * @LastEditors: 袁婕轩
- * @LastEditTime: 2021-10-22 15:38:49
+ * @LastEditTime: 2024-12-31 15:21:04
  */
 import React, { useEffect, useState } from "react";
 import { Provider, inject, observer } from "mobx-react";
@@ -110,22 +110,10 @@ const DocumentExamine = (props) => {
 
 
     }
-    const moreMenu = (
-        <div className="more-box">
-            <div className="markbox-download" onClick={() => downMorkDown()}>
-                下载
-            </div>
-        </div>
-    )
-
-    const downMorkDown = () => {
-        const url = `data:,${markdownValue}`;
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${documentTitle}.md`;
-        a.click();
-    }
-
+    
+    /**
+     * 收藏文档
+     */
     const createFocus = () => {
         const params = {
             documentId: documentId,
@@ -142,6 +130,9 @@ const DocumentExamine = (props) => {
         })
     }
 
+    /**
+     * 取消收藏
+     */
     const deleteFocus = () => {
         const params = {
             documentId: documentId,
