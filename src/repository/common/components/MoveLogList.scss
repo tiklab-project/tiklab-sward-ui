@@ -1,14 +1,13 @@
 .move-menu {
     list-style-type:none;
     min-height: 30vh;
-    
+
     .category-menu-submenu {
         height: 40px;
         display: flex;
         line-height: 40px;
         width: 100%;
         align-items: center;
-        // justify-content: space-between;
         padding: 10px;
         cursor: pointer;
         i{
@@ -41,7 +40,6 @@
     }
     .category-menu-select {
         background-color: #e3e8f0;
-        // border-left: 3px solid #0053ca;
     }
     .iconright {
         margin-left: 10px;

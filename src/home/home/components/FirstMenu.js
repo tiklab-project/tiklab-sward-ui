@@ -11,30 +11,44 @@ import "./FirstMenu.scss";
 import { Layout } from "antd";
 import { withRouter } from "react-router";
 import Logo from "./Logo";
-import FirstMenuButtom from "./FirstMenuButtom";
 import useLocalStorageListener from "../../../common/utils/useLocalStorageListener";
 import Search from "../../search/components/Search";
+import HomeStore from "../store/HomeStore";
+import {inject, observer, Provider} from "mobx-react";
+import {renderRoutes} from "react-router-config";
+import SetingMenu from "./SetingMenu";
+import MessageList from "./MessageList";
+import UserIcon from "../../../common/UserIcon/UserIcon";
+import {getUser} from "tiklab-core-ui";
 const { Sider } = Layout;
+
 const FirstMenu = (props) => {
+
+    const {route,AppLink,AvatarLink,HelpLink,systemRoleStore} = props;
+
+    const store = {
+        homeStore: HomeStore
+    }
+
+    const path = props.location.pathname;
+    const nickname = getUser().nickname;
+
+    const {getSystemPermissions} = systemRoleStore;
+
     const [isShowText, setIsShowText] = useState(false)
-    const path = props.location.pathname.split("/")[1];
-    const [menuKey, setMenuKey] = useState(path);
-    
+
     const [theme, setTheme] = useState(localStorage.getItem("theme") ? localStorage.getItem("theme") : "default");
     const [themeClass, setThemeClass] = useState("first-sider-gray")
 
     useEffect(() => {
+        getSystemPermissions(getUser().userId);
         getThemeClass(theme)
         return null;
     }, [])
 
-    useEffect(()=> {
-        setMenuKey(path)
-        return null;
-    }, [path])
     /**
      * 点击菜单跳转
-     * @param {菜单信息} item 
+     * @param {菜单信息} item
      */
     const changeCurrentLink = item => {
         localStorage.removeItem("sprintId")
@@ -44,8 +58,8 @@ const FirstMenu = (props) => {
 
     /**
      * 图标显示
-     * @param {*} type 
-     * @returns 
+     * @param {*} type
+     * @returns
      */
     const setActiveIcon = (type) => {
         let activeIcon = type + theme + "-active"
@@ -70,83 +84,18 @@ const FirstMenu = (props) => {
         {
             to: '/index',
             title: '首页',
-            key: 'index',
+            key: '/index',
             icon: 'home-' + theme,
             actionIcon: setActiveIcon("home-")
         },
         {
             to: '/repository',
             title: '知识库',
-            key: 'repository',
+            key: '/repository',
             icon: 'repository-' + theme,
             actionIcon: setActiveIcon("repository-")
         }
     ]
-
-
-    /**
-     * 渲染左侧菜单
-     * @returns 
-     */
-    const renderRouter = () => {
-        if (routers) {
-            return (
-                <div className={'first-menu-link'}>
-                    {
-                        routers.map(item => {
-                            return <>
-                                {
-                                    isShowText ? <div key={item.key}
-                                        onClick={() => changeCurrentLink(item)}
-                                        className={`first-menu-text-item ${menuKey === item.key ? 'first-menu-link-active' : null}`}
-                                    >
-                                        {
-                                            menuKey === item.key ? <svg className="svg-icon" aria-hidden="true">
-                                                <use xlinkHref={`#icon-${item.actionIcon}`}></use>
-                                            </svg>
-                                                :
-                                                <svg className="svg-icon" aria-hidden="true">
-                                                    <use xlinkHref={`#icon-${item.icon}`}></use>
-                                                </svg>
-                                        }
-
-                                        <span>
-                                            {item.title}
-                                        </span>
-
-                                    </div>
-                                        :
-                                        <div key={item.key}
-                                            onClick={() => changeCurrentLink(item)}
-                                            className={`first-menu-link-item ${menuKey === item.key ? 'first-menu-link-active' : null}`}
-                                        >
-                                            {
-                                                menuKey === item.key ? <svg className="svg-icon" aria-hidden="true">
-                                                    <use xlinkHref={`#icon-${item.actionIcon}`}></use>
-                                                </svg>
-                                                    :
-                                                    <svg className="svg-icon" aria-hidden="true">
-                                                        <use xlinkHref={`#icon-${item.icon}`}></use>
-                                                    </svg>
-                                            }
-
-                                            <span>
-                                                {item.title}
-                                            </span>
-
-                                        </div>
-                                }
-
-                            </>
-
-
-                        })
-                    }
-                    <Search isShowText={isShowText} theme={theme} />
-                </div>
-            )
-        }
-    }
 
     /**
      * 展开或者收起左侧导航
@@ -157,8 +106,8 @@ const FirstMenu = (props) => {
 
     /**
      * 切换系统主题色
-     * @param {主题色} theme 
-     * @returns 
+     * @param {主题色} theme
+     * @returns
      */
     const getThemeClass = (theme) => {
         let name = "default"
@@ -192,8 +141,14 @@ const FirstMenu = (props) => {
         localStorage.setItem("theme", color)
     }
 
-    return (
-        <>
+    const asideHtml = () =>{
+        if(path.startsWith('/setting')){
+            return null
+        }
+        if(path !=='/repository/' && path.startsWith('/repository/')){
+            return null
+        }
+        return (
             <Sider
                 className={`first-sider ${themeClass}`}
                 trigger={null}
@@ -205,16 +160,131 @@ const FirstMenu = (props) => {
                 <div className="first-menu">
                     <div className="first-menu-top">
                         <Logo theme={theme} isShowText={isShowText} />
-                        {renderRouter()}
+                        <div className={'first-menu-link'}>
+                            {
+                                routers.map(item => {
+                                    return isShowText ?
+                                        <div key={item.key}
+                                             onClick={() => changeCurrentLink(item)}
+                                             className={`first-menu-text-item ${path.indexOf(item.key)===0 ? 'first-menu-link-active' : null}`}
+                                        >
+                                            {
+                                                path.indexOf(item.key)===0 ?
+                                                    <svg className="svg-icon" aria-hidden="true">
+                                                        <use xlinkHref={`#icon-${item.actionIcon}`}></use>
+                                                    </svg>
+                                                    :
+                                                    <svg className="svg-icon" aria-hidden="true">
+                                                        <use xlinkHref={`#icon-${item.icon}`}></use>
+                                                    </svg>
+                                            }
+                                            <span>{item.title}</span>
+                                        </div>
+                                        :
+                                        <div key={item.key}
+                                             onClick={() => changeCurrentLink(item)}
+                                             className={`first-menu-link-item ${path.indexOf(item.key)===0 ? 'first-menu-link-active' : null}`}
+                                        >
+                                            {
+                                                path.indexOf(item.key)===0 ?
+                                                    <svg className="svg-icon" aria-hidden="true">
+                                                        <use xlinkHref={`#icon-${item.actionIcon}`}></use>
+                                                    </svg>
+                                                    :
+                                                    <svg className="svg-icon" aria-hidden="true">
+                                                        <use xlinkHref={`#icon-${item.icon}`}></use>
+                                                    </svg>
+                                            }
+                                            <span>{item.title}</span>
+                                        </div>
+                                })
+                            }
+                            <Search isShowText={isShowText} theme={theme} />
+                        </div>
                     </div>
+                    {
+                        isShowText ?
+                            <div className="first-menu-bottom-text ">
+                                <SetingMenu isShowText={isShowText} theme={theme} />
+                                <MessageList isShowText={isShowText} theme={theme} />
+                                <HelpLink
+                                    bgroup={"sward"}
+                                    iconComponent={
+                                        <div className="first-menu-text-item">
+                                            <svg className="icon-18" aria-hidden="true">
+                                                <use xlinkHref={`#icon-help-${theme}`} ></use>
+                                            </svg>
+                                            <div>帮助</div>
+                                        </div>
 
-                    <FirstMenuButtom isShowText={isShowText} theme={theme} changeTheme={changeTheme} {...props} />
+                                    }
+                                />
+                                <AppLink
+                                    translateX={isShowText ? 200 : 75}
+                                    iconComponent={
+                                        <div className="first-menu-text-item">
+                                            <svg className="icon-18" aria-hidden="true">
+                                                <use xlinkHref={`#icon-application-${theme}`} ></use>
+                                            </svg>
+                                            <div>切换应用</div>
+                                        </div>
+
+                                    }
+                                />
+                                <AvatarLink
+                                    changeTheme={changeTheme}
+                                    iconComponent={
+                                        <div className="first-menu-text-item">
+                                            <UserIcon name={nickname} />
+                                            <div>{nickname}</div>
+                                        </div>
+                                    }
+                                    {...props}
+                                />
+                            </div>
+                            :
+                            <div className="first-menu-bottom-icon">
+                                <SetingMenu isShowText={isShowText} theme={theme} />
+                                <MessageList isShowText={isShowText} theme={theme} />
+                                <HelpLink
+                                    bgroup={"sward"}
+                                    iconComponent={
+                                        <div className="first-menu-link-item" data-title-right="帮助">
+                                            <svg className="icon-18 " aria-hidden="true">
+                                                <use xlinkHref={`#icon-help-${theme}`} ></use>
+                                            </svg>
+                                        </div>
+
+                                    }
+                                />
+                                <AppLink
+                                    translateX={isShowText ? 200 : 75}
+                                    iconComponent={
+                                        <div className="first-menu-link-item" data-title-right="应用导航">
+                                            <svg className="icon-18" aria-hidden="true">
+                                                <use xlinkHref={`#icon-application-${theme}`} ></use>
+                                            </svg>
+                                        </div>
+
+                                    }
+                                />
+                                <AvatarLink
+                                    changeTheme={changeTheme}
+                                    iconComponent={
+                                        <div className="first-menu-link-item" data-title-right={nickname}>
+                                            <UserIcon name={nickname} />
+                                        </div>
+                                    }
+                                    {...props}
+                                />
+                            </div>
+                    }
                     <div className={"menu-box-right-border"}>
                         <div className={"menu-box-isexpanded"} onClick={toggleCollapsed}>
                             {
                                 isShowText ? <svg className="first-menu-expend-icon" aria-hidden="true">
-                                    <use xlinkHref="#icon-leftcircle"></use>
-                                </svg>
+                                        <use xlinkHref="#icon-leftcircle"></use>
+                                    </svg>
                                     :
                                     <svg className="first-menu-expend-icon" aria-hidden="true">
                                         <use xlinkHref="#icon-rightcircle"></use>
@@ -225,9 +295,18 @@ const FirstMenu = (props) => {
 
                 </div>
             </Sider>
+        )
+    }
 
-        </>
-
+    return (
+        <Provider {...store}>
+            <div className="layout">
+                {asideHtml()}
+                <div className="layout-left">
+                    {renderRoutes(route.routes)}
+                </div>
+            </div>
+        </Provider>
     )
 }
-export default withRouter(FirstMenu);
+export default withRouter(inject("systemRoleStore")(observer(FirstMenu)));

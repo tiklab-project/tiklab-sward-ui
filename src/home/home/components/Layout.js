@@ -6,38 +6,25 @@
  * @LastEditors: 袁婕轩
  * @LastEditTime: 2024-12-31 15:53:37
  */
-import React, { useState } from 'react';
+import React from 'react';
+import {AppLink,HelpLink,AvatarLink} from "tiklab-licence-ui";
+import {UserVerify} from 'tiklab-eam-ui';
+import FirstMenu from "./FirstMenu";
 
-import { renderRoutes } from "react-router-config";
-import "./Layout.scss";
-
-import { Provider } from 'mobx-react';
-import HomeStore from "../store/HomeStore";
-import { AppLink } from 'tiklab-licence-ui';
-import FirstMenu from './FirstMenu';
-const Layout = (props) => {
-    const store = {
-        homeStore: HomeStore
-    }
-
-    const route = props.route.routes;
-    const pathname = props.location.pathname.split("/")[1];
-
+const Layout = props =>{
 
     return (
-        <Provider {...store}>
-            <div className="layout">
-                {
-                    pathname !== "setting" && <FirstMenu AppLink={AppLink} {...props} />
-                }
-                <div className="layout-left">
-                    {renderRoutes(route)}
-                </div>
-
-            </div>
-        </Provider>
-
+        <FirstMenu
+            {...props}
+            AppLink={AppLink}
+            HelpLink={HelpLink}
+            AvatarLink={AvatarLink}
+        >
+        </FirstMenu>
     )
 }
 
-export default Layout;
+
+export default UserVerify(Layout,'/noAuth')
+
+

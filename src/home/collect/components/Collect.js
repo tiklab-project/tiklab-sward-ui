@@ -12,7 +12,7 @@ import "./Collect.scss";
 import { Col, Empty, Row } from "antd";
 import { getUser } from "tiklab-core-ui";
 import CollectStore from "../store/CollectStore";
-import InputSearch from "../../../common/input/inputSearch";
+import InputSearch from "../../../common/input/InputSearch";
 import { useDebounce } from "../../../common/utils/debounce";
 import PaginationCommon from "../../../common/page/Page";
 

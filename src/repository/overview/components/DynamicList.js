@@ -6,7 +6,7 @@
  * @Description: 动态列表
  */
 import React, { useEffect, useState } from "react";
-import Breadcumb from "../../../common/breadcrumb/breadcrumb";
+import Breadcrumb from "../../../common/breadcrumb/Breadcrumb";
 import { inject, observer } from "mobx-react";
 import { getUser } from "tiklab-core-ui";
 import { Row, Col, Empty } from "antd";
@@ -47,7 +47,7 @@ const DynamicList = (props) => {
             <Col xl={{ span: 18, offset: 3 }} lg={{ span: 18, offset: 3 }} md={{ span: 20, offset: 2 }} className="dynamic-col">
                 <div className="dynamic-list-page">
                     <div className="dynamic-list-top">
-                        <Breadcumb
+                        <Breadcrumb
                             {...props}
                             firstText={firstText}
                             secondText="动态"

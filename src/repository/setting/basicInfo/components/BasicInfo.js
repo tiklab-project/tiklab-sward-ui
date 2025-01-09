@@ -11,7 +11,7 @@ import { observer, inject } from "mobx-react";
 import { Input, Form, Select, Button, Modal, Row, Col, message, Alert } from "antd";
 import 'moment/locale/zh-cn';
 import "../components/basicInfo.scss";
-import Breadcumb from "../../../../common/breadcrumb/breadcrumb";
+import Breadcumb from "../../../../common/breadcrumb/Breadcrumb";
 import RepositoryIcon from "./RepositoryChangeIcon";
 import { PrivilegeProjectButton } from "tiklab-privilege-ui";
 import { Collapse } from 'antd';

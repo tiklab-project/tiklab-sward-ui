@@ -13,14 +13,12 @@ import "./Setting.scss"
 import { renderRoutes } from "react-router-config";
 import { SystemNav } from "tiklab-privilege-ui";
 import { setDevRouter, setPrdRouter } from "./SetRouter";
-import { inject, observer } from 'mobx-react';
-import { getUser } from 'tiklab-core-ui';
-import { UserVerify } from 'tiklab-user-extension-ui';
+
 const { Sider, Content } = Layout;
+
 const Setting = (props) => {
-    const {systemRoleStore} = props;
+
     const route = props.route;
-    const user = getUser();
     const [router, setRouterMenu] = useState(setDevRouter)
     useEffect(() => {
         if (env === "local") {
@@ -32,12 +30,6 @@ const Setting = (props) => {
         return
     }, [])
 
-    useEffect(() => {
-        if (user && user.userId) {
-            systemRoleStore.getSystemPermissions(user.userId, "kanass")
-        }
-        return;
-    }, [])
 
     return (
         <Fragment>
@@ -65,4 +57,4 @@ const Setting = (props) => {
     )
 }
 
-export default inject("systemRoleStore")(UserVerify(observer(Setting),"/noAuth", "sward"));;
+export default Setting;

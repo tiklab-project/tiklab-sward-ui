@@ -20,12 +20,11 @@
         margin-top: 10px;
         .template-box {
             padding: 10px;
-            // border: 1px solid rgba(126, 134, 142, 0.16);
             box-sizing: border-box;
             border-radius: 6px;
             position: relative;
             background: #fafbfc;
-            
+
             .template-action {
                 display: flex;
                 gap: 10px;
@@ -50,7 +49,6 @@
             }
             .template-action {
                 display: flex;
-                // justify-content: space-between;
                 gap: 10px;
                 position: absolute;
                 background: #fafbfc;
@@ -62,7 +60,7 @@
             }
         }
         .template-box:hover {
-            
+
             .template-action {
                 visibility: inherit;
             }

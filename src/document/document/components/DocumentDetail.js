@@ -10,7 +10,7 @@ import React,{useState} from "react";
 import { Breadcrumb, message} from 'antd';
 import { Provider, observer } from "mobx-react";
 import "./documentDetail.scss";
-import DocumentExamine from "./DocumnetExamine";
+import DocumentExamine from "./DocumentExamine";
 import {withRouter} from "react-router-dom";
 import DocumentEdit from "./DocumentEdit";
 import DocumentStore from "../store/DocumentStore";
@@ -19,18 +19,18 @@ const DocumentDetail = (props)=>{
         documentStore: DocumentStore
     }
     const {updateDocument} = DocumentStore;
-    
+
 
     const [editOrExamine,seteditOrExamine] = useState("examine")
 
     /**
      * 转到编辑模式
-     * @param {类型} type 
+     * @param {类型} type
      */
     const changePageType = (type) => {
         seteditOrExamine(type)
     }
-    
+
     const documentId = props.match.params.id;
 
     // 保存内容，转到查看模式
@@ -42,7 +42,7 @@ const DocumentDetail = (props)=>{
 
     /**
      * 保存文档
-     * @param {*} value 
+     * @param {*} value
      */
     const saveDocument = (value) => {
         setValue(value)
@@ -78,12 +78,12 @@ const DocumentDetail = (props)=>{
                 </div>
             </div>
             {
-                editOrExamine === "examine" ? <DocumentExamine {...props} /> : 
+                editOrExamine === "examine" ? <DocumentExamine {...props} /> :
                     <DocumentEdit {...props} />
             }
         </div>
     </Provider>
-        
+
     )
 }
 export default observer(withRouter(DocumentDetail));

@@ -76,13 +76,11 @@
         &-list {
             display: flex;
             align-items: center;
-            // height: 50px;
-            // line-height: 50px;
             justify-content: space-between;
             padding: 0 10px;
             border-radius: 4px;
             gap: 20px;
-            
+
             .log-child-title {
                 display: flex;
                 align-items: center;
@@ -110,7 +108,7 @@
                     color: var(--tiklab-gray-500);
                 }
             }
-            
+
         }
         .log-child-list:hover {
             background-color: var(--tiklab-gray-300);

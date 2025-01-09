@@ -81,10 +81,10 @@ const SettingHome = props => {
                         }else {
                             setArchivedFreeVisable(true)
                         }
-                        
+
                     }
                 }
-                
+
             }
         }else {
             if (data.islink && !authType) {
@@ -102,12 +102,12 @@ const SettingHome = props => {
                         setArchivedFreeVisable(true)
                     }
                 }
-    
+
             }
             setOpenOrClose(data.parentUrl)
         }
-       
-        
+
+
     }
 
     const array = [
@@ -201,7 +201,6 @@ const SettingHome = props => {
                 },
                 {
                     title: '归档',
-                    icon: 'systemreset',
                     id: '/setting/archived',
                     iseEnhance: true,
                     icon: <svg className="icon-15" aria-hidden="true">
@@ -211,7 +210,6 @@ const SettingHome = props => {
                 },
                 {
                     title: '回收站',
-                    icon: 'systemrecycle',
                     id: '/setting/recycle',
                     iseEnhance: true,
                     icon: <svg className="icon-15" aria-hidden="true">
@@ -258,7 +256,7 @@ const SettingHome = props => {
             userNum: licence?.userNum||0
         }
     }
-    
+
     return (
         <Row className='setting-home'>
             <Col

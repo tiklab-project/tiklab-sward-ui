@@ -56,7 +56,7 @@
                 cursor: pointer;
             }
 
-           
+
         }
 
         .setting {
@@ -103,7 +103,7 @@
             background-color: #f6f7f8;
         }
 
-       
+
 
         .repository-menu {
             list-style-type: none;
@@ -118,7 +118,6 @@
                 line-height: 36px;
                 width: 100%;
                 align-items: center;
-                // justify-content: space-between;
                 padding-right: 10px;
                 gap: 5px;
 
@@ -149,7 +148,6 @@
                 }
 
                 .repository-view {
-                    // max-width: 120px;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
@@ -204,19 +202,6 @@
             display: none;
         }
 
-        // .repository-survey {
-        //     height: 40px;
-        //     line-height: 40px;
-        //     padding-left: 24px;
-        //     cursor: pointer;
-        //     display: flex;
-        //     align-items: center;
-        //     gap: 8px;
-        // }
-
-        // .repository-survey:hover {
-        //     background-color: #EDF0F5;
-        // }
     }
 }
 

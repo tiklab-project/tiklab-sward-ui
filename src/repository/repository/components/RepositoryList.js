@@ -10,8 +10,8 @@ import { Table, Space, Row, Col, Empty, Spin } from 'antd';
 import { observer, inject } from "mobx-react";
 import { withRouter } from "react-router-dom";
 import { getUser } from "tiklab-core-ui";
-import Breadcumb from "../../../common/breadcrumb/breadcrumb";
-import InputSearch from "../../../common/input/inputSearch";
+import Breadcumb from "../../../common/breadcrumb/Breadcrumb";
+import InputSearch from "../../../common/input/InputSearch";
 import Button from "../../../common/button/button";
 import "./RepositoryList.scss";
 import { useHistory } from 'react-router-dom';
@@ -22,7 +22,7 @@ import ImgComponent from "../../../common/imgComponent/ImgComponent";
 const RepositoryList = (props) => {
     const { findRepositoryList, createRecent,
         repositoryList, findRecentRepositoryList, createRepositoryFocus,
-        findFocusRepositoryList, getFocusRepositoryList, deleteRepositoryFocusByCondition, 
+        findFocusRepositoryList, getFocusRepositoryList, deleteRepositoryFocusByCondition,
         activeTabs, setActiveTabs, findRepositoryNum } = RepositoryStore;
     const userId = getUser().userId;
     const [focusRepositoryList, setFocusRepositoryList] = useState([])
@@ -36,7 +36,7 @@ const RepositoryList = (props) => {
             tabName: "all",
             icon: "project"
         },
-       
+
         {
             title: '我收藏的',
             key: '3',
@@ -89,7 +89,7 @@ const RepositoryList = (props) => {
         })
     }
 
-    
+
     const columns = [
         {
             title: "知识库名称",
@@ -274,38 +274,29 @@ const RepositoryList = (props) => {
                             recentRepositoryDocumentList.length > 0 ?
                                 <div className="repository-box">{
                                     recentRepositoryDocumentList.map(item => {
-                                        return <Fragment>
-                                            <div className="repository-item" key={item.id} onClick={() => goRepositorydetail(item)} >
-                                                <div className="item-title">
-                                                    <ImgComponent
-                                                        src={item.iconUrl}
-                                                        alt=""
-                                                        className="list-img"
-                                                    />
-                                                    <span>{item.name}</span>
-                                                </div>
-                                                <div className="item-work">
-                                                    <div className="process-work"><span style={{ color: "#999" }}>文档</span><span>{item.documentNum}篇</span></div>
-                                                    <div className="end-work"><span style={{ color: "#999" }}>目录</span><span>{item.categoryNum}个</span></div>
-                                                </div>
+                                        return <div className="repository-item" key={item.id} onClick={() => goRepositorydetail(item)} >
+                                            <div className="item-title">
+                                                <ImgComponent
+                                                    src={item.iconUrl}
+                                                    alt=""
+                                                    className="list-img"
+                                                />
+                                                <span>{item.name}</span>
                                             </div>
-
-                                        </Fragment>
+                                            <div className="item-work">
+                                                <div className="process-work"><span style={{ color: "#999" }}>文档</span><span>{item.documentNum}篇</span></div>
+                                                <div className="end-work"><span style={{ color: "#999" }}>目录</span><span>{item.categoryNum}个</span></div>
+                                            </div>
+                                        </div>
                                     })
                                 }
                                 </div>
-
                                 :
                                 <>
-                                {
-                                    !recentDocLoading &&  <Empty description="暂时没有查看过知识库~" />
-                                }
+                                {!recentDocLoading &&  <Empty description="暂时没有查看过知识库~" />}
                                 </>
-                               
                         }
                         </Spin>
-                       
-
                     </div>
                     <div className="repository-tabs-search">
                         <div className="repository-filter">

@@ -9,11 +9,12 @@
 import React from "react";
 import {Login} from 'tiklab-eam-ui'
 import logo from "../assets/images/logo.png";
+
 const ProjectLogin = (props) => {
 
     return (
         <div>
-            <Login 
+            <Login
                 {...props}
                 logoImg={logo}
                 loginGoRouter={'/repository'}

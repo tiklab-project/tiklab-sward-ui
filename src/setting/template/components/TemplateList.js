@@ -11,7 +11,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { Layout, Row, Col, Modal, Table, Space } from 'antd';
 import "../components/TemplateList.scss"
 import { observer, inject } from "mobx-react";
-import Breadcrumb from "../../../common/breadcrumb/breadcrumb";
+import Breadcrumb from "../../../common/breadcrumb/Breadcrumb";
 import Button from "../../../common/button/button";
 import TemplateStore from "../store/TemplateStore";
 import weekly from "../../../assets/images/weekly.png";
@@ -32,7 +32,7 @@ const Template = (props) => {
     }, [])
     const addModal = () => {
         props.history.push("/setting/templateAdd")
-        
+
     }
 
     const goView = (id) => {
@@ -40,7 +40,7 @@ const Template = (props) => {
     }
     // 删除模板
     const showDeleteConfirm = (name, id) => {
-        
+
         confirm({
             title: `确定删除${name}?`,
             icon: <ExclamationCircleOutlined />,

@@ -12,11 +12,7 @@ import { withRouter } from "react-router";
 const SetingMenu = (props) => {
     const {isShowText, theme} = props;
     const goSet = () => {
-        if(version === "cloud"){
-            props.history.push('/setting/home')
-        }else {
-            props.history.push('/setting/home')
-        }
+        props.history.push('/setting/home')
     }
     return (
         <div>

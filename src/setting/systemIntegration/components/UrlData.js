@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Table, Space, Row, Col, message } from 'antd';
-import Breadcumb from "../../../common/breadcrumb/Breadcrumb";
+import Breadcrumb from "../../../common/breadcrumb/Breadcrumb";
 import "./UrlData.scss";
 import { Provider, observer } from "mobx-react";
 import UrlAddData from "./UrlAddData";
@@ -9,7 +9,7 @@ import Button from "../../../common/button/button";
 const UrlData = () => {
     const store = {
         urlDataStore: UrlDataStore
-    } 
+    }
     const { findAllSystemUrl, deleteSystemUrl } = UrlDataStore;
     const [urlDataList, setUrlDataList] = useState([]);
     const [modalTitle, setModalTitle] = useState()
@@ -68,7 +68,7 @@ const UrlData = () => {
                         <span className="systemurl-dete" onClick={() => deleSystemUrl(record.id)}>删除</span>
                     </Space>
                     {/* <Space size="small">
-                        
+
                     </Space> */}
                 </Fragment>
 
@@ -93,7 +93,7 @@ const UrlData = () => {
             <Row >
                 <Col lg={{ span: 24 }} xl={{ span: "18", offset: "3" }} xxl={{ span: "18", offset: "3" }}>
                     <div className="url-data">
-                        <Breadcumb
+                        <Breadcrumb
                             firstText="地址"
                         >
                             <div>
@@ -101,10 +101,10 @@ const UrlData = () => {
                                     添加地址
                                 </Button>
                             </div>
-                        </Breadcumb>
-                        <Table 
-                            columns={columns} 
-                            dataSource={urlDataList} 
+                        </Breadcrumb>
+                        <Table
+                            columns={columns}
+                            dataSource={urlDataList}
                             scroll={{
                                 x: "100%"
                             }}
@@ -123,7 +123,7 @@ const UrlData = () => {
         </Fragment>
 
     </Provider>
-       
+
     )
 }
 

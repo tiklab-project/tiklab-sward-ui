@@ -1,9 +1,9 @@
 {
     "name": "tiklab-sward-ui",
     "version": "1.0.3",
-    "description": "tiklab repository",
+    "description": "tiklab sward",
     "main": "es/src/ui.js",
-    "module": "es/index.js",
+    "module": "es/src/ui.js",
     "files": [
         "es"
     ],
@@ -34,7 +34,6 @@
         "tiklab-core-ui": "^1.0.3",
         "tiklab-eam-ui": "^1.0.3",
         "tiklab-licence-ui": "^1.0.3",
-        "tiklab-licence-cloud-ui": "^1.0.3",
         "tiklab-message-ui": "^1.0.3",
         "tiklab-user-ui": "^1.0.3",
         "i18next": "^19.8.4",
@@ -173,17 +172,13 @@
         "react-router-dom": "^5.2.0",
         "rollup": "^2.79.1",
         "tiklab-core-ui": "^1.0.3",
-        "tiklab-eam-cloud-ui": "^1.0.3",
         "tiklab-eam-ui": "^1.0.3",
-        "tiklab-licence-cloud-ui": "^1.0.3",
         "tiklab-licence-ui": "^1.0.3",
         "tiklab-markdown-ui": "^1.0.1",
         "tiklab-message-ui": "^1.0.3",
         "tiklab-privilege-ui": "^1.0.3",
-        "tiklab-security-cloud-ui": "^1.0.3",
         "tiklab-security-ui": "^1.0.3",
         "tiklab-slate-ui": "^1.0.3",
-        "tiklab-user-extension-ui": "^1.0.3",
         "tiklab-user-ui": "^1.0.3"
     }
 }

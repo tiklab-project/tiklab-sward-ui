@@ -1,3 +1,15 @@
+.layout {
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    .layout-left {
+        flex: 1;
+        height: 100%;
+        overflow: hidden;
+    }
+
+}
+
 .first-sider {
     width: 75px;
     background-color: #F0F3FA;
@@ -28,7 +40,7 @@
                 width: 10px;
                 height: 50px;
             }
-            
+
         }
     }
 
@@ -39,7 +51,7 @@
     }
 
     .first-menu-link {
-       
+
 
         &-item {
             display: flex;
@@ -80,8 +92,8 @@
 }
 
 .first-sider-blue {
-    background-color: #2f5eb1;
-    color: #fff;
+    background-color: #2f5eb1 !important;
+    color: #fff !important;
     .first-menu-link-item:hover {
         background-color: #557AC0;
     }
@@ -98,9 +110,9 @@
         background-color: #557AC0;
     }
 }
-    
+
 .first-sider-gray {
-    background-color: #F0F3FA;
+    background-color: #F0F3FA !important;
     .first-menu-link {
         &-active {
             color: var(--tiklab-blue);
@@ -122,8 +134,8 @@
 }
 
 .first-sider-black {
-    background-color: #131d30;
-    color: #fff;
+    background-color: #131d30 !important;
+    color: #fff !important;
     .first-menu-link-item:hover {
         background-color: #414A5A;
     }
@@ -171,5 +183,40 @@
         right: -3px;
         opacity: 1;
         visibility: visible;
+    }
+}
+
+.first-menu-bottom-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 10px;
+
+    .first-menu-link-item {
+        padding: 8px;
+        margin-bottom: 0;
+
+        .user-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 24px;
+        }
+    }
+}
+
+.first-menu-bottom-text {
+    .user-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 24px;
+    }
+    .first-menu-bottom-item {
+        height: 40px;
+        display: flex;
+        line-height: 40px;
+        width: 100%;
+        align-items: center;
+        padding: 0 20px;
+        cursor: pointer;
     }
 }

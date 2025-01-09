@@ -6,7 +6,7 @@ export class SettingHomeStore {
 
     @observable
     expandedTree = []
-    
+
     @action
     setExpandedTree = (value) => {
         this.expandedTree = value;
@@ -36,7 +36,7 @@ export class SettingHomeStore {
             data: {
                 sprintId: value.sprintId
             },
-            bgroup: "kanass"
+            bgroup: "sward"
         }
         const data = await Service("/oplog/findlogpage", params)
         if(data.code === 0) {

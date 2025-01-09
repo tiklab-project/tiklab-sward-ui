@@ -140,7 +140,7 @@ const Survey = (props) => {
 
                                                 })
                                             }
-                                            <div className="user-more" onClick={() => props.history.push(`/repositorySet/${repositoryId}/user`)}>
+                                            <div className="user-more" onClick={() => props.history.push(`/repository/${repositoryId}/set/user`)}>
                                                 <svg className="user-more-icon" aria-hidden="true">
                                                     <use xlinkHref="#icon-more-white"></use>
                                                 </svg>

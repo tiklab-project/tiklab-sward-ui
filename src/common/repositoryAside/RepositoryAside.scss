@@ -4,8 +4,6 @@
         height: 100%;
         display: flex;
         flex-direction: column;
-        // background: var(--tiklab-gray-600);
-
         ul {
             padding: 0;
             margin: 0;
@@ -51,7 +49,7 @@
                 }
             }
 
-          
+
         }
 
         .hidden-menu {
@@ -84,8 +82,8 @@
     }
 }
 .project-sider-blue {
-    background-color: #2f5eb1;
-    color: #fff;
+    background-color: #2f5eb1 !important;
+    color: #fff !important;
 
     .project-menu-submenu-icon:hover {
         background-color: #557ac0;
@@ -109,12 +107,12 @@
     .project-setting:hover {
         background-color: #557ac0;
     }
-    
-    
+
+
 }
-    
+
 .project-sider-gray {
-    background-color: #f0f3fa;
+    background-color: #f0f3fa !important;
     .project-menu-submenu-icon:hover {
         background-color: var(--tiklab-gray-400);
     }
@@ -138,8 +136,8 @@
     }
 }
 .project-sider-black {
-    background-color: #131d30;
-    color: #fff;
+    background-color: #131d30 !important;
+    color: #fff !important;
     .project-menu-submenu-icon:hover {
         background-color: #414a5a;
     }

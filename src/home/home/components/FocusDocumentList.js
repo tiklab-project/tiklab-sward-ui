@@ -7,7 +7,7 @@
  * @LastEditTime: 2024-12-31 15:49:19
  */
 import React, { useEffect, useState } from "react";
-import Breadcumb from "../../../common/breadcrumb/breadcrumb";
+import Breadcumb from "../../../common/breadcrumb/Breadcrumb";
 import { inject, observer } from "mobx-react";
 import { getUser } from "tiklab-core-ui";
 import { Row, Col, Empty, Pagination } from "antd";

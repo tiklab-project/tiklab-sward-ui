@@ -56,11 +56,9 @@
 | 文件      | 说明                         |
 |--------- | ---------------------------- |
 | FirstMenu| 系统一级导航  |
-| FirstMenuButtom| 系统一级导航底部组件  |
 | FocusDocumentList| 首页跳转的收藏页面，暂时不用  |
 | Home| 系统首页  |
 | Layout| 系统入口页面  |
-| LayoutCe| 入口页面，ce、ee使用  |
 | Logo| 系统图标  |
 | HomeList| 系统首页列表  |
 | MessageList| 信息抽屉列表组件  |

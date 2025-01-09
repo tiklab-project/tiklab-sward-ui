@@ -21,7 +21,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                
+
                 width: 100%;
                 padding: 0px 10px 0px 24px;
                 height: 36px;
@@ -67,7 +67,7 @@
                 }
             }
 
-           
+
         }
 
         .setting {
@@ -115,56 +115,11 @@
             background-color: #EDF0F5;
         }
 
-        // .repository-menu-firstmenu {
-        //     height: 40px;
-        //     display: flex;
-        //     line-height: 40px;
-        //     width: 100%;
-        //     align-items: center;
-        //     justify-content: space-between;
-        //     padding: 10px 10px 10px 24px;
-        //     gap: 5px;
-
-        //     .category-add {
-        //         border-radius: 5px;
-        //         height: 20px;
-        //         width: 20px;
-        //         padding: 1px;
-        //     }
-
-        //     .category-add:hover {
-        //         background: #E3e8f0;
-        //     }
-
-        //     // background-color: var(--tiklab-gray-600);
-        //     .repository-menu-firstmenu-left {
-        //         display: flex;
-        //         align-items: center;
-        //         gap: 8px;
-        //     }
-
-        //     .repository-menu-firstmenu-right {
-        //         display: flex;
-        //         align-items: center;
-        //         cursor: pointer;
-        //         gap: 5px;
-        //     }
-        // }
-
-
         .repository-menu {
             list-style-type: none;
             height: calc(100% - 61px);
             cursor: pointer;
             overflow: auto;
-
-            // .repository-menu-up {
-            //     margin-top: 100px;
-            // }
-
-            // .repository-menu-down {
-            //     margin-bottom: 100px;
-            // }
 
             .repository-menu-submenu {
                 height: 40px;
@@ -172,7 +127,6 @@
                 line-height: 40px;
                 width: 100%;
                 align-items: center;
-                // justify-content: space-between;
                 padding: 10px 10px 10px 0;
                 gap: 5px;
 
@@ -203,7 +157,6 @@
                 }
 
                 .repository-view {
-                    // max-width: 120px;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
@@ -238,35 +191,6 @@
             background: var(--tiklab-gray-600);
         }
 
-        // .repository-setting-menu {
-        //     margin: 0 auto;
-        //     height: 40px;
-        //     line-height: 40px;
-        //     display: flex;
-        //     align-items: center;
-        //     padding-left: 24px;
-        //     border-top: 1px solid #f0f2f5;
-        //     cursor: pointer;
-
-        // }
-
-        // .repository-setting-menu:hover {
-        //     color: var(--tiklab-blue);
-        // }
-
-        // .hidden-menu {
-        //     display: none;
-        // }
-
-        // .icon-action {
-        //     // width: 42px;
-        //     flex-shrink: 0;
-        //     display: flex;
-        //     align-items: center;
-        //     gap: 5px;
-
-        // }
-
         .category-add {
             border-radius: 5px;
             height: 20px;
@@ -287,29 +211,13 @@
             display: none;
         }
 
-        // .repository-survey {
-        //     height: 40px;
-        //     line-height: 40px;
-        //     padding-left: 24px;
-        //     cursor: pointer;
-        //     display: flex;
-        //     align-items: center;
-        //     gap: 8px;
-        // }
 
-        // .repository-survey:hover {
-        //     background-color: #EDF0F5;
-        // }
     }
 }
 
 .repository-notext {
     display: none;
 }
-
-// .repository-icon {
-//     width: 50px;
-// }
 
 .content-add-menu {
     display: flex;
