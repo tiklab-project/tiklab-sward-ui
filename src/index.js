@@ -20,7 +20,7 @@ const Index = observer(() => {
     }
 
     return (
-        <InitInstallProvider bgroup={'arbess'}>
+        <InitInstallProvider bgroup={'sward'}>
             <App
                 routes={routes}
                 allStore={allStore}

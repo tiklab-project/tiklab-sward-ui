@@ -18,7 +18,7 @@ import { getUser } from "tiklab-core-ui";
 import html2canvas from "html2canvas";
 const TemplateEdit = (props) => {
     const templateId = props.match.params.templateId;
-    const { createDocumentTemplate, findDocumentTemplateList, findDocumentTemplate, 
+    const { createDocumentTemplate, findDocumentTemplateList, findDocumentTemplate,
         updateDocumentTemplate, upload, getIconList } = TemplateStore;
     const [editorValue, setEditorValue] = useState("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
 
@@ -96,11 +96,11 @@ const TemplateEdit = (props) => {
         })
         return url;
 	}
-	
+
     /**
      * base64转图片文件方法**
      */
-    
+
     const toImgStyle = (base64Str, fileName)=>{
       var arr = base64Str.split(','),
       mime = arr[0].match(/:(.*?);/)[1], //base64解析出来的图片类型
@@ -116,7 +116,7 @@ const TemplateEdit = (props) => {
       })
     }
 
- 
+
     return (
         <Row className="template-add">
             <Col xl={{ span: 18, offset: 3 }} lg={{ span: 18, offset: 3 }} md={{ span: 20, offset: 2 }}>
@@ -164,11 +164,12 @@ const TemplateEdit = (props) => {
                                     />
                                     <div ref={editRef} id = "template-detail" className="template-detail">
                                       <EditorBigContent
+                                        base_url={upload_url}
                                         value={editorValue}
                                         onChange={setEditorValue}
-                                    />   
+                                    />
                                     </div>
-                                   
+
 
 
                                 </div>

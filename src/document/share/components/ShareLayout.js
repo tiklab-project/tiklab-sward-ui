@@ -15,7 +15,7 @@ import { renderRoutes } from "react-router-config";
 import CommentStore from "../../document/store/CommentStore";
 import ShareStore from '../store/ShareStore';
 import { Provider } from 'mobx-react';
-import logo from "../../../assets/images/logo.png";
+import logo from "../../../assets/images/sward.png";
 const ShareLayout = (props) => {
     const { route } = props;
     const store = {

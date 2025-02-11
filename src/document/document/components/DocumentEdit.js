@@ -138,8 +138,8 @@ const DocumentEdit = (props) => {
 
     /**
      * 判断文档是否为空，为空显示文档模版
-     * @param {文档内容} value 
-     * @returns 
+     * @param {文档内容} value
+     * @returns
      */
     const determineValue = (value) => {
         let isEmpty = true;
@@ -167,7 +167,7 @@ const DocumentEdit = (props) => {
 
     /**
      * 选择模板
-     * @param {模板} item 
+     * @param {模板} item
      */
     const selectTemplate = (item) => {
         /**
@@ -226,8 +226,8 @@ const DocumentEdit = (props) => {
                             onChange={value => updataDesc(value)}
                             relationWorkStore={relationWorkStore}
                             base_url={upload_url}
-                            img_url = {upload_url}
-                            viewImageUrl = "/image"
+                            img_url={upload_url}
+                            viewImageUrl="/image"
                             ticket={ticket}
                             tenant={tenant}
                         >
@@ -248,7 +248,7 @@ const DocumentEdit = (props) => {
                                             <EditorBigContent
                                                 value={value}
                                                 relationWorkStore={relationWorkStore}
-
+                                                base_url={upload_url}
                                             />
                                         </div>
                                         {
@@ -270,7 +270,7 @@ const DocumentEdit = (props) => {
                                                     }
                                                     <div className="template-box" key={0} onClick={() => setTemplateVisible(true)}>
                                                         <img
-                                                            src={Template}
+                                                            src={Template }
                                                             alt=""
                                                             className="template-image"
                                                         />

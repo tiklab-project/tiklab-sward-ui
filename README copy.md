@@ -33,7 +33,7 @@ sward社区主要通过问题、讨论和拉取请求在 GitHub 上进行交流�
 * 什么是 sward？
 * 如何使用 sward？
 * 为什么会出现意想不到的结果呢？
-请在 [tiklab官网](https://community.tiklab.net/blog)开始讨论
+请在 [tiklab官网](https://developer.tiklab.net/blog)开始讨论
 
 但是如果你遇到以下几种情况：
 * 你确定 sward 有一个需要修复的 bug，
