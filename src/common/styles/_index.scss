@@ -4,7 +4,7 @@
 
 
 .ant-modal-close-x {
-    display: flex !important; 
+    display: flex !important;
     justify-content: center;
     align-items: center;
 }
@@ -36,12 +36,14 @@
     border-bottom: 1px solid #f0f0f0;
 }
 .ant-table-tbody>tr>td {
-    border-bottom: 0 !important;
     padding: 8px !important;
     border: 0 !important;
 }
 .ant-table table {
     border-bottom: 1px solid #f0f0f0;
+}
+.ant-table-thead>tr>th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan]):before{
+    content: none !important;
 }
 .ant-input-search .ant-input-group .ant-input-affix-wrapper:not(:last-child) {
     border-top-left-radius: 15px;
@@ -77,7 +79,7 @@
     display: none !important;
 }
 .icon {
-    width: 12px; 
+    width: 12px;
     height: 12px;
     vertical-align: -0.15em;
     fill: currentColor;
