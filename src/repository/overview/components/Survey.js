@@ -9,7 +9,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import { Row, Col, Form, Dropdown, Menu, Empty, Spin } from 'antd';
 import { withRouter } from "react-router";
 import { observer } from "mobx-react";
-import Button from "../../../common/button/button";
+import Button from "../../../common/button/Button";
 import UserIcon from "../../../common/UserIcon/UserIcon";
 import "./Survey.scss";
 import { getUser } from "tiklab-core-ui";
@@ -87,6 +87,9 @@ const Survey = (props) => {
         }
         if (document.documentType === "markdown") {
             props.history.push(`/repository/${document.wikiRepository.id}/doc/markdown/${document.id}`)
+        }
+        if (document.documentType === "file") {
+            props.history.push(`/repository/${document.wikiRepository.id}/doc/file/${document.id}`)
         }
         if (document.type === "category") {
             props.history.push(`/repository/${document.wikiRepository.id}/doc/folder/${document.id}`)
@@ -188,6 +191,12 @@ const Survey = (props) => {
                                                             }
                                                             {
                                                                 item.node.documentType === "document" &&
+                                                                <svg className="document-icon" aria-hidden="true">
+                                                                    <use xlinkHref="#icon-file"></use>
+                                                                </svg>
+                                                            }
+                                                            {
+                                                                item.node.documentType === "file" &&
                                                                 <svg className="document-icon" aria-hidden="true">
                                                                     <use xlinkHref="#icon-file"></use>
                                                                 </svg>

@@ -10,6 +10,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import { Row, Col, Empty } from 'antd';
 import "./ShareCategoryDetail.scss"
 import { observer, inject } from "mobx-react";
+import {getFileIcon} from "../../../common/utils/overall";
 const ShareCategoryDetail = (props) => {
     const { shareStore } = props;
     const { findCategory, findNodeList } = shareStore;
@@ -42,11 +43,21 @@ const ShareCategoryDetail = (props) => {
         if (item.documentType === "document") {
             props.history.push(`/share/${shareId}/doc/${item.id}`)
         }
+        if (item.documentType === "markdown") {
+            props.history.push(`/share/${shareId}/markdown/${item.id}`)
+        }
+        if (item.documentType === "file") {
+            props.history.push(`/share/${shareId}/file/${item.id}`)
+        }
     }
 
     return (
         <Row className="log-detail">
-            <Col lg={{ span: "18", offset: "3" }} xxl={{ span: "18", offset: "3" }}>
+            <Col
+                xs={{ span: 22, offset: 1 }}
+                lg={{ span: 18, offset: 3 }}
+                xxl={{ span: 18, offset: 3 }}
+            >
                 <div className="log-detail-content">
                     {
                         logDetail && <Fragment>
@@ -74,6 +85,12 @@ const ShareCategoryDetail = (props) => {
                                             item.type && item.type === "category" &&
                                             <svg className="list-img" aria-hidden="true">
                                                 <use xlinkHref="#icon-folder"></use>
+                                            </svg>
+                                        }
+                                        {
+                                            item.type && item.type === "document" && item.documentType === "file" &&
+                                            <svg className="list-img" aria-hidden="true">
+                                                <use xlinkHref={`#icon-${getFileIcon(item.name)}`}></use>
                                             </svg>
                                         }
                                         {

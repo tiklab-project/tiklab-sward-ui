@@ -13,7 +13,7 @@ import {getUser} from "tiklab-core-ui"
 const ShareModal = (props) => {
     const origin = location.origin;
     const { shareVisible, setShareVisible,createShare,updateShare, nodeIds, type } = props;
-    
+
     const [value, setValue] = React.useState("publish");
     const [shareLink,setShareLink] = useState()
     const [shareUrl, setShareUrl] = useState()
@@ -39,7 +39,7 @@ const ShareModal = (props) => {
                 if(version === "cloud"){
                     setShareUrl(`${origin}/#/share/${data.data.id}?tenant=${user.tenant}`)
                 }
-                
+
             }
         })
     };
@@ -79,11 +79,11 @@ const ShareModal = (props) => {
             range.selectNodeContents(link);
             selection.removeAllRanges();
             selection.addRange(range);
-        } 
+        }
         document.execCommand("Copy"); // 执行浏览器复制命令
     }
 
-   
+
     return (
         <Modal
             title="分享"
@@ -93,28 +93,30 @@ const ShareModal = (props) => {
             destroyOnClose={true}
             cancelText = "取消"
             okText = "确认"
-        >   
+        >
             <Radio.Group onChange={onChange} value={value}>
                 <Radio value="publish">公开链接</Radio>
                 <Radio value= "private">私密链接</Radio>
             </Radio.Group>
             {
-                value === "public" ? <div className="share-link link-box" ref={link} id="link">
-                    <div className="share-text">链接地址:</div><div className="share-content">{shareUrl}</div>
-                </div> : <div ref={link}  className = "link-box">
-                    <div className="share-link" >
-                        <div className="share-text">链接地址：</div>
-                        <div className="share-content" id="link">{shareUrl}</div>
+                value === "public" ?
+                    <div className="share-link link-box" ref={link} id="link">
+                        <div className="share-text">链接地址:</div><div className="share-content">{shareUrl}</div>
+                    </div> :
+                    <div ref={link}  className = "link-box">
+                        <div className="share-link" >
+                            <div className="share-text">链接地址：</div>
+                            <div className="share-content" id="link">{shareUrl}</div>
+                        </div>
+                        {
+                            authCode && <div className="share-link"><div className="share-text">密码：</div><div className="share-content">{authCode}</div></div>
+                        }
                     </div>
-                    {
-                        authCode && <div className="share-link"><div className="share-text">密码：</div><div className="share-content">{authCode}</div></div>
-                    }
-                </div>
             }
             <div style={{textAlign: "right"}}>
                 <Button onClick={()=>copy()} >复制</Button>
             </div>
-            
+
         </Modal>
     )
 }

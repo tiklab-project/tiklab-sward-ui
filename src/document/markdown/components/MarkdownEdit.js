@@ -10,7 +10,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { withRouter } from "react-router-dom";
 import "./MarkdownEdit.scss";
 import { Markdown } from "tiklab-markdown-ui";
-import Button from "../../../common/button/button";
+import Button from "../../../common/button/Button";
 import MarkdownStore from "../store/MarkdownStore";
 import "tiklab-markdown-ui/es/tiklab-markdown.css";
 import RepositoryDetailStore from "../../../repository/common/store/RepositoryDetailStore";
@@ -71,8 +71,8 @@ const MarkdownEdit = (props) => {
 
     /**
      * 获取文档中的文本， 文本用于搜索
-     * @param {*} nodes 
-     * @returns 
+     * @param {*} nodes
+     * @returns
      */
     const serialize = nodes => {
         const text = nodes.map(n => Node.string(n)).join('\n');
@@ -81,8 +81,8 @@ const MarkdownEdit = (props) => {
 
     /**
      * 保存文档
-     * @param {*} value 
-     * @param {*} type 
+     * @param {*} value
+     * @param {*} type
      */
     const saveDocument = (value, type) => {
         setValue(value)
@@ -114,7 +114,7 @@ const MarkdownEdit = (props) => {
 
     /**
      * 修改标题
-     * @param {} value 
+     * @param {} value
      */
     const changeTitle = (value) => {
         // setTitleValue(value.target.value)
@@ -143,7 +143,7 @@ const MarkdownEdit = (props) => {
 
     /**
      * 敲击回车保存标题
-     * @param {按键} event 
+     * @param {按键} event
      */
     const keyDown = (event) => {
 
@@ -166,14 +166,14 @@ const MarkdownEdit = (props) => {
         if (path === "doc") {
             props.history.push(`/repository/${repositoryId}/doc/markdown/${documentId}`)
         }
-        
+
         // 在收藏页面
         if (path === "collect") {
             props.history.push(`/repository/${repositoryId}/collect/markdown/${documentId}`)
         }
     }
 
-    
+
     return <>
     {
         docInfo?.recycle === "0" ? <div className="document-markdown-edit">
@@ -211,7 +211,7 @@ const MarkdownEdit = (props) => {
                <Empty description="文档已被移动到回收站，请去回收站恢复再查看" />
           </div>
     }
-      
+
     </>
 
 }

@@ -13,6 +13,7 @@ import { observer, inject } from "mobx-react";
 import { Layout, Form } from 'antd';
 import { useTranslation } from 'react-i18next';
 import "./ShareAside.scss";
+import {getFileIcon} from "../../../common/utils/overall";
 const { Sider } = Layout;
 const ShareAside = (props) => {
     // 解析props
@@ -59,8 +60,10 @@ const ShareAside = (props) => {
                     if (data.code === 0) {
                         setRepositoryCatalogueList(data.data)
                         const item = data.data[0]
-                        setUrl(item)
-                        setSelectKey(item.id)
+                        if(item){
+                            setUrl(item)
+                            setSelectKey(item.id)
+                        }
                     }
                 })
             }
@@ -80,6 +83,9 @@ const ShareAside = (props) => {
             if (item.documentType === "markdown") {
                 props.history.push(`/share/${shareLink}/markdown/${item.id}`)
             }
+            if (item.documentType === "file") {
+                props.history.push(`/share/${shareLink}/file/${item.id}`)
+            }
         }
         if (version === "cloud") {
             if (item.type === "category") {
@@ -90,6 +96,9 @@ const ShareAside = (props) => {
             }
             if (item.documentType === "markdown") {
                 props.history.push(`/share/${shareLink}/markdown/${item.id}?tenant=${tenant}`)
+            }
+            if (item.documentType === "file") {
+                props.history.push(`/share/${shareLink}/file/${item.id}?tenant=${tenant}`)
             }
         }
 
@@ -129,7 +138,7 @@ const ShareAside = (props) => {
         }
     }
 
-    
+
     const logTree = (fItems, item, levels, faid, index) => {
         let newLevels = 0;
         return <div className={`${isExpandedTree(faid) ? "" : 'repository-menu-submenu-hidden'}`}
@@ -144,13 +153,16 @@ const ShareAside = (props) => {
                 <div style={{ paddingLeft: levels * 21 + 24 }} className="repository-menu-submenu-left">
                     {
                         (item.children && item.children.length > 0) || (item.documents && item.documents.length > 0) ?
-                            isExpandedTree(item.id) ? <svg className="img-icon" aria-hidden="true" onClick={() => setOpenOrClose(item.id)}>
+                            isExpandedTree(item.id) ?
+                            <svg className="img-icon" aria-hidden="true" onClick={() => setOpenOrClose(item.id)}>
                                 <use xlinkHref="#icon-down" ></use>
-                            </svg> :
-                                <svg className="img-icon" aria-hidden="true" onClick={() => setOpenOrClose(item.id)}>
-                                    <use xlinkHref="#icon-right" ></use>
-                                </svg> : <div className="img-icon" aria-hidden="true">
-                               
+                            </svg>
+                            :
+                            <svg className="img-icon" aria-hidden="true" onClick={() => setOpenOrClose(item.id)}>
+                                <use xlinkHref="#icon-right" ></use>
+                            </svg>
+                            :
+                            <div className="img-icon" aria-hidden="true">
                             </div>
                     }
                     <svg className="img-icon" aria-hidden="true">
@@ -189,6 +201,11 @@ const ShareAside = (props) => {
                     <div className="img-icon" aria-hidden="true">
                     </div>
                     {
+                        item.documentType === "file" && <svg className="img-icon" aria-hidden="true">
+                            <use xlinkHref={`#icon-${getFileIcon(item.name)}`}></use>
+                        </svg>
+                    }
+                    {
                         item.documentType === "document" && <svg className="img-icon" aria-hidden="true">
                             <use xlinkHref="#icon-file"></use>
                         </svg>
@@ -203,7 +220,7 @@ const ShareAside = (props) => {
                         id={"file-" + item.id}
                         title = {item.name}
                     >
-                        {item.name} 
+                        {item.name}
                     </span>
                 </div>
             </div>

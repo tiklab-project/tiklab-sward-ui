@@ -22,6 +22,9 @@ const DynamicListItem = (props) => {
         if (documentType === "markdown") {
             props.history.push(`/repository/${repositoryId}/doc/markdown/${documentId}`)
         }
+        if (documentType === "file") {
+            props.history.push(`/repository/${repositoryId}/doc/file/${documentId}`)
+        }
     }
     const setDom = () => {
         let dom = null;
@@ -53,7 +56,7 @@ const DynamicListItem = (props) => {
                                 </div>
                                 ——— */}
                                 <div
-                                    className="dynamic-document-newValue" 
+                                    className="dynamic-document-newValue"
                                     onClick={() => goDynamicDetail()}
                                 >
                                     {newValue}

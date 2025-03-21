@@ -76,6 +76,9 @@ const Home = (props) => {
         if (item.documentType === "markdown") {
             props.history.push(`/repository/${item.wikiRepository.id}/doc/markdown/${item.id}`)
         }
+        if (item.documentType === "file") {
+            props.history.push(`/repository/${item.wikiRepository.id}/doc/file/${item.id}`)
+        }
         sessionStorage.setItem("menuKey", "repository")
 
     }
@@ -135,6 +138,11 @@ const Home = (props) => {
                                                     <use xlinkHref="#icon-file"></use>
                                                 </svg> */}
                                                 {
+                                                    item.node.documentType === "file" && <svg className="document-icon" aria-hidden="true">
+                                                        <use xlinkHref="#icon-file"></use>
+                                                    </svg>
+                                                }
+                                                {
                                                     item.node.documentType === "document" && <svg className="document-icon" aria-hidden="true">
                                                         <use xlinkHref="#icon-file"></use>
                                                     </svg>
@@ -167,7 +175,7 @@ const Home = (props) => {
                                         !recentDocLoading && <Empty description="暂时没有数据~" />
                                     }
                                     </>
-                                    
+
                             }
                         </Spin>
 

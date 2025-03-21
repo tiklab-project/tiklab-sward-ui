@@ -12,7 +12,7 @@ import { withRouter } from "react-router-dom";
 import { getUser } from "tiklab-core-ui";
 import Breadcumb from "../../../common/breadcrumb/Breadcrumb";
 import InputSearch from "../../../common/input/InputSearch";
-import Button from "../../../common/button/button";
+import Button from "../../../common/button/Button";
 import "./RepositoryList.scss";
 import { useHistory } from 'react-router-dom';
 import RepositoryStore from "../store/RepositoryStore";

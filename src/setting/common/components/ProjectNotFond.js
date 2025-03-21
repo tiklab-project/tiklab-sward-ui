@@ -6,7 +6,7 @@
  * @Description: 页面找不到
  */
 import React from "react";
-import {NotFound} from "tiklab-privilege-ui";
+import {NotFound} from "tiklab-eam-ui";
 
 
 const NotFoundContent = props =>{

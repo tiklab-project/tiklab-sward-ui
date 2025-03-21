@@ -24,6 +24,7 @@ import AddDropDown from '../../common/components/AddDropDown';
 import { DownOutlined } from '@ant-design/icons';
 import ArchivedFree from '../../../common/components/ArchivedFree';
 import SearchModal from '../../common/components/SearchModal';
+import {getFileExtensionWithDot, getFileIcon, removeFileExtension} from "../../../common/utils/overall";
 const { Sider } = Layout;
 
 const RepositoryDocList = (props) => {
@@ -113,7 +114,7 @@ const RepositoryDocList = (props) => {
                 setOpenClickCategory(item.id)
             }
             localStorage.setItem("categoryId", item.id);
-            
+
             props.history.push(`/repository/${repositoryId}/doc/folder/${item.id}`)
         }
         if (item.documentType === "document") {
@@ -121,6 +122,9 @@ const RepositoryDocList = (props) => {
         }
         if (item.documentType === "markdown") {
             props.history.push(`/repository/${repositoryId}/doc/markdown/${item.id}`)
+        }
+        if (item.documentType === "file") {
+            props.history.push(`/repository/${repositoryId}/doc/file/${item.id}`)
         }
     }
     const findCategoryChildren = (id, type) => {
@@ -252,13 +256,16 @@ const RepositoryDocList = (props) => {
                         if (node.documentType === "markdown") {
                             props.history.push(`/repository/${repositoryId}/doc/markdown/${node.id}`)
                         }
+                        if (node.documentType === "file") {
+                            props.history.push(`/repository/${repositoryId}/doc/file/${node.id}`)
+                        }
                     } else {
                         props.history.push(`/repository/${repositoryId}/overview`)
                     }
                 }else {
                     message.error("删除失败")
                 }
-               
+
             })
         }
         if (type === "document") {
@@ -276,13 +283,16 @@ const RepositoryDocList = (props) => {
                         if (node.documentType === "markdown") {
                             props.history.push(`/repository/${repositoryId}/doc/markdown/${node.id}`)
                         }
+                        if (node.documentType === "file") {
+                            props.history.push(`/repository/${repositoryId}/doc/file/${node.id}`)
+                        }
                     } else {
                         props.history.push(`/repository/${repositoryId}/overview`)
                     }
                 }else {
                     message.error("删除失败")
                 }
-               
+
             })
         }
     }
@@ -299,13 +309,14 @@ const RepositoryDocList = (props) => {
         return;
     }, [inputRef.current])
 
-    const reName = (value, reNameId, type) => {
-        const name = value.target.innerText;
+    const reName = (value, reNameId, type, initName) => {
+        const fileExtensionWithDot = initName ? getFileExtensionWithDot(initName) : '';
+        const name = value.target.innerText + fileExtensionWithDot;
         const params = {
             id: reNameId,
             node: {
                 id: reNameId,
-                name: name,
+                name: name ,
             }
         }
         if (type === "category") {
@@ -340,11 +351,11 @@ const RepositoryDocList = (props) => {
         setIsRename(null)
     }
 
-    const enterKeyRename = (value, id, type) => {
+    const enterKeyRename = (value, id, type, initName) => {
         if (value.keyCode === 13) {
             event.stopPropagation();
             event.preventDefault()
-            reName(value, id, type)
+            reName(value, id, type, initName)
         }
     }
 
@@ -459,6 +470,11 @@ const RepositoryDocList = (props) => {
             onMouseLeave={(event) => { event.stopPropagation(), setIsHover(null) }}
         >
             {
+                item.documentType === "file" && <svg className="icon-15" aria-hidden="true">
+                    <use xlinkHref={`#icon-${getFileIcon(item.name)}`}></use>
+                </svg>
+            }
+            {
                 item.documentType === "document" && <svg className="icon-15" aria-hidden="true">
                     <use xlinkHref="#icon-file"></use>
                 </svg>
@@ -468,19 +484,25 @@ const RepositoryDocList = (props) => {
                     <use xlinkHref="#icon-minmap"></use>
                 </svg>
             }
-            <span
+            <div
                 className={`${isRename === item.id ? "repository-input" : "repository-view"}`}
                 contentEditable={isRename === item.id ? true : false}
                 suppressContentEditableWarning
-                onBlur={(value) => reName(value, item.id, item.type)}
-                onKeyDownCapture={(value) => enterKeyRename(value, item.id, item.type)}
-
+                onBlur={(value) => {
+                    reName(value, item.id, item.type, item.documentType === "file" ? item.name : null)
+                }}
+                onKeyDownCapture={(value) => {
+                    enterKeyRename(value, item.id, item.type, item.documentType === "file" ? item.name : null)
+                }}
                 ref={isRename === item.id ? inputRef : null}
                 id={"file-" + item.id}
                 title={item.name}
             >
-                {item.name}
-            </span>
+                {
+                    (item.documentType === "file" && isRename === item.id) ?
+                        removeFileExtension(item.name) : item.name
+                }
+            </div>
             <div className={`${isHover === item.id ? "icon-show" : "icon-hidden"}`}>
                 <Dropdown overlay={() => editMenu(item, index)} placement="bottomLeft">
                     <div className="category-add">
@@ -600,7 +622,7 @@ const RepositoryDocList = (props) => {
                                     <>
                                     {!loading && <Empty description="暂无文档" />}
                                     </>
-                                    
+
                             }
 
                         </div>

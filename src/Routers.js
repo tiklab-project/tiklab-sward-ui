@@ -44,6 +44,8 @@ const DocumentExamine = AsyncComponent(() => import("./document/document/compone
 const MarkdownDocumentEdit = AsyncComponent(() => import("./document/markdown/components/MarkdownEdit.js"))
 const MarkdownDocumentView = AsyncComponent(() => import("./document/markdown/components/MarkdownView.js"))
 
+const FileView = AsyncComponent(()=>import("./document/file/components/FileView"))
+
 const RepositorySet = AsyncComponent(() => import("./repository/setting/common/components/RepositorySet.js"))
 const RepositoryDomainRole = AsyncComponent(() => import('./repository/user/RepositoryDomainRole.js'))
 const RepositoryDomainUser = AsyncComponent(() => import('./repository/user/RepositoryDomainUser.js'))
@@ -59,6 +61,8 @@ const SharePage = AsyncComponent(()=> import('./document/share/components/ShareL
 const ShareCategory = AsyncComponent(() => import('./document/share/components/PassWord.js'))
 const ShareCategoryDetail = AsyncComponent(() => import('./document/share/components/ShareCategoryDetail.js'))
 const ShareMarkdown = AsyncComponent(() => import("./document/share/components/ShareMarkdown.js"))
+const ShareFile = AsyncComponent(() => import("./document/share/components/ShareFile.js"))
+
 // 分享文档页面
 const PassWord = AsyncComponent(() => import('./document/share/components/PassWord.js'))
 
@@ -145,18 +149,22 @@ const Routes = [
         path: "/share/:shareId",
         component: SharePage,
         routes: [
-              {
-                    path: "/share/:shareId/doc/:id",
-                    component: ShareDocument,
-                },
-                {
-                    path: "/share/:shareId/category/:id",
-                    component: ShareCategoryDetail,
-                },
-                {
-                    path: "/share/:shareId/markdown/:id",
-                    component: ShareMarkdown,
-                },
+            {
+                path: "/share/:shareId/doc/:id",
+                component: ShareDocument,
+            },
+            {
+                path: "/share/:shareId/category/:id",
+                component: ShareCategoryDetail,
+            },
+            {
+                path: "/share/:shareId/markdown/:id",
+                component: ShareMarkdown,
+            },
+            {
+                path: "/share/:shareId/file/:id",
+                component: ShareFile,
+            },
 
         ]
     },
@@ -236,6 +244,10 @@ const Routes = [
                     {
                         path: "/collect/markdown/:id/edit",
                         component: MarkdownDocumentEdit
+                    },
+                    {
+                        path: "/collect/file/:id",
+                        component: FileView
                     },
                 ]
             },
@@ -478,12 +490,15 @@ const Routes = [
                                 component: MarkdownDocumentView,
                                 exact: true
                             },
-
                             {
                                 path: "/repository/:repositoryId/doc/markdown/:id/edit",
                                 component: MarkdownDocumentEdit
                             },
-
+                            {
+                                path: "/repository/:repositoryId/doc/file/:id",
+                                component: FileView,
+                                exact: true
+                            },
                             {
                                 path: "/repository/:repositoryId/doc/folder/:id",
                                 component: LogDetail
@@ -513,6 +528,10 @@ const Routes = [
                             {
                                 path: "/repository/:repositoryId/collect/markdown/:id/edit",
                                 component: MarkdownDocumentEdit
+                            },
+                            {
+                                path: "/repository/:repositoryId/collect/file/:id",
+                                component: FileView
                             },
                         ]
                     },

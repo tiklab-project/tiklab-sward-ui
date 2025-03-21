@@ -13,7 +13,7 @@ import { withRouter } from "react-router-dom";
 import "./documentEdit.scss";
 import { EditorBigContent, EditorBig } from "tiklab-slate-ui";
 import "tiklab-slate-ui/es/tiklab-slate.css";
-import Button from "../../../common/button/button";
+import Button from "../../../common/button/Button";
 import DocumentStore from "../store/DocumentStore";
 import RepositoryDetailStore from "../../../repository/common/store/RepositoryDetailStore";
 
@@ -233,7 +233,12 @@ const DocumentEdit = (props) => {
                         >
                             <>
                                 <Row className="document-examine-content">
-                                    <Col xl={{ span: 18, offset: 3 }} lg={{ span: 18, offset: 3 }} md={{ span: 20, offset: 2 }}>
+                                    <Col
+                                        xs={{ span: 24}}
+                                        md={{ span: 20, offset: 2 }}
+                                        xl={{ span: 18, offset: 3 }}
+                                        lg={{ span: 18, offset: 3 }}
+                                    >
                                         <div className="document-title">
                                             <Input
                                                 className="document-title-input"

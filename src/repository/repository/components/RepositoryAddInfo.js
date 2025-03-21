@@ -8,7 +8,7 @@
 import React, { Fragment, useEffect } from "react";
 import { Form, Input, message, Upload } from 'antd';
 import "./repositoryAddInfo.scss";
-import Button from "../../../common/button/button";
+import Button from "../../../common/button/Button";
 import { useState } from "react";
 import { withRouter } from "react-router";
 import { inject, observer } from "mobx-react";
@@ -199,7 +199,7 @@ const RepositoryAddInfo = (props) => {
                                     return <div key={item.key} className={`repository-icon  ${item.iconUrl === iconUrl ? "icon-select" : null}`} onClick={() => { setIconUrl(item.iconUrl) }}>
                                         <ImgComponent
                                             src={item.iconUrl}
-                                            alt="" className="img-icon" 
+                                            alt="" className="img-icon"
                                         />
                                     </div>
                                 })

@@ -20,13 +20,16 @@ const SearchModal = (props) => {
     const [searchDocumentList, setSearchDocumentList] = useState([])
     const [isSearch, setIsSeach] = useState(false)
     const userId = getUser().userId;
-    
+
     const toWorkItem = (item) => {
         if (item.documentType === "document") {
             props.history.push(`/repository/${repositoryId}/doc/rich/${item.id}`)
         }
         if (item.documentType === "markdown") {
             props.history.push(`/repository/${repositoryId}/doc/markdown/${item.id}`)
+        }
+        if (item.documentType === "file") {
+            props.history.push(`/repository/${repositoryId}/doc/file/${item.id}`)
         }
         setShowSearchModal(false)
 
@@ -148,7 +151,7 @@ const SearchModal = (props) => {
                 <div className="search-result-title">搜索结果</div>
                 {
                     searchDocumentList.length > 0 ? <>
-                    
+
                         {
                             searchDocumentList.map((node) => {
                                 return <div className="item-box" key={node.id}>
@@ -171,7 +174,7 @@ const SearchModal = (props) => {
                 }
             </div>
             }
-            
+
         </Modal>
     )
 }

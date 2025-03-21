@@ -10,7 +10,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { Input, Empty, message } from "antd";
-import Button from "../../../common/button/button";
+import Button from "../../../common/button/Button";
 import "./comment.scss"
 import { getUser } from "tiklab-core-ui";
 import moment from "moment";
@@ -64,7 +64,7 @@ const Comment = (props) => {
         if (!commonBox.current.contains(e.target) && commonBox.current !== e.target) {
             setShowComment(false)
         }
-    }   
+    }
 
     /**
      * 发布评论
@@ -100,9 +100,9 @@ const Comment = (props) => {
 
     /**
      * 回复评论
-     * @param {被回复的评论的id} id 
-     * @param {*} index 
-     * @param {*} aimAtUser 
+     * @param {被回复的评论的id} id
+     * @param {*} index
+     * @param {*} aimAtUser
      */
     const announceReply = (id, index, aimAtUser) => {
         if (commentSecondContent) {
@@ -136,10 +136,10 @@ const Comment = (props) => {
     const [childrenReply, setChildrenReply] = useState()
     /**
      * 第三层回复
-     * @param {*} firstOneCommentId 
-     * @param {*} parentCommentId 
-     * @param {*} index 
-     * @param {*} aimAtUser 
+     * @param {*} firstOneCommentId
+     * @param {*} parentCommentId
+     * @param {*} index
+     * @param {*} aimAtUser
      */
     const announceThirdReply = (firstOneCommentId, parentCommentId, index, aimAtUser) => {
         if (commentThirdContent) {

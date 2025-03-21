@@ -98,7 +98,7 @@ const Search = (props) => {
     }, 500)
 
 
-    
+
     const toRepository = (repository) => {
         props.history.push(`/repository/${repository.id}/overview`)
         setSearchModal(false)
@@ -111,6 +111,9 @@ const Search = (props) => {
         }
         if (node.documentType === "markdown") {
             props.history.push(`/repository/${node.wikiRepository.id}/doc/markdown/${node.id}`)
+        }
+        if (node.documentType === "file") {
+            props.history.push(`/repository/${node.wikiRepository.id}/doc/file/${node.id}`)
         }
         // props.history.push(`/repository/${repository.id}/doc/rich/${id}`)
         setSearchModal(false)

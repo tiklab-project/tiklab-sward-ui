@@ -18,7 +18,7 @@ import Comment from "./Comment";
 import CommentShare from "../store/CommentStore";
 import DocumentStore from "../store/DocumentStore";
 import RepositoryDetailStore from "../../../repository/common/store/RepositoryDetailStore";
-import Button from "../../../common/button/button";
+import Button from "../../../common/button/Button";
 
 const DocumentExamine = (props) => {
     const { relationWorkStore } = props;
@@ -205,16 +205,21 @@ const DocumentExamine = (props) => {
                                 value && <>
                                     <div className="document-examine-content">
                                         <Row className="document-examine-row">
-                                            <Col xl={{ span: 18, offset: 3 }} lg={{ span: 18, offset: 3 }} md={{ span: 20, offset: 2 }}>
+                                            <Col
+                                                xs={{ span: 24}}
+                                                md={{ span: 20, offset: 2 }}
+                                                xl={{ span: 18, offset: 3 }}
+                                                lg={{ span: 18, offset: 3 }}
+                                            >
                                                 <div className="document-previeweditor">
-                                                    <PreviewEditor 
-                                                        value={value} 
-                                                        relationWorkStore={relationWorkStore} 
-                                                        base_url={upload_url} 
+                                                    <PreviewEditor
+                                                        value={value}
+                                                        relationWorkStore={relationWorkStore}
+                                                        base_url={upload_url}
                                                         img_url = {upload_url}
                                                         viewImageUrl = "/image"
-                                                        tenant={tenant} 
-                                                        
+                                                        tenant={tenant}
+
                                                     />
                                                 </div>
                                             </Col>

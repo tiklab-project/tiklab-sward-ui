@@ -81,7 +81,9 @@ const CategoryDetail = (props) => {
         }
         if (item.documentType === "markdown") {
             props.history.push(`/repository/${repositoryId}/doc/markdown/${item.id}`)
-
+        }
+        if (item.documentType === "file") {
+            props.history.push(`/repository/${repositoryId}/doc/file/${item.id}`)
         }
     }
 
@@ -128,6 +130,12 @@ const CategoryDetail = (props) => {
                                             }
                                             {
                                                 item.type && item.type === "document" && item.documentType === "document" &&
+                                                <svg className="list-img" aria-hidden="true">
+                                                    <use xlinkHref="#icon-file"></use>
+                                                </svg>
+                                            }
+                                            {
+                                                item.type && item.type === "document" && item.documentType === "file" &&
                                                 <svg className="list-img" aria-hidden="true">
                                                     <use xlinkHref="#icon-file"></use>
                                                 </svg>

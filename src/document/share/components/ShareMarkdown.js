@@ -32,15 +32,15 @@ const ShareMarkdown = (props) => {
     const { shareStore } = props;
     const { documentView, commentView } = shareStore;
     const [showComment, setShowComment] = useState(false);
-   
-    
+
+
     const [value, setValue] = useState(initValue)
     const [docInfo, setDocInfo] = useState({ name: "", likenumInt: "", commentNumber: "" })
     useEffect(() => {
         // 获取评论
         commentView({ documentId: props.match.params.id }).then(data => {
             console.log(data)
-            
+
         })
         // 获取文档详情
         documentView({ documentId: props.match.params.id }).then((data) => {
@@ -58,7 +58,7 @@ const ShareMarkdown = (props) => {
         return
     }, [props.match.params.id])
 
-    
+
     return (
         <div className="markdown-share-examine">
             <div className="examine-title">
@@ -66,11 +66,15 @@ const ShareMarkdown = (props) => {
             </div>
             <div className="examine-content">
                 <Row style={{ flex: 1, overflow: "auto" }}>
-                    <Col className="repositorydetail-content-col" xl={{ span: 18, offset: 3 }} lg={{ span: 20, offset: 2 }}>
+                    <Col
+                        className="repositorydetail-content-col"
+                        xs={{ span: 22, offset: 1 }}
+                        xl={{ span: 18, offset: 3 }}
+                        lg={{ span: 20, offset: 2 }}
+                    >
                         <div style={{paddingTop: "10px"}}>
                             <MarkdownView value={value} base_url = {upload_url} />
                         </div>
-
                     </Col>
                 </Row>
                 {

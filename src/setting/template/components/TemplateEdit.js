@@ -11,7 +11,7 @@ import { observer, inject } from "mobx-react";
 import { Input, Row, Col, Modal } from 'antd';
 import { EditorBig, EditorBigContent } from "tiklab-slate-ui";
 import "tiklab-slate-ui/es/tiklab-slate.css";
-import Button from "../../../common/button/button";
+import Button from "../../../common/button/Button";
 import TemplateStore from "../store/TemplateStore";
 import "./templateEdit.scss"
 import { getUser } from "tiklab-core-ui";
@@ -110,7 +110,7 @@ const TemplateEdit = (props) => {
       while (len--) {
           u8arr[len] = bstr.charCodeAt(len)
       };
-      // 创建新的 File 对象实例[utf-8内容，文件名称或者路径，[可选参数，type：文件中的内容mime类型]]
+      // 创建新的 FileView 对象实例[utf-8内容，文件名称或者路径，[可选参数，type：文件中的内容mime类型]]
       return new File([u8arr], fileName, {
           type: mime
       })

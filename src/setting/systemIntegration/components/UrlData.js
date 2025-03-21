@@ -5,7 +5,7 @@ import "./UrlData.scss";
 import { Provider, observer } from "mobx-react";
 import UrlAddData from "./UrlAddData";
 import UrlDataStore from "../store/UrlDataStore";
-import Button from "../../../common/button/button";
+import Button from "../../../common/button/Button";
 const UrlData = () => {
     const store = {
         urlDataStore: UrlDataStore

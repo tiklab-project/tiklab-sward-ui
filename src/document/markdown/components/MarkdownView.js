@@ -9,7 +9,7 @@
 import React, { useEffect, useState } from "react";
 import { Provider, inject, observer } from "mobx-react";
 import { Row, Col, Dropdown, message, Spin, Empty } from 'antd';
-import Button from "../../../common/button/button";
+import Button from "../../../common/button/Button";
 import { MarkdownView } from "tiklab-markdown-ui";
 import "tiklab-markdown-ui/es/tiklab-markdown.css";
 import "./markdownView.scss"
@@ -110,7 +110,7 @@ const DocumentExamine = (props) => {
 
 
     }
-    
+
     /**
      * 收藏文档
      */
@@ -195,7 +195,12 @@ const DocumentExamine = (props) => {
                             {
                                 value ? <div className="document-examine-content">
                                     <Row className="document-examine-row">
-                                        <Col xl={{ span: 18, offset: 3 }} lg={{ span: 18, offset: 3 }} md={{ span: 20, offset: 2 }}>
+                                        <Col
+                                            xs={{ span: 24}}
+                                            md={{ span: 20, offset: 2 }}
+                                            xl={{ span: 18, offset: 3 }}
+                                            lg={{ span: 18, offset: 3 }}
+                                        >
                                             <div className="document-previeweditor">
                                                 <MarkdownView value={value} base_url={upload_url} tenant={tenant} />
                                             </div>

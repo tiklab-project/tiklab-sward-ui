@@ -13,6 +13,7 @@ import { Col, Empty, Layout, Row } from "antd";
 import "./CollectAside.scss"
 import InputSearch from "../../../common/input/InputSearch";
 import { useDebounce } from "../../../common/utils/debounce";
+import {getFileIcon} from "../../../common/utils/overall";
 const { Sider } = Layout;
 const CollectAside = (props) => {
     const { focusDocumentList, selectKey, setSelectKey, findList } = props;
@@ -20,7 +21,7 @@ const CollectAside = (props) => {
 
     /**
      * 查看文档详情
-     * @param {文档信息} item 
+     * @param {文档信息} item
      */
     const goFocusDocumentDetail = item => {
         if (item.documentType === "document") {
@@ -28,6 +29,9 @@ const CollectAside = (props) => {
         }
         if (item.documentType === "markdown") {
             props.history.push(`/repository/${repositoryId}/collect/markdown/${item.id}`)
+        }
+        if (item.documentType === "file") {
+            props.history.push(`/repository/${repositoryId}/collect/file/${item.id}`)
         }
         setSelectKey(item.id)
     }
@@ -58,6 +62,11 @@ const CollectAside = (props) => {
                                 className={`document-list-item ${selectKey === item.node.id ? "document-list-select" : ""}`} key={item.id} >
                                 <div className='document-item-left' style={{ flex: 1 }}>
                                     <div>
+                                        {
+                                            item.node.documentType === "file" &&<svg className="icon-24" aria-hidden="true">
+                                                <use xlinkHref={`#icon-${getFileIcon(item.node.name)}`}></use>
+                                            </svg>
+                                        }
                                         {
                                             item.node.documentType === "document" && <svg className="icon-24" aria-hidden="true">
                                                 <use xlinkHref="#icon-file"></use>
