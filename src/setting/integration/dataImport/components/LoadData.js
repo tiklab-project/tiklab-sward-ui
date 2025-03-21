@@ -1,5 +1,5 @@
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-10-13 16:54:17
@@ -10,7 +10,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Upload, message, Button, Row, Col, Progress } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import "./LoadData.scss";
-import Breadcumb from "../../../common/breadcrumb/Breadcrumb";
+import Breadcumb from "../../../../common/breadcrumb/Breadcrumb";
 import { getUser } from 'tiklab-core-ui';
 import { observer } from "mobx-react";
 import UrlDataStore from "../store/UrlDataStore";
@@ -36,13 +36,13 @@ const LoadData = (props) => {
                 if (res.data.total && res.data.currentNum) {
                     const rr = res.data.currentNum * 100 / res.data.total;
                     setPercent(rr);
-                    
+
                 }
                 if (res.data.status === 1) {
                     clearInterval(timer);
                     setLoading(false)
                     message.success("导入成功")
-                } 
+                }
                 if(res.data.status === 2){
                     clearInterval(timer);
                     setLoading(false)
@@ -74,9 +74,9 @@ const LoadData = (props) => {
                 setTimerS(timer)
             }
             if (info.file.status === "done") {
-                
+
                 setTimerS(null)
-               
+
             }
 
         },

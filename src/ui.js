@@ -7,7 +7,7 @@
  * @LastEditTime: 2024-12-31 15:51:12
  */
 
-import wikiRoutes from "./Routers";
+import wikiRoutes from "./routers";
 import {store} from "./stores";
 import AsyncComponent from './common/lazy/SyncComponent.js'
 import App from "./app";
@@ -21,6 +21,7 @@ import Logo from "./home/home/components/Logo";
 import RepositoryDoc from "./repository/document/components/RepositoryDoc";
 import SettingHomeStore from "./setting/home/store/SettingHomeStore";
 import SettingHome from "./setting/home/components/SettingHome";
+import SettingAside from "./setting/common/components/SetAside";
 
 export {
     AsyncComponent,
@@ -36,5 +37,6 @@ export {
     Logo,
     RepositoryDoc,
     SettingHomeStore,
-    SettingHome
+    SettingHome,
+    SettingAside
 }

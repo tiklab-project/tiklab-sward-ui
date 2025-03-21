@@ -37,7 +37,7 @@ import ArchivedFree from "../../../common/components/ArchivedFree";
 
 const SettingHome = props => {
     const {cloudVersion, setBackupVisible} = props;
-    const { findOrgaNum, findlogpage, selectKey, setSelectKey, setExpandedTree, expandedTree } = SettingHomeStore;
+    const { findOrgaNum, findlogpage, setExpandedTree, expandedTree } = SettingHomeStore;
     const { findUseLicence } = versionStore;
     const versionInfo = getVersionInfo();
     const [archivedFreeVisable, setArchivedFreeVisable] = useState(false);
@@ -68,12 +68,10 @@ const SettingHome = props => {
             }else {
                 if (versionInfo.expired === false) {
                     props.history.push(id)
-                    setSelectKey(id)
                     setOpenOrClose(data.parentUrl)
                 } else {
                     if (!iseEnhance) {
                         props.history.push(id)
-                        setSelectKey(id)
                         setOpenOrClose(data.parentUrl)
                     } else {
                         if(id === "/setting/backup"){
@@ -93,11 +91,9 @@ const SettingHome = props => {
             } else {
                 if (versionInfo.expired === false) {
                     props.history.push(id)
-                    setSelectKey(id)
                 } else {
                     if (!iseEnhance) {
                         props.history.push(id)
-                        setSelectKey(id)
                     } else {
                         setArchivedFreeVisable(true)
                     }
@@ -282,7 +278,7 @@ const SettingHome = props => {
                                                 <div className='home-user'>
                                                     {
                                                         item.children.map(childrenItem => {
-                                                            return <div className='home-user-item' onClick={() => select(childrenItem)}>
+                                                            return <div className='home-user-item' onClick={() => select(childrenItem)} key={childrenItem.id}>
                                                                 <div className='home-icon'>
                                                                     {childrenItem.icon}
                                                                 </div>
@@ -347,7 +343,7 @@ const SettingHome = props => {
                                                     <div className='home-user'>
                                                         {
                                                             item.children.map(childrenItem => {
-                                                                return <div className='home-user-item' onClick={() => select(childrenItem)}>
+                                                                return <div className='home-user-item' onClick={() => select(childrenItem)} key={childrenItem.id}>
                                                                     <div className='home-icon'>
                                                                         {childrenItem.icon}
                                                                     </div>

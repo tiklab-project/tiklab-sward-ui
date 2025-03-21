@@ -10,7 +10,6 @@ import React, { useEffect, useState } from "react";
 import "./FirstMenu.scss";
 import { Layout } from "antd";
 import { withRouter } from "react-router";
-import Logo from "./Logo";
 import useLocalStorageListener from "../../../common/utils/useLocalStorageListener";
 import Search from "../../search/components/Search";
 import HomeStore from "../store/HomeStore";
@@ -19,12 +18,12 @@ import {renderRoutes} from "react-router-config";
 import SetingMenu from "./SetingMenu";
 import MessageList from "./MessageList";
 import UserIcon from "../../../common/UserIcon/UserIcon";
-import {getUser} from "tiklab-core-ui";
+import {getUser, productImg, productWhiteImg} from "tiklab-core-ui";
 const { Sider } = Layout;
 
 const FirstMenu = (props) => {
 
-    const {route,AppLink,AvatarLink,HelpLink,systemRoleStore} = props;
+    const {route,systemRoleStore,HelpLink,AppLink,AvatarLink,customLogo=null} = props;
 
     const store = {
         homeStore: HomeStore
@@ -54,6 +53,14 @@ const FirstMenu = (props) => {
         localStorage.removeItem("sprintId")
         props.history.push(item.to)
         sessionStorage.setItem("menuKey", item.key)
+    }
+
+    /**
+     * 点击菜单跳转
+     */
+    const goHomePage = (router) => {
+        props.history.push("/index")
+        sessionStorage.setItem("menuKey", "home")
     }
 
     /**
@@ -141,6 +148,17 @@ const FirstMenu = (props) => {
         localStorage.setItem("theme", color)
     }
 
+    //设置图标
+    const logoHtml = () => {
+        const isDefaultTheme = theme === 'default';
+        const image = isDefaultTheme ? productImg.sward : productWhiteImg.sward;
+        return {
+            image: customLogo?.image ? customLogo.image : image,
+            name: customLogo?.name ? customLogo.name :  theme.sward
+        };
+    };
+
+    //侧边导航
     const asideHtml = () =>{
         if(path.startsWith('/setting')){
             return null
@@ -148,6 +166,7 @@ const FirstMenu = (props) => {
         if(path !=='/repository/' && path.startsWith('/repository/')){
             return null
         }
+        const logoData = logoHtml();
         return (
             <Sider
                 className={`first-sider ${themeClass}`}
@@ -159,7 +178,17 @@ const FirstMenu = (props) => {
             >
                 <div className="first-menu">
                     <div className="first-menu-top">
-                        <Logo theme={theme} isShowText={isShowText} />
+                        {
+                            isShowText ?
+                                <div className='sward-logo-text' onClick={() => goHomePage()}>
+                                    <img src={logoData.image} alt={'logo'} className="logo-img" />
+                                    <div className='logo-text' >{logoData.name}</div>
+                                </div>
+                                :
+                                <div className='sward-logo' onClick={() => goHomePage()}>
+                                    <img src={logoData.image} alt={'logo'} className="logo-img" />
+                                </div>
+                        }
                         <div className={'first-menu-link'}>
                             {
                                 routers.map(item => {

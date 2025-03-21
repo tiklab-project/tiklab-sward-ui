@@ -51,8 +51,6 @@
     }
 
     .first-menu-link {
-
-
         &-item {
             display: flex;
             align-items: center;
@@ -88,6 +86,36 @@
         cursor: pointer;
         gap: 7px;
         border-left: 3px solid transparent;
+    }
+
+    .sward-logo {
+        padding: 15px var(--tiklab-padding);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        .logo-img {
+            height: 32px;
+            width: 32px;
+        }
+    }
+
+    .sward-logo-text {
+        height: var(--tiklab-head-height);
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding-left: 17px;
+        .logo-img {
+            height: 24px;
+            width: 24px;
+        }
+
+        .logo-text {
+            margin-left: 5px;
+            font-size: 20px;
+            font-weight: 500;
+        }
     }
 }
 

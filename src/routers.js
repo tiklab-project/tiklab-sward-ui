@@ -14,7 +14,6 @@ const Login = AsyncComponent(() => import('./login/Login.js'))
 const LoginRpw = AsyncComponent(() => import('./login/LoginRpwContent.js'))
 const Logout = AsyncComponent(() => import('./login/Logout.js'))
 const Home = AsyncComponent(() => import('./home/home/components/Home.js'))
-const ProjectNotFound = AsyncComponent(() => import("./setting/common/components/ProjectNotFond.js"))
 const SysExceptionContent = AsyncComponent(() => import("./login/SysExceptionContent.js"))
 // 收藏
 const Collect = AsyncComponent(() => import("./home/collect/components/CollectAside.js"))
@@ -92,8 +91,10 @@ const ProjectUserGroup = AsyncComponent(() => import("./setting/user/ProjectUser
 const ProjectSystemUserGroup = AsyncComponent(() => import("./setting/user/ProjectSystemUserGroup.js"))
 const ProjectVirtualRoleList = AsyncComponent(() => import("./setting/user/ProjectVirtualRoleList.js"))
 // 系统集成
-const UrlData = AsyncComponent(() => import('./setting/systemIntegration/components/UrlData.js'));
-const LoadData = AsyncComponent(() => import('./setting/systemIntegration/components/LoadData.js'));
+const UrlData = AsyncComponent(() => import('./setting/integration/dataImport/components/UrlData.js'));
+const LoadData = AsyncComponent(() => import('./setting/integration/dataImport/components/LoadData.js'));
+const OpenApi = AsyncComponent(()=>import('./setting/integration/openApi/components/OpenApi.js'));
+const OpenApiDoc = AsyncComponent(()=>import('./setting/integration/openApi/components/OpenApiDoc.js'));
 //工时
 const TaskListContent = AsyncComponent(() => import('./setting/todo/TaskList.js'))
 const TodoTempListContent = AsyncComponent(() => import('./setting/todo/TodoTempList.js'))
@@ -106,7 +107,6 @@ const ProjectLogTypeList = AsyncComponent(() => import('./setting/log/LogTypeLis
 
 const LicenceVersion = AsyncComponent(() => import('./setting/version/Version.js'))
 const LicenceProductAuth = AsyncComponent(() => import('./setting/version/Product.js'))
-const VailProductUserPage =  AsyncComponent(() => import('./login/VaildProductUserPage.js'))
 const BackupRecoveryContent = AsyncComponent(() => import('./setting/backups/Backups.js'))
 
 const Routes = [
@@ -146,6 +146,11 @@ const Routes = [
         component:SysExceptionContent,
     },
     {
+        path:"/openApiDoc",
+        exact: true,
+        component: OpenApiDoc,
+    },
+    {
         path: "/share/:shareId",
         component: SharePage,
         routes: [
@@ -178,7 +183,6 @@ const Routes = [
         component: () => <Redirect to="/index" />,
         exact: true,
     },
-
     {
         path: "/",
         component: Index,
@@ -194,12 +198,6 @@ const Routes = [
                 exact: true,
                 component: FocusDocumentList,
                 key: 'focusDocumentList'
-            },
-            {
-                path: "/404",
-                exact: true,
-                component: ProjectNotFound,
-                key: 'NotFound'
             },
             {
                 path: "/repository",
@@ -426,6 +424,11 @@ const Routes = [
                     {
                         path: "/setting/loadData",
                         component: LoadData,
+                        exact: true
+                    },
+                    {
+                        path: "/setting/openApi",
+                        component: OpenApi,
                         exact: true
                     },
                     {
