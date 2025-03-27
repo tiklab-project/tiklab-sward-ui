@@ -1,5 +1,5 @@
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-08-09 09:18:21
@@ -9,6 +9,7 @@
 import { Service } from "../../../common/utils/requset";
 import { observable, action, makeObservable} from "mobx";
 export class RepositoryDetailStore {
+    @observable repository = null;
     // 知识库id
     @observable repositoryCatalogue = [];
     @observable expandedTree = [];
@@ -16,7 +17,6 @@ export class RepositoryDetailStore {
     @observable repositoryCatalogueList = [];
     @observable documentTitle = "";
     @observable categoryTitle = ""
-    @observable allRepositorylist = [];
 
     @action
     setDocumentTitle = (value) => {
@@ -27,15 +27,15 @@ export class RepositoryDetailStore {
     setCategoryTitle = (value) => {
         this.categoryTitle = value
     }
-  
+
     @action
     setExpandedTree = (value) => {
         this.expandedTree = value;
     }
     /**
-     * 
-     * @param {*} id 
-     * @returns 
+     *
+     * @param {*} id
+     * @returns
      */
     @action
     setRepositoryCatalogueList = (value) => {
@@ -43,7 +43,7 @@ export class RepositoryDetailStore {
     }
     /**
      * 设置知识库id
-     * @param {*} id 
+     * @param {*} id
      */
     @action
     findNodePageTree= async(value)=> {
@@ -162,21 +162,20 @@ export class RepositoryDetailStore {
     @action
     getAllRepositorylist = async () => {
         const data = await Service("/repository/findRepositoryListByUser", {});
-        if (data.code === 0) {
-            this.allRepositorylist = data.data;
-            // this.repositoryList = data.data;
-        }
         return data;
     }
 
     @action
-    searchRepository = async (values) => {
+    findRepository = async (values) => {
         const params = new FormData()
         params.append("id", values)
-
         const data = await Service("/repository/findRepository", params);
+        if(data.code===0){
+            this.repository = data.data
+        }
         return data;
     }
+
 }
 
 export default new RepositoryDetailStore();

@@ -17,7 +17,6 @@ import RepositoryLayout from "./repository/common/components/RepositoryLayout";
 import BasicInfo from "./repository/setting/basicInfo/components/BasicInfo";
 import Layout from "./home/home/components/Layout";
 import ArchivedFree from "./common/components/ArchivedFree";
-import Logo from "./home/home/components/Logo";
 import RepositoryDoc from "./repository/document/components/RepositoryDoc";
 import SettingHomeStore from "./setting/home/store/SettingHomeStore";
 import SettingHome from "./setting/home/components/SettingHome";
@@ -34,7 +33,6 @@ export {
     ArchivedFree,
     App,
     FirstMenu,
-    Logo,
     RepositoryDoc,
     SettingHomeStore,
     SettingHome,

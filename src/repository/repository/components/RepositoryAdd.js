@@ -42,6 +42,7 @@ const RepositoryAdd = (props) => {
                 <Row>
                     <Col
                         className="repository-type-col"
+                        xs={{ span: '24'}}
                         lg={{ span: "18", offset: "3" }}
                         xl={{ span: "14", offset: "5" }}
                         xxl={{ span: "10", offset: "7" }}

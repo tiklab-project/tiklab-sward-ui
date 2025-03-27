@@ -14,12 +14,17 @@
 
     .examine-title {
       padding-top: 10px;
+      flex: 1;
+      width: 0;
       .examine-title-top {
         height: 25px;
         line-height: 25px;
         font-weight: 600;
         font-size: 16px;
+        overflow: hidden;
         white-space: nowrap;
+        text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
       }
       .examine-title-date {
         height: 25px;

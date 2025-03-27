@@ -10,21 +10,19 @@ import React, { useState, useEffect } from "react";
 import { Empty, Layout } from 'antd';
 import { renderRoutes } from "react-router-config";
 import { observer, inject, Provider } from "mobx-react";
-import RepositoryDetailStore from "../../common/store/RepositoryDetailStore";
 import RepositoryDocList from "./RepositoryDocList";
 import "./RepositoryDoc.scss"
+
 const RepositoryDoc = (props) => {
-    const { repositoryCatalogueList, NodeRecycleModal, NodeArchivedModal } = RepositoryDetailStore;
+
+    const { repositoryCatalogueList } = props.repositoryDetailStore;
+
     // 解析props
     const { route } = props;
-    const store = {
-        repositoryDetailStore: RepositoryDetailStore
-    }
-    return (<Provider {...store}>
+
+    return (
         <Layout className="repository-doc">
             <RepositoryDocList
-                NodeRecycleModal={NodeRecycleModal}
-                NodeArchivedModal={NodeArchivedModal}
                 {...props}
             />
             <Layout className="repository-doc-content">
@@ -38,11 +36,8 @@ const RepositoryDoc = (props) => {
 
                 }
             </Layout>
-
         </Layout>
-    </Provider>
-
     )
-
 }
-export default observer(RepositoryDoc);
+
+export default inject('repositoryDetailStore')(observer(RepositoryDoc));

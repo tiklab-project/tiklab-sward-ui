@@ -30,7 +30,7 @@ import projectOperation from "../../../assets/images/projectOperation.png";
 const DocumentEdit = (props) => {
     const { relationWorkStore, documentStore } = props;
     const { findDocument, updateDocument, findDocumentTemplateList } = DocumentStore;
-    const { documentTitle, setDocumentTitle, repositoryCatalogueList } = RepositoryDetailStore
+    const { documentTitle, setDocumentTitle, repositoryCatalogueList, repository } = RepositoryDetailStore
     const documentId = props.match.params.id;
     const repositoryId = props.match.params.repositoryId;
     const [docInfo, setDocInfo] = useState({ name: "", likenumInt: "", commentNumber: "", master: { name: "" } });
@@ -43,6 +43,8 @@ const DocumentEdit = (props) => {
     const [templateList, setTemplateList] = useState()
     const imgUrlArray = [weekly, weeklyNomal, todoWork, projectPlan, projectOperation]
     const path = props.location.pathname.split("/")[3];
+    const repositoryStatus = repository?.status !== 'nomal';
+
     /**
      * 查找文档模版
      */
@@ -52,7 +54,6 @@ const DocumentEdit = (props) => {
                 setTemplateList(data.data.slice(0, 3))
             }
         })
-        return;
     }, [])
 
     /**
@@ -72,19 +73,16 @@ const DocumentEdit = (props) => {
                 setDocInfo(detailDocument)
             }
         })
-        return;
     }, [documentId])
 
     useEffect(() => {
         if (value) {
             setValueIsEmpty(determineValue(value))
         }
-        return ;
     }, [value])
 
     const save = () => {
         saveDocument(value)
-
         // editRef.current.submit()
     }
 

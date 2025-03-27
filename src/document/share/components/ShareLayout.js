@@ -93,7 +93,7 @@ const ShareLayout = (props) => {
                         <Dropdown overlay={helpMenu} trigger={"click"}>
                             <Space>
                                 <svg aria-hidden="true" className="header-icon" style={{ stroke: '#fff' }} >
-                                    <use xlinkHref="#icon-help"></use>
+                                    <use xlinkHref="#icon-help-default"></use>
                                 </svg>
                             </Space>
                         </Dropdown>

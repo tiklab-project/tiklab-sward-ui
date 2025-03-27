@@ -12,30 +12,47 @@ import RepositorydeAside from "./RepositoryDetailAside";
 import "../components/RepositoryLayout.scss";
 import { renderRoutes } from "react-router-config";
 import {observer, inject, Provider} from "mobx-react";
-import RepositoryDetailStore from "../store/RepositoryDetailStore";
+import repositoryDetailStore from "../store/RepositoryDetailStore";
+import {getUser} from "tiklab-core-ui";
 
 const RepositoryDetail = (props)=>{
-    const {NodeRecycleModal, NodeArchivedModal} = props;
-    const [isShowText, SetIsShowText ] = useState(false)
-    // 解析props
+
     const {systemRoleStore,route} = props;
+
     const store = {
-        repositoryDetailStore: RepositoryDetailStore
+        repositoryDetailStore: repositoryDetailStore
     }
-    return (<Provider {...store}>
-        <Layout className="repositorydetail">
-            <RepositorydeAside
-                isShowText = {isShowText}
-                SetIsShowText = {SetIsShowText}
-                {...props}
-            />
-            <Layout className="repositorydetail-content">
-                {renderRoutes(route.routes)}
+
+    const {findRepository} = repositoryDetailStore;
+    const {getInitProjectPermissions} = systemRoleStore;
+
+    const [isShowText, SetIsShowText ] = useState(false)
+
+    const repositoryId = props.match.params.repositoryId;
+    const userId = getUser().userId
+
+    useEffect(() => {
+        findRepository(repositoryId).then(res=>{
+            if(res.code===0){
+                const data = res.data;
+                getInitProjectPermissions(userId,repositoryId,data?.projectLimits === "0")
+            }
+        })
+    }, [repositoryId]);
+
+    return (
+        <Provider {...store}>
+            <Layout className="repositorydetail">
+                <RepositorydeAside
+                    isShowText = {isShowText}
+                    SetIsShowText = {SetIsShowText}
+                    {...props}
+                />
+                <Layout className="repositorydetail-content">
+                    {renderRoutes(route.routes)}
+                </Layout>
             </Layout>
-
-        </Layout>
-    </Provider>
-
+        </Provider>
     )
 
 }

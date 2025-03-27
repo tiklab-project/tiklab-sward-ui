@@ -19,13 +19,14 @@ import { Empty, message } from "antd";
 import { useDebounce } from "../../../common/utils/debounce";
 const MarkdownEdit = (props) => {
     const { findDocument, updateDocument } = MarkdownStore;
-    const { documentTitle, setDocumentTitle } = RepositoryDetailStore;
+    const { documentTitle, setDocumentTitle,repository } = RepositoryDetailStore;
     const [documentDate, setDocumentDate] = useState();
     const [docInfo, setDocInfo] = useState();
     const documentId = props.match.params.id;
     const repositoryId = props.match.params.repositoryId;
     const [value, setValue] = useState();
     const path = props.location.pathname.split("/")[3];
+    const repositoryStatus = repository?.status !== 'nomal';
 
     // 查找文档详情
     useEffect(() => {
@@ -51,11 +52,7 @@ const MarkdownEdit = (props) => {
                 const node = data.data.node;
                 setDocInfo(node)
                 setDocumentTitle(node.name)
-                if (node.updateTime) {
-                    setDocumentDate(node.updateTime)
-                } else {
-                    setDocumentDate(node.createTime)
-                }
+                setDocumentDate(node.updateTime || node.createTime)
             }
         })
         return;
@@ -176,7 +173,8 @@ const MarkdownEdit = (props) => {
 
     return <>
     {
-        docInfo?.recycle === "0" ? <div className="document-markdown-edit">
+        docInfo?.recycle === "0" ?
+        <div className="document-markdown-edit">
             <div className="edit-top">
                 <div className={`edit-title`}>
 

@@ -31,7 +31,7 @@ const AddDropDown = (props) => {
     const [catalogue, setCatalogue] = useState()
     const [contentValue, setContentValue] = useState()
     const { repositoryCatalogueList, setRepositoryCatalogueList,
-        createDocument, findDmUserList, findDocument } = repositoryDetailStore;
+        createDocument, findDmUserList, findDocument ,repository} = repositoryDetailStore;
 
     const fileInputRef = useRef(null);
 
@@ -213,19 +213,8 @@ const AddDropDown = (props) => {
         })
     }
 
-    return (
+    return repository?.status === 'nomal' && (
         <div onClick={(event) => event.stopPropagation()} className="category-add">
-            {/* {
-                isButton ? <Dropdown overlay={() => addMenu()} placement="bottomLeft">
-                    <div className="top-add-botton">添加</div>
-                </Dropdown>
-                    :
-                    <Dropdown overlay={() => addMenu()} placement="bottomLeft">
-                        <svg className="icon-18" aria-hidden="true">
-                            <use xlinkHref="#icon-plusBlue"></use>
-                        </svg>
-                    </Dropdown>
-            } */}
             {
                 button === "icon-gray" && <Dropdown overlay={() => addMenu()} placement="bottomLeft">
                     <svg className="icon-18" aria-hidden="true">

@@ -122,7 +122,13 @@ const Setting = (props) => {
                     title: '备份与恢复',
                     id: '/setting/backup',
                     code: 10 - 2,
-                }
+                },
+                {
+                    title: '回收站',
+                    id: '/setting/recycle',
+                    code: 'recycle',
+                    iseEnhance: true
+                },
             ]
         },
         {
@@ -142,20 +148,6 @@ const Setting = (props) => {
                     code: 11 - 2,
                 }
             ]
-        },
-        {
-            title: '归档',
-            icon: 'systemreset',
-            id: '/setting/archived',
-            code: 'archived',
-            iseEnhance: true
-        },
-        {
-            title: '回收站',
-            icon: 'systemdelete',
-            id: '/setting/recycle',
-            code: 'recycle',
-            iseEnhance: true
         },
     ];
 

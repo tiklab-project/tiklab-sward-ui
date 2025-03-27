@@ -3,7 +3,7 @@ import { Service } from "../../../../common/utils/requset";
 export class RepositorySetStore {
     @observable repositorylist = [];
     @observable uselist = [];
-    
+
     @action
     findRepositoryList = async(params) => {
         const data = await Service("/repository/findRepositoryListByUser",params);
@@ -18,7 +18,7 @@ export class RepositorySetStore {
 	findRepository = async(values) => {
         const params = new FormData()
         params.append("id", values)
-        
+
         const data = await Service("/repository/findRepository",params);
         return data;
 	}
@@ -30,22 +30,13 @@ export class RepositorySetStore {
         const data = await Service("/repository/deleteRepository",param);
         return data;
     }
-    
+
     @action
 	updateRepository = async(values) => {
         const data = await Service("/repository/updateRepository",values);
         return data;
-		
+
     }
-    
-    @action
-	findRepository = async(values) => {
-        const params = new FormData()
-        params.append("id", values)
-        
-        const data = await Service("/repository/findRepository",params);
-        return data;
-	}
 
     @action
     findAllUser = async() => {

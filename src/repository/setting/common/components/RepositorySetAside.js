@@ -53,13 +53,6 @@ const RepositorySetAside = (props) => {
             iseEnhance: false
         },
         {
-            title: '归档',
-            icon: 'archived',
-            key: `/repository/${repositoryId}/set/archivedNode`,
-            encoded: "archived",
-            iseEnhance: true
-        },
-        {
             title: '回收站',
             icon: 'recycleBin',
             key: `/repository/${repositoryId}/set/recycleBin`,
@@ -76,13 +69,12 @@ const RepositorySetAside = (props) => {
     useEffect(() => {
         // 初次进入激活导航菜单
         setSelectKey(props.location.pathname)
-        return
     }, [repositoryId])
 
 
     /**
      * 点击左侧菜单
-     * @param {*} key 
+     * @param {*} key
      */
     const selectKeyFun = (key, iseEnhance) => {
         if (versionInfo.expired === false) {
@@ -96,13 +88,6 @@ const RepositorySetAside = (props) => {
                 setArchivedFreeVisable(true)
             }
         }
-
-
-
-    }
-
-    const backRepository = () => {
-        props.history.push(`/repository/${repositoryId}/overview`)
     }
 
     return (

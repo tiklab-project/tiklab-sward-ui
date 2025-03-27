@@ -9,7 +9,7 @@ const RepositoryIcon = (props) => {
 
     const [form] = Form.useForm();
 
-    const { visible, setVisible, updateRepository, setIconUrl } = props;
+    const { visible, setVisible, updateRepository,findRepository } = props;
 
     const [repositoryIconUrl, setProjectIconUrl] = useState("")
 
@@ -31,8 +31,10 @@ const RepositoryIcon = (props) => {
     const onFinish = () => {
         const data = { id: repositoryId, iconUrl: repositoryIconUrl }
         updateRepository(data).then(res => {
-            setIconUrl(repositoryIconUrl)
             setVisible(false)
+            if(res.code===0){
+                findRepository(repositoryId)
+            }
         })
     };
 
@@ -94,7 +96,7 @@ const RepositoryIcon = (props) => {
                         <div className="repository-icon-box">
                             {
                                 iconList && iconList.map((item) => {
-                                    return <div className={`repository-icon ${item.iconUrl === repositoryIconUrl ? "icon-select" : null}`} key={item.key} onClick={() => { setProjectIconUrl(item.iconUrl) }}>
+                                    return <div className={`repository-icon ${item.iconUrl === repositoryIconUrl ? "icon-select" : null}`} key={item.id} onClick={() => { setProjectIconUrl(item.iconUrl) }}>
 
                                         <ImgComponent
                                             src={item.iconUrl}

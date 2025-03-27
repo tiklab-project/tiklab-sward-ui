@@ -10,7 +10,7 @@ import React, { useState, useEffect } from "react";
 import { Empty, Layout, Spin } from 'antd';
 import "./CollectLayout.scss";
 import { renderRoutes } from "react-router-config";
-import { observer, inject, Provider } from "mobx-react";
+import { observer } from "mobx-react";
 import CollectAside from "./CollectAside";
 import CollectStore from "../store/CollectStore";
 import { getUser } from "tiklab-core-ui";
@@ -58,14 +58,16 @@ const CollectLayout = (props) => {
                     if (document.documentType === "markdown") {
                         props.history.push(`/repository/${repositoryId}/collect/markdown/${document.id}`)
                     }
+                    if (document.documentType === "file") {
+                        props.history.push(`/repository/${repositoryId}/collect/file/${document.id}`)
+                    }
                 }
-
             }
             setLoading(false)
         })
     }
 
-    return (<>
+    return (
         <Spin wrapperClassName="collect-spin" spinning={loading} tip="加载中..." >
             {
                 allFocusDocumentList?.length > 0 ?
@@ -78,14 +80,15 @@ const CollectLayout = (props) => {
                             {...props}
                         />
                         {
-                            focusDocumentList?.length > 0 ? <Layout className="collect-layout-right">
+                            focusDocumentList?.length > 0 ?
+                            <Layout className="collect-layout-right">
                                 {renderRoutes(route.routes)}
                             </Layout>
                             :
                             <div className="collect-empty">
                                 <Empty description="暂无数据" />
                             </div>
-                            
+
                         }
 
                     </Layout>
@@ -93,14 +96,9 @@ const CollectLayout = (props) => {
                     <div className="collect-empty">
                         {!loading && <Empty description="暂无收藏文档" />}
                     </div>
-
             }
         </Spin>
-
-    </>
-
-
     )
-
 }
+
 export default observer(CollectLayout);

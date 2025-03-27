@@ -7,10 +7,10 @@
  * @LastEditTime: 2024-12-31 17:03:48
  */
 
-import React, { Fragment, useState, useEffect, useId, useRef } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { withRouter } from "react-router-dom";
 import { observer, inject } from "mobx-react";
-import { Menu, Dropdown, Layout, Form, Tree, message, Modal, Input, Empty, Spin } from 'antd';
+import { Menu, Dropdown, Layout, Tree, message, Modal, Empty, Spin } from 'antd';
 import { useTranslation } from 'react-i18next';
 import ShareListModal from "../../../document/share/components/ShareListModal"
 import MoveLogList from "../../common/components/MoveLogList"
@@ -35,7 +35,7 @@ const RepositoryDocList = (props) => {
     const { t } = useTranslation();
     const { findNodePageTree, updateRepositoryCatalogue, deleteNode, updateDocument,
         repositoryCatalogueList, setRepositoryCatalogueList, createRecent,
-        expandedTree, setExpandedTree, setDocumentTitle, setCategoryTitle, findCategory } = repositoryDetailStore;
+        expandedTree, setExpandedTree, setDocumentTitle, setCategoryTitle, findCategory, repository } = repositoryDetailStore;
 
     // 当前选中目录id
     const id = props.location.pathname.split("/")[5];
@@ -57,7 +57,7 @@ const RepositoryDocList = (props) => {
     const versionInfo = getVersionInfo();
     const [archivedFreeVisable, setArchivedFreeVisable] = useState(false);
     const [showSearchModal, setShowSearchModal] = useState(false)
-
+    const repositoryStatus = repository?.status === 'nomal';
 
     useEffect(() => {
         setLoading(true)
@@ -169,17 +169,6 @@ const RepositoryDocList = (props) => {
             <Menu.Item key="share">
                 分享
             </Menu.Item>
-            <Menu.Item key="archived">
-                <div className="repository-aside-archived">
-                    归档
-                    {
-                        versionInfo.expired === true && <svg className="img-icon" aria-hidden="true" >
-                            <use xlinkHref="#icon-member"></use>
-                        </svg>
-                    }
-                </div>
-
-            </Menu.Item>
             <Menu.Item key="recycle">
                 <div className="repository-aside-archived">
                     移动到回收站
@@ -189,9 +178,7 @@ const RepositoryDocList = (props) => {
                         </svg>
                     }
                 </div>
-
             </Menu.Item>
-
         </Menu>
     };
 
@@ -374,7 +361,6 @@ const RepositoryDocList = (props) => {
     }
 
     const setOpenClickCategory = key => {
-
         if (!isExpandedTree(key)) {
             setExpandedTree(expandedTree.concat(key));
         } else {
@@ -389,45 +375,35 @@ const RepositoryDocList = (props) => {
         const { event, node, dragNode, dragNodesKeys } = info;
         // node放置， dragNode被移动节点
         console.log(node, dragNode)
-
         // return
         const dropToGap = info.dropToGap;
         const dropType = node.type;
         if (dropType === "document" && dropToGap === false) {
             return
         }
-
         const dropId = node.key;
-
         const dragId = dragNode.key;
         const type = dragNode.type;
-
         const dropPos = info.node.pos.split('-');
         const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
-
         let params = {
             moveToId: dropId,
             moveToType: dropType,
             moveType: "1",
             id: dragId
         }
-
         if (dropToGap === true && dropPosition !== -1) {
             // 移动到某个目录的顶部
             params.moveType = "1"
         }
-
         if (dropToGap === false && dropPosition !== -1) {
             // 移动到某个目录的或者知识库的中间
             params.moveType = "2"
         }
-
-
         if (dropPosition === -1) {
             // 移动到此知识库的最顶部
             console.log(node, dragNode, 3)
             params.moveType = "3"
-
         }
         params = {
             id: params.id,
@@ -446,7 +422,7 @@ const RepositoryDocList = (props) => {
             if (res.code === 0) {
                 updataTreeSort(repositoryCatalogueList, params.node)
                 setMoveLogListVisible(false)
-            }else {
+            } else {
                 message.error("保存失败")
             }
         })
@@ -503,15 +479,19 @@ const RepositoryDocList = (props) => {
                         removeFileExtension(item.name) : item.name
                 }
             </div>
-            <div className={`${isHover === item.id ? "icon-show" : "icon-hidden"}`}>
-                <Dropdown overlay={() => editMenu(item, index)} placement="bottomLeft">
-                    <div className="category-add">
-                        <svg className="icon-18" aria-hidden="true">
-                            <use xlinkHref="#icon-moreBlue"></use>
-                        </svg>
+            {
+                repositoryStatus && (
+                    <div className={`${isHover === item.id ? "icon-show" : "icon-hidden"}`}>
+                        <Dropdown overlay={() => editMenu(item, index)} placement="bottomLeft">
+                            <div className="category-add">
+                                <svg className="icon-18" aria-hidden="true">
+                                    <use xlinkHref="#icon-more"></use>
+                                </svg>
+                            </div>
+                        </Dropdown>
                     </div>
-                </Dropdown>
-            </div>
+                )
+            }
         </div>
     }
 
@@ -533,20 +513,25 @@ const RepositoryDocList = (props) => {
                 ref={isRename === item.id ? inputRef : null}
                 onKeyDownCapture={(value) => enterKeyRename(value, item.id, item.type)}
             > {item.name}</div>
-            <div className={`${isHover === item.id ? "icon-show" : "icon-hidden"} icon-action`}>
-                {/* <div className="icon-action"> */}
-                <AddDropDown category={item} button="icon-gray" />
-                <Dropdown overlay={() => editMenu(item, index)} placement="bottomLeft">
-                    <div className="category-add">
-                        <svg className="icon-18" aria-hidden="true">
-                            <use xlinkHref="#icon-moreBlue"></use>
-                        </svg>
-                    </div>
+            {
+                repositoryStatus && (
+                    <div className={`${isHover === item.id ? "icon-show" : "icon-hidden"} icon-action`}>
+                        {/* <div className="icon-action"> */}
+                        <AddDropDown category={item} button="icon-gray" />
+                        <Dropdown overlay={() => editMenu(item, index)} placement="bottomLeft">
+                            <div className="category-add">
+                                <svg className="icon-18" aria-hidden="true">
+                                    <use xlinkHref="#icon-more"></use>
+                                </svg>
+                            </div>
 
-                </Dropdown>
-            </div>
+                        </Dropdown>
+                    </div>
+                )
+            }
         </div>
     }
+
     const categoryTree = (data) => {
         return data?.map((item, index) => {
             if (item.type === "category") {
@@ -601,30 +586,26 @@ const RepositoryDocList = (props) => {
                                 搜索
                             </span>
                         </div>
-
                         <div className="repository-menu">
                             {
-                                repositoryCatalogueList?.length > 0  ? <Tree
-                                    draggable
+                                repositoryCatalogueList?.length > 0  ?
+                                <Tree
                                     showIcon
-                                    rootStyle="repository-menu-tree"
+                                    draggable={repositoryStatus}
                                     blockNode={true}
                                     switcherIcon={<DownOutlined />}
                                     expandedKeys={expandedTree}
                                     onExpand={(expandedKeys, expanded) => setOpenOrClose(expanded)}
                                     onDrop={onDrop}
+                                    rootStyle="repository-menu-tree"
                                 >
-                                    {
-                                        categoryTree(repositoryCatalogueList)
-                                    }
+                                    {categoryTree(repositoryCatalogueList)}
                                 </Tree>
                                     :
-                                    <>
+                                <>
                                     {!loading && <Empty description="暂无文档" />}
-                                    </>
-
+                                </>
                             }
-
                         </div>
                         {/* <div className="repository-setting-menu" onClick={() => props.history.push(`/repositorySet/${repositoryId}/basicInfo`)}>
                         <svg className="img-icon" aria-hidden="true">
@@ -634,9 +615,7 @@ const RepositoryDocList = (props) => {
                     </div> */}
                     </div>
                 </Sider>
-
             </Spin>
-
             <MoveLogList
                 moveLogListVisible={moveLogListVisible}
                 setMoveLogListVisible={setMoveLogListVisible}
@@ -661,16 +640,17 @@ const RepositoryDocList = (props) => {
                 确定删除文档？
             </Modal>
             {
-                NodeArchivedModal && versionInfo.expired === false && <NodeArchivedModal
+                NodeArchivedModal && versionInfo.expired === false &&
+                <NodeArchivedModal
                     nodeArchivedVisable={nodeArchivedVisable}
                     setNodeArchivedVisable={setNodeArchivedVisable}
                     node={archivedNode}
                     repositoryCatalogueList={repositoryCatalogueList}
                 />
             }
-
             {
-                NodeRecycleModal && versionInfo.expired === false && <NodeRecycleModal
+                NodeRecycleModal && versionInfo.expired === false &&
+                <NodeRecycleModal
                     nodeRecycleVisable={nodeRecycleVisable}
                     setNodeRecycleVisable={setNodeRecycleVisable}
                     node={archivedNode}

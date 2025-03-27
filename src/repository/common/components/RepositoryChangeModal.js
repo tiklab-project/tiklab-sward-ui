@@ -16,12 +16,13 @@ import ImgComponent from "../../../common/imgComponent/ImgComponent";
 import { Tooltip } from "antd";
 
 const RepositoryChangeModal = (props) => {
+
     const { isShowText, theme } = props;
     const [showMenu, setShowMenu] = useState(false);
     const [selectRepository, setSelectRepository] = useState(false)
-    const { findRecentRepositoryList, getAllRepositorylist, allRepositorylist, searchRepository } = RepositoryDetailStore;
+    const { findRecentRepositoryList, getAllRepositorylist, repository } = RepositoryDetailStore;
     const [showRepositoryList, setShowRepositoryList] = useState();
-    const [repository, setRepository] = useState()
+    const [allRepositorylist,setAllRepositorylist] = useState([]);
     const userId = getUser().useId;
     const modelRef = useRef()
     const setButton = useRef()
@@ -34,7 +35,11 @@ const RepositoryChangeModal = (props) => {
             master: userId,
             repositoryId: repositoryId
         }
-        getAllRepositorylist()
+        getAllRepositorylist().then(res=>{
+            if(res.code===0){
+                setAllRepositorylist(res.data)
+            }
+        })
         findRecentRepositoryList(params).then(res => {
             if (res.code === 0) {
                 setShowRepositoryList(res.data.slice(0, 5))
@@ -42,14 +47,6 @@ const RepositoryChangeModal = (props) => {
         })
         modelRef.current.style.left = setButton.current.clientWidth
     }
-
-    useEffect(() => {
-        searchRepository(repositoryId).then(res => {
-            if (res.code === 0) {
-                setRepository(res.data)
-            }
-        })
-    }, [])
 
     useEffect(() => {
         window.addEventListener("mousedown", closeModal, false);
@@ -69,20 +66,12 @@ const RepositoryChangeModal = (props) => {
 
     /**
      * 切换项目
-     * @param {id} id 
+     * @param {id} id
      */
     const selectRepositoryId = (id) => {
-        // 切换选中项目，获取项目详情
-        searchRepository(id).then(data => {
-            if (data.code === 0) {
-                props.history.push(`/repository/${id}/overview`)
-                // 重置事项id
-                // 关闭切换弹窗
-                setShowMenu(false)
-                location.reload();
-            }
-        });
-        // 讲当前项目id存入localStorage
+        props.history.push(`/repository/${id}/overview`)
+        setShowMenu(false)
+        location.reload();
     }
 
     const handleMouseOver = (id) => {
@@ -105,7 +94,6 @@ const RepositoryChangeModal = (props) => {
                                 alt=""
                             />
                         }
-
                         <div className={`repository-text `} >
                             <div className='name'>
                                 {repository?.limits}

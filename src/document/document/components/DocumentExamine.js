@@ -22,7 +22,7 @@ import Button from "../../../common/button/Button";
 
 const DocumentExamine = (props) => {
     const { relationWorkStore } = props;
-    const { documentTitle, setDocumentTitle } = RepositoryDetailStore;
+    const { repository, documentTitle, setDocumentTitle } = RepositoryDetailStore;
     const [documentDate, setDocumentDate] = useState();
     const path = props.location.pathname.split("/")[3];
     const store = {
@@ -47,6 +47,7 @@ const DocumentExamine = (props) => {
     const [value, setValue] = useState()
     const [loading, setLoading] = useState(true);
     const [document, setDocument] = useState()
+    const repositoryStatus = repository?.status === 'nomal';
 
     // 获取文档详情
     useEffect(() => {
@@ -62,23 +63,24 @@ const DocumentExamine = (props) => {
                         setValue(data.data.details)
                     } else {
                         setValue()
-                        if (path === "doc") {
-                            props.history.push(`/repository/${repositoryId}/doc/rich/${documentId}/edit`)
-                        }
-                        if (path === "collect") {
-                            props.history.push(`/repository/${repositoryId}/collect/rich/${documentId}/edit`)
+                        if(repositoryStatus){
+                            if (path === "doc") {
+                                props.history.push(`/repository/${repositoryId}/doc/rich/${documentId}/edit`)
+                            }
+                            if (path === "collect") {
+                                props.history.push(`/repository/${repositoryId}/collect/rich/${documentId}/edit`)
+                            }
                         }
                     }
                     const node = document.node;
                     setDocInfo(node)
                     setDocumentTitle(node.name)
-                    setDocumentDate(node.updateTime)
+                    setDocumentDate(node.updateTime || node.createTime)
                     setLike(document.like)
                     setFocus(document.focus)
                     setLikeNum(document.likenumInt)
                     setCommentNum(document.commentNumber)
                 }
-
             }
             setLoading(false)
         })
@@ -157,7 +159,6 @@ const DocumentExamine = (props) => {
         if (path === "doc") {
             props.history.push(`/repository/${repositoryId}/doc/rich/${documentId}/edit`)
         }
-
         // 收藏界面
         if (path === "collect") {
             props.history.push(`/repository/${repositoryId}/collect/rich/${documentId}/edit`)
@@ -171,11 +172,16 @@ const DocumentExamine = (props) => {
                     docInfo?.recycle === "0" ?
                         <div className="document-examine">
                             {
-                                showComment && <Comment documentId={documentId} setShowComment={setShowComment} commentNum={commentNum} setCommentNum={setCommentNum} />
+                                showComment &&
+                                <Comment
+                                    documentId={documentId}
+                                    setShowComment={setShowComment}
+                                    commentNum={commentNum}
+                                    setCommentNum={setCommentNum}
+                                />
                             }
                             <div className="examine-top">
                                 <div className="examine-title" id="examine-title">
-
                                     <div className="examine-title-top">
                                         {documentTitle}
                                     </div>
@@ -184,90 +190,81 @@ const DocumentExamine = (props) => {
                                     </div>
                                 </div>
                                 <div className="document-action">
-
                                     {
-                                        focus ? <svg className="right-icon" aria-hidden="true" onClick={() => deleteFocus()}>
+                                        focus ?
+                                        <svg className="right-icon" aria-hidden="true" onClick={() => deleteFocus()}>
                                             <use xlinkHref="#icon-collectioned"></use>
                                         </svg>
-                                            :
-                                            <svg className="right-icon" aria-hidden="true" onClick={() => createFocus()}>
-                                                <use xlinkHref="#icon-collection"></use>
-                                            </svg>
+                                        :
+                                        <svg className="right-icon" aria-hidden="true" onClick={() => createFocus()}>
+                                            <use xlinkHref="#icon-collection"></use>
+                                        </svg>
                                     }
                                     {
-                                        value && <Button className="document-action-edit" onClick={() => goEdit()}>编辑</Button>
+                                        value && repositoryStatus &&
+                                        <Button className="document-action-edit" onClick={() => goEdit()}>
+                                            编辑
+                                        </Button>
                                     }
                                     <Button className="document-action-share" onClick={() => setShareVisible(true)}>分享</Button>
-
                                 </div>
                             </div>
                             {
-                                value && <>
-                                    <div className="document-examine-content">
-                                        <Row className="document-examine-row">
-                                            <Col
-                                                xs={{ span: 24}}
-                                                md={{ span: 20, offset: 2 }}
-                                                xl={{ span: 18, offset: 3 }}
-                                                lg={{ span: 18, offset: 3 }}
-                                            >
-                                                <div className="document-previeweditor">
-                                                    <PreviewEditor
-                                                        value={value}
-                                                        relationWorkStore={relationWorkStore}
-                                                        base_url={upload_url}
-                                                        img_url = {upload_url}
-                                                        viewImageUrl = "/image"
-                                                        tenant={tenant}
-
-                                                    />
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </div>
-                                    <div className="comment-box">
-                                        <div className="comment-box-item top-item">
-                                            <svg className="midden-icon" aria-hidden="true" onClick={() => setShowComment(!showComment)}>
-                                                <use xlinkHref="#icon-comment"></use>
-                                            </svg>
-                                            <div className="commnet-num">{commentNum}</div>
-                                        </div>
-                                        <div className="comment-box-item">
+                                value ?
+                                <div className="document-examine-content">
+                                    <Row className="document-examine-row">
+                                        <Col
+                                            xs={{ span: 24}}
+                                            md={{ span: 20, offset: 2 }}
+                                            xl={{ span: 18, offset: 3 }}
+                                            lg={{ span: 18, offset: 3 }}
+                                        >
+                                            <div className="document-previeweditor">
+                                                <PreviewEditor
+                                                    value={value}
+                                                    relationWorkStore={relationWorkStore}
+                                                    base_url={upload_url}
+                                                    img_url = {upload_url}
+                                                    viewImageUrl = "/image"
+                                                    tenant={tenant}
+                                                />
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </div> : <></>
+                            }
+                            <div className="comment-box">
+                                <div className="comment-box-item top-item">
+                                    <svg className="midden-icon" aria-hidden="true" onClick={() => setShowComment(!showComment)}>
+                                        <use xlinkHref="#icon-comment"></use>
+                                    </svg>
+                                    <div className="commnet-num">{commentNum}</div>
+                                </div>
+                                <div className="comment-box-item">
                                             <span className="comment-item" onClick={addDocLike}>
                                                 {
-                                                    like ? <svg className="midden-icon" aria-hidden="true">
-                                                        <use xlinkHref="#icon-zan"></use>
-                                                    </svg> : <svg className="midden-icon" aria-hidden="true">
-                                                        <use xlinkHref="#icon-dianzan"></use>
-                                                    </svg>
+                                                    like ?
+                                                        <svg className="midden-icon" aria-hidden="true">
+                                                            <use xlinkHref="#icon-zan"></use>
+                                                        </svg>
+                                                        :
+                                                        <svg className="midden-icon" aria-hidden="true">
+                                                            <use xlinkHref="#icon-dianzan"></use>
+                                                        </svg>
                                                 }
                                             </span>
-                                            <div className="commnet-num" style={{ top: "37px" }}>{likeNum}</div>
-                                        </div>
-                                        {/* <div className="comment-box-item">
-                            <span className="comment-item" onClick={() => setShowCategory(true)}>
-                                {
-                                    like ? <svg className="midden-icon" aria-hidden="true">
-                                        <use xlinkHref="#icon-zan"></use>
-                                    </svg> : <svg className="midden-icon" aria-hidden="true">
-                                        <use xlinkHref="#icon-dianzan"></use>
-                                    </svg>
-                                }
-                            </span>
-                            <div className="commnet-num" style={{ top: "37px" }}>{likeNum}</div>
-                        </div> */}
-                                    </div>
-                                </>
-                            }
+                                    <div className="commnet-num" style={{ top: "37px" }}>{likeNum}</div>
+                                </div>
+                            </div>
                             {
-                                showCategory && <div className="category-box">
+                                showCategory &&
+                                <div className="category-box">
                                     <EditorCategory newValue={JSON.parse(value)} setShowCategory={setShowCategory} />
                                 </div>
                             }
-
                             <ShareModal
                                 documentIds={[documentId]}
-                                nodeIds = {[documentId]}
+                                nodeIds={[documentId]}
                                 shareVisible={shareVisible}
                                 setShareVisible={setShareVisible}
                                 docInfo={docInfo}

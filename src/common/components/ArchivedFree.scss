@@ -16,7 +16,7 @@
                 font-size: 20px;
                 font-weight: 600;
                 margin-bottom: 20px;
-                
+
             }
 
             .archived-desc {
@@ -30,7 +30,7 @@
                 .archived-desc-item {
                     display: flex;
                     align-items: center;
-                    gap: 5px;   
+                    gap: 5px;
                     height: 40px;
                     padding: 0 20px;
                     cursor: pointer;
@@ -44,7 +44,7 @@
                     background: #f4f5f6;
                 }
             }
-    
+
             .ant-btn-primary {
                 border-radius: 5px;
                 margin-bottom: 20px;
@@ -61,10 +61,11 @@
 
             img {
                 border-radius: 5px;
+                max-width: 100%;
             }
         }
 
-        
+
     }
 
 }

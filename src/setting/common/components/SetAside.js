@@ -262,7 +262,7 @@ const SetAside = (props) => {
             outerPath={"/setting"}
             noAccessPath={"/noaccess"} //没有资源访问权限页面的路由参数
         >
-            <Layout className="orga">
+            <Layout className="setting-aside">
                 <Sider width={200} className="site-layout-background">
                     <div className="orga-aside">
                         <ul style={{ padding: 0 }} key="0" className="orga-aside-top">

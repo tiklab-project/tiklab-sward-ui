@@ -14,16 +14,17 @@ import RepositoryChangeModal from "./RepositoryChangeModal";
 import RepositoryAside from '../../../common/repositoryAside/RepositoryAside';
 
 const ProjectDetailAside = (props) => {
+
     const { isShowText, SetIsShowText  } = props;
     const theme = localStorage.getItem("theme") ? localStorage.getItem("theme") : "default";
     const repositoryId = props.match.params.repositoryId;
     //语言包
     const { t, i18n } = useTranslation();
-    // 项目id
-    // 菜单的形式，宽菜单，窄菜单
+
 
     // 当前选中菜单key
     const path = props.location.pathname.split("/")[3];
+
     // 路由
     const router = [
         {
@@ -42,7 +43,7 @@ const ProjectDetailAside = (props) => {
             key: "doc",
             encoded: "doc"
         },
-        {   
+        {
             title: '收藏',
             icon: 'focus-' + theme,
             defaultIcon: "focus-default",
@@ -51,10 +52,6 @@ const ProjectDetailAside = (props) => {
             encoded: "focus"
         }
     ];
-
-
- 
-
 
     return (
         <Fragment>
@@ -68,7 +65,6 @@ const ProjectDetailAside = (props) => {
                 setUrl = {`/repository/${repositoryId}/set/basicInfo`}
                 backUrl = {`/repository`}
             />
-
         </Fragment>
     )
 

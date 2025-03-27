@@ -15,10 +15,9 @@ import Search from "../../search/components/Search";
 import HomeStore from "../store/HomeStore";
 import {inject, observer, Provider} from "mobx-react";
 import {renderRoutes} from "react-router-config";
-import SetingMenu from "./SetingMenu";
 import MessageList from "./MessageList";
 import UserIcon from "../../../common/UserIcon/UserIcon";
-import {getUser, productImg, productWhiteImg} from "tiklab-core-ui";
+import {getUser, productImg, productTitle, productWhiteImg} from "tiklab-core-ui";
 const { Sider } = Layout;
 
 const FirstMenu = (props) => {
@@ -61,6 +60,10 @@ const FirstMenu = (props) => {
     const goHomePage = (router) => {
         props.history.push("/index")
         sessionStorage.setItem("menuKey", "home")
+    }
+
+    const goSet = () => {
+        props.history.push('/setting/home')
     }
 
     /**
@@ -154,7 +157,7 @@ const FirstMenu = (props) => {
         const image = isDefaultTheme ? productImg.sward : productWhiteImg.sward;
         return {
             image: customLogo?.image ? customLogo.image : image,
-            name: customLogo?.name ? customLogo.name :  theme.sward
+            name: customLogo?.name ? customLogo.name :  productTitle.sward
         };
     };
 
@@ -234,7 +237,12 @@ const FirstMenu = (props) => {
                     {
                         isShowText ?
                             <div className="first-menu-bottom-text ">
-                                <SetingMenu isShowText={isShowText} theme={theme} />
+                                <div className="search-text first-menu-text-item" onClick={() => goSet()}>
+                                    <svg className="icon-18" aria-hidden="true">
+                                        <use xlinkHref={`#icon-set-${theme}`} ></use>
+                                    </svg>
+                                    <div>设置</div>
+                                </div>
                                 <MessageList isShowText={isShowText} theme={theme} />
                                 <HelpLink
                                     bgroup={"sward"}
@@ -273,7 +281,11 @@ const FirstMenu = (props) => {
                             </div>
                             :
                             <div className="first-menu-bottom-icon">
-                                <SetingMenu isShowText={isShowText} theme={theme} />
+                                <div className="first-menu-link-item" data-title-right="设置" onClick={() => goSet()}>
+                                    <svg className="icon-18" aria-hidden="true">
+                                        <use xlinkHref={`#icon-set-${theme}`} ></use>
+                                    </svg>
+                                </div>
                                 <MessageList isShowText={isShowText} theme={theme} />
                                 <HelpLink
                                     bgroup={"sward"}

@@ -14,7 +14,6 @@ import Breadcumb from "../../../common/breadcrumb/Breadcrumb";
 import InputSearch from "../../../common/input/InputSearch";
 import Button from "../../../common/button/Button";
 import "./RepositoryList.scss";
-import { useHistory } from 'react-router-dom';
 import RepositoryStore from "../store/RepositoryStore";
 import { useDebounce } from "../../../common/utils/debounce";
 import UserIcon from "../../../common/UserIcon/UserIcon";
@@ -50,7 +49,6 @@ const RepositoryList = (props) => {
             icon: "programbuild"
         }
     ]
-    const history = useHistory()
     useEffect(() => {
         selectTabs(activeTabs)
         findFocusRepository()
@@ -74,7 +72,6 @@ const RepositoryList = (props) => {
                 setNum(res.data)
             }
         })
-        return
     }, [])
 
     const findFocusRepository = (id) => {
@@ -171,7 +168,6 @@ const RepositoryList = (props) => {
             wikiRepository: { id: repository.id }
         }
         createRecent(params)
-
         props.history.push({ pathname: `/repository/${repository.id}/overview` })
     }
 
@@ -180,7 +176,6 @@ const RepositoryList = (props) => {
     }
 
     const onSearch = useDebounce(value => {
-        console.log(value)
         switch (activeTabs) {
             case "1":
                 findRepositoryList({ name: value })
@@ -206,9 +201,6 @@ const RepositoryList = (props) => {
         switch (key) {
             case "1":
                 findRepositoryList({})
-                break;
-            case "2":
-                findRecentRepositoryList({ master: userId })
                 break;
             case "3":
                 findFocusRepositoryList({ masterId: userId })
@@ -251,7 +243,7 @@ const RepositoryList = (props) => {
     }
 
     const goRepositoryAdd = () => {
-        history.push("/repositoryAdd")
+        props.history.push("/repositoryAdd")
     }
     // const goRepositoryDetail = repository => {
     //     props.history.push(`/repository/${repository.id}/overview`)
@@ -259,7 +251,7 @@ const RepositoryList = (props) => {
 
     return (
         <Row className="repository-row">
-            <Col xl={{ span: 18, offset: 3 }} lg={{ span: 18, offset: 3 }} md={{ span: 20, offset: 2 }}>
+            <Col xs={{span:24}} xl={{ span: 18, offset: 3 }} lg={{ span: 18, offset: 3 }} md={{ span: 20, offset: 2 }}>
                 <div className="repository">
                     <Breadcumb
                         firstText="知识库"

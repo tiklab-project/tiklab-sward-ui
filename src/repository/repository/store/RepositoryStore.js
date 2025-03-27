@@ -31,10 +31,6 @@ export class RepositoryStore {
     @action
     getAllRepositorylist = async () => {
         const data = await Service("/repository/findRepositoryListByUser", {});
-        if (data.code === 0) {
-            this.allRepositorylist = data.data;
-            this.repositoryList = data.data;
-        }
         return data;
     }
 
@@ -60,24 +56,7 @@ export class RepositoryStore {
         return data;
 
     }
-    @action
-    searchrepositoryList = async (values) => {
-        const param = new FormData()
-        param.append("id", values);
-        const data = await Service("/repository/findRepository", param);
-        if (data.code === 0) {
-            this.repositoryList = [data.data];
-        }
-        return data;
-    }
-    @action
-    searchrepository = async (values) => {
-        const params = new FormData()
-        params.append("id", values)
 
-        const data = await Service("/repository/findRepository", params);
-        return data;
-    }
     @action
     getRepositoryTypeList = async () => {
         const data = await Service("/projectType/findAllProjectType");
@@ -149,7 +128,7 @@ export class RepositoryStore {
         const data = await Service("/icon/findIconList", params)
         return data;
     }
-    @action 
+    @action
     findRepositoryNum = async(params) => {
         const data = await Service("/repository/findRepositoryNum", params)
         return data;

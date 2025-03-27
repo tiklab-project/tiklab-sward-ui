@@ -10,13 +10,18 @@
 
         .edit-title {
             padding-top: 10px;
+            flex: 1;
+            width: 0;
 
             .edit-title-top {
                 height: 25px;
                 line-height: 25px;
                 font-weight: 600;
                 font-size: 16px;
-                outline: none;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                -o-text-overflow: ellipsis;
             }
 
             .edit-title-date {

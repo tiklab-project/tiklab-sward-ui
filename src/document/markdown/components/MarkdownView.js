@@ -25,7 +25,7 @@ const DocumentExamine = (props) => {
     }
     const documentId = props.match.params.id;
     const { findDocument, createDocumentFocus, deleteDocumentFocusByCondition } = MarkdownStore;
-    const { documentTitle, setDocumentTitle } = RepositoryDetailStore;
+    const { documentTitle, setDocumentTitle, repository} = RepositoryDetailStore;
     const { createLike, createShare, updateShare, deleteLike } = CommentStore;
     const [shareVisible, setShareVisible] = useState(false)
     const [documentDate, setDocumentDate] = useState()
@@ -44,6 +44,9 @@ const DocumentExamine = (props) => {
     const [document, setDocument] = useState()
     const path = props.location.pathname.split("/")[3];
     const [loading, setLoading] = useState(true);
+
+    const repositoryStatus = repository?.status === 'nomal';
+
     useEffect(() => {
         setDocumentTitle()
         setValue()
@@ -63,25 +66,19 @@ const DocumentExamine = (props) => {
                     const node = document.node;
                     setDocInfo(node)
                     setDocumentTitle(node.name)
-                    setDocumentDate(node.updateTime)
+                    setDocumentDate(node.updateTime || node.createTime)
                     setLike(document.like)
                     setFocus(document.focus)
                     setLikeNum(document.likenumInt)
                     setCommentNum(document.commentNumber)
                 }
-
-
             }
             setLoading(false)
         })
-        return;
     }, [documentId])
-
-
 
     // 点赞
     const addDocLike = () => {
-
         if (like) {
             const data = {
                 toWhomId: documentId,
@@ -162,7 +159,13 @@ const DocumentExamine = (props) => {
                     {
                         docInfo?.recycle === "0" ? <div className="document-markdown-examine">
                             {
-                                showComment && <Comment documentId={documentId} setShowComment={setShowComment} commentNum={commentNum} setCommentNum={setCommentNum} />
+                                showComment &&
+                                <Comment
+                                    documentId={documentId}
+                                    setShowComment={setShowComment}
+                                    commentNum={commentNum}
+                                    setCommentNum={setCommentNum}
+                                />
                             }
 
                             <div className="examine-top">
@@ -178,22 +181,27 @@ const DocumentExamine = (props) => {
                                 <div className="document-edit">
 
                                     {
-                                        focus ? <svg className="right-icon" aria-hidden="true" onClick={() => deleteFocus()}>
+                                        focus ?
+                                        <svg className="right-icon" aria-hidden="true" onClick={() => deleteFocus()}>
                                             <use xlinkHref="#icon-collectioned"></use>
                                         </svg>
-                                            :
-                                            <svg className="right-icon" aria-hidden="true" onClick={() => createFocus()}>
-                                                <use xlinkHref="#icon-collection"></use>
-                                            </svg>
+                                        :
+                                        <svg className="right-icon" aria-hidden="true" onClick={() => createFocus()}>
+                                            <use xlinkHref="#icon-collection"></use>
+                                        </svg>
                                     }
                                     {
-                                        value && <Button className="document-action-edit" onClick={() => goEdit()}>编辑</Button>
+                                        value && repositoryStatus &&
+                                        <Button className="document-action-edit" onClick={() => goEdit()}>
+                                            编辑
+                                        </Button>
                                     }
                                     <Button className="document-action-share" onClick={() => setShareVisible(true)}>分享</Button>
                                 </div>
                             </div>
                             {
-                                value ? <div className="document-examine-content">
+                                value ?
+                                <div className="document-examine-content">
                                     <Row className="document-examine-row">
                                         <Col
                                             xs={{ span: 24}}
@@ -206,10 +214,10 @@ const DocumentExamine = (props) => {
                                             </div>
                                         </Col>
                                     </Row>
-
                                 </div>
-                                    :
-                                    <> </>
+                                :
+                                <>
+                                </>
                             }
                             <div className="comment-box">
                                 <div className="comment-box-item top-item">

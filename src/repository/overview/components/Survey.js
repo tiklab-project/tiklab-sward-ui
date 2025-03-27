@@ -8,39 +8,33 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Row, Col, Form, Dropdown, Menu, Empty, Spin } from 'antd';
 import { withRouter } from "react-router";
-import { observer } from "mobx-react";
+import {inject, observer} from "mobx-react";
 import Button from "../../../common/button/Button";
 import UserIcon from "../../../common/UserIcon/UserIcon";
 import "./Survey.scss";
 import { getUser } from "tiklab-core-ui";
 import SurveyStore from "../store/SurveyStore";
-import RepositoryDetailStore from "../../common/store/RepositoryDetailStore";
 import AddDropDown from "../../common/components/AddDropDown";
 import DyncmicTimeAxis from "./DyncmicTimeAxis";
 import ImgComponent from "../../../common/imgComponent/ImgComponent";
+
 const Survey = (props) => {
-    const { findRepository, findLogpage, logList, findUserList, findRecentList,
+
+    const {repositoryDetailStore} = props;
+
+    const {repository,expandedTree, setExpandedTree} = repositoryDetailStore;
+    const {findLogpage, logList, findUserList, findRecentList,
         findCategoryListTreeById, findDocumentFocusPage, opLogCondition } = SurveyStore;
 
-    const { expandedTree, setExpandedTree, repositoryCatalogueList } = RepositoryDetailStore;
-
-    const [repositoryInfo, setRepositoryInfo] = useState();
     const repositoryId = props.match.params.repositoryId
     const [recentViewDocumentList, setRecentViewDocumentList] = useState([]);
     const [focusDocumentList, setFocusDocumentList] = useState([])
     const [userList, setUserList] = useState();
     const userId = getUser().userId;
-    const tenant = getUser().tenant;
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         findLogpage({ data: { repositoryId: repositoryId }, pageParam: { ...opLogCondition.pageParam, pageSize: 10 } })
-
-        findRepository({ id: repositoryId }).then(res => {
-            if (res.code === 0) {
-                setRepositoryInfo(res.data)
-            }
-        })
         const recentParams = {
             masterId: userId,
             model: "document",
@@ -58,9 +52,7 @@ const Survey = (props) => {
                 setRecentViewDocumentList([...res.data])
                 setLoading(false)
             }
-
         })
-
         const data = {
             masterId: userId,
             repositoryId: repositoryId
@@ -70,15 +62,12 @@ const Survey = (props) => {
                 console.log(res)
                 setFocusDocumentList(res.data.dataList)
             }
-
         })
-
         findUserList({ domainId: repositoryId }).then(res => {
             if (res.code === 0) {
                 setUserList(res.data)
             }
         })
-        return;
     }, [repositoryId])
 
     const goDocumentDetail = document => {
@@ -113,27 +102,23 @@ const Survey = (props) => {
         })
     }
 
-
     return (
         <Row className="repository-survey-row">
             <Col xl={{ span: 18, offset: 3 }} lg={{ span: 18, offset: 3 }} md={{ span: 20, offset: 2 }} className="repository-col">
                 <div className="repository-survey">
                     {
-                        repositoryInfo && <Fragment>
+                        repository && <Fragment>
                             <div className="repository-top">
-
                                 <div className="top-left">
                                     <div>
                                         <ImgComponent
-                                            src={repositoryInfo.iconUrl}
+                                            src={repository.iconUrl}
                                             alt=""
                                             className="repository-icon"
                                         />
                                     </div>
-
-
                                     <div className="top-name">
-                                        <div className="name">{repositoryInfo?.name}</div>
+                                        <div className="name">{repository?.name}</div>
                                         <div className="user">
                                             {
                                                 userList && userList.length > 0 && userList.map((item, index) => {
@@ -145,7 +130,7 @@ const Survey = (props) => {
                                             }
                                             <div className="user-more" onClick={() => props.history.push(`/repository/${repositoryId}/set/user`)}>
                                                 <svg className="user-more-icon" aria-hidden="true">
-                                                    <use xlinkHref="#icon-more-white"></use>
+                                                    <use xlinkHref="#icon-more-blue"></use>
                                                 </svg>
                                             </div>
                                         </div>
@@ -159,9 +144,7 @@ const Survey = (props) => {
 
                                         </div> */}
                                     </div>
-
                                 </div>
-
                                 <div className="top-right">
                                     <AddDropDown category={null} isButton={true} button="text" />
                                     <Button>分享</Button>
@@ -224,9 +207,7 @@ const Survey = (props) => {
 
                             }
                         </Spin>
-
                     </div>
-
 
                     <div className="home-dynamic">
                         <div className="dynamic-box-title">
@@ -249,4 +230,4 @@ const Survey = (props) => {
     )
 }
 
-export default withRouter(observer(Survey));
+export default withRouter(inject('repositoryDetailStore')(observer(Survey)));

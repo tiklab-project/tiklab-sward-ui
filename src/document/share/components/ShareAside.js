@@ -17,9 +17,9 @@ import {getFileIcon} from "../../../common/utils/overall";
 const { Sider } = Layout;
 const ShareAside = (props) => {
     // 解析props
-    const origin = location.origin;
-    const { shareStore } = props;
+    const { shareStore} = props;
     const tenant = props.location.search.split("=")[1];
+    const origin = location.origin;
     //语言包
     const { t } = useTranslation();
     const moveRef = useRef([]);
@@ -30,6 +30,7 @@ const ShareAside = (props) => {
     const shareLink = props.match.params.shareId;
     const id = props.location.pathname.split("/")[4];
     const [repositoryCatalogueList, setRepositoryCatalogueList] = useState([])
+    const locationStatePassWord = props.location.state?.password;
 
     useEffect(() => {
         setSelectKey(id);
@@ -46,16 +47,16 @@ const ShareAside = (props) => {
         }
         // 判断是否需要验证码
         judgeAuthCode(params).then(data => {
-            if (data.data === "true") {
+            if (data.data === "true" && locationStatePassWord!== "true") {
                 if(version !== "cloud"){
                     window.location.href = `${origin}/#/passWord/${shareLink}`
                 }
                 if(version === "cloud"){
                     window.location.href = `${origin}/#/passWord/${shareLink}?tenant=${tenant}`
                 }
+                return
             }
-
-            if (data.data === "false") {
+            if (data.data === "false" || locationStatePassWord === 'true') {
                 findShareCategory(paramsData).then((data) => {
                     if (data.code === 0) {
                         setRepositoryCatalogueList(data.data)
@@ -68,7 +69,6 @@ const ShareAside = (props) => {
                 })
             }
         })
-        return;
     }, [shareLink])
 
     // 跳转到对应页面

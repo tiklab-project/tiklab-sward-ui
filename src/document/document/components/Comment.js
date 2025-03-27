@@ -213,6 +213,7 @@ const Comment = (props) => {
             }
         })
     }
+
     return (
         <div className="comment" ref = {commonBox}>
             <div className="comment-top">

@@ -17,7 +17,7 @@ const { Sider } = Layout;
 
 const RepositoryAside = (props) => {
     const { isShowText, SetIsShowText, ChangeModal, initRouters, path, setUrl, backUrl, backName } = props;
-    const isInProject = props.location.pathname.split("/")[2];
+
     const [projectRouter, setProjectRouter] = useState([]);
 
     const [moreMenu, setMoreMenu] = useState()
@@ -59,7 +59,7 @@ const RepositoryAside = (props) => {
 
     /**
      * 点击左侧菜单
-     * @param {*} key 
+     * @param {*} key
      */
     const selectMenu = (key) => {
         // setSelectKey(key)
@@ -100,7 +100,7 @@ const RepositoryAside = (props) => {
         setTheme(theme)
         return name;
     }
-  
+
     return (
         <Fragment>
             <Sider trigger={null} collapsible collapsed={!isShowText} collapsedWidth="75" width="200"

@@ -10,10 +10,10 @@ import { Modal, Button } from 'antd';
 import "./ArchivedFree.scss";
 import nodeArchived from "../../assets/images/nodeArchived.png";
 import nodeRecycle from "../../assets/images/nodeRecycle.png";
-import repositoryArchived from "../../assets/images/repositoryArchived.png";
 import repositoryRecycle from "../../assets/images/repositoryRecycle.png";
 import {applySubscription} from "tiklab-core-ui"
 // import Button from "../../common/button/Button";
+
 const ArchivedFree = (props) => {
     const { archivedFreeVisable, setArchivedFreeVisable } = props;
     const [imgUrl, setImgUrl] = useState(nodeArchived);
@@ -25,17 +25,12 @@ const ArchivedFree = (props) => {
         {
             id: "nodeArchived",
             imgUrl: nodeArchived,
-            title: "归档文档，目录"
+            title: "归档知识库"
         },
         {
             id: "nodeRecycle",
             imgUrl: nodeRecycle,
-            title: "文档，目录回收站"
-        },
-        {
-            id: "repositoryArchived",
-            imgUrl: repositoryArchived,
-            title: "归档知识库"
+            title: "文档目录回收站"
         },
         {
             id: "repositoryRecycle",

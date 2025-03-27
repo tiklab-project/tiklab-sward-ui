@@ -27,11 +27,13 @@ const PassWord = (props) => {
      * 校验密码
      */
     const jump = ()=> {
-        verifyAuthCode({shareLink:`${props.match.params.shareId}`,authCode:value.trim()}).then((data)=> {
+        verifyAuthCode({
+            shareLink:`${props.match.params.shareId}`,
+            authCode:value.trim()
+        }).then((data)=> {
             if(data.data === "true"){
                 if(version !== "cloud"){
                     props.history.push({pathname: `/share/${props.match.params.shareId}`, state: {password: data.data}})
-                    
                 }
                 if(version === "cloud"){
                     props.history.push({pathname: `/share/${props.match.params.shareId}`,search: `?tenant=${tenant}`, state: {password: data.data}})

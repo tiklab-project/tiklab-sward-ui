@@ -15,7 +15,7 @@ import Breadcumb from "../../../../common/breadcrumb/Breadcrumb";
 import RepositoryIcon from "./RepositoryChangeIcon";
 import { PrivilegeProjectButton } from "tiklab-privilege-ui";
 import { Collapse } from 'antd';
-import { getUser, getVersionInfo } from "tiklab-core-ui";
+import { getVersionInfo } from "tiklab-core-ui";
 import ArchivedFree from "../../../../common/components/ArchivedFree";
 import ImgComponent from "../../../../common/imgComponent/ImgComponent";
 const { Panel } = Collapse;
@@ -40,51 +40,29 @@ const BasicInfo = props => {
 
     const [form] = Form.useForm();
     const repositoryId = props.match.params.repositoryId;
-    const { repositorySetStore, systemRoleStore, RepositoryRecycleModal } = props;
-    const { deleteRepository, updateRepository, findRepository, findAllUser, uselist } = repositorySetStore;
+    const { repositorySetStore, repositoryDetailStore, RepositoryRecycleModal,ArchivedComponent } = props;
+    const { deleteRepository, updateRepository, findAllUser, uselist } = repositorySetStore;
+    const { findRepository, repository } = repositoryDetailStore;
+
     const [disable, setDisabled] = useState(true);
-    const [iconUrl, setIconUrl] = useState();
     const [visible, setVisible] = useState(false);
-    const [repositoryInfo, setRepositoryInfo] = useState()
-    const tenant = getUser().tenant;
-    const userId = getUser().userId
+
     const [confirmForm] = Form.useForm();
+    //移到回收站弹出框
     const [repositoryRecycleVisable, setRepositoryRecycleVisable] = useState(false);
     const versionInfo = getVersionInfo();
     const [archivedFreeVisable, setArchivedFreeVisable] = useState(false)
 
     useEffect(() => {
-        info()
         findAllUser()
-        return;
     }, [])
-
-    const info = () => {
-        findRepository(repositoryId).then((response) => {
-            if (response.code === 0) {
-                const data = response.data;
-
-                form.setFieldsValue({
-                    name: data.name,
-                    limits: data.limits,
-                    desc: data.desc,
-                    master: data.master.id
-                })
-                setRepositoryInfo(data)
-                setIconUrl(response.data.iconUrl)
-                const isPublish = data?.projectLimits === "0" ? true : false
-                systemRoleStore.getInitProjectPermissions(userId, repositoryId, isPublish)
-            }
-
-        })
-    };
 
     const cancel = () => {
         form.setFieldsValue({
-            name: repositoryInfo.name,
-            limits: repositoryInfo.limits,
-            desc: repositoryInfo.desc,
-            master: repositoryInfo.master.id
+            name: repository.name,
+            limits: repository.limits,
+            desc: repository.desc,
+            master: repository.master.id
         })
         setDisabled(true)
     }
@@ -93,12 +71,11 @@ const BasicInfo = props => {
         form.validateFields().then((values) => {
             const data = {
                 ...values,
-                master: { id: values.master },
                 id: repositoryId
             }
-
             updateRepository(data).then(res => {
                 if (res.code === 0) {
+                    findRepository(repositoryId)
                     message.info('修改成功');
                 }
             })
@@ -107,13 +84,17 @@ const BasicInfo = props => {
 
     const [isModalVisible, setIsModalVisible] = useState(false);
 
+    /**
+     * 删除知识库
+     */
     const showModal = () => {
         // 免费版本
-
         setIsModalVisible(true);
-
     };
 
+    /**
+     * 移到回收站
+     */
     const showRecycle = () => {
         if (versionInfo.expired === false) {
             setRepositoryRecycleVisable(true)
@@ -122,8 +103,12 @@ const BasicInfo = props => {
         }
     }
 
-
-
+    /**
+     * 归档
+     */
+    const showArchived = () => {
+        setArchivedFreeVisable(true)
+    }
 
     const handleCancel = () => {
         setIsModalVisible(false);
@@ -141,9 +126,27 @@ const BasicInfo = props => {
                 <svg aria-hidden="true" className="img-icon" fill="#fff">
                     <use></use>
                 </svg>
-                知识库信息图标信息，可见范围，负责人等信息，可点击修改</div>
+                知识库信息图标信息，可见范围，负责人等信息，可点击修改
+            </div>
         </div>
     );
+
+    const repositoryInfoArchived = () => (
+        <div>
+            <div className="repository-info-title">
+                <svg aria-hidden="true" className="img-icon" fill="#fff">
+                    <use xlinkHref="#icon-systemreset"></use>
+                </svg>
+                归档知识库
+            </div>
+            <div style={{ fontSize: "12px", color: "#999" }}>
+                <svg aria-hidden="true" className="img-icon" fill="#fff">
+                    <use></use>
+                </svg>
+                归档知识库
+            </div>
+        </div>
+    )
 
     const repositoryDelete = () => (
         <div>
@@ -172,28 +175,16 @@ const BasicInfo = props => {
                     props.history.push("/repository")
                 }
             })
-
         })
     };
 
-    // const handleOk = () => {
-    //     deleteRepository(repositoryId).then(response => {
-    //         if (response.code === 0) {
-    //             props.history.push("/repository")
-    //         }
-    //     })
-    //     setIsModalVisible(false);
-    // };
     return (
         <Row>
-            <Col lg={{ span: 24 }} xxl={{ span: "18", offset: "3" }} xl={{ span: "18", offset: "3" }}>
+            <Col xs={{ span: 24 }} xxl={{ span: "18", offset: "3" }} xl={{ span: "18", offset: "3" }}>
                 <div className="repository-set-basicinfo">
-                    <Breadcumb
-                        firstText="知识库信息"
-                    />
-
+                    <Breadcumb firstText="知识库信息"/>
                     <Collapse expandIconPosition={"right"}>
-                        <Panel header={repositoryInfoDesc()} key="1">
+                        <Panel header={repositoryInfoDesc()} key="info">
                             <div className="repository-set-info">
                                 <Form.Item
                                     label="知识库图标"
@@ -203,33 +194,24 @@ const BasicInfo = props => {
                                 >
                                     <div className="form-icon-col">
                                     <ImgComponent
-                                                src={repositoryInfo?.iconUrl}
-                                                alt=""
-                                                className="form-icon"
-                                                width = "50"
-                                                height = "50"
-                                            />
-
+                                        src={repository?.iconUrl}
+                                        alt=""
+                                        className="form-icon"
+                                        width = "50"
+                                        height = "50"
+                                    />
                                         <span>知识库图标，可点击更改按钮修改icon</span>
                                     </div>
                                     <div className="change-button" onClick={() => setVisible(true)}>
                                         更改图标
                                     </div>
                                 </Form.Item>
-                                {/* <Form.Item
-                                    {...formTailLayout}
-                                    labelAlign="left"
-                                >
-                                </Form.Item> */}
-
-
-                                {/* </div> */}
-
                                 <Form
                                     {...layout}
                                     name="basic"
                                     initialValues={{
                                         remember: true,
+                                        ...repository,
                                     }}
                                     form={form}
                                     onFinish={onFinish}
@@ -253,10 +235,9 @@ const BasicInfo = props => {
                                             <Select.Option value="1" key="1">知识库成员</Select.Option>
                                         </Select>
                                     </Form.Item>
-
                                     <Form.Item
                                         label="负责人"
-                                        name="master"
+                                        name={['master','id']}
                                         rules={[
                                             {
                                                 required: false,
@@ -292,15 +273,41 @@ const BasicInfo = props => {
                                 </Form>
                             </div>
                         </Panel>
-                        <Panel header={repositoryDelete()} key="2">
+                        <Panel header={repositoryInfoArchived()} key="archived">
+                            {
+                                ArchivedComponent ? (
+                                    <ArchivedComponent
+                                        {...props}
+                                        setArchivedFreeVisable={setArchivedFreeVisable}
+                                    />
+                                ) : (
+                                    <div className="repository-set-info">
+                                        <div className="repository-set-icon-block">
+                                            可将知识库标记为归档，知识库内将不支持新建操作以及文档编辑操作。
+                                        </div>
+                                        <div className="button-row">
+                                            <div className="change-button" onClick={() => showArchived()}>
+                                                归档知识库
+                                                {
+                                                    versionInfo.expired &&
+                                                    <svg className="img-icon-16" aria-hidden="true" >
+                                                        <use xlinkHref="#icon-member"></use>
+                                                    </svg>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                        </Panel>
+                        <Panel header={repositoryDelete()} key="recycle">
                             <div className="repository-set-delete">
                                 <div className="repository-set-icon-block">
                                     删除知识库会直接把知识库，知识库内的文档，目录都删除；移入回收站此知识库及其目录将在回收站中保留
                                 </div>
-
                                 <PrivilegeProjectButton code={'RepositoryDelete'} domainId={repositoryId}  {...props}>
                                     <div className="button-row">
-                                        <div className="change-button" onClick={() => showRecycle()}>
+                                        <div className="change-button" onClick={() =>showRecycle()}>
                                             移入回收站
                                             {
                                                 versionInfo.expired && <svg className="img-icon-16" aria-hidden="true" >
@@ -312,7 +319,6 @@ const BasicInfo = props => {
                                             删除知识库
                                         </div>
                                     </div>
-
 
                                 </PrivilegeProjectButton>
                             </div>
@@ -354,7 +360,7 @@ const BasicInfo = props => {
                                         ({ getFieldValue }) => ({
                                             validator(rule, value) {
                                                 //getFieldValue可以获得其他输入框的内容
-                                                if (repositoryInfo?.name !== value) return Promise.reject(`请输入正确的知识库名字`);
+                                                if (repository?.name !== value) return Promise.reject(`请输入正确的知识库名字`);
                                                 return Promise.resolve();
                                             }
                                         })
@@ -364,23 +370,21 @@ const BasicInfo = props => {
                                 </Form.Item>
                             </Form>
                         </div>
-
                     </Modal>
                 </div>
-
                 <RepositoryIcon
                     visible={visible}
                     setVisible={setVisible}
                     updateRepository={updateRepository}
-                    setIconUrl={setIconUrl}
+                    findRepository={findRepository}
                 />
                 {
-                    RepositoryRecycleModal && <RepositoryRecycleModal
+                    RepositoryRecycleModal &&
+                    <RepositoryRecycleModal
                         repositoryRecycleVisable={repositoryRecycleVisable}
                         setRepositoryRecycleVisable={setRepositoryRecycleVisable}
                     />
                 }
-
                 <ArchivedFree
                     archivedFreeVisable={archivedFreeVisable}
                     setArchivedFreeVisable={setArchivedFreeVisable}
@@ -390,4 +394,4 @@ const BasicInfo = props => {
     )
 }
 
-export default inject("repositorySetStore", "systemRoleStore")(observer(BasicInfo));
+export default inject("repositorySetStore", "systemRoleStore","repositoryDetailStore")(observer(BasicInfo));

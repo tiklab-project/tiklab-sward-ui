@@ -10,7 +10,7 @@ const api =  'http://192.168.10.15:10000';
 const base_url = JSON.stringify(api);
 
 
-const url = "http://127.0.0.1:8060/";
+const url = "http://127.0.0.1:10000";
 const plugin_base_url = JSON.stringify(url);
 
 
