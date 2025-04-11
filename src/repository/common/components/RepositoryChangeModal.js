@@ -12,7 +12,7 @@ import { withRouter } from "react-router";
 import RepositoryDetailStore from "../store/RepositoryDetailStore";
 import { observer } from "mobx-react";
 import { getUser } from "tiklab-core-ui";
-import ImgComponent from "../../../common/imgComponent/ImgComponent";
+import Img from "../../../common/components/img/Img";
 import { Tooltip } from "antd";
 
 const RepositoryChangeModal = (props) => {
@@ -88,7 +88,7 @@ const RepositoryChangeModal = (props) => {
                 {
                     isShowText ? <div className="repository-title title" onClick={showMoreMenu}>
                         {
-                            repository?.iconUrl && <ImgComponent
+                            repository?.iconUrl && <Img
                                 src={repository?.iconUrl}
                                 className="icon-24"
                                 alt=""
@@ -112,7 +112,7 @@ const RepositoryChangeModal = (props) => {
                         <Tooltip placement="right" title={repository?.name}>
                             <div className='repository-title-icon' onClick={showMoreMenu} >
                                 {
-                                    repository?.iconUrl && <ImgComponent
+                                    repository?.iconUrl && <Img
                                         src={repository?.iconUrl}
                                         title={repository?.name}
                                         // alt={repository?.projectName}
@@ -141,7 +141,7 @@ const RepositoryChangeModal = (props) => {
                         onMouseOut={handleMouseOut}
 
                     >
-                        <ImgComponent
+                        <Img
                             src={repository.iconUrl}
                             alt=""
                             className="list-img"
@@ -169,7 +169,7 @@ const RepositoryChangeModal = (props) => {
                             onMouseOut={handleMouseOut}
 
                         >
-                            <ImgComponent
+                            <Img
                                 src={item.iconUrl}
                                 alt=""
                                 className="list-img"
@@ -187,7 +187,10 @@ const RepositoryChangeModal = (props) => {
                     })
                 }
                 {
-                    allRepositorylist.length > 6 && <div className="change-repository-more" onClick={() => props.history.push("/repository")}>查看更多</div>
+                    allRepositorylist.length > 6 &&
+                    <div className="change-repository-more" onClick={() => props.history.push("/repository")}>
+                        查看更多
+                    </div>
                 }
             </div>
         </div>

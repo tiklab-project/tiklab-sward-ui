@@ -16,7 +16,7 @@ import HomeStore from "../store/HomeStore";
 import {inject, observer, Provider} from "mobx-react";
 import {renderRoutes} from "react-router-config";
 import MessageList from "./MessageList";
-import UserIcon from "../../../common/UserIcon/UserIcon";
+import UserIcon from "../../../common/components/icon/UserIcon";
 import {getUser, productImg, productTitle, productWhiteImg} from "tiklab-core-ui";
 const { Sider } = Layout;
 
@@ -333,7 +333,6 @@ const FirstMenu = (props) => {
                             }
                         </div>
                     </div>
-
                 </div>
             </Sider>
         )

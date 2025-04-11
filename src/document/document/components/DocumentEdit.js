@@ -13,7 +13,7 @@ import { withRouter } from "react-router-dom";
 import "./documentEdit.scss";
 import { EditorBigContent, EditorBig } from "tiklab-slate-ui";
 import "tiklab-slate-ui/es/tiklab-slate.css";
-import Button from "../../../common/button/Button";
+import Button from "../../../common/components/button/Button";
 import DocumentStore from "../store/DocumentStore";
 import RepositoryDetailStore from "../../../repository/common/store/RepositoryDetailStore";
 
@@ -89,6 +89,7 @@ const DocumentEdit = (props) => {
     const saveDocument = (value) => {
         setValue(value)
         const data = {
+            repositoryId: repositoryId,
             id: documentId,
             details: value,
             detailText: editRef.current.innerText
@@ -105,6 +106,7 @@ const DocumentEdit = (props) => {
     const updataDesc = useDebounce((value) => {
         setValue(value);
         const data = {
+            repositoryId: repositoryId,
             id: documentId,
             details: value,
             detailText: editRef.current.innerText
@@ -116,6 +118,7 @@ const DocumentEdit = (props) => {
     const changeTitle = (value) => {
         setDocumentTitle(value.target.value)
         const data = {
+            repositoryId: repositoryId,
             id: documentId,
             node: {
                 id: documentId,
@@ -168,10 +171,9 @@ const DocumentEdit = (props) => {
      * @param {模板} item
      */
     const selectTemplate = (item) => {
-        /**
-         * detailText 没更新到
-         */
+        // detailText 没更新到
         const data = {
+            repositoryId: repositoryId,
             id: documentId,
             details: item.details,
             detailText: item.detailText
@@ -194,7 +196,6 @@ const DocumentEdit = (props) => {
         if (path === "doc") {
             props.history.push(`/repository/${repositoryId}/doc/rich/${documentId}`)
         }
-
         //在收藏界面
         if (path === "collect") {
             props.history.push(`/repository/${repositoryId}/collect/rich/${documentId}`)
@@ -229,39 +230,39 @@ const DocumentEdit = (props) => {
                             ticket={ticket}
                             tenant={tenant}
                         >
-                            <>
-                                <Row className="document-examine-content">
-                                    <Col
-                                        xs={{ span: 24}}
-                                        md={{ span: 20, offset: 2 }}
-                                        xl={{ span: 18, offset: 3 }}
-                                        lg={{ span: 18, offset: 3 }}
-                                    >
-                                        <div className="document-title">
-                                            <Input
-                                                className="document-title-input"
-                                                bordered={false}
-                                                onChange={(value) => setDocumentTitle(value.target.value)}
-                                                value={documentTitle}
-                                                onPressEnter={(value) => changeTitle(value)}
-                                                onBlur={(value) => changeTitle(value)}
-                                            />
-                                        </div>
-                                        <div ref={editRef}>
-                                            <EditorBigContent
-                                                value={value}
-                                                relationWorkStore={relationWorkStore}
-                                                base_url={upload_url}
-                                            />
-                                        </div>
-                                        {
-                                            valueIsEmpty &&
-                                            <div className="template-select">
-                                                <div className="template-title">推荐模版</div>
-                                                <div className="template-list">
-                                                    {
-                                                        templateList && templateList.map((item, index) => {
-                                                            return <div className="template-box" key={index} onClick={() => selectTemplate(item)}>
+                            <Row className="document-examine-content">
+                                <Col
+                                    xs={{ span: 24}}
+                                    md={{ span: 20, offset: 2 }}
+                                    xl={{ span: 18, offset: 3 }}
+                                    lg={{ span: 18, offset: 3 }}
+                                >
+                                    <div className="document-title">
+                                        <Input
+                                            className="document-title-input"
+                                            bordered={false}
+                                            onChange={(value) => setDocumentTitle(value.target.value)}
+                                            value={documentTitle}
+                                            onPressEnter={(value) => changeTitle(value)}
+                                            onBlur={(value) => changeTitle(value)}
+                                        />
+                                    </div>
+                                    <div ref={editRef}>
+                                        <EditorBigContent
+                                            value={value}
+                                            relationWorkStore={relationWorkStore}
+                                            base_url={upload_url}
+                                        />
+                                    </div>
+                                    {
+                                        valueIsEmpty &&
+                                        <div className="template-select">
+                                            <div className="template-title">推荐模版</div>
+                                            <div className="template-list">
+                                                {
+                                                    templateList && templateList.map((item, index) => {
+                                                        return (
+                                                            <div className="template-box" key={index} onClick={() => selectTemplate(item)}>
                                                                 <img
                                                                     src={imgUrlArray[index]}
                                                                     alt=""
@@ -269,23 +270,23 @@ const DocumentEdit = (props) => {
                                                                 />
                                                                 <div className="template-name">{item.name}</div>
                                                             </div>
-                                                        })
-                                                    }
-                                                    <div className="template-box" key={0} onClick={() => setTemplateVisible(true)}>
-                                                        <img
-                                                            src={Template }
-                                                            alt=""
-                                                            className="template-image"
-                                                        />
-                                                        <div className="template-name">更多模版</div>
-                                                    </div>
+                                                        )
+                                                    })
+                                                }
+                                                <div className="template-box" key={0} onClick={() => setTemplateVisible(true)}>
+                                                    <img
+                                                        src={Template }
+                                                        alt=""
+                                                        className="template-image"
+                                                    />
+                                                    <div className="template-name">更多模版</div>
                                                 </div>
                                             </div>
-                                        }
+                                        </div>
+                                    }
 
-                                    </Col>
-                                </Row>
-                            </>
+                                </Col>
+                            </Row>
                         </EditorBig>
                     }
                 </div>

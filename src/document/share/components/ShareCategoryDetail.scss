@@ -98,31 +98,40 @@
 
     .log-child {
         border-bottom: 1px solid #f0f0f0;
-        padding-bottom: 10px;
         &-list {
             display: flex;
             align-items: center;
-            line-height: 30px;
             justify-content: space-between;
             padding: 0 10px;
             border-radius: 4px;
-            padding: 5px;
+            gap: 20px;
+            .log-child-info{
+                line-height: 30px;
+                flex-shrink: 1;
+                min-width: 0;
+            }
             .log-child-title {
                 display: flex;
                 align-items: center;
+                min-width: 0;
+                flex-shrink: 1;
+                gap: 10px;
                 .log-child-name {
-                    cursor: pointer;
-                    width: 120px;
+                    min-width: 0;
+                    flex-shrink: 1;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
                 }
             }
+            .log-child-master {
+                font-size: 12px;
+                color: var(--tiklab-gray-500);
+            }
         }
         .log-child-list:hover {
-            background-color: var(--tiklab-gray-300);
+            background-color: #f6f7f8;
         }
-
 
         .log-icon {
             width: 16px;

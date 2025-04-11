@@ -10,12 +10,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { Input, Empty, message } from "antd";
-import Button from "../../../common/button/Button";
+import Button from "../../../common/components/button/Button";
 import "./comment.scss"
 import { getUser } from "tiklab-core-ui";
 import moment from "moment";
 import CommentStore from "../store/CommentStore"
-import UserIcon from "../../../common/UserIcon/UserIcon";
+import UserIcon from "../../../common/components/icon/UserIcon";
 const Comment = (props) => {
     const { documentId, setShowComment, commentNum, setCommentNum } = props;
     const { createComment, findCommentPage, deleteComment, deleteCommentCondition } = CommentStore;

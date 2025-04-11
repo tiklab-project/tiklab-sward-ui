@@ -8,9 +8,9 @@
 
 import React from "react";
 import { Input } from "antd";
-import "./inputSearch.scss";
+import "./SearchInput.scss";
 
-const InputSearch = (props) => {
+const SearchInput = (props) => {
     const {onChange, placeholder} = props;
     const handleChange = (value) => {
         onChange(value.target.value)
@@ -24,4 +24,4 @@ const InputSearch = (props) => {
         </div>
     )
 }
-export default InputSearch;
+export default SearchInput;

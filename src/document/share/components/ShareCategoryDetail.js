@@ -11,6 +11,7 @@ import { Row, Col, Empty } from 'antd';
 import "./ShareCategoryDetail.scss"
 import { observer, inject } from "mobx-react";
 import {getFileIcon} from "../../../common/utils/overall";
+import DocumentIcon from "../../../common/components/icon/DocumentIcon";
 const ShareCategoryDetail = (props) => {
     const { shareStore } = props;
     const { findCategory, findNodeList } = shareStore;
@@ -31,7 +32,6 @@ const ShareCategoryDetail = (props) => {
         findNodeList({ parentId: categoryId }).then(data => {
             setLogList(data.data)
         })
-        return;
     }, [categoryId])
 
 
@@ -62,7 +62,6 @@ const ShareCategoryDetail = (props) => {
                     {
                         logDetail && <Fragment>
                             <div className="log-title">
-
                                 <div className="title-left">
                                     <svg className="title-icon" aria-hidden="true">
                                         <use xlinkHref="#icon-folder"></use>
@@ -75,46 +74,28 @@ const ShareCategoryDetail = (props) => {
                             </div>
                         </Fragment>
                     }
-
                     <div className="log-child">
                         {
-                            logList && logList.length > 0 ? logList.map(item => {
-                                return <div className="log-child-list" key={item.id} onClick={() => goToDocument(item)}>
-                                    <div className="log-child-title" style={{ flex: 1 }}>
-                                        {
-                                            item.type && item.type === "category" &&
-                                            <svg className="list-img" aria-hidden="true">
-                                                <use xlinkHref="#icon-folder"></use>
-                                            </svg>
-                                        }
-                                        {
-                                            item.type && item.type === "document" && item.documentType === "file" &&
-                                            <svg className="list-img" aria-hidden="true">
-                                                <use xlinkHref={`#icon-${getFileIcon(item.name)}`}></use>
-                                            </svg>
-                                        }
-                                        {
-                                            item.type && item.type === "document" && item.documentType === "markdown" &&
-                                            <svg className="list-img" aria-hidden="true">
-                                                <use xlinkHref="#icon-minmap"></use>
-                                            </svg>
-                                        }
-                                        {
-                                            item.type && item.type === "document" && item.documentType === "document" &&
-                                            <svg className="list-img" aria-hidden="true">
-                                                <use xlinkHref="#icon-file"></use>
-                                            </svg>
-                                        }
-                                        <div className="log-child-info">
-                                            <div className="log-child-name" title={item.name}>{item.name}</div>
-                                            <div className="log-child-master" style={{ width: "100px" }}>{item.master.nickname}</div>
+                            logList && logList.length > 0 ?
+                                logList.map(item => {
+                                    return <div className="log-child-list" key={item.id} onClick={() => goToDocument(item)}>
+                                        <div className="log-child-title" style={{ flex: 1 }}>
+                                            <div>
+                                                <DocumentIcon
+                                                    type={item.type}
+                                                    documentType={item.documentType}
+                                                    documentName={item.name}
+                                                    className="list-img"
+                                                />
+                                            </div>
+                                            <div className="log-child-info">
+                                                <div className="log-child-name" title={item.name}>{item.name}</div>
+                                                <div className="log-child-master" style={{ width: "100px" }}>{item.master.nickname}</div>
+                                            </div>
                                         </div>
-
+                                        <div>{item.createTime}</div>
                                     </div>
-
-                                    <div >{item.createTime}</div>
-                                </div>
-                            })
+                                })
                                 :
                                 <Empty description="暂时没有内容~" />
                         }

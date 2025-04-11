@@ -9,23 +9,22 @@
 import React from "react";
 import "./DynamicItem.scss"
 import { withRouter } from "react-router";
+import {documentPush} from "../../../common/utils/overall";
 const DynamicListItem = (props) => {
     const { content, actionType, key } = props;
     const data = JSON.parse(content)
     const repositoryId = props.match.params.repositoryId;
     const { createUserIcon, createUser, updateTime, documentId, createUserName, createTime,
         documentName, oldValue, newValue, documentType } = data;
+
     const goDynamicDetail = () => {
-        if (documentType === "document") {
-            props.history.push(`/repository/${repositoryId}/doc/rich/${documentId}`)
-        }
-        if (documentType === "markdown") {
-            props.history.push(`/repository/${repositoryId}/doc/markdown/${documentId}`)
-        }
-        if (documentType === "file") {
-            props.history.push(`/repository/${repositoryId}/doc/file/${documentId}`)
-        }
+        documentPush(props.history,repositoryId,{
+            documentType: documentType,
+            id: documentId,
+            type: "document"
+        })
     }
+
     const setDom = () => {
         let dom = null;
         switch (actionType) {

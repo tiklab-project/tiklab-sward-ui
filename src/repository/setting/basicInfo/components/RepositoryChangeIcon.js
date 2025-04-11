@@ -4,7 +4,8 @@ import { Modal, Form, Upload, message } from 'antd';
 import { withRouter } from "react-router";
 import { getUser } from "tiklab-core-ui";
 import RepositoryIconStore from "../store/RepositoryStore";
-import ImgComponent from "../../../../common/imgComponent/ImgComponent";
+import Img from "../../../../common/components/img/Img";
+import BaseModal from "../../../../common/components/modal/Modal";
 const RepositoryIcon = (props) => {
 
     const [form] = Form.useForm();
@@ -76,42 +77,31 @@ const RepositoryIcon = (props) => {
 
 
     return (
-        <>
-            <Modal
-                title="更改图标"
-                visible={visible}
-                // footer={null}
-                onCancel={onCancel}
-                onOk={onFinish}
-                okText={"确定"}
-                cancelText={"取消"}
-                className="repository-icon-modal"
-                closable={false}
-            >
-                <Form >
-                    <Form.Item
-                        label="图标"
-                        name="icon"
-                    >
-                        <div className="repository-icon-box">
-                            {
-                                iconList && iconList.map((item) => {
-                                    return <div className={`repository-icon ${item.iconUrl === repositoryIconUrl ? "icon-select" : null}`} key={item.id} onClick={() => { setProjectIconUrl(item.iconUrl) }}>
-
-                                        <ImgComponent
-                                            src={item.iconUrl}
-                                            alt=""
-                                            className="midden-icon-25"
-                                        />
-                                    </div>
-                                })
-                            }
-                        </div>
-                    </Form.Item>
-                </Form>
-            </Modal>
-
-        </>
+        <BaseModal
+            title="更改图标"
+            visible={visible}
+            onCancel={onCancel}
+            onOk={onFinish}
+            className="repository-icon-modal"
+        >
+            <Form layout={'vertical'}>
+                <Form.Item label="图标" name="icon">
+                    <div className="repository-icon-box">
+                        {
+                            iconList && iconList.map((item) => {
+                                return <div className={`repository-icon ${item.iconUrl === repositoryIconUrl ? "icon-select" : null}`} key={item.id} onClick={() => { setProjectIconUrl(item.iconUrl) }}>
+                                    <Img
+                                        src={item.iconUrl}
+                                        alt=""
+                                        className="midden-icon-25"
+                                    />
+                                </div>
+                            })
+                        }
+                    </div>
+                </Form.Item>
+            </Form>
+        </BaseModal>
     );
 };
 

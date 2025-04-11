@@ -7,14 +7,14 @@
  * @LastEditTime: 2024-12-31 16:57:33
  */
 import React, {useRef, useState} from "react";
-import {Form, Menu, Dropdown, Upload, message} from "antd";
+import {Form, Menu, Dropdown, message} from "antd";
 import CategoryAdd from "./CategoryAdd";
 import { appendNodeInTree } from "../../../common/utils/treeDataAction";
 import { inject, observer } from "mobx-react";
 import { withRouter } from "react-router";
 import { getUser } from "tiklab-core-ui";
 import TemplateStore from "../../../setting/template/store/TemplateStore";
-import {formatFileSize} from "../../../common/utils/overall";
+import { formatFileSize } from "../../../common/utils/overall";
 
 const AddDropDown = (props) => {
     const [form] = Form.useForm();
@@ -53,7 +53,6 @@ const AddDropDown = (props) => {
                     </svg>
                     添加文档
                 </div>
-
             </Menu.Item>
             <Menu.Item key="markdown">
                 <div className="content-add-menu">
@@ -108,7 +107,7 @@ const AddDropDown = (props) => {
         setCreateDocument(value.key)
     }
 
-    // 10MB
+    // 20MB
     const MAX_FILE_SIZE = 20 * 1024 * 1024;
 
     // 允许的文件类型
@@ -137,7 +136,7 @@ const AddDropDown = (props) => {
             // }
             //检查文件大小
             if (file.size > MAX_FILE_SIZE) {
-                message.error(`文件 ${file.name} 大小超过限制（最大 10MB）`);
+                message.error(`文件 ${file.name} 大小超过限制（最大 20MB）`);
                 event.target.value = '';
                 return;
             }

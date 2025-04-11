@@ -9,8 +9,9 @@
 
 import React from 'react';
 import { observer, inject } from "mobx-react";
-import { Modal, Select, Form, Input } from 'antd';
+import { Select, Form, Input } from 'antd';
 import { appendNodeInTree } from '../../../common/utils/treeDataAction';
+import BaseModal from "../../../common/components/modal/Modal";
 
 const CategoryAdd = (props) => {
     const { treePath, addModalVisible, setAddModalVisible, category, form, userList, repositoryDetailStore } = props
@@ -75,14 +76,12 @@ const CategoryAdd = (props) => {
 
     // }
     return (
-        <Modal
+        <BaseModal
             title={"添加目录"}
             visible={addModalVisible}
-            onOk={() => onFinish()}
+            onOk={onFinish}
             onCancel={() => setAddModalVisible(false)}
             destroyOnClose={true}
-            okText="确定"
-            cancelText="取消"
         >
             <Form
                 form={form}
@@ -116,7 +115,7 @@ const CategoryAdd = (props) => {
                     </Select>
                 </Form.Item>
             </Form>
-        </Modal>
+        </BaseModal>
     )
 }
 

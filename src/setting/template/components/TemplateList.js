@@ -11,8 +11,8 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { Layout, Row, Col, Modal, Table, Space } from 'antd';
 import "../components/TemplateList.scss"
 import { observer, inject } from "mobx-react";
-import Breadcrumb from "../../../common/breadcrumb/Breadcrumb";
-import Button from "../../../common/button/Button";
+import Breadcrumb from "../../../common/components/breadcrumb/Breadcrumb";
+import Button from "../../../common/components/button/Button";
 import TemplateStore from "../store/TemplateStore";
 import weekly from "../../../assets/images/weekly.png";
 import weeklyNomal from "../../../assets/images/weeklyNomal.png";

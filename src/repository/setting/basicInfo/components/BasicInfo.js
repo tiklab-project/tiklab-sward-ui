@@ -11,13 +11,13 @@ import { observer, inject } from "mobx-react";
 import { Input, Form, Select, Button, Modal, Row, Col, message, Alert } from "antd";
 import 'moment/locale/zh-cn';
 import "../components/basicInfo.scss";
-import Breadcumb from "../../../../common/breadcrumb/Breadcrumb";
+import Breadcumb from "../../../../common/components/breadcrumb/Breadcrumb";
 import RepositoryIcon from "./RepositoryChangeIcon";
 import { PrivilegeProjectButton } from "tiklab-privilege-ui";
 import { Collapse } from 'antd';
 import { getVersionInfo } from "tiklab-core-ui";
-import ArchivedFree from "../../../../common/components/ArchivedFree";
-import ImgComponent from "../../../../common/imgComponent/ImgComponent";
+import ArchivedFree from "../../../../common/components/archivedFree/ArchivedFree";
+import Img from "../../../../common/components/img/Img";
 const { Panel } = Collapse;
 const BasicInfo = props => {
     const layout = {
@@ -193,7 +193,7 @@ const BasicInfo = props => {
                                     labelAlign="left"
                                 >
                                     <div className="form-icon-col">
-                                    <ImgComponent
+                                    <Img
                                         src={repository?.iconUrl}
                                         alt=""
                                         className="form-icon"

@@ -9,7 +9,7 @@
 import React, { useEffect, useState } from "react";
 import { Provider, inject, observer } from "mobx-react";
 import { Row, Col, Dropdown, message, Spin, Empty } from 'antd';
-import Button from "../../../common/button/Button";
+import Button from "../../../common/components/button/Button";
 import { MarkdownView } from "tiklab-markdown-ui";
 import "tiklab-markdown-ui/es/tiklab-markdown.css";
 import "./markdownView.scss"

@@ -1,20 +1,13 @@
 import React, { Fragment,useEffect,useState } from "react";
-import { Modal, Form,Input,Radio,Select } from 'antd';
+import { Modal, Form,Input } from 'antd';
 import { observer, inject } from "mobx-react";
-const layout = {
-    labelCol: {
-    span: 6,
-    },
-    wrapperCol: {
-    span: 16,
-    },
-};
+import BaseModal from "../../../../common/components/modal/Modal";
 
 const UrlAddData = (props) => {
     const [form] = Form.useForm();
     const {urlAddvisible, setUrlAddvisible, urlDataStore, modalTitle, setUrlDataList, actionType, urlId} = props;
     const { createSystemUrl, findAllSystemUrl, findSystemUrl, updateSystemUrl } = urlDataStore;
-    
+
     useEffect(() => {
         if(actionType === "edit"){
             const params = new FormData();
@@ -31,7 +24,6 @@ const UrlAddData = (props) => {
                 }
             })
         }
-        return;
     }, [urlId])
 
     const onFinish = () => {
@@ -46,7 +38,7 @@ const UrlAddData = (props) => {
                         })
                     }
                 })
-                
+
             }
             if(actionType ==="edit"){
                 values.id = urlId;
@@ -59,15 +51,11 @@ const UrlAddData = (props) => {
                         })
                     }
                 })
-                
+
             }
             setUrlAddvisible(false);
         })
-        
-    };
-    
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+
     };
 
     const onCancel = () => {
@@ -76,67 +64,55 @@ const UrlAddData = (props) => {
     };
 
     return (
-        <>
-        <Fragment>
-            <Modal
-                title={modalTitle}
-                visible={urlAddvisible}
-                onCancel={onCancel}
-                onOk={onFinish}
-                closable = {false}
-            >
-                <Form
-                    {...layout}
-                    name="basic"
-                    form={form}
-                    onFinishFailed={onFinishFailed}
+        <BaseModal
+            title={modalTitle}
+            visible={urlAddvisible}
+            onCancel={onCancel}
+            onOk={onFinish}
+        >
+            <Form name="basic" form={form} layout={'vertical'}>
+                <Form.Item
+                    label={"系统名称"}
+                    name="name"
+                    rules={[
+                        {
+                            required: true,
+                            message: '请输入系统名称',
+                        },
+                    ]}
                 >
-
-                    <Form.Item
-                        label={"系统名称"}
-                        name="name"
-                        rules={[
-                            {
-                                required: true,
-                                message: '请输入系统名称',
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        label={"系统地址"}
-                        name="systemUrl"
-                        rules={[
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label={"系统地址"}
+                    name="systemUrl"
+                    rules={[
                         {
                             required: true,
                             message: '请输入系统地址',
                         },
-                        {   
-                            pattern: new RegExp(/^(https:\/\/|http:\/\/)/, "g") , 
+                        {
+                            pattern: new RegExp(/^(https:\/\/|http:\/\/)/, "g") ,
                             message: '请输入正确网址'
-                        } 
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        label={"浏览器端地址"}
-                        name="webUrl"
-                        rules={[
-                            {   
-                                pattern: new RegExp(/^(https:\/\/|http:\/\/)/, "g") , 
-                                message: '请输入正确网址'
-                            } 
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-                </Form>
-            </Modal>
-        </Fragment>
-        
-        </>
+                        }
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label={"浏览器端地址"}
+                    name="webUrl"
+                    rules={[
+                        {
+                            pattern: new RegExp(/^(https:\/\/|http:\/\/)/, "g") ,
+                            message: '请输入正确网址'
+                        }
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+            </Form>
+        </BaseModal>
     );
 };
 

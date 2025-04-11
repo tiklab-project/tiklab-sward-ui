@@ -9,7 +9,7 @@ import React, {useState, useEffect, useRef} from "react";
 import DocumentStore from "../../document/store/DocumentStore";
 import {Col, Empty, message, Row, Spin} from "antd";
 import "./FileView.scss";
-import Button from "../../../common/button/Button";
+import Button from "../../../common/components/button/Button";
 import ShareModal from "../../share/components/ShareModal";
 import CommentShare from "../../document/store/CommentStore";
 import {VerticalAlignBottomOutlined} from "@ant-design/icons";
@@ -28,6 +28,7 @@ const FileView = (props) => {
     const documentId = props.match.params.id;
     const repositoryId = props.match.params.repositoryId;
     const userId = getUser().userId;
+    const tenant = getUser().tenant;
 
     const { documentTitle, setDocumentTitle } = RepositoryDetailStore;
 
@@ -48,7 +49,6 @@ const FileView = (props) => {
                 setDocumentTitle(res.data?.node?.name)
             }
         }).finally(()=>setSpinning(false))
-
     }, [documentId]);
 
     /**
@@ -62,9 +62,9 @@ const FileView = (props) => {
         deleteDocumentFocusByCondition(params).then(res => {
             if (res.code === 0) {
                 setDocumentData(pev=>({
-                   ...pev,
-                   focus:false
-               }))
+                    ...pev,
+                    focus:false
+                }))
                 message.info("取消收藏文档")
             }
         })
@@ -109,15 +109,18 @@ const FileView = (props) => {
         document.body.removeChild(a);
     }
 
+    //tenant
+    const tenantParam = version==='cloud' ? `?tenant=${tenant}` : '';
+    //文件类型
     const fileType = documentTitle ? getFileExtension(documentTitle) : null;
-
+    //文件地址
     const getFileUrl = {
-        doc: `${upload_url}/document/download/file/${details?.fileUrl}`,
-        ppt: `${upload_url}/document/download/file/${details?.fileUrl}`,
-        pptx: `${upload_url}/document/download/file/${details?.fileUrl}`,
-        default: `${upload_url}/file/${details?.fileUrl}`
+        doc: `${upload_url}/document/download/file/${details?.fileUrl}${tenantParam}`,
+        ppt: `${upload_url}/document/download/file/${details?.fileUrl}${tenantParam}`,
+        pptx: `${upload_url}/document/download/file/${details?.fileUrl}${tenantParam}`,
+        default: `${upload_url}/file/${details?.fileUrl}${tenantParam}`
     }
-
+    //文件地址
     const fileUrl = getFileUrl[fileType] || getFileUrl.default;
 
     //excel文件数据
@@ -163,17 +166,29 @@ const FileView = (props) => {
             const response = await fetch(fileUrl);
             const arrayBuffer = await response.arrayBuffer();
             const workbook = XLSX.read(arrayBuffer, { type: "array" });
-
-            // 获取所有的工作表名
-            const sheetNames = workbook.SheetNames;
-            const allSheetsData = [];
-            for (let i = 0; i < sheetNames.length; i++) {
-                const sheetName = sheetNames[i];
+            const processedSheets = workbook.SheetNames.map((sheetName) => {
                 const worksheet = workbook.Sheets[sheetName];
-                const sheetData = XLSX.utils.sheet_to_json(worksheet, { header: 1, raw: true });
-                allSheetsData.push({ sheetName, sheetData });
-            }
-            setExcelData(allSheetsData);
+                const merges = worksheet['!merges'] || [];
+                // 转换为二维数组
+                const sheetData = XLSX.utils.sheet_to_json(worksheet, {
+                    header: 1,
+                    raw: true,
+                    defval: ""
+                });
+                // 处理合并单元格
+                for (const merge of merges) {
+                    const { s: start, e: end } = merge;
+                    const value = sheetData[start.r] ? (sheetData[start.r][start.c] || "") : "";
+                    for (let row = start.r; row <= end.r; row++) {
+                        if (!sheetData[row]) sheetData[row] = [];
+                        for (let col = start.c; col <= end.c; col++) {
+                            sheetData[row][col] = value;
+                        }
+                    }
+                }
+                return { sheetName, sheetData, merges };
+            });
+            setExcelData(processedSheets);
         } catch (error) {
             let errorMsg = '加载文件失败。';
             if (error.message.includes('password')) {
@@ -247,8 +262,8 @@ const FileView = (props) => {
 
     useEffect(() => {
         const loadFile = async () => {
-            setDocSpinning(true)
-            setEncryption(null)
+            setDocSpinning(true);
+            setEncryption(null);
             try {
                 switch (fileType) {
                     case 'docx':
@@ -265,7 +280,7 @@ const FileView = (props) => {
                         break;
                 }
             } finally {
-                setDocSpinning(false)
+                setDocSpinning(false);
             }
         };
         if(details?.fileUrl){
@@ -296,55 +311,85 @@ const FileView = (props) => {
             case 'xls':
                 return encryption ? defaultContent : (
                     excelData?.length > 0 && excelData.map((sheet, index) => {
-                        //获取最大列数
-                        const maxColumns = Math.max(...sheet.sheetData.map(row => row.length));
+                        const hasHeader = sheet.sheetData.length > 0;
+                        const headerRow = hasHeader ? sheet.sheetData[0] : [];
+                        const dataRows = hasHeader ? sheet.sheetData.slice(1) : sheet.sheetData;
                         return (
                             <div key={index} className='document-file-excel'>
                                 <div className='excel-title'>{sheet.sheetName}</div>
                                 <table border="1" style={{ borderCollapse: 'collapse' }}>
-                                    <thead>
-                                    <tr>
-                                        {(() => {
-                                            const headers = [];
-                                            // 假设表头是第一行
-                                            const headerRow = sheet.sheetData[0];
-                                            for (let cellIndex = 0; cellIndex < maxColumns; cellIndex++) {
-                                                const cell = headerRow[cellIndex];
-                                                headers.push(
-                                                    <th key={cellIndex}>
-                                                        {cell||''}
+                                    {hasHeader && (
+                                        <thead>
+                                        <tr>
+                                            {headerRow.map((cell, colIndex) => {
+                                                const isMerged = sheet.merges.some(merge =>
+                                                    0 >= merge.s.r &&
+                                                    0 <= merge.e.r &&
+                                                    colIndex >= merge.s.c &&
+                                                    colIndex <= merge.e.c &&
+                                                    (0 !== merge.s.r || colIndex !== merge.s.c)
+                                                );
+                                                if (isMerged) return null;
+                                                // 计算合并属性
+                                                let rowSpan = 1;
+                                                let colSpan = 1;
+                                                const merge = sheet.merges.find(m =>
+                                                    m.s.r === 0 && m.s.c === colIndex
+                                                );
+                                                if (merge) {
+                                                    rowSpan = merge.e.r - merge.s.r + 1;
+                                                    colSpan = merge.e.c - merge.s.c + 1;
+                                                }
+                                                return (
+                                                    <th
+                                                        key={`${sheet.sheetName}-header-${colIndex}`}
+                                                        rowSpan={rowSpan > 1 ? rowSpan : undefined}
+                                                        colSpan={colSpan > 1 ? colSpan : undefined}
+                                                    >
+                                                        {cell === null || cell === undefined ? '' : String(cell)}
                                                     </th>
                                                 );
-                                            }
-                                            return headers;
-                                        })()}
-                                    </tr>
-                                    </thead>
+                                            })}
+                                        </tr>
+                                        </thead>
+                                    )}
                                     <tbody>
-                                    {(() => {
-                                        const rows = [];
-                                        for (let rowIndex = 1; rowIndex < sheet.sheetData.length; rowIndex++) {
-                                            const row = sheet.sheetData[rowIndex];
-                                            const cells = [];
-                                            // 渲染当前行的单元格
-                                            for (let cellIndex = 0; cellIndex < row.length; cellIndex++) {
-                                                const cell = row[cellIndex];
-                                                cells.push(
-                                                    <td key={cellIndex}>
-                                                        {cell||''}
+                                    {dataRows.map((row, rowIndex) => (
+                                        <tr key={`${sheet.sheetName}-row-${rowIndex + 1}`}>
+                                            {row.map((cell, colIndex) => {
+                                                // 实际行号需要+1，因为去掉了表头行
+                                                const actualRowIndex = rowIndex + 1;
+                                                // 检查是否是合并单元格的非起始位置
+                                                const isMerged = sheet.merges.some(merge =>
+                                                    actualRowIndex >= merge.s.r &&
+                                                    actualRowIndex <= merge.e.r &&
+                                                    colIndex >= merge.s.c &&
+                                                    colIndex <= merge.e.c &&
+                                                    (actualRowIndex !== merge.s.r || colIndex !== merge.s.c)
+                                                );
+                                                if (isMerged) return null;
+                                                // 计算合并属性
+                                                let rowSpan = 1;
+                                                let colSpan = 1;
+                                                const merge = sheet.merges.find(m =>
+                                                    m.s.r === actualRowIndex && m.s.c === colIndex
+                                                );
+                                                if (merge) {
+                                                    rowSpan = merge.e.r - merge.s.r + 1;
+                                                    colSpan = merge.e.c - merge.s.c + 1;
+                                                }
+                                                return (
+                                                    <td
+                                                        key={`${sheet.sheetName}-cell-${actualRowIndex}-${colIndex}`}
+                                                        rowSpan={rowSpan > 1 ? rowSpan : undefined}
+                                                        colSpan={colSpan > 1 ? colSpan : undefined}
+                                                    >
+                                                        {cell === null || cell === undefined ? '' : String(cell)}
                                                     </td>
                                                 );
-                                            }
-                                            // 如果当前行的单元格数不足 maxColumns，则填充空单元格
-                                            while (cells.length < maxColumns) {
-                                                cells.push(
-                                                    <td key={cells.length}></td>
-                                                );
-                                            }
-                                            rows.push(<tr key={rowIndex}>{cells}</tr>);
-                                        }
-                                        return rows;
-                                    })()}
+                                            })}
+                                        </tr>
+                                    ))}
                                     </tbody>
                                 </table>
                             </div>
@@ -364,10 +409,7 @@ const FileView = (props) => {
             <div className='document-file-name'>
                 {documentTitle}
             </div>
-            <Button
-                type={'primary'}
-                onClick={downFile}
-            >
+            <Button type={'primary'} onClick={downFile}>
                 <VerticalAlignBottomOutlined />
                 &nbsp;&nbsp;下载
                 {details?.fileSize ? `(${details.fileSize})` : ''}
@@ -443,7 +485,6 @@ const FileView = (props) => {
                         <Empty description="文档已被删除或者不存在" />
                     </div>
                 )
-
             }
         </Spin>
     )

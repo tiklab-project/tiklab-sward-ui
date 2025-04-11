@@ -22,9 +22,10 @@ import {
 } from '../../../common/utils/treeDataAction';
 import AddDropDown from '../../common/components/AddDropDown';
 import { DownOutlined } from '@ant-design/icons';
-import ArchivedFree from '../../../common/components/ArchivedFree';
+import ArchivedFree from '../../../common/components/archivedFree/ArchivedFree';
 import SearchModal from '../../common/components/SearchModal';
-import {getFileExtensionWithDot, getFileIcon, removeFileExtension} from "../../../common/utils/overall";
+import {documentPush, getFileExtensionWithDot, removeFileExtension} from "../../../common/utils/overall";
+import DocumentIcon from "../../../common/components/icon/DocumentIcon";
 const { Sider } = Layout;
 
 const RepositoryDocList = (props) => {
@@ -86,7 +87,6 @@ const RepositoryDocList = (props) => {
         } else {
             setSelectKey(id)
         }
-        return
     }, [id])
 
     //点击左侧菜单
@@ -107,26 +107,16 @@ const RepositoryDocList = (props) => {
             wikiRepository: { id: repositoryId }
         }
         createRecent(params)
-
         if (item.type === "category") {
             if(action === "click"){
                 findCategoryChildren(item.id, item.type)
                 setOpenClickCategory(item.id)
             }
             localStorage.setItem("categoryId", item.id);
-
-            props.history.push(`/repository/${repositoryId}/doc/folder/${item.id}`)
         }
-        if (item.documentType === "document") {
-            props.history.push(`/repository/${repositoryId}/doc/rich/${item.id}`)
-        }
-        if (item.documentType === "markdown") {
-            props.history.push(`/repository/${repositoryId}/doc/markdown/${item.id}`)
-        }
-        if (item.documentType === "file") {
-            props.history.push(`/repository/${repositoryId}/doc/file/${item.id}`)
-        }
+        documentPush(props.history,repositoryId,item);
     }
+
     const findCategoryChildren = (id, type) => {
         // setSelectKey(id)
         const isRequested = requsetedCategory.some(category => category === id);
@@ -173,7 +163,8 @@ const RepositoryDocList = (props) => {
                 <div className="repository-aside-archived">
                     移动到回收站
                     {
-                        versionInfo.expired === true && <svg className="img-icon" aria-hidden="true" >
+                        versionInfo.expired === true &&
+                        <svg className="img-icon" aria-hidden="true" >
                             <use xlinkHref="#icon-member"></use>
                         </svg>
                     }
@@ -197,8 +188,6 @@ const RepositoryDocList = (props) => {
                 onOk() { deleteDocumentOrCategory(item, type, id) },
                 onCancel() { },
             });
-
-
         }
         if (value.key === "recycle") {
             if (versionInfo.expired === false) {
@@ -207,7 +196,6 @@ const RepositoryDocList = (props) => {
             } else {
                 setArchivedFreeVisable(true)
             }
-
         }
         if (value.key === "move") {
             setMoveLogListVisible(true)
@@ -234,25 +222,13 @@ const RepositoryDocList = (props) => {
                     const node = removeNodeInTree(repositoryCatalogueList, null, id)
                     console.log(node)
                     if (node) {
-                        if (node.type === "category") {
-                            props.history.push(`/repository/${repositoryId}/doc/folder/${node.id}`)
-                        }
-                        if (node.documentType === "document") {
-                            props.history.push(`/repository/${repositoryId}/doc/rich/${node.id}`)
-                        }
-                        if (node.documentType === "markdown") {
-                            props.history.push(`/repository/${repositoryId}/doc/markdown/${node.id}`)
-                        }
-                        if (node.documentType === "file") {
-                            props.history.push(`/repository/${repositoryId}/doc/file/${node.id}`)
-                        }
+                        documentPush(props.history, repositoryId, node);
                     } else {
                         props.history.push(`/repository/${repositoryId}/overview`)
                     }
                 }else {
                     message.error("删除失败")
                 }
-
             })
         }
         if (type === "document") {
@@ -261,30 +237,16 @@ const RepositoryDocList = (props) => {
                     const node = removeNodeInTree(repositoryCatalogueList, null, id)
                     console.log(node)
                     if (node) {
-                        if (node.type === "category") {
-                            props.history.push(`/repository/${repositoryId}/doc/folder/${node.id}`)
-                        }
-                        if (node.documentType === "document") {
-                            props.history.push(`/repository/${repositoryId}/doc/rich/${node.id}`)
-                        }
-                        if (node.documentType === "markdown") {
-                            props.history.push(`/repository/${repositoryId}/doc/markdown/${node.id}`)
-                        }
-                        if (node.documentType === "file") {
-                            props.history.push(`/repository/${repositoryId}/doc/file/${node.id}`)
-                        }
+                        documentPush(props.history, repositoryId, node);
                     } else {
                         props.history.push(`/repository/${repositoryId}/overview`)
                     }
                 }else {
                     message.error("删除失败")
                 }
-
             })
         }
     }
-
-
 
     useEffect(() => {
         if (inputRef.current) {
@@ -329,7 +291,6 @@ const RepositoryDocList = (props) => {
                     if (reNameId === id) {
                         setDocumentTitle(name)
                     }
-
                 } else {
                     message.info("重命名失败")
                 }
@@ -437,6 +398,7 @@ const RepositoryDocList = (props) => {
             }
         })
     }
+
     const fileTree = (item, index) => {
         return <div
             key={item.id}
@@ -445,21 +407,11 @@ const RepositoryDocList = (props) => {
             onMouseOver={(event) => { event.stopPropagation(), setIsHover(item.id) }}
             onMouseLeave={(event) => { event.stopPropagation(), setIsHover(null) }}
         >
-            {
-                item.documentType === "file" && <svg className="icon-15" aria-hidden="true">
-                    <use xlinkHref={`#icon-${getFileIcon(item.name)}`}></use>
-                </svg>
-            }
-            {
-                item.documentType === "document" && <svg className="icon-15" aria-hidden="true">
-                    <use xlinkHref="#icon-file"></use>
-                </svg>
-            }
-            {
-                item.documentType === "markdown" && <svg className="icon-15" aria-hidden="true">
-                    <use xlinkHref="#icon-minmap"></use>
-                </svg>
-            }
+            <DocumentIcon
+                documentName={item.name}
+                documentType={item.documentType}
+                className={"icon-15"}
+            />
             <div
                 className={`${isRename === item.id ? "repository-input" : "repository-view"}`}
                 contentEditable={isRename === item.id ? true : false}

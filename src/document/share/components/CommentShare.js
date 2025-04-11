@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 import { inject, observer } from "mobx-react";
 import { Empty } from "antd";
 import "./CommentShare.scss"
-import UserIcon from "../../../common/UserIcon/UserIcon";
+import UserIcon from "../../../common/components/icon/UserIcon";
 
 const CommentShare = (props) => {
     const { commentStore, documentId, setShowComment, shareStore } = props;
@@ -19,7 +19,7 @@ const CommentShare = (props) => {
     const [commonList, setCommonList] = useState();
     const [currentPage, setCurrentPage] = useState(10);
     const [totalPage, setTotalPage] = useState(0)
-    
+
     // 获取评论列表
     useEffect(() => {
         const value = {
@@ -89,7 +89,7 @@ const CommentShare = (props) => {
                                         {item.details}
                                     </div>
                                     {/* <div className="comment-operate">
-                                      
+
                                     </div> */}
                                     {
                                         item.commentList && item.commentList.map(children => {

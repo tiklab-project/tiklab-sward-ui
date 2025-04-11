@@ -18,7 +18,7 @@ import Comment from "./Comment";
 import CommentShare from "../store/CommentStore";
 import DocumentStore from "../store/DocumentStore";
 import RepositoryDetailStore from "../../../repository/common/store/RepositoryDetailStore";
-import Button from "../../../common/button/Button";
+import Button from "../../../common/components/button/Button";
 
 const DocumentExamine = (props) => {
     const { relationWorkStore } = props;

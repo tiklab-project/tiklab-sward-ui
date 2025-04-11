@@ -12,9 +12,9 @@ import "./Collect.scss";
 import { Col, Empty, Row } from "antd";
 import { getUser } from "tiklab-core-ui";
 import CollectStore from "../store/CollectStore";
-import InputSearch from "../../../common/input/InputSearch";
+import SearchInput from "../../../common/components/search/SearchInput";
 import { useDebounce } from "../../../common/utils/debounce";
-import PaginationCommon from "../../../common/page/Page";
+import PaginationCommon from "../../../common/components/page/Page";
 
 const Collect = (props) => {
     const { findDocumentFocusPage, documentCondition } = CollectStore;
@@ -86,7 +86,7 @@ const Collect = (props) => {
                     <div className="document-box-title">
                         <span className="name">收藏文档</span>
                         <div className="document-focus-search">
-                            <InputSearch onChange={(value) => onSearch(value)} placeholder={"搜索文档"} />
+                            <SearchInput onChange={(value) => onSearch(value)} placeholder={"搜索文档"} />
                         </div>
                     </div>
                     <div>

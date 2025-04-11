@@ -29,22 +29,22 @@ $entry-color: #F0F2F5;
 $form-input-color: #e3e8f07d;
 
 :root {
-    --tiklab-white: #fff;
-    --tiklab-black: #000;
-    --tiklab-blue: #0D66E4;
-    --tiklab-gray-200: #ececec;
-    --tiklab-gray-300: #EDF0F5;
-    --tiklab-gray-400: #e3e8f0;
-    --tiklab-gray-500: #999;
-    --tiklab-gray-600: #fafbfc;
-    --tiklab-gray-700: #f7f7f7;
-    --tiklab-gray: #efefef;
-    --tiklab-gray-800: #fafbff;
-    --tiklab-padding: 20px;
-    --tiklab-padding-resove: -20px;
-    --tiklab-padding-item: 20px;
-    --tiklab-padding-resove-item:-15px;
 
+    --tiklab-white: #fff;   /* 主色调白*/
+    --tiklab-black: #000;   /* 主色调黑 */
+    --tiklab-blue: #0d66e4;   /* 主色调蓝 */
+    --tiklab-gray-200: #ececec;  /* border 的边线 */
+    --tiklab-gray-300: #edf0f5;  /* hover颜色 */
+    --tiklab-gray-400: #e3e8f0;  /* 左侧导航 选中颜色 */
+    --tiklab-gray-500: #999999; /* 文字次级颜色灰色调 */
+    --tiklab-gray-600: #fafbfc; /* 内容区域色调 */
+    --tiklab-gray-700: #f0f3fa; /* 侧边栏色调 */
+    --tiklab-gray: #efefef;  /* 主色调灰 */
+
+    --tiklab-padding: 20px;  /*页面边距 */
+    --tiklab-padding-resove: -20px; /* 页面边距 */
+    --tiklab-padding-item: 15px;  /* 元素间隔边距 */
+    --tiklab-padding-resove-item:-15px;  /* 元素间隔边距 */
 
     --tiklab-font-12: 12px;
     --tiklab-font-13: 13px;

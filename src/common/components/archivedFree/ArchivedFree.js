@@ -8,9 +8,9 @@
 import React, { useState } from "react";
 import { Modal, Button } from 'antd';
 import "./ArchivedFree.scss";
-import nodeArchived from "../../assets/images/nodeArchived.png";
-import nodeRecycle from "../../assets/images/nodeRecycle.png";
-import repositoryRecycle from "../../assets/images/repositoryRecycle.png";
+import nodeArchived from "../../../assets/images/nodeArchived.png";
+import nodeRecycle from "../../../assets/images/nodeRecycle.png";
+import repositoryRecycle from "../../../assets/images/repositoryRecycle.png";
 import {applySubscription} from "tiklab-core-ui"
 // import Button from "../../common/button/Button";
 

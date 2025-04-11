@@ -11,7 +11,7 @@ import { observer, inject } from "mobx-react";
 import { Input, Row, Col, Modal } from 'antd';
 import { EditorBig, EditorBigContent } from "tiklab-slate-ui";
 import "tiklab-slate-ui/es/tiklab-slate.css";
-import Button from "../../../common/button/Button";
+import Button from "../../../common/components/button/Button";
 import TemplateStore from "../store/TemplateStore";
 import "./templateEdit.scss"
 import { getUser } from "tiklab-core-ui";

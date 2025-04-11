@@ -16,7 +16,6 @@ import Search from "./home/search/components/Search";
 import RepositoryLayout from "./repository/common/components/RepositoryLayout";
 import BasicInfo from "./repository/setting/basicInfo/components/BasicInfo";
 import Layout from "./home/home/components/Layout";
-import ArchivedFree from "./common/components/ArchivedFree";
 import RepositoryDoc from "./repository/document/components/RepositoryDoc";
 import SettingHomeStore from "./setting/home/store/SettingHomeStore";
 import SettingHome from "./setting/home/components/SettingHome";
@@ -30,7 +29,6 @@ export {
     RepositoryLayout,
     BasicInfo,
     Layout,
-    ArchivedFree,
     App,
     FirstMenu,
     RepositoryDoc,

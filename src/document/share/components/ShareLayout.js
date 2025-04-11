@@ -16,6 +16,7 @@ import CommentStore from "../../document/store/CommentStore";
 import ShareStore from '../store/ShareStore';
 import { Provider } from 'mobx-react';
 import logo from "../../../assets/images/sward.png";
+
 const ShareLayout = (props) => {
     const { route } = props;
     const store = {
@@ -77,41 +78,40 @@ const ShareLayout = (props) => {
             </div>
         </div>
     )
-    return (<Provider {...store}>
-        <div className="share-page">
-            <div className="share-page-head">
-                <div className='share-page-logo'>
-                    {
-                        logo && <div className={'frame-header-logo'}>
-                            <img src={logo} alt={'logo'} className="logo-img" />
-                            <div className="logo-text">sward</div>
+    return (
+        <Provider {...store}>
+            <div className="share-page">
+                <div className="share-page-head">
+                    <div className='share-page-logo'>
+                        {
+                            logo && <div className={'frame-header-logo'}>
+                                <img src={logo} alt={'logo'} className="logo-img" />
+                                <div className="logo-text">sward</div>
+                            </div>
+                        }
+                    </div>
+                    <div className="share-header-icon">
+                        <div className="share-header-help" data-title="帮助与支持">
+                            <Dropdown overlay={helpMenu} trigger={"click"}>
+                                <Space>
+                                    <svg aria-hidden="true" className="header-icon" style={{ stroke: '#fff' }} >
+                                        <use xlinkHref="#icon-help-default"></use>
+                                    </svg>
+                                </Space>
+                            </Dropdown>
                         </div>
-                    }
-                </div>
-                <div className="share-header-icon">
-                    <div className="share-header-help" data-title="帮助与支持">
-                        <Dropdown overlay={helpMenu} trigger={"click"}>
-                            <Space>
-                                <svg aria-hidden="true" className="header-icon" style={{ stroke: '#fff' }} >
-                                    <use xlinkHref="#icon-help-default"></use>
-                                </svg>
-                            </Space>
-                        </Dropdown>
                     </div>
                 </div>
-            </div>
-            <Layout className="repositorydetail">
-                <ShareAside
-                    {...props}
-                />
-                <Layout className="repositorydetail-content">
-                    {renderRoutes(route.routes)}
+                <Layout className="repositorydetail">
+                    <ShareAside
+                        {...props}
+                    />
+                    <Layout className="repositorydetail-content">
+                        {renderRoutes(route.routes)}
+                    </Layout>
                 </Layout>
-
-            </Layout>
-        </div>
-    </Provider>
-
+            </div>
+        </Provider>
     )
 }
 

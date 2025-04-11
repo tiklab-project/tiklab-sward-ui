@@ -9,14 +9,14 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Upload, message, Button, Row, Col, Progress } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import "./LoadData.scss";
-import Breadcumb from "../../../../common/breadcrumb/Breadcrumb";
+import "./Confluence.scss";
+import Breadcumb from "../../../../common/components/breadcrumb/Breadcrumb";
 import { getUser } from 'tiklab-core-ui';
 import { observer } from "mobx-react";
-import UrlDataStore from "../store/UrlDataStore";
+import confluenceStore from "../store/ConfluenceStore";
 
-const LoadData = (props) => {
-    const { findCfInputSchedule } = UrlDataStore;
+const Confluence = (props) => {
+    const { findCfInputSchedule } = confluenceStore;
     const ticket = getUser().ticket;
     const [currentSchedule, setCurrentSchedule] = useState({ currentNum: 0, wikiRepository: null, total: 0 })
     const [percent, setPercent] = useState(0);
@@ -36,7 +36,6 @@ const LoadData = (props) => {
                 if (res.data.total && res.data.currentNum) {
                     const rr = res.data.currentNum * 100 / res.data.total;
                     setPercent(rr);
-
                 }
                 if (res.data.status === 1) {
                     clearInterval(timer);
@@ -53,6 +52,7 @@ const LoadData = (props) => {
             }
         })
     }
+
     const uploadProps = {
         name: 'uploadFile',
         action: `${upload_url}/importData/importConfluenceData`,
@@ -74,18 +74,15 @@ const LoadData = (props) => {
                 setTimerS(timer)
             }
             if (info.file.status === "done") {
-
                 setTimerS(null)
-
             }
-
         },
     };
 
     return (
         <div className="load">
             <Breadcumb
-                firstText="Confluence集成"
+                firstText="Confluence导入"
             />
             <div className="load-jira">
                 <div>从本地文件导入Confluence数据</div>
@@ -96,16 +93,15 @@ const LoadData = (props) => {
                     </Upload>
                 </div>
                 {
-                    loading && <div className="load-precess">
+                    loading &&
+                    <div className="load-precess">
                         <Progress percent={percent} showInfo={false} />
                         <div className="load-precess-text"> 当前解析知识库：<span className="load-precess-name">{currentSchedule.wikiRepository?.name}</span>  <span>{currentSchedule.currentNum} / {currentSchedule.total}</span></div>
                     </div>
                 }
             </div>
         </div>
-        //     </Col>
-        // </Row>
     )
 }
 
-export default observer(LoadData);
+export default observer(Confluence);

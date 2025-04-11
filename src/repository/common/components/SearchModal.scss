@@ -1,8 +1,7 @@
 .repository-search-modal {
-    .ant-modal-body {
-        padding: 0;
+    .ant-modal-body{
+        padding: 0 !important;
     }
-    
     .repository-search-modal-input {
         display: flex;
         align-items: center;
@@ -14,6 +13,8 @@
     }
     .recent-box {
         padding: 10px;
+        overflow-y: auto;
+        height: calc(100% - 51px);
         .recent-title {
             color: #202d407a;
             font-weight: 600;

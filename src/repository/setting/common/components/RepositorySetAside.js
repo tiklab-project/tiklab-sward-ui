@@ -13,7 +13,7 @@ import { Layout, Button } from "antd";
 
 import { useTranslation } from 'react-i18next';
 import { getVersionInfo } from 'tiklab-core-ui';
-import ArchivedFree from '../../../../common/components/ArchivedFree';
+import ArchivedFree from '../../../../common/components/archivedFree/ArchivedFree';
 
 const { Sider } = Layout;
 

@@ -33,7 +33,7 @@ import {
     HistoryOutlined,
     LaptopOutlined, DeleteOutlined,
 } from "@ant-design/icons"
-import ArchivedFree from "../../../common/components/ArchivedFree";
+import ArchivedFree from "../../../common/components/archivedFree/ArchivedFree";
 
 const SettingHome = props => {
     const {cloudVersion, setBackupVisible} = props;
@@ -194,15 +194,6 @@ const SettingHome = props => {
                     parentUrl: '/setting/log',
                     icon: <InsertRowBelowOutlined />,
                     num: log?.totalRecord || '0'
-                },
-                {
-                    title: '归档',
-                    id: '/setting/archived',
-                    iseEnhance: true,
-                    icon: <svg className="icon-15" aria-hidden="true">
-                        <use xlinkHref={`#icon-systemreset`}></use>
-                    </svg>,
-                    num: count?.archived || 0
                 },
                 {
                     title: '回收站',

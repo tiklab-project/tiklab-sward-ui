@@ -7,13 +7,17 @@
  * @LastEditTime: 2024-12-31 15:49:19
  */
 import React, { useEffect, useState } from "react";
-import Breadcumb from "../../../common/breadcrumb/Breadcrumb";
+import Breadcumb from "../../../common/components/breadcrumb/Breadcrumb";
 import { inject, observer } from "mobx-react";
 import { getUser } from "tiklab-core-ui";
 import { Row, Col, Empty, Pagination } from "antd";
 import "./FocusDocumentList.scss";
 import HomeStore from "../store/HomeStore";
+import {documentPush} from "../../../common/utils/overall";
+import DocumentIcon from "../../../common/components/icon/DocumentIcon";
+
 const FocusDocumentList = (props) => {
+
     const { findDocumentFocusPage, focusTotal, focusCondition } = HomeStore;
     const userId = getUser().userId;
     const [firstText, setFirstText] = useState();
@@ -38,7 +42,6 @@ const FocusDocumentList = (props) => {
 
             })
         }
-
         if (props.route.path === "/repository/:repositoryId/focusDocumentList") {
             setFirstText("知识库概况")
             const data = {
@@ -54,22 +57,12 @@ const FocusDocumentList = (props) => {
                     console.log(res)
                     setFocusDocumentList(res.data.dataList)
                 }
-
             })
         }
-        return;
     }, [])
 
     const goFocusDocumentDetail = item => {
-        if (item.documentType === "document") {
-            props.history.push(`/repository/${item.wikiRepository.id}/doc/rich/${item.id}`)
-        }
-        if (item.documentType === "markdown") {
-            props.history.push(`/repository/${item.wikiRepository.id}/doc/markdown/${item.id}`)
-        }
-        if (item.documentType === "file") {
-            props.history.push(`/repository/${item.wikiRepository.id}/doc/file/${item.id}`)
-        }
+        documentPush(props.history,item.wikiRepository.id,item)
         sessionStorage.setItem("menuKey", "repository")
     }
 
@@ -85,9 +78,9 @@ const FocusDocumentList = (props) => {
                 console.log(res)
                 setFocusDocumentList(res.data.dataList)
             }
-
         })
     }
+
     return (
         <Row className="focus-row">
             <Col xl={{ span: 18, offset: 3 }} lg={{ span: 18, offset: 3 }} md={{ span: 20, offset: 2 }} className="focus-col">
@@ -98,48 +91,36 @@ const FocusDocumentList = (props) => {
                             firstText={firstText}
                             secondText="收藏"
                         />
-
                     </div>
-
                     <div>
                         {
-                            focusDocumentList && focusDocumentList.length > 0 ? focusDocumentList.map((item) => {
-                                return <div className="document-list-item" key={item.id} >
-                                    <div className='document-item-left' style={{ flex: 1 }}>
-                                        <div>
-                                            {/* <svg className="document-icon" aria-hidden="true">
-                                                    <use xlinkHref="#icon-file"></use>
-                                                </svg> */}
-                                            {
-                                                item.node.documentType === "document" && <svg className="document-icon" aria-hidden="true">
-                                                    <use xlinkHref="#icon-file"></use>
-                                                </svg>
-                                            }
-                                            {
-                                                item.node.documentType === "markdown" && <svg className="document-icon" aria-hidden="true">
-                                                    <use xlinkHref="#icon-minmap"></use>
-                                                </svg>
-                                            }
+                            focusDocumentList && focusDocumentList.length > 0 ?
+                                focusDocumentList.map((item) => {
+                                    return <div className="document-list-item" key={item.id} >
+                                        <div className='document-item-left' style={{ flex: 1 }}>
+                                            <div>
+                                                <DocumentIcon
+                                                    documentType={item.node.documentType}
+                                                    documentName={item.node.name}
+                                                    className={"document-icon"}
+                                                />
+                                            </div>
+                                            <div className="document-item-text">
+                                                <div className="document-title" onClick={() => goFocusDocumentDetail(item.node)}>{item.node.name}</div>
+                                                <div className="document-master" style={{ flex: 1 }}>{item.wikiRepository?.name}</div>
+                                            </div>
                                         </div>
-
-                                        <div className="document-item-text">
-                                            <div className="document-title" onClick={() => goFocusDocumentDetail(item.node)}>{item.node.name}</div>
-                                            <div className="document-master" style={{ flex: 1 }}>{item.wikiRepository?.name}</div>
-                                        </div>
-
+                                        <div className="document-repository">{item.master.nickname}</div>
+                                        <div className="document-time">{item.focusTime}</div>
                                     </div>
-
-                                    <div className="document-repository">{item.master.nickname}</div>
-
-                                    <div className="document-time">{item.focusTime}</div>
-                                </div>
-                            })
+                                })
                                 :
                                 <Empty description="暂时没有数据~" />
                         }
                     </div>
                     {
-                        focusTotal > 0 && <div className="focus-pagination">
+                        focusTotal > 0 &&
+                        <div className="focus-pagination">
                             <Pagination
                                 onChange={onPageChange}
                                 simple

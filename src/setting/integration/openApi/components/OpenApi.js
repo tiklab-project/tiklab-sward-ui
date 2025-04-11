@@ -10,7 +10,7 @@ import {Col, Row} from "antd";
 import "./OpenApi.scss";
 import {RightOutlined} from "@ant-design/icons";
 import {productImg} from "tiklab-core-ui";
-import Breadcrumb from "../../../../common/breadcrumb/Breadcrumb";
+import Breadcrumb from "../../../../common/components/breadcrumb/Breadcrumb";
 
 
 const OpenApi = (props) => {

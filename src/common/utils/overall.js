@@ -57,11 +57,32 @@ export const getFileExtensionWithDot = (fileName) => {
 export const formatFileSize = (size) => {
     const KB_SIZE = 1024; // 1KB = 1024字节
     const MB_SIZE = KB_SIZE * 1024; // 1MB = 1024KB
-
     if (size < MB_SIZE) {
         return `${(size / KB_SIZE).toFixed(2)} KB`; // 转换为 KB
     } else {
         return `${(size / MB_SIZE).toFixed(2)} MB`; // 转换为 MB
     }
 };
+
+/**
+ * 文档跳转维护
+ */
+export const documentPush = (history,repositoryId,document) =>{
+    const {type,documentType,id} = document;
+    if(type==='category'){
+        history.push(`/repository/${repositoryId}/doc/folder/${id}`)
+    } else {
+        switch (documentType) {
+            case 'document':
+                history.push(`/repository/${repositoryId}/doc/rich/${id}`)
+                break
+            case 'markdown':
+                history.push(`/repository/${repositoryId}/doc/markdown/${id}`)
+                break
+            case 'file':
+                history.push(`/repository/${repositoryId}/doc/file/${id}`)
+                break
+        }
+    }
+}
 

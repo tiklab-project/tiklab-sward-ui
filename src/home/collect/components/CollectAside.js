@@ -11,9 +11,10 @@ import "./Collect.scss";
 import { Col, Empty, Layout, Row } from "antd";
 
 import "./CollectAside.scss"
-import InputSearch from "../../../common/input/InputSearch";
+import SearchInput from "../../../common/components/search/SearchInput";
 import { useDebounce } from "../../../common/utils/debounce";
 import {getFileIcon} from "../../../common/utils/overall";
+import DocumentIcon from "../../../common/components/icon/DocumentIcon";
 const { Sider } = Layout;
 const CollectAside = (props) => {
     const { focusDocumentList, selectKey, setSelectKey, findList } = props;
@@ -52,41 +53,31 @@ const CollectAside = (props) => {
                     </div>
                 </div>
                 <div className="collect-doc-search" >
-                    <InputSearch onChange = {(value) => onChange(value)} placeholder = "搜索"/>
+                    <SearchInput onChange = {(value) => onChange(value)} placeholder = "搜索"/>
                 </div>
                 <div>
                     {
-                        focusDocumentList && focusDocumentList.length > 0 ? focusDocumentList.map((item) => {
-                            return <div
-                                onClick={() => goFocusDocumentDetail(item.node)}
-                                className={`document-list-item ${selectKey === item.node.id ? "document-list-select" : ""}`} key={item.id} >
-                                <div className='document-item-left' style={{ flex: 1 }}>
-                                    <div>
-                                        {
-                                            item.node.documentType === "file" &&<svg className="icon-24" aria-hidden="true">
-                                                <use xlinkHref={`#icon-${getFileIcon(item.node.name)}`}></use>
-                                            </svg>
-                                        }
-                                        {
-                                            item.node.documentType === "document" && <svg className="icon-24" aria-hidden="true">
-                                                <use xlinkHref="#icon-file"></use>
-                                            </svg>
-                                        }
-                                        {
-                                            item.node.documentType === "markdown" && <svg className="icon-24" aria-hidden="true">
-                                                <use xlinkHref="#icon-minmap"></use>
-                                            </svg>
-                                        }
-                                    </div>
+                        focusDocumentList && focusDocumentList.length > 0 ?
+                            focusDocumentList.map((item) => {
+                                return <div
+                                    onClick={() => goFocusDocumentDetail(item.node)}
+                                    className={`document-list-item ${selectKey === item.node.id ? "document-list-select" : ""}`} key={item.id} >
+                                    <div className='document-item-left' style={{ flex: 1 }}>
+                                        <div>
+                                            <DocumentIcon
+                                                documentType={item.node.documentType}
+                                                documentName={item.node.name}
+                                                className={"icon-24"}
+                                            />
+                                        </div>
+                                        <div className="document-item-text">
+                                            <div className="document-title" >{item.node.name}</div>
+                                            <div className="document-master" style={{ flex: 1 }}>{item.wikiRepository?.name}</div>
+                                        </div>
 
-                                    <div className="document-item-text">
-                                        <div className="document-title" >{item.node.name}</div>
-                                        <div className="document-master" style={{ flex: 1 }}>{item.wikiRepository?.name}</div>
                                     </div>
-
                                 </div>
-                            </div>
-                        })
+                            })
                             :
                             <Empty description="暂时没有数据~" />
                     }

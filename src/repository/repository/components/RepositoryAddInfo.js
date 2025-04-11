@@ -8,12 +8,12 @@
 import React, { Fragment, useEffect } from "react";
 import { Form, Input, message, Upload } from 'antd';
 import "./repositoryAddInfo.scss";
-import Button from "../../../common/button/Button";
+import Button from "../../../common/components/button/Button";
 import { useState } from "react";
 import { withRouter } from "react-router";
 import { inject, observer } from "mobx-react";
 import { getUser } from "tiklab-core-ui";
-import ImgComponent from "../../../common/imgComponent/ImgComponent";
+import Img from "../../../common/components/img/Img";
 const { TextArea } = Input;
 
 const layout = {
@@ -196,8 +196,12 @@ const RepositoryAddInfo = (props) => {
                         <div className="repository-icon-box">
                             {
                                 iconList && iconList.map((item) => {
-                                    return <div key={item.key} className={`repository-icon  ${item.iconUrl === iconUrl ? "icon-select" : null}`} onClick={() => { setIconUrl(item.iconUrl) }}>
-                                        <ImgComponent
+                                    return <div
+                                        key={item.id}
+                                        className={`repository-icon  ${item.iconUrl === iconUrl ? "icon-select" : null}`}
+                                        onClick={() => { setIconUrl(item.iconUrl) }}
+                                    >
+                                        <Img
                                             src={item.iconUrl}
                                             alt="" className="img-icon"
                                         />

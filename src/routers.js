@@ -50,7 +50,7 @@ const RepositoryDomainRole = AsyncComponent(() => import('./repository/user/Repo
 const RepositoryDomainUser = AsyncComponent(() => import('./repository/user/RepositoryDomainUser.js'))
 const RepositoryBasicInfo = AsyncComponent(() => import('./repository/setting/basicInfo/components/BasicInfo.js'))
 
-// 归档
+// 模版
 const Template = AsyncComponent(() => import('./setting/template/components/TemplateList.js'))
 const TemplateEdit = AsyncComponent(() => import('./setting/template/components/TemplateEdit.js'))
 const TemplatePreview = AsyncComponent(() => import('./setting/template/components/TemplatePreview.js'))
@@ -91,8 +91,8 @@ const ProjectUserGroup = AsyncComponent(() => import("./setting/user/ProjectUser
 const ProjectSystemUserGroup = AsyncComponent(() => import("./setting/user/ProjectSystemUserGroup.js"))
 const ProjectVirtualRoleList = AsyncComponent(() => import("./setting/user/ProjectVirtualRoleList.js"))
 // 系统集成
-const UrlData = AsyncComponent(() => import('./setting/integration/dataImport/components/UrlData.js'));
-const LoadData = AsyncComponent(() => import('./setting/integration/dataImport/components/LoadData.js'));
+const UrlData = AsyncComponent(() => import('./setting/integration/urlData/components/UrlData.js'));
+const Confluence = AsyncComponent(() => import('./setting/integration/confluence/components/Confluence.js'));
 const OpenApi = AsyncComponent(()=>import('./setting/integration/openApi/components/OpenApi.js'));
 const OpenApiDoc = AsyncComponent(()=>import('./setting/integration/openApi/components/OpenApiDoc.js'));
 //工时
@@ -211,12 +211,6 @@ const Routes = [
                 exact: true,
                 component: RepositoryAdd,
                 key: 'home'
-            },
-            {
-                path: "/template",
-                exact: true,
-                component: Template,
-                key: 'template'
             },
             {
                 path: "/collect",
@@ -423,7 +417,7 @@ const Routes = [
                     },
                     {
                         path: "/setting/loadData",
-                        component: LoadData,
+                        component: Confluence,
                         exact: true
                     },
                     {

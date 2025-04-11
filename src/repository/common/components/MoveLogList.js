@@ -7,11 +7,12 @@
  * @LastEditTime: 2024-12-31 16:59:51
  */
 import React, { useEffect, useState } from 'react';
-import { Modal, message } from 'antd';
+import { message } from 'antd';
 import "./moveLogList.scss";
 import { observer, inject } from "mobx-react";
 import { withRouter } from 'react-router';
 import { updataTreeSort, findNodeById, appendNodeInTree } from '../../../common/utils/treeDataAction';
+import BaseModal from "../../../common/components/modal/Modal";
 
 const MoveLogList = (props) => {
     const { moveLogListVisible, setMoveLogListVisible, moveItem, repositoryDetailStore,
@@ -34,7 +35,7 @@ const MoveLogList = (props) => {
 
     }, [moveLogListVisible])
 
-    
+
     const onFinish = () => {
         if (!selectKey) {
             message.warning('请选择要引动到的目录');
@@ -111,7 +112,7 @@ const MoveLogList = (props) => {
         setSelectKey(category)
     }
 
-    
+
     const logTree = (data, levels, faid) => {
         let newLevels = 0;
         return data && data.length > 0 && data.map((category) => {
@@ -156,10 +157,10 @@ const MoveLogList = (props) => {
     }
 
     return (
-        <Modal
+        <BaseModal
             title="选择移动目录"
             visible={moveLogListVisible}
-            onOk={() => onFinish()}
+            onOk={onFinish}
             onCancel={() => setMoveLogListVisible(false)}
         >
             <div className="move-menu">
@@ -167,7 +168,7 @@ const MoveLogList = (props) => {
                     moveLogListVisible && categoryList && logTree(categoryList, 1, 0)
                 }
             </div>
-        </Modal>
+        </BaseModal>
     )
 }
 export default withRouter(inject("repositoryDetailStore")(observer(MoveLogList)));

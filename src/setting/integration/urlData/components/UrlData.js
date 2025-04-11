@@ -1,12 +1,20 @@
+/**
+ * @Description: 地址配置
+ * @Author: gaomengyuan
+ * @Date:
+ * @LastEditors: gaomengyuan
+ * @LastEditTime: 2025/4/10
+ */
 import React, { Fragment, useEffect, useState } from "react";
 import { Table, Space, Row, Col, message } from 'antd';
-import Breadcrumb from "../../../../common/breadcrumb/Breadcrumb";
+import Breadcrumb from "../../../../common/components/breadcrumb/Breadcrumb";
 import "./UrlData.scss";
 import { Provider, observer } from "mobx-react";
 import UrlAddData from "./UrlAddData";
 import UrlDataStore from "../store/UrlDataStore";
-import Button from "../../../../common/button/Button";
+import Button from "../../../../common/components/button/Button";
 const UrlData = () => {
+
     const store = {
         urlDataStore: UrlDataStore
     }
@@ -91,7 +99,7 @@ const UrlData = () => {
     return (<Provider {...store}>
          <Fragment>
             <Row >
-                <Col lg={{ span: 24 }} xl={{ span: "18", offset: "3" }} xxl={{ span: "18", offset: "3" }}>
+                <Col xs={{ span: 24 }} xl={{ span: "18", offset: "3" }} xxl={{ span: "18", offset: "3" }}>
                     <div className="url-data">
                         <Breadcrumb
                             firstText="地址"

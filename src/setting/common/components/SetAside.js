@@ -13,7 +13,7 @@ import {PrivilegeButton, SystemNav} from "tiklab-privilege-ui";
 import SettingHomeStore from "../../home/store/SettingHomeStore"
 import { observer } from 'mobx-react';
 import {disableFunction} from 'tiklab-core-ui';
-import ArchivedFree from '../../../common/components/ArchivedFree';
+import ArchivedFree from '../../../common/components/archivedFree/ArchivedFree';
 import {Layout} from "antd";
 import {renderRoutes} from "react-router-config";
 import "./SetAside.scss"
@@ -170,32 +170,31 @@ const SetAside = (props) => {
                 >
                     <span className="orga-aside-item-left">
                         {
-                            data.icon && <svg className="icon-15" aria-hidden="true">
+                            data.icon &&
+                            <svg className="icon-15" aria-hidden="true">
                                 <use xlinkHref={`#icon-${data.icon}`}></use>
                             </svg>
                         }
                         <span>{data.title}</span>
-
                     </span>
                     {
-                        (data.islink && !authConfig?.authType) && <div className="orga-aside-item-icon">
+                        (data.islink && !authConfig?.authType) &&
+                        <div className="orga-aside-item-icon">
                             <svg className="icon-15" aria-hidden="true">
                                 <use xlinkHref={`#icon-outside`}></use>
                             </svg>
                         </div>
                     }
                     {
-                        data.iseEnhance && disable && <svg className="img-icon-16" aria-hidden="true" >
+                        data.iseEnhance && disable &&
+                        <svg className="img-icon-16" aria-hidden="true" >
                             <use xlinkHref="#icon-member"></use>
                         </svg>
                     }
-
                 </li>
             </PrivilegeButton>
-
         )
     }
-
 
     const isExpandedTree = (key) => {
         return expandedTree.some(item => item === key)
@@ -210,14 +209,13 @@ const SetAside = (props) => {
     }
 
     const renderSubMenu = (item, deep, index) => {
-
         return (
             <PrivilegeButton code={item.purviewCode} key={item.code}>
                 <li key={item.code} title={item.title} className="orga-aside-li">
                     <div className="orga-aside-item orga-aside-first" style={{ paddingLeft: `${deep * 20 + 20}` }} onClick={() => setOpenOrClose(item.id)}>
-
                         {
-                            item.icon && <span to={item.id} className="orga-aside-item-left">
+                            item.icon &&
+                            <span to={item.id} className="orga-aside-item-left">
                                 <svg className="icon-15" aria-hidden="true">
                                     <use xlinkHref={`#icon-${item.icon}`}></use>
                                 </svg>
@@ -234,7 +232,6 @@ const SetAside = (props) => {
                             }
                         </div>
                     </div>
-
                     <ul title={item.title} className={`orga-aside-ul ${isExpandedTree(item.id) ? null : 'orga-aside-hidden'}`}>
                         {
                             item.children && item.children.map(item => {
@@ -246,7 +243,6 @@ const SetAside = (props) => {
                     </ul>
                 </li>
             </PrivilegeButton>
-
         )
     }
 
@@ -287,9 +283,7 @@ const SetAside = (props) => {
                     </div>
                     {props.children}
                 </Sider>
-                <Content
-                    className="orga-background"
-                >
+                <Content className="orga-background">
                     {renderRoutes(route.routes)}
                 </Content>
             </Layout>

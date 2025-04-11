@@ -8,12 +8,14 @@
  */
 import React, { Fragment, useEffect, useState } from 'react';
 import "./home.scss";
-import { Row, Col, Empty, Pagination, Spin } from 'antd';
+import { Row, Col, Empty, Spin } from 'antd';
 import { observer } from 'mobx-react';
 import { getUser } from 'tiklab-core-ui';
 import HomeStore from "../store/HomeStore";
-import UserIcon from '../../../common/UserIcon/UserIcon';
-import ImgComponent from '../../../common/imgComponent/ImgComponent';
+import UserIcon from '../../../common/components/icon/UserIcon';
+import Img from '../../../common/components/img/Img';
+import DocumentIcon from "../../../common/components/icon/DocumentIcon";
+import {documentPush} from "../../../common/utils/overall";
 const Home = (props) => {
     const { findDocumentRecentList, findRecentRepositoryList } = HomeStore;
     const [recentViewDocumentList, setRecentViewDocumentList] = useState([]);
@@ -70,25 +72,14 @@ const Home = (props) => {
 
     // 跳转文档详情
     const goDocumentDetail = item => {
-        if (item.documentType === "document") {
-            props.history.push(`/repository/${item.wikiRepository.id}/doc/rich/${item.id}`)
-        }
-        if (item.documentType === "markdown") {
-            props.history.push(`/repository/${item.wikiRepository.id}/doc/markdown/${item.id}`)
-        }
-        if (item.documentType === "file") {
-            props.history.push(`/repository/${item.wikiRepository.id}/doc/file/${item.id}`)
-        }
+        documentPush(props.history,item.wikiRepository.id,item)
         sessionStorage.setItem("menuKey", "repository")
-
     }
-
 
     return (
         <div className="home">
             <Row className="home-row">
                 <Col xxl={{ span: 16, offset: 4 }} xl={{ span: 18, offset: 3 }} lg={{ span: 18, offset: 3 }} md={{ span: 20, offset: 2 }} className="home-col">
-
                     <div className="home-repository">
                         <div className="repository-title">常用知识库</div>
                         <Spin wrapperClassName="repository-spin" spinning={recentLoading} tip="加载中..." >
@@ -99,7 +90,7 @@ const Home = (props) => {
                                             recentRepositoryDocumentList.map(item => {
                                                 return <div className="repository-item" key={item.id} onClick={() => goRepositoryDetail(item)} >
                                                     <div className="item-title">
-                                                        <ImgComponent
+                                                        <Img
                                                             src={item.iconUrl}
                                                             alt=""
                                                             className="list-img"
@@ -121,54 +112,36 @@ const Home = (props) => {
 
                             }
                         </Spin>
-
                     </div>
-
                     <div className="home-document">
                         <div className="document-box-title">
                             <span className="name">常用文档</span>
                         </div>
                         <Spin wrapperClassName="document-spin" spinning={recentDocLoading} tip="加载中..." >
                             {
-                                recentViewDocumentList && recentViewDocumentList.length > 0 ? recentViewDocumentList.map((item) => {
-                                    return <div className="document-list-item" key={item.id} >
-                                        <div className='document-item-left' style={{ flex: 1 }}>
-                                            <div>
-                                                {/* <svg className="document-icon" aria-hidden="true">
-                                                    <use xlinkHref="#icon-file"></use>
-                                                </svg> */}
-                                                {
-                                                    item.node.documentType === "file" && <svg className="document-icon" aria-hidden="true">
-                                                        <use xlinkHref="#icon-file"></use>
-                                                    </svg>
-                                                }
-                                                {
-                                                    item.node.documentType === "document" && <svg className="document-icon" aria-hidden="true">
-                                                        <use xlinkHref="#icon-file"></use>
-                                                    </svg>
-                                                }
-                                                {
-                                                    item.node.documentType === "markdown" && <svg className="document-icon" aria-hidden="true">
-                                                        <use xlinkHref="#icon-minmap"></use>
-                                                    </svg>
-                                                }
+                                recentViewDocumentList && recentViewDocumentList.length > 0 ?
+                                    recentViewDocumentList.map((item) => {
+                                        return <div className="document-list-item" key={item.id} >
+                                            <div className='document-item-left' style={{ flex: 1 }}>
+                                                <div>
+                                                    <DocumentIcon
+                                                        documentType={item.node.documentType}
+                                                        documentName={item.name}
+                                                        className={"document-icon"}
+                                                    />
+                                                </div>
+                                                <div className="document-item-text">
+                                                    <div className="document-title" onClick={() => goDocumentDetail(item.node)}>{item.name}</div>
+                                                    <div className="document-master" style={{ flex: 1 }}>{item.wikiRepository?.name}</div>
+                                                </div>
                                             </div>
-
-                                            <div className="document-item-text">
-                                                <div className="document-title" onClick={() => goDocumentDetail(item.node)}>{item.name}</div>
-                                                <div className="document-master" style={{ flex: 1 }}>{item.wikiRepository?.name}</div>
+                                            <div className="document-master-name">
+                                                <UserIcon name={item.master.nickname} size="big" />
+                                                {item.master.nickname}
                                             </div>
-
+                                            <div className="document-time">{item.recentTime ? item.recentTime : item.recentTime}</div>
                                         </div>
-
-                                        <div className="document-master-name">
-                                            <UserIcon name={item.master.nickname} size="big" />
-                                            {item.master.nickname}
-                                        </div>
-
-                                        <div className="document-time">{item.recentTime ? item.recentTime : item.recentTime}</div>
-                                    </div>
-                                })
+                                    })
                                     :
                                     <>
                                     {
@@ -178,13 +151,9 @@ const Home = (props) => {
 
                             }
                         </Spin>
-
-                </div>
-
-
-            </Col>
-        </Row>
-
+                    </div>
+                </Col>
+            </Row>
         </div >
     );
 }

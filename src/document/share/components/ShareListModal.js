@@ -12,6 +12,7 @@ import "./ShareListModal.scss";
 import ShareModal from './ShareModal';
 import { observer } from "mobx-react";
 import CommentStore from "../../document/store/CommentStore";
+import BaseModal from "../../../common/components/modal/Modal";
 const { TreeNode } = Tree;
 const ShareListModal = (props) => {
     const { shareListVisible, setShareListVisible, repositoryCatalogueList, findCategoryChildren } = props;
@@ -138,14 +139,11 @@ const ShareListModal = (props) => {
         });
     return (
         <>
-            <Modal
+            <BaseModal
                 title="选择分享目录"
                 visible={shareListVisible}
-                cancelText="取消"
-                okText="确认"
-                onOk={() => onFinish()}
+                onOk={onFinish}
                 onCancel={() => setShareListVisible(false)}
-                className="share-list-modal"
             >
                 <div className="share-list">
                     <Tree
@@ -158,9 +156,7 @@ const ShareListModal = (props) => {
                         {renderTreeNodes(repositoryCatalogueList)}
                     </Tree>
                 </div>
-
-
-            </Modal>
+            </BaseModal>
             <ShareModal
                 nodeIds={nodeIds}
                 shareVisible={shareVisible}

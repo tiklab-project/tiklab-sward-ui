@@ -1,0 +1,42 @@
+.sward-modal {
+    .ant-modal{
+        max-width: calc(100vw - 120px);
+        max-height: calc(100vh - 120px);
+        margin: auto;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .ant-modal-content{
+        display: flex;
+        flex: 0 1 auto;
+        height: auto;
+        flex-direction: column;
+        max-height: inherit;
+    }
+    .ant-modal-header{
+        display: flex;
+        padding: 15px 20px;
+        position: relative;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom:transparent;
+    }
+    .ant-modal-body{
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 0 20px 15px;
+    }
+    .ant-modal-footer{
+        border-top: transparent;
+        padding: 10px 20px;
+    }
+    .cancel-text-button{
+        margin-right: 10px;
+    }
+
+}

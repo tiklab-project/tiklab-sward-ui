@@ -10,14 +10,14 @@ import { Table, Space, Row, Col, Empty, Spin } from 'antd';
 import { observer, inject } from "mobx-react";
 import { withRouter } from "react-router-dom";
 import { getUser } from "tiklab-core-ui";
-import Breadcumb from "../../../common/breadcrumb/Breadcrumb";
-import InputSearch from "../../../common/input/InputSearch";
-import Button from "../../../common/button/Button";
+import Breadcumb from "../../../common/components/breadcrumb/Breadcrumb";
+import SearchInput from "../../../common/components/search/SearchInput";
+import Button from "../../../common/components/button/Button";
 import "./RepositoryList.scss";
 import RepositoryStore from "../store/RepositoryStore";
 import { useDebounce } from "../../../common/utils/debounce";
-import UserIcon from "../../../common/UserIcon/UserIcon";
-import ImgComponent from "../../../common/imgComponent/ImgComponent";
+import UserIcon from "../../../common/components/icon/UserIcon";
+import Img from "../../../common/components/img/Img";
 const RepositoryList = (props) => {
     const { findRepositoryList, createRecent,
         repositoryList, findRecentRepositoryList, createRepositoryFocus,
@@ -94,7 +94,7 @@ const RepositoryList = (props) => {
             key: "name",
             align: "left",
             render: (text, record) => <div onClick={() => goRepositorydetail(record)} className="repository-title">
-                <ImgComponent
+                <Img
                     src={record.iconUrl}
                     alt=""
                     className="list-img"
@@ -268,7 +268,7 @@ const RepositoryList = (props) => {
                                     recentRepositoryDocumentList.map(item => {
                                         return <div className="repository-item" key={item.id} onClick={() => goRepositorydetail(item)} >
                                             <div className="item-title">
-                                                <ImgComponent
+                                                <Img
                                                     src={item.iconUrl}
                                                     alt=""
                                                     className="list-img"
@@ -306,7 +306,7 @@ const RepositoryList = (props) => {
                                     })
                                 }
                             </div>
-                            <InputSearch onChange={(value) => onSearch(value)} placeholder={"搜索知识库"} />
+                            <SearchInput onChange={(value) => onSearch(value)} placeholder={"搜索知识库"} />
                         </div>
                     </div>
                     <div className="repository-table-box">

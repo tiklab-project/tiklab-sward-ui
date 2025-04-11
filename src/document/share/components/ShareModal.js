@@ -10,6 +10,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Modal, Radio , Button } from 'antd';
 import "./shareModal.scss";
 import {getUser} from "tiklab-core-ui"
+import BaseModal from "../../../common/components/modal/Modal";
 const ShareModal = (props) => {
     const origin = location.origin;
     const { shareVisible, setShareVisible,createShare,updateShare, nodeIds, type } = props;
@@ -39,7 +40,6 @@ const ShareModal = (props) => {
                 if(version === "cloud"){
                     setShareUrl(`${origin}/#/share/${data.data.id}?tenant=${user.tenant}`)
                 }
-
             }
         })
     };
@@ -85,14 +85,12 @@ const ShareModal = (props) => {
 
 
     return (
-        <Modal
+        <BaseModal
             title="分享"
             visible={shareVisible}
             onOk={() => setShareVisible(false)}
             onCancel={() => setShareVisible(false)}
             destroyOnClose={true}
-            cancelText = "取消"
-            okText = "确认"
         >
             <Radio.Group onChange={onChange} value={value}>
                 <Radio value="publish">公开链接</Radio>
@@ -116,8 +114,7 @@ const ShareModal = (props) => {
             <div style={{textAlign: "right"}}>
                 <Button onClick={()=>copy()} >复制</Button>
             </div>
-
-        </Modal>
+        </BaseModal>
     )
 }
 export default ShareModal;

@@ -8,7 +8,7 @@
  */
 
 import React, { useEffect, useRef, useState } from "react";
-import "./setMenu.scss";
+import "./SetMenu.scss";
 import { withRouter } from "react-router";
 
 const SetMenu = (props) => {

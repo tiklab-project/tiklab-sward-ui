@@ -12,7 +12,7 @@ import { observer, Provider } from "mobx-react";
 import "./repositoryAdd.scss";
 
 import RepositoryAddInfo from "./RepositoryAddInfo";
-import Breadcumb from "../../../common/breadcrumb/Breadcrumb";
+import Breadcumb from "../../../common/components/breadcrumb/Breadcrumb";
 import RepositoryStore from "../store/RepositoryStore";
 const RepositoryAdd = (props) => {
     const { selectTabs } = props;

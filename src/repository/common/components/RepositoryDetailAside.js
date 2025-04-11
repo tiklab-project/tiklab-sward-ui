@@ -7,11 +7,11 @@
  * @LastEditTime: 2024-12-31 17:01:52
  */
 
-import React, { Fragment, useState, useEffect, useRef } from 'react';
+import React, { Fragment } from 'react';
 import { withRouter } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import RepositoryChangeModal from "./RepositoryChangeModal";
-import RepositoryAside from '../../../common/repositoryAside/RepositoryAside';
+import RepositoryAside from '../../../common/components/repositoryAside/RepositoryAside';
 
 const ProjectDetailAside = (props) => {
 
@@ -60,10 +60,10 @@ const ProjectDetailAside = (props) => {
                 SetIsShowText={SetIsShowText}
                 ChangeModal={RepositoryChangeModal}
                 initRouters={router}
-                backName = {"返回首页"}
+                backName={"返回首页"}
                 path={path}
-                setUrl = {`/repository/${repositoryId}/set/basicInfo`}
-                backUrl = {`/repository`}
+                setUrl={`/repository/${repositoryId}/set/basicInfo`}
+                backUrl={`/repository`}
             />
         </Fragment>
     )

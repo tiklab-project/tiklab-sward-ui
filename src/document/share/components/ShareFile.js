@@ -13,7 +13,7 @@ import { Row, Col } from 'antd';
 import "tiklab-slate-ui/es/tiklab-slate.css";
 import "./ShareFile.scss"
 import { withRouter } from "react-router";
-import Button from "../../../common/button/Button";
+import Button from "../../../common/components/button/Button";
 import {VerticalAlignBottomOutlined} from "@ant-design/icons";
 
 const ShareFile = (props) => {

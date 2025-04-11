@@ -10,7 +10,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { withRouter } from "react-router-dom";
 import "./MarkdownEdit.scss";
 import { Markdown } from "tiklab-markdown-ui";
-import Button from "../../../common/button/Button";
+import Button from "../../../common/components/button/Button";
 import MarkdownStore from "../store/MarkdownStore";
 import "tiklab-markdown-ui/es/tiklab-markdown.css";
 import RepositoryDetailStore from "../../../repository/common/store/RepositoryDetailStore";
@@ -42,8 +42,7 @@ const MarkdownEdit = (props) => {
                             type: 'paragraph',
                             children: [
                                 {
-                                    text:
-                                        '**make** **decorations** to  it _dead_ simple .',
+                                    text: '**make** **decorations** to  it _dead_ simple .',
                                 },
                             ],
                         }
@@ -62,7 +61,6 @@ const MarkdownEdit = (props) => {
     const save = () => {
         console.log(value)
         saveDocument(value, "click")
-
         // editRef.current.submit()
     }
 
@@ -86,6 +84,7 @@ const MarkdownEdit = (props) => {
         const serializeValue = serialize(value)
         console.log(serialize)
         const data = {
+            repositoryId: repositoryId,
             id: documentId,
             details: JSON.stringify(value),
             detailText: serializeValue
@@ -106,7 +105,6 @@ const MarkdownEdit = (props) => {
      */
     const changeEdit = useDebounce((value) => {
         saveDocument(value, "auto")
-
     }, [500])
 
     /**
@@ -117,12 +115,12 @@ const MarkdownEdit = (props) => {
         // setTitleValue(value.target.value)
         console.log(value)
         const data = {
+            repositoryId: repositoryId,
             id: documentId,
             node: {
                 id: documentId,
                 name: value.target.innerText
             }
-
         }
         updateDocument(data).then(res => {
             if (res.code === 0) {
@@ -136,6 +134,7 @@ const MarkdownEdit = (props) => {
         setIsFocus(false)
         document.getElementById("examine-title").blur()
     }
+
     const [isFocus, setIsFocus] = useState()
 
     /**
@@ -143,7 +142,6 @@ const MarkdownEdit = (props) => {
      * @param {按键} event
      */
     const keyDown = (event) => {
-
         if (event.keyCode === 13) {
             event.stopPropagation();
             event.preventDefault()
@@ -163,54 +161,50 @@ const MarkdownEdit = (props) => {
         if (path === "doc") {
             props.history.push(`/repository/${repositoryId}/doc/markdown/${documentId}`)
         }
-
         // 在收藏页面
         if (path === "collect") {
             props.history.push(`/repository/${repositoryId}/collect/markdown/${documentId}`)
         }
     }
 
-
     return <>
-    {
-        docInfo?.recycle === "0" ?
-        <div className="document-markdown-edit">
-            <div className="edit-top">
-                <div className={`edit-title`}>
-
-                    <div
-                        contentEditable={true}
-                        suppressContentEditableWarning
-                        className={`edit-title-top ${isFocus ? "edit-title-focus" : ""}`}
-                        onBlur={(event) => changeTitle(event)}
-                        onKeyDown={(event => keyDown(event))}
-                        onClick={() => focus()}
-                        id="examine-title"
-                    >
-                        {documentTitle}
+        {
+            docInfo?.recycle === "0" ?
+            <div className="document-markdown-edit">
+                <div className="edit-top">
+                    <div className={`edit-title`}>
+                        <div
+                            contentEditable={true}
+                            suppressContentEditableWarning
+                            className={`edit-title-top ${isFocus ? "edit-title-focus" : ""}`}
+                            onBlur={(event) => changeTitle(event)}
+                            onKeyDown={(event => keyDown(event))}
+                            onClick={() => focus()}
+                            id="examine-title"
+                        >
+                            {documentTitle}
+                        </div>
+                        <div className="edit-title-date">
+                            更新日期：{documentDate}
+                        </div>
                     </div>
-                    <div className="edit-title-date">
-                        更新日期：{documentDate}
+                    <div className="edit-right">
+                        <Button type="primary" className="edit-right-save" onClick={() => save()}>保存</Button>
+                        <Button className="edit-right-eqit" onClick={() => goExamine()}>退出</Button>
                     </div>
                 </div>
-                <div className="edit-right">
-                    <Button type="primary" className="edit-right-save" onClick={() => save()}>保存</Button>
-                    <Button className="edit-right-eqit" onClick={() => goExamine()}>退出</Button>
+                <div className="edit-markdown" style={{ height: "calc(100% - 50px)" }}>
+                    {
+                        value && <Markdown value={value} setValue={setValue} onChange={(value) => changeEdit(value)} />
+                    }
                 </div>
             </div>
-            <div className="edit-markdown" style={{ height: "calc(100% - 50px)" }}>
-                {
-                    value && <Markdown value={value} setValue={setValue} onChange={(value) => changeEdit(value)} />
-                }
-            </div>
-        </div>
-          :
-          <div className="document-markdown-empty">
-               <Empty description="文档已被移动到回收站，请去回收站恢复再查看" />
-          </div>
-    }
-
+              :
+              <div className="document-markdown-empty">
+                   <Empty description="文档已被移动到回收站，请去回收站恢复再查看" />
+              </div>
+        }
     </>
-
 }
+
 export default withRouter(MarkdownEdit);

@@ -6,14 +6,14 @@
  * @Description: 动态列表
  */
 import React, { useEffect, useState } from "react";
-import Breadcrumb from "../../../common/breadcrumb/Breadcrumb";
+import Breadcrumb from "../../../common/components/breadcrumb/Breadcrumb";
 import { inject, observer } from "mobx-react";
 import { getUser } from "tiklab-core-ui";
 import { Row, Col, Empty } from "antd";
 import "./DynamicList.scss";
 import SurveyStore from "../store/SurveyStore";
 import DyncmicTimeAxis from "./DyncmicTimeAxis";
-import PaginationCommon from "../../../common/page/Page";
+import PaginationCommon from "../../../common/components/page/Page";
 const DynamicList = (props) => {
     const { findLogpage, logList, opLogCondition } = SurveyStore;
     const userId = getUser().userId;
