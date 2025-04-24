@@ -100,8 +100,8 @@ const FocusDocumentList = (props) => {
                                         <div className='document-item-left' style={{ flex: 1 }}>
                                             <div>
                                                 <DocumentIcon
-                                                    documentType={item.node.documentType}
-                                                    documentName={item.node.name}
+                                                    documentType={item.node?.documentType}
+                                                    documentName={item.node?.name}
                                                     className={"document-icon"}
                                                 />
                                             </div>

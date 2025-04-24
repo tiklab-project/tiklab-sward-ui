@@ -288,12 +288,12 @@ const BasicInfo = props => {
                                         <div className="button-row">
                                             <div className="change-button" onClick={() => showArchived()}>
                                                 归档知识库
-                                                {
-                                                    versionInfo.expired &&
-                                                    <svg className="img-icon-16" aria-hidden="true" >
-                                                        <use xlinkHref="#icon-member"></use>
-                                                    </svg>
-                                                }
+                                                {/*{*/}
+                                                {/*    versionInfo.expired &&*/}
+                                                {/*    <svg className="img-icon-16" aria-hidden="true" >*/}
+                                                {/*        <use xlinkHref="#icon-member"></use>*/}
+                                                {/*    </svg>*/}
+                                                {/*}*/}
                                             </div>
                                         </div>
                                     </div>
@@ -309,17 +309,17 @@ const BasicInfo = props => {
                                     <div className="button-row">
                                         <div className="change-button" onClick={() =>showRecycle()}>
                                             移入回收站
-                                            {
-                                                versionInfo.expired && <svg className="img-icon-16" aria-hidden="true" >
-                                                    <use xlinkHref="#icon-member"></use>
-                                                </svg>
-                                            }
+                                            {/*{*/}
+                                            {/*    versionInfo.expired && */}
+                                            {/*    <svg className="img-icon-16" aria-hidden="true" >*/}
+                                            {/*        <use xlinkHref="#icon-member"></use>*/}
+                                            {/*    </svg>*/}
+                                            {/*}*/}
                                         </div>
                                         <div className="change-button delete-button" onClick={() => showModal()}>
                                             删除知识库
                                         </div>
                                     </div>
-
                                 </PrivilegeProjectButton>
                             </div>
                         </Panel>

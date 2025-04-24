@@ -86,3 +86,14 @@ export const documentPush = (history,repositoryId,document) =>{
     }
 }
 
+export const deleteSuccessReturnCurrenPage = (totalRecord, pageSize, current) => {
+    const maxCurrentCount = current * pageSize;
+    const minCurrentCount = (current - 1) * pageSize + 1;
+    if (totalRecord >= maxCurrentCount) {
+        return current
+    }
+    if (totalRecord <= minCurrentCount) {
+        return current === 1 ? 1 : current - 1
+    }
+    return current
+}

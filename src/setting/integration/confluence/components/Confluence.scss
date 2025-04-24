@@ -1,66 +1,73 @@
-.load {
+.confluence {
     padding: var(--tiklab-padding);
-}
-.load-jira {
-    padding: 20px;
-    border-radius: 10px;
-    background-color: #DEEBFF;
-}
-.load-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
     width: 100%;
-    border-radius: 4px;
-    margin: 15px 0;
-}
-.load-precess {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding-top: 10px;
-    .load-precess-text {
+    height: 100%;
+    overflow: auto;
+    .confluence-steps{
         padding-top: 5px;
-        .load-precess-name {
-            font-weight: 600;
+        padding-bottom: 15px;
+        .ant-steps-item-icon{
+            padding-top: 7px;
         }
     }
-}
-.load-progress {
-    width: 80%;
-    height: 10px;
-    border-radius: 4px;
-    border: 1px #DEEBFF solid ;
-    position: relative;
-    margin-top: 20px;
-    .load-progressbox {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 30px;
-        height: 10px;
-        border-radius: 4px;
-        background-color: #DEEBFF;
-        animation-duration: 1s;
-        /* 动画时长1s */
-        animation-fill-mode: forwards; 
-        /*当动画完成后，保持最后一个属性值（在最后一个关键帧中定义）*/
-        animation-iteration-count: infinite;
-        /* 动画次数 无限次 */
-        animation-name: animationa;
-        /* 执行动画名称 */
-        animation-timing-function: linear;
-    }
-}
 
-@keyframes animationa {
-    /* 修改背景定位 */
-    0% {
-        left: 0;
+    .confluence-upload {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        width: 100%;
+        border-radius: 4px;
+        margin: 15px 0;
+        padding: 20px;
+        background-color: #DEEBFF;
     }
-    100% {
-        left: calc(100% - 30px);
+    .confluence-valid-version{
+        .valid-version{
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            &:not(:last-child){
+                border-bottom: 1px solid #f0f0f0;
+            }
+            &>div:first-child{
+                font-size: 13px;
+                width: 120px;
+            }
+            &>div:last-child{
+                flex: 1;
+                width: 0;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                -o-text-overflow: ellipsis;
+            }
+        }
+        .valid-version-button{
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
     }
+    .confluence-entity-xml{
+        .entity-xml-button{
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+    }
+    .confluence-import{
+        background: #2B2B2B;
+        border-radius: 4px;
+        color: #fff;
+        padding: 10px;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        height: calc(100vh - 130px);
+        overflow: auto;
+    }
+
 }

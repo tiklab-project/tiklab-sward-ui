@@ -14,12 +14,15 @@ import App from "./app";
 import FirstMenu from "./home/home/components/FirstMenu";
 import Search from "./home/search/components/Search";
 import RepositoryLayout from "./repository/common/components/RepositoryLayout";
-import BasicInfo from "./repository/setting/basicInfo/components/BasicInfo";
 import Layout from "./home/home/components/Layout";
 import RepositoryDoc from "./repository/document/components/RepositoryDoc";
 import SettingHomeStore from "./setting/home/store/SettingHomeStore";
 import SettingHome from "./setting/home/components/SettingHome";
 import SettingAside from "./setting/common/components/SetAside";
+import BasicInfo from "./repository/setting/basicInfo/components/BasicInfo";
+import DocumentExamine from "./document/document/components/DocumentExamine";
+import MarkdownView from "./document/markdown/components/MarkdownView";
+import FileView from "./document/file/components/FileView";
 
 export {
     AsyncComponent,
@@ -34,5 +37,9 @@ export {
     RepositoryDoc,
     SettingHomeStore,
     SettingHome,
-    SettingAside
+    SettingAside,
+
+    DocumentExamine,
+    MarkdownView,
+    FileView,
 }

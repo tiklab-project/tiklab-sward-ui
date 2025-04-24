@@ -83,8 +83,8 @@ const ShareCategoryDetail = (props) => {
                                             <div>
                                                 <DocumentIcon
                                                     type={item.type}
-                                                    documentType={item.documentType}
-                                                    documentName={item.name}
+                                                    documentType={item?.documentType}
+                                                    documentName={item?.name}
                                                     className="list-img"
                                                 />
                                             </div>

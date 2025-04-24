@@ -185,12 +185,12 @@ const SetAside = (props) => {
                             </svg>
                         </div>
                     }
-                    {
-                        data.iseEnhance && disable &&
-                        <svg className="img-icon-16" aria-hidden="true" >
-                            <use xlinkHref="#icon-member"></use>
-                        </svg>
-                    }
+                    {/*{*/}
+                    {/*    data.iseEnhance && disable &&*/}
+                    {/*    <svg className="img-icon-16" aria-hidden="true" >*/}
+                    {/*        <use xlinkHref="#icon-member"></use>*/}
+                    {/*    </svg>*/}
+                    {/*}*/}
                 </li>
             </PrivilegeButton>
         )

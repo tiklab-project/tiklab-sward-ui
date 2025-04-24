@@ -95,7 +95,13 @@ const Survey = (props) => {
 
     return (
         <Row className="repository-survey-row">
-            <Col xl={{ span: 18, offset: 3 }} lg={{ span: 18, offset: 3 }} md={{ span: 20, offset: 2 }} className="repository-col">
+            <Col
+                xl={{ span: 18, offset: 3 }}
+                lg={{ span: 18, offset: 3 }}
+                md={{ span: 20, offset: 2 }}
+                xs={{ span: 24 }}
+                className="repository-col"
+            >
                 <div className="repository-survey">
                     {
                         repository && <Fragment>
@@ -158,12 +164,11 @@ const Survey = (props) => {
                                                         <div className='document-item-left'>
                                                             <div>
                                                                 <DocumentIcon
-                                                                    documentType={item.node.documentType}
-                                                                    documentName={item.name}
+                                                                    documentType={item.node?.documentType}
+                                                                    documentName={item?.name}
                                                                     className={"document-icon"}
                                                                 />
                                                             </div>
-
                                                             <div className='document-item-text'>
                                                                 <div className='document-title' onClick={() => goDocumentDetail(item.node)}>{item.name}</div>
                                                                 <div className='document-master'>{item.master.nickname}</div>

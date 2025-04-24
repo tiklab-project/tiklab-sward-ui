@@ -275,11 +275,12 @@ const SettingHome = props => {
                                                                 </div>
                                                                 <div className='home-label'>
                                                                     {childrenItem.title}
-                                                                    {
-                                                                        childrenItem.iseEnhance && versionInfo.expired === true && <svg className="img-icon-16" aria-hidden="true" >
-                                                                            <use xlinkHref="#icon-member"></use>
-                                                                        </svg>
-                                                                    }
+                                                                    {/*{*/}
+                                                                    {/*    childrenItem.iseEnhance && versionInfo.expired === true &&*/}
+                                                                    {/*    <svg className="img-icon-16" aria-hidden="true" >*/}
+                                                                    {/*        <use xlinkHref="#icon-member"></use>*/}
+                                                                    {/*    </svg>*/}
+                                                                    {/*}*/}
                                                                 </div>
                                                                 <div className='home-info'>
                                                                     {childrenItem.num}
@@ -340,11 +341,12 @@ const SettingHome = props => {
                                                                     </div>
                                                                     <div className='home-label'>
                                                                         {childrenItem.title}
-                                                                        {
-                                                                            childrenItem.iseEnhance && versionInfo.expired === true && <svg className="img-icon-16" aria-hidden="true" >
-                                                                                <use xlinkHref="#icon-member"></use>
-                                                                            </svg>
-                                                                        }
+                                                                        {/*{*/}
+                                                                        {/*    childrenItem.iseEnhance && versionInfo.expired === true && */}
+                                                                        {/*    <svg className="img-icon-16" aria-hidden="true" >*/}
+                                                                        {/*        <use xlinkHref="#icon-member"></use>*/}
+                                                                        {/*    </svg>*/}
+                                                                        {/*}*/}
                                                                     </div>
                                                                     <div className='home-info'>
                                                                         {childrenItem.num}

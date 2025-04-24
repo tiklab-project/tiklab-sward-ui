@@ -201,6 +201,7 @@ const DocumentEdit = (props) => {
             props.history.push(`/repository/${repositoryId}/collect/rich/${documentId}`)
         }
     }
+
     return (<>
         {
             docInfo?.recycle === "0" ? <div className="documnet-edit">
@@ -229,6 +230,7 @@ const DocumentEdit = (props) => {
                             viewImageUrl="/image"
                             ticket={ticket}
                             tenant={tenant}
+                            categoryMenu={true}
                         >
                             <Row className="document-examine-content">
                                 <Col

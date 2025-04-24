@@ -52,7 +52,6 @@ const RepositoryDocList = (props) => {
     const inputRef = React.useRef(null);
     const [isRename, setIsRename] = useState()
     const [archivedNode, setArchivedNode] = useState()
-    const [deleteVisible, setDeleteVisible] = useState(false)
     const [nodeArchivedVisable, setNodeArchivedVisable] = useState(false)
     const [nodeRecycleVisable, setNodeRecycleVisable] = useState(false)
     const versionInfo = getVersionInfo();
@@ -64,7 +63,8 @@ const RepositoryDocList = (props) => {
         setLoading(true)
         const data = {
             repositoryId: repositoryId,
-            dimensions: [1, 2]
+            dimensions: [1, 2],
+            approveUserId: userId,
         }
         findNodePageTree(data).then((data) => {
             setRepositoryCatalogueList([...data.data])
@@ -160,15 +160,16 @@ const RepositoryDocList = (props) => {
                 分享
             </Menu.Item>
             <Menu.Item key="recycle">
-                <div className="repository-aside-archived">
-                    移动到回收站
-                    {
-                        versionInfo.expired === true &&
-                        <svg className="img-icon" aria-hidden="true" >
-                            <use xlinkHref="#icon-member"></use>
-                        </svg>
-                    }
-                </div>
+                移动到回收站
+                {/*<div className="repository-aside-archived">*/}
+                {/*    移动到回收站*/}
+                {/*    {*/}
+                {/*        versionInfo.expired === true &&*/}
+                {/*        <svg className="img-icon" aria-hidden="true" >*/}
+                {/*            <use xlinkHref="#icon-member"></use>*/}
+                {/*        </svg>*/}
+                {/*    }*/}
+                {/*</div>*/}
             </Menu.Item>
         </Menu>
     };
@@ -226,7 +227,7 @@ const RepositoryDocList = (props) => {
                     } else {
                         props.history.push(`/repository/${repositoryId}/overview`)
                     }
-                }else {
+                } else {
                     message.error("删除失败")
                 }
             })
@@ -277,14 +278,16 @@ const RepositoryDocList = (props) => {
                     if (reNameId === id) {
                         setCategoryTitle(name)
                     }
-
                 } else {
                     message.info("重命名失败")
                 }
             })
         }
         if (type === "document") {
-            updateDocument(params).then(data => {
+            updateDocument({
+                ...params,
+                repositoryId: repositoryId,
+            }).then(data => {
                 if (data.code === 0) {
                     setIsRename(null)
                     updateNodeName(repositoryCatalogueList, reNameId, name)
@@ -379,7 +382,10 @@ const RepositoryDocList = (props) => {
     }
 
     const updateDocumentSort = (params) => {
-        updateDocument(params).then(res => {
+        updateDocument({
+            ...params,
+            repositoryId: repositoryId,
+        }).then(res => {
             if (res.code === 0) {
                 updataTreeSort(repositoryCatalogueList, params.node)
                 setMoveLogListVisible(false)
@@ -408,8 +414,8 @@ const RepositoryDocList = (props) => {
             onMouseLeave={(event) => { event.stopPropagation(), setIsHover(null) }}
         >
             <DocumentIcon
-                documentName={item.name}
-                documentType={item.documentType}
+                documentName={item?.name}
+                documentType={item?.documentType}
                 className={"icon-15"}
             />
             <div
@@ -513,7 +519,6 @@ const RepositoryDocList = (props) => {
                     sort={item.sort}
                     className={`repository-menu-node ${item.id === selectKey ? "repository-menu-select" : ""} `}
                 />
-
             }
         })
     }
@@ -583,14 +588,6 @@ const RepositoryDocList = (props) => {
                 findCategoryChildren={findCategoryChildren}
                 setOpenOrClose={setOpenOrClose}
             />
-            <Modal
-                title="确定删除"
-                centered={true}
-                visible={deleteVisible}
-                width={400}
-            >
-                确定删除文档？
-            </Modal>
             {
                 NodeArchivedModal && versionInfo.expired === false &&
                 <NodeArchivedModal

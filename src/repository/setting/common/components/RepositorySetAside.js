@@ -12,7 +12,7 @@ import { withRouter } from "react-router-dom";
 import { Layout, Button } from "antd";
 
 import { useTranslation } from 'react-i18next';
-import { getVersionInfo } from 'tiklab-core-ui';
+import { disableFunction } from 'tiklab-core-ui';
 import ArchivedFree from '../../../../common/components/archivedFree/ArchivedFree';
 
 const { Sider } = Layout;
@@ -20,8 +20,10 @@ const { Sider } = Layout;
 const RepositorySetAside = (props) => {
     const { t } = useTranslation();
     const repositoryId = props.match.params.repositoryId;
-    const versionInfo = getVersionInfo();
+    const disable = disableFunction();
     const [archivedFreeVisable, setArchivedFreeVisable] = useState(false)
+    const [archivedFreeType,setArchivedFreeType] = useState('documentVersion')
+
     // 路由
     const repositoryrouter = [
         {
@@ -53,12 +55,19 @@ const RepositorySetAside = (props) => {
             iseEnhance: false
         },
         {
+            title: '评审',
+            icon: 'review',
+            key: `/repository/${repositoryId}/set/review`,
+            encoded: "review",
+            iseEnhance: true
+        },
+        {
             title: '回收站',
             icon: 'recycleBin',
             key: `/repository/${repositoryId}/set/recycleBin`,
             encoded: "recycleBin",
             iseEnhance: true
-        }
+        },
     ];
     // 当前选中路由
     const [selectKey, setSelectKey] = useState(`/repository/${repositoryId}/set/basicInfo`);
@@ -74,20 +83,23 @@ const RepositorySetAside = (props) => {
 
     /**
      * 点击左侧菜单
-     * @param {*} key
+     * @param {*} Item
      */
-    const selectKeyFun = (key, iseEnhance) => {
-        if (versionInfo.expired === false) {
-            setSelectKey(key)
-            props.history.push(key)
-        } else {
-            if (!iseEnhance) {
-                setSelectKey(key)
-                props.history.push(key)
-            } else {
-                setArchivedFreeVisable(true)
+    const selectKeyFun = (Item) => {
+        const {key, iseEnhance, encoded} = Item
+        if (iseEnhance && disable) {
+            setArchivedFreeVisable(true);
+            switch (encoded) {
+                case 'review':
+                    setArchivedFreeType('documentReview');
+                    break
+                case 'recycleBin':
+                    setArchivedFreeType('defalut')
             }
+            return
         }
+        setSelectKey(key)
+        props.history.push(key)
     }
 
     return (
@@ -107,22 +119,24 @@ const RepositorySetAside = (props) => {
                             repositoryrouter && repositoryrouter.map(Item => {
                                 return <div className={`repository-menu-submenu ${Item.key === selectKey ? "repository-menu-select" : ""}`}
                                     key={Item.key}
-                                    onClick={() => selectKeyFun(Item.key, Item.iseEnhance)}
+                                    onClick={() => selectKeyFun(Item)}
                                 >
                                     <span className={`${isShowText ? "" : "repository-notext"}`}>
                                         {Item.title}
                                     </span>
-                                    {
-                                        Item.iseEnhance && versionInfo.expired === true &&  <svg className="img-icon-16" aria-hidden="true" >
-                                        <use xlinkHref="#icon-member"></use>
-                                    </svg>
-                                     }
+                                    {/*{*/}
+                                    {/*    Item.iseEnhance && versionInfo.expired === true && */}
+                                    {/*    <svg className="img-icon-16" aria-hidden="true" >*/}
+                                    {/*        <use xlinkHref="#icon-member"></use>*/}
+                                    {/*    </svg>*/}
+                                    {/* }*/}
                                 </div>
                             })
                         }
                     </ul>
                 </div>
                 <ArchivedFree
+                    type={archivedFreeType}
                     archivedFreeVisable={archivedFreeVisable}
                     setArchivedFreeVisable={setArchivedFreeVisable}
                 />

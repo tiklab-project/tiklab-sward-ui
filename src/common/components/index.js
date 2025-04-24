@@ -14,6 +14,7 @@ import Img from "./img/Img";
 import BaseModal from "./modal/Modal";
 import Page from "./page/Page";
 import SearchInput from "./search/SearchInput";
+import Profile from "./profile/Profile";
 
 export {
     ArchivedFree,
@@ -25,4 +26,5 @@ export {
     BaseModal,
     Page,
     SearchInput,
+    Profile,
 }

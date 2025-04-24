@@ -13,13 +13,12 @@ const Setting = (props) => {
 
     const applicationRouters = [
         {
-            title: "用户与权限",
+            title: "用户",
             icon: 'systemuser',
             id: '/setting/orga',
             purviewCode: "orga",
             code: 1,
             children: [
-
                 {
                     title: '用户',
                     id: '/setting/user',
@@ -54,13 +53,14 @@ const Setting = (props) => {
                     islink: true,
                     code: 1 - 4,
                 },
-                {
-                    title: '权限',
-                    id: "/setting/systemRole",
-                    purviewCode: "SysPermission",
-                    code: 2
-                },
             ]
+        },
+        {
+            title: '权限',
+            id: "/setting/systemRole",
+            purviewCode: "SysPermission",
+            code: 2,
+            icon: 'systempermissions'
         },
         {
             title: "消息",
@@ -90,7 +90,7 @@ const Setting = (props) => {
             code: 9,
             children: [
                 {
-                    title: '地址配置',
+                    title: '服务集成',
                     id: '/setting/urlData',
                     code: 9 - 1,
                 },
@@ -146,7 +146,7 @@ const Setting = (props) => {
                     title: '系统访问权限',
                     id: "/setting/productAuth",
                     code: 11 - 2,
-                }
+                },
             ]
         },
     ];

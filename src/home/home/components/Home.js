@@ -79,7 +79,14 @@ const Home = (props) => {
     return (
         <div className="home">
             <Row className="home-row">
-                <Col xxl={{ span: 16, offset: 4 }} xl={{ span: 18, offset: 3 }} lg={{ span: 18, offset: 3 }} md={{ span: 20, offset: 2 }} className="home-col">
+                <Col
+                    xxl={{ span: 16, offset: 4 }}
+                    xl={{ span: 18, offset: 3 }}
+                    lg={{ span: 18, offset: 3 }}
+                    md={{ span: 20, offset: 2 }}
+                    xs={{ span: 24 }}
+                    className="home-col"
+                >
                     <div className="home-repository">
                         <div className="repository-title">常用知识库</div>
                         <Spin wrapperClassName="repository-spin" spinning={recentLoading} tip="加载中..." >
@@ -125,8 +132,8 @@ const Home = (props) => {
                                             <div className='document-item-left' style={{ flex: 1 }}>
                                                 <div>
                                                     <DocumentIcon
-                                                        documentType={item.node.documentType}
-                                                        documentName={item.name}
+                                                        documentType={item.node?.documentType}
+                                                        documentName={item?.name}
                                                         className={"document-icon"}
                                                     />
                                                 </div>

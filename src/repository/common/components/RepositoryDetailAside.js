@@ -50,6 +50,15 @@ const ProjectDetailAside = (props) => {
             id: `/repository/${repositoryId}/collect`,
             key: 'collect',
             encoded: "focus"
+        },
+        {
+            title: '评审',
+            icon: 'review-' + theme,
+            defaultIcon: "review-default",
+            id: `/repository/${repositoryId}/review`,
+            key: 'review',
+            encoded: "review",
+            isEnhance: true,
         }
     ];
 

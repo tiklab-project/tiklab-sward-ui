@@ -111,10 +111,9 @@ export class RepositoryDetailStore {
 
     // 查找项目成员
     @action
-    findDmUserList= async(id)=> {
+    findDmUserList= async (id)=> {
         const params ={
             domainId: id,
-            pageParam: {pageSize: 10, currentPage: 1}
         }
         const data = await Service("/dmUser/findDmUserList", params);
         return data.data;

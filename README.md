@@ -54,7 +54,7 @@ sward支持多种文档类型，比如富文本、markdown等，适用于多种�
 
 
 
-    Markdown：
+    MarkdownView：
 
     ![alt text](./src/assets/readme/image-3.png)
 

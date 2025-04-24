@@ -20,7 +20,7 @@ const RepositoryChangeModal = (props) => {
     const { isShowText, theme } = props;
     const [showMenu, setShowMenu] = useState(false);
     const [selectRepository, setSelectRepository] = useState(false)
-    const { findRecentRepositoryList, getAllRepositorylist, repository } = RepositoryDetailStore;
+    const { findRecentRepositoryList, getAllRepositorylist, repository, searchRepository } = RepositoryDetailStore;
     const [showRepositoryList, setShowRepositoryList] = useState();
     const [allRepositorylist,setAllRepositorylist] = useState([]);
     const userId = getUser().useId;
@@ -96,10 +96,10 @@ const RepositoryChangeModal = (props) => {
                         }
                         <div className={`repository-text `} >
                             <div className='name'>
-                                {repository?.limits}
+                                {repository?.name}
                             </div>
                             <div className='type'>
-                                {repository?.projectType?.name}
+                                {repository?.master?.name}
                             </div>
                         </div>
                         <div className={`repository-toggleCollapsed`}>
@@ -139,7 +139,6 @@ const RepositoryChangeModal = (props) => {
                         key={repository.id}
                         onMouseOver={() => handleMouseOver(repository.id)}
                         onMouseOut={handleMouseOut}
-
                     >
                         <Img
                             src={repository.iconUrl}
@@ -159,7 +158,6 @@ const RepositoryChangeModal = (props) => {
                         </svg>
                     </div>
                 }
-
                 {
                     showRepositoryList && showRepositoryList.map((item) => {
                         return <div className={`change-repository-item ${item.id === selectRepository ? "change-repository-selectItem" : ""}`}

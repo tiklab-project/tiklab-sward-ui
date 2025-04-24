@@ -7,9 +7,73 @@
     height: 100%;
     .document-examine-content {
         display: flex;
-        justify-content: space-between;
         height: calc(100% - 71px);
         padding: 10px 10px 0;
+        overflow: auto;
+        gap: 30px;
+        .document-previeweditor{
+            flex: 9999 1 auto;
+            min-width: 0;
+            -webkit-transition: min-width .3s ease-in;
+            -o-transition: .3s min-width ease-in;
+            transition: min-width .3s ease-in;
+        }
+        .category-editor-box{
+            position: sticky;
+            height: auto;
+            top: 0;
+            .category-editor{
+                .category-editor-top{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-bottom: 5px;
+                    .category-editor-title{
+                        font-size: 15px;
+                    }
+                    .category-editor-action{
+                        cursor: pointer;
+                        font-size: 15px;
+                    }
+                    .category-hidden{
+                        opacity: 0;
+                        visibility: hidden;
+                    }
+                    .category-narrow{
+                        background: #f0f0f0;
+                        padding: 3px;
+                        border-radius: 4px;
+                        margin-left: auto;
+                    }
+                }
+                &:hover .category-hidden{
+                    opacity: 1;
+                    visibility: visible;
+                }
+                .category-editor-content{
+                    border-left: 1px solid var(--tiklab-gray-200);
+                }
+            }
+            .edit-category{
+                width: 200px;
+                padding: 0 15px;
+                background-color: #ffffff;
+                position: initial;
+                min-height: 68px;
+                max-height: min(235px, calc(100vh - 150px));
+                overflow: hidden;
+                transition: max-height 0.3s ease, transform 0.3s ease;
+                box-sizing: border-box;
+                &:hover{
+                    overflow: auto;
+                    transform: translate3d(0, 0, 0);
+                    max-height: min(335px, calc(100vh - 100px));
+                }
+            }
+            .edit-category-list{
+                padding: 0;
+            }
+        }
     }
 
     .document-examine-row {
@@ -126,14 +190,6 @@
             right: 4px;
         }
     }
-    .category-box {
-        position: absolute;
-        top: 50px;
-        right: 0;
-        width: 300px;
-        height: calc(100% - 50px);
-    }
-
 }
 .document-empty {
     height: calc(100% - 50px);

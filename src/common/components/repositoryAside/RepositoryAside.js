@@ -6,17 +6,21 @@
  * @LastEditors: 袁婕轩
  * @LastEditTime: 2022-04-16 10:58:01
  */
-
 import React, { Fragment, useState, useEffect, useRef } from 'react';
 import { withRouter } from "react-router-dom";
 import { Layout } from "antd";
 import SetMenu from "./SetMenu";
 import MoreMenuModel from "./MoreMenuModal";
-import "./RepositoryAside.scss"
+import "./RepositoryAside.scss";
+import {disableFunction} from "tiklab-core-ui";
+import ArchivedFree from "../archivedFree/ArchivedFree";
+
 const { Sider } = Layout;
 
 const RepositoryAside = (props) => {
     const { isShowText, SetIsShowText, ChangeModal, initRouters, path, setUrl, backUrl, backName } = props;
+
+    const disable = disableFunction();
 
     const [projectRouter, setProjectRouter] = useState([]);
 
@@ -25,6 +29,8 @@ const RepositoryAside = (props) => {
     const [morePath, setMorePath] = useState()
     const [theme, setTheme] = useState(localStorage.getItem("theme") ? localStorage.getItem("theme") : "default");
     const [themeClass, setThemeClass] = useState("project-sider-gray")
+    const [archivedFreeVisable, setArchivedFreeVisable] = useState(false)
+
     const resizeUpdate = (e) => {
         // 通过事件对象获取浏览器窗口的高度
         const documentHeight = e.target ? e.target.innerHeight : e.clientHeight;
@@ -59,12 +65,14 @@ const RepositoryAside = (props) => {
 
     /**
      * 点击左侧菜单
-     * @param {*} key
      */
-    const selectMenu = (key) => {
-        // setSelectKey(key)
-        props.history.push(key)
-
+    const selectMenu = (menu) => {
+        const {id,isEnhance} = menu;
+        if(disable && isEnhance){
+            setArchivedFreeVisable(true)
+            return
+        }
+        props.history.push(id)
     }
 
     /**
@@ -77,7 +85,6 @@ const RepositoryAside = (props) => {
     const backProject = () => {
         props.history.push(backUrl)
     }
-
 
     const getThemeClass = (theme) => {
         let name = "default"
@@ -138,7 +145,7 @@ const RepositoryAside = (props) => {
                                 return isShowText ?
                                     <div className={`project-menu-submenu ${(path && path.indexOf(item.key) !== -1) ? "project-menu-select" : ""}`}
                                         key={item.encoded}
-                                        onClick={() => selectMenu(item.id)}
+                                        onClick={() => selectMenu(item)}
                                     >
                                         <svg className="icon-18" aria-hidden="true">
                                             <use xlinkHref={`#icon-${item.icon}`}></use>
@@ -150,7 +157,7 @@ const RepositoryAside = (props) => {
                                     :
                                     <div className={`project-menu-submenu-icon ${(path && path.indexOf(item.key) !== -1) ? "project-menu-select" : ""}`}
                                         key={item.encoded}
-                                        onClick={() => selectMenu(item.id)}
+                                        onClick={() => selectMenu(item)}
                                     >
                                         <svg className="svg-icon" aria-hidden="true">
                                             <use xlinkHref={`#icon-${item.icon}`}></use>
@@ -162,9 +169,21 @@ const RepositoryAside = (props) => {
 
                             })
                         }
-                        {moreMenu && moreMenu.length > 0 && <MoreMenuModel
-                            isShowText={isShowText} moreMenu={moreMenu} morePath={morePath} theme={theme}
-                        />}
+                        {
+                            moreMenu && moreMenu.length > 0 &&
+                            <MoreMenuModel
+                                isShowText={isShowText}
+                                moreMenu={moreMenu}
+                                morePath={morePath}
+                                theme={theme}
+                                setArchivedFreeVisable={setArchivedFreeVisable}
+                            />
+                        }
+                        <ArchivedFree
+                            type={'documentReview'}
+                            archivedFreeVisable={archivedFreeVisable}
+                            setArchivedFreeVisable={setArchivedFreeVisable}
+                        />
                     </div>
 
                     <SetMenu isShowText={isShowText} setUrl={setUrl} theme={theme} />
@@ -182,13 +201,14 @@ const RepositoryAside = (props) => {
                     <div className={"menu-box-right-border"}>
                         <div className={"menu-box-isexpanded"} onClick={toggleCollapsed}>
                             {
-                                isShowText ? <svg className="first-menu-expend-icon" aria-hidden="true">
+                                isShowText ?
+                                <svg className="first-menu-expend-icon" aria-hidden="true">
                                     <use xlinkHref="#icon-leftcircle"></use>
                                 </svg>
-                                    :
-                                    <svg className="first-menu-expend-icon" aria-hidden="true">
-                                        <use xlinkHref="#icon-rightcircle"></use>
-                                    </svg>
+                                :
+                                <svg className="first-menu-expend-icon" aria-hidden="true">
+                                    <use xlinkHref="#icon-rightcircle"></use>
+                                </svg>
                             }
                         </div>
                     </div>

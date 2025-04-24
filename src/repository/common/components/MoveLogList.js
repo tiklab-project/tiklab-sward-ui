@@ -25,21 +25,22 @@ const MoveLogList = (props) => {
     const [requsetedCategory, setRequsetedCategory] = useState([])
     useEffect(() => {
         if (moveLogListVisible){
-            findNodePageTree({ repositoryId: repositoryId, dimensions: [1, 2], type: "category" }).then((data) => {
+            findNodePageTree({
+                repositoryId: repositoryId,
+                dimensions: [1, 2],
+                type: "category"
+            }).then((data) => {
                 setCategoryList(data.data)
             })
-        }else {
+        } else {
             setRequsetedCategory([])
             setExpandedTree([])
         }
-
     }, [moveLogListVisible])
-
 
     const onFinish = () => {
         if (!selectKey) {
             message.warning('请选择要引动到的目录');
-            return
         } else {
             const params = {
                 id: moveItem.id,
@@ -48,19 +49,15 @@ const MoveLogList = (props) => {
                     moveToId: selectKey.id,
                     moveToType: selectKey.type,
                     moveType: "2"
-
                 }
             }
             if (moveItem.type === "category") {
                 updateCategorySort(params)
             }
-
             if (moveItem.type === "document") {
                 updateDocumentSort(params)
             }
-
         }
-
     }
 
     /**

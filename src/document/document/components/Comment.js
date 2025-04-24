@@ -51,20 +51,27 @@ const Comment = (props) => {
     }, [documentId])
 
     useEffect(() => {
-        window.addEventListener("mousedown", closeModal, false);
-        return () => {
-            window.removeEventListener("mousedown", closeModal, false);
-        }
-    }, [commonBox])
+        const handleClickOutside = (e) => {
+            if (!commonBox.current?.contains(e.target)) {
+                setShowComment(false);
+            }
+        };
 
-    const closeModal = (e) => {
-        if (!commonBox.current) {
-            return;
-        }
-        if (!commonBox.current.contains(e.target) && commonBox.current !== e.target) {
-            setShowComment(false)
-        }
-    }
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                setShowComment(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, []);
+
 
     /**
      * 发布评论
@@ -251,14 +258,12 @@ const Comment = (props) => {
                                         {item.details}
                                     </div>
                                     <div className="comment-operate">
-
                                         <div>
                                             {/* <span className="comment-edit" onClick={() => updataFirst(item.id)}>编辑</span> */}
                                             <span onClick={() => deleteFirst(item.id, index)} className="comment-delete">删除</span>
                                             <span onClick={() => setReply(item.id)} className="comment-reply">回复</span>
                                             <span className="comment-like">赞</span>
                                         </div>
-
                                     </div>
                                     <div className={`edit-comment ${reply === item.id ? "edit-comment-show" : "edit-comment-hidden"}`}>
                                         <svg className="icon-svg" aria-hidden="true">

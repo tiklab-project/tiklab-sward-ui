@@ -147,7 +147,7 @@ const SearchModal = (props) => {
                                             <div className="item-box" key={documentItem.id}>
                                                 <div className="item-one" onClick={() => toWorkItem(node)}>
                                                     <DocumentIcon
-                                                        documentName={node.name}
+                                                        documentName={node?.name}
                                                         documentType={documentType}
                                                         className={"img-icon"}
                                                     />
@@ -176,7 +176,7 @@ const SearchModal = (props) => {
                                             <div className="item-box" key={documentItem.id}>
                                                 <div className="item-one" onClick={() => toWorkItem(documentItem.node)}>
                                                     <DocumentIcon
-                                                        documentName={documentItem.name}
+                                                        documentName={documentItem?.name}
                                                         documentType={documentType}
                                                         className={"img-icon"}
                                                     />

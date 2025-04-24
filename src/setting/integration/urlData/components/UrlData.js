@@ -28,7 +28,7 @@ const UrlData = () => {
         setActionType("edit")
         setUrlId(id)
         setUrlAddvisible(true)
-        setModalTitle("编辑地址")
+        setModalTitle("编辑")
     }
 
     const deleSystemUrl = (id) => {
@@ -92,21 +92,22 @@ const UrlData = () => {
     }, [])
 
     const addUrl = () => {
-        setModalTitle("添加地址")
+        setModalTitle("添加")
         setUrlAddvisible(true)
         setActionType("add")
     }
+
     return (<Provider {...store}>
          <Fragment>
             <Row >
                 <Col xs={{ span: 24 }} xl={{ span: "18", offset: "3" }} xxl={{ span: "18", offset: "3" }}>
                     <div className="url-data">
                         <Breadcrumb
-                            firstText="地址"
+                            firstText="服务集成"
                         >
                             <div>
                                 <Button type="primary" onClick={() => addUrl()}>
-                                    添加地址
+                                    添加
                                 </Button>
                             </div>
                         </Breadcrumb>

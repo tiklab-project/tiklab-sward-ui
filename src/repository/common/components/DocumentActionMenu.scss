@@ -1,0 +1,23 @@
+.document-more-actions{
+  display: flex;
+  align-items: center;
+  min-width: 120px;
+  .document-more-actions-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+  }
+  .action-comment-num{
+    height: 14px;
+    line-height: 14px;
+    border-radius: 7px;
+    font-size: 10px;
+    padding: 0 3px;
+    color: #cccccc;
+    margin-left: auto;
+    overflow: hidden;
+  }
+  .action-tip{
+    margin-left: auto;
+  }
+}

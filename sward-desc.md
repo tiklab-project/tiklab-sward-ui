@@ -100,15 +100,16 @@
 
 ## common
 
-| 文件                    | 说明                            |
-|-----------------------|-------------------------------|
-| AddDropDown           | 添加下拉框                         |
-| CategoryAdd           | 目录添加                          |
-| MoveLogList           | 移动文档弹窗                        |
-| RepositoryChangeModal | 切换知识库弹窗                       |
-| RepositoryDetailAside | 知识库详情页面左侧导航栏                  |
-| RepositoryLayout      | 知识库详情页入口                      |
-| SearchModal           | 搜索弹窗                          |
+| 文件                    | 说明           |
+|-----------------------|--------------|
+| AddDropDown           | 添加下拉框        |
+| CategoryAdd           | 目录添加         |
+| DocumentActionMenu    | 文档更多操作       |
+| MoveLogList           | 移动文档弹窗       |
+| RepositoryChangeModal | 切换知识库弹窗      |
+| RepositoryDetailAside | 知识库详情页面左侧导航栏 |
+| RepositoryLayout      | 知识库详情页入口     |
+| SearchModal           | 搜索弹窗         |
 
 ## document 文档
 
@@ -173,7 +174,6 @@
 
 | 文件             | 说明                            |
 |----------------|-------------------------------|
-| ProjectNotFond | 页面找不到                         |
 | SetAside       | 设置导航                          |
 | Setting        | 设置入口                          |
 
@@ -214,13 +214,13 @@
 | SystemRole      | 系统角色                          |
 | SystemRoleBuilt | 系统功能管理                        |
 
-## systemIntegration
+## integration
 
-| 文件         | 说明                            |
-|------------|-------------------------------|
-| Confluence   | 系统集成                          |
-| UrlAddData | 添加系统url                       |
-| UrlData    | url列表                         |
+| 文件         | 说明           |
+|------------|--------------|
+| confluence | confluence导入 |
+| openApi    | openApi      |
+| urlData    | 服务集成         |
 
 ## template
 

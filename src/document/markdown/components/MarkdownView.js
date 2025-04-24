@@ -19,7 +19,11 @@ import Comment from "../../document/components/Comment";
 import CommentStore from "../../document/store/CommentStore";
 import MarkdownStore from "../store/MarkdownStore";
 import RepositoryDetailStore from "../../../repository/common/store/RepositoryDetailStore";
-const DocumentExamine = (props) => {
+import DocumentActionMenu from "../../../repository/common/components/DocumentActionMenu";
+const MarkdownDocument = (props) => {
+
+    const {DocumentVersionAdd,DocumentVersionList,DocumentReviewAdd} = props;
+
     const store = {
         markdownStore: MarkdownStore
     }
@@ -40,10 +44,10 @@ const DocumentExamine = (props) => {
     let [commentNum, setCommentNum] = useState()
     const [value, setValue] = useState()
 
-    const [markdownValue, setMarkdownValue] = useState();
     const [document, setDocument] = useState()
     const path = props.location.pathname.split("/")[3];
     const [loading, setLoading] = useState(true);
+    const [documentVersion,setDocumentVersion] = useState(null);
 
     const repositoryStatus = repository?.status === 'nomal';
 
@@ -55,10 +59,7 @@ const DocumentExamine = (props) => {
             if (data.code === 0) {
                 if (data.data?.details) {
                     const value = data.data.details
-                    setValue(JSON.parse(value))
-                    setMarkdownValue(data.data.detailText)
-                } else {
-                    setValue()
+                    setValue(value)
                 }
                 const document = data.data;
                 setDocument(document)
@@ -167,36 +168,68 @@ const DocumentExamine = (props) => {
                                     setCommentNum={setCommentNum}
                                 />
                             }
-
                             <div className="examine-top">
                                 <div className="examine-title" id="examine-title">
-
                                     <div className="examine-title-top">
                                         {documentTitle}
+                                        {documentVersion?.versionName ? ` · ${documentVersion?.versionName}` :''}
                                     </div>
                                     <div className="examine-title-date">
                                         更新日期：{documentDate}
                                     </div>
                                 </div>
                                 <div className="document-edit">
-
                                     {
-                                        focus ?
-                                        <svg className="right-icon" aria-hidden="true" onClick={() => deleteFocus()}>
-                                            <use xlinkHref="#icon-collectioned"></use>
-                                        </svg>
-                                        :
-                                        <svg className="right-icon" aria-hidden="true" onClick={() => createFocus()}>
-                                            <use xlinkHref="#icon-collection"></use>
-                                        </svg>
+                                        documentVersion ? (
+                                                <Button
+                                                    className="document-action-edit"
+                                                    onClick={()=>{
+                                                        setValue(null);
+                                                        setDocumentVersion(null);
+                                                        Promise.resolve().then(() => {
+                                                            setValue(document.details);
+                                                        });
+                                                    }}
+                                                >
+                                                    退出历史版本
+                                                </Button>
+                                            ):
+                                            <>
+                                                {
+                                                    focus ?
+                                                        <svg className="right-icon" aria-hidden="true" onClick={() => deleteFocus()}>
+                                                            <use xlinkHref="#icon-collectioned"></use>
+                                                        </svg>
+                                                        :
+                                                        <svg className="right-icon" aria-hidden="true" onClick={() => createFocus()}>
+                                                            <use xlinkHref="#icon-collection"></use>
+                                                        </svg>
+                                                }
+                                                {
+                                                    value && repositoryStatus &&
+                                                    <Button className="document-action-edit" onClick={() => goEdit()}>
+                                                        编辑
+                                                    </Button>
+                                                }
+                                                <Button
+                                                    className="document-action-share"
+                                                    onClick={() => setShareVisible(true)}
+                                                >
+                                                    分享
+                                                </Button>
+                                            </>
                                     }
-                                    {
-                                        value && repositoryStatus &&
-                                        <Button className="document-action-edit" onClick={() => goEdit()}>
-                                            编辑
-                                        </Button>
-                                    }
-                                    <Button className="document-action-share" onClick={() => setShareVisible(true)}>分享</Button>
+                                    <DocumentActionMenu
+                                        document={document}
+                                        commentNum={commentNum}
+                                        setShowComment={setShowComment}
+                                        setValue={setValue}
+                                        documentVersion={documentVersion}
+                                        setDocumentVersion={setDocumentVersion}
+                                        DocumentVersionAdd={DocumentVersionAdd}
+                                        DocumentVersionList={DocumentVersionList}
+                                        DocumentReviewAdd={DocumentReviewAdd}
+                                    />
                                 </div>
                             </div>
                             {
@@ -210,7 +243,11 @@ const DocumentExamine = (props) => {
                                             lg={{ span: 18, offset: 3 }}
                                         >
                                             <div className="document-previeweditor">
-                                                <MarkdownView value={value} base_url={upload_url} tenant={tenant} />
+                                                <MarkdownView
+                                                    value={JSON.parse(value)}
+                                                    base_url={upload_url}
+                                                    tenant={tenant}
+                                                />
                                             </div>
                                         </Col>
                                     </Row>
@@ -219,34 +256,42 @@ const DocumentExamine = (props) => {
                                 <>
                                 </>
                             }
-                            <div className="comment-box">
-                                <div className="comment-box-item top-item">
-                                    <svg className="midden-icon" aria-hidden="true" onClick={() => setShowComment(!showComment)}>
-                                        <use xlinkHref="#icon-comment"></use>
-                                    </svg>
-                                    <div className="commnet-num">{commentNum}</div>
-                                </div>
-                                <div className="comment-box-item">
-                                    <span className="comment-item" onClick={addDocLike}>
-                                        {
-                                            like ? <svg className="midden-icon" aria-hidden="true">
-                                                <use xlinkHref="#icon-zan"></use>
-                                            </svg> : <svg className="midden-icon" aria-hidden="true">
-                                                <use xlinkHref="#icon-dianzan"></use>
-                                            </svg>
-                                        }
-                                    </span>
-                                    <div className="commnet-num" style={{ top: "37px" }}>{likeNum}</div>
-                                </div>
-
-                            </div>
-
-                            <ShareModal documentIds={[documentId]} shareVisible={shareVisible} setShareVisible={setShareVisible} docInfo={docInfo} createShare={createShare} updateShare={updateShare} />
+                            {/*<div className="comment-box">*/}
+                            {/*    <div className="comment-box-item top-item">*/}
+                            {/*        <svg className="midden-icon" aria-hidden="true" onClick={() => setShowComment(!showComment)}>*/}
+                            {/*            <use xlinkHref="#icon-comment"></use>*/}
+                            {/*        </svg>*/}
+                            {/*        <div className="commnet-num">{commentNum}</div>*/}
+                            {/*    </div>*/}
+                            {/*    <div className="comment-box-item">*/}
+                            {/*        <span className="comment-item" onClick={addDocLike}>*/}
+                            {/*            {*/}
+                            {/*                like ?*/}
+                            {/*                    <svg className="midden-icon" aria-hidden="true">*/}
+                            {/*                        <use xlinkHref="#icon-zan"></use>*/}
+                            {/*                    </svg>*/}
+                            {/*                    :*/}
+                            {/*                    <svg className="midden-icon" aria-hidden="true">*/}
+                            {/*                        <use xlinkHref="#icon-dianzan"></use>*/}
+                            {/*                    </svg>*/}
+                            {/*            }*/}
+                            {/*        </span>*/}
+                            {/*        <div className="commnet-num" style={{ top: "37px" }}>{likeNum}</div>*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
+                            <ShareModal
+                                documentIds={[documentId]}
+                                shareVisible={shareVisible}
+                                setShareVisible={setShareVisible}
+                                docInfo={docInfo}
+                                createShare={createShare}
+                                updateShare={updateShare}
+                            />
                         </div>
-                            :
-                            <div className="document-markdown-empty">
-                                <Empty description="文档已被移动到回收站，请去回收站恢复再查看" />
-                            </div>
+                        :
+                        <div className="document-markdown-empty">
+                            <Empty description="文档已被移动到回收站，请去回收站恢复再查看" />
+                        </div>
                     }
                 </>
                     :
@@ -263,4 +308,4 @@ const DocumentExamine = (props) => {
     )
 }
 
-export default inject("relationWorkStore")(observer(DocumentExamine));
+export default inject("relationWorkStore")(observer(MarkdownDocument));
