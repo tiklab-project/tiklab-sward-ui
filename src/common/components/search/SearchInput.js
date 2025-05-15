@@ -8,7 +8,7 @@
 
 import React from "react";
 import { Input } from "antd";
-import "./SearchInput.scss";
+import "./Search.scss";
 
 const SearchInput = (props) => {
     const {onChange, placeholder} = props;

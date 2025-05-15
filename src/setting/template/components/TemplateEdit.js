@@ -150,8 +150,8 @@ const TemplateEdit = (props) => {
                             base_url = {upload_url}
                             img_url = {upload_url}
                             viewImageUrl = "/image"
-                            ticket = {ticket}
-                            tenant = {tenant}
+                            ticket={ticket}
+                            tenant={tenant}
                         >
                             <>
                                 <div className="template-content">
@@ -169,12 +169,8 @@ const TemplateEdit = (props) => {
                                         onChange={setEditorValue}
                                     />
                                     </div>
-
-
-
                                 </div>
                             </>
-
                         </EditorBig>
                     }
                     <Modal

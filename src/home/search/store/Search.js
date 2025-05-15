@@ -1,5 +1,5 @@
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-08-09 09:18:21
@@ -25,16 +25,10 @@ class SearchStore{
     }
 
     @action
-    getSearch = async(value) => {
-        const params = new FormData();
-        if(value){
-            params.append('keyword', value ); 
-        }else {
-            params.append('keyword', null ); 
-        }
+    getSearch = async (value) => {
         this.searchWikiList = [];
         this.searchDocumentList = [];
-        const data = await Service("/search/searchForTop",params);
+        const data = await Service("/search/searchForTop",value);
         if(data.code=== 0){
             this.searchWikiList = data.data.wiki;
             this.searchDocumentList = data.data.document;
@@ -61,9 +55,9 @@ class SearchStore{
     getSearchSore = async(value) => {
         const params = new FormData();
         if(value){
-            params.append('keyword', value ); 
+            params.append('keyword', value );
         }else {
-            params.append('keyword', null ); 
+            params.append('keyword', null );
         }
         const data = await Service("/search/searchForCount",value);
         if(data.code=== 0){
@@ -96,9 +90,9 @@ class SearchStore{
         const data = await Service("/recent/findRecentList",value);
         if(data.code === 0){
             this.searchDocumentList = data.data;
-            
+
         }
-        
+
         return data;
     }
 

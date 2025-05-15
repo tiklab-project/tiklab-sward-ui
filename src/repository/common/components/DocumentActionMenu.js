@@ -44,12 +44,15 @@ const DocumentActionMenu = (props) => {
             setShowComment(true);
             return;
         }
+        if(key==='export-word'){
+            if(typeof exportsWord === 'function'){
+                exportsWord()
+            }
+            return;
+        }
         if(disable){
             setArchivedFreeVisable(true);
             switch (key) {
-                case 'export-word':
-                    setArchivedFreeType('documentExport')
-                    break
                 case 'version-add':
                 case 'version-view':
                     setArchivedFreeType('documentVersion')
@@ -63,11 +66,6 @@ const DocumentActionMenu = (props) => {
             case 'review':
                 setReviewAddVisible(true);
                 return
-            case 'export-word':
-                if(typeof exportsWord === 'function'){
-                    exportsWord()
-                }
-                return;
             case 'version-add':
                 setVersionAddVisible(true);
                 return;

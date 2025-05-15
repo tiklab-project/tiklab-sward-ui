@@ -26,6 +26,8 @@ const Confluence = (props) => {
     const [isActiveSlide,setIsActiveSlide] = useState(true);
     //加载
     const [spinning,setSpinning] = useState(false);
+    //导入后获取文件信息加载
+    const [fileSpinning,setFileSpinning] = useState(false);
     //当前步骤
     const [current,setCurrent] = useState(0);
     //效验文件
@@ -64,12 +66,13 @@ const Confluence = (props) => {
                 if(response?.code===0){
                     setCurrent(1);
                     const value = new FormData();
+                    setFileSpinning(true);
                     value.append('confluenceFileAddress',response.data);
                     validConfluenceVersion(value).then(res=>{
                         if(res.code===0){
                             setValidCfInput(res.data)
                         }
-                    })
+                    }).finally(()=>setFileSpinning(false))
                 } else {
                     message.error(response.msg)
                 }
@@ -233,47 +236,49 @@ const Confluence = (props) => {
                             xl={{ span: 14, offset: 5 }}
                             xs={{ span: 18, offset: 3 }}
                         >
-                            <div className='confluence-valid-version'>
-                                <div className='valid-version'>
-                                    <div>文件</div>
-                                    <div>{validCfInput?.fileName}</div>
+                            <Spin spinning={fileSpinning}>
+                                <div className='confluence-valid-version'>
+                                    <div className='valid-version'>
+                                        <div>文件</div>
+                                        <div>{validCfInput?.fileName}</div>
+                                    </div>
+                                    <div className='valid-version'>
+                                        <div>版本</div>
+                                        <div>{validCfInput?.versionNumber}</div>
+                                    </div>
+                                    <div className='valid-version'>
+                                        <div>导出类型</div>
+                                        <div>{exportTypeHtml()}</div>
+                                    </div>
+                                    <div className='valid-version'>
+                                        <div>服务类型</div>
+                                        <div>{validCfInput?.serverType==='server'?'server版本':'其他版本'}</div>
+                                    </div>
+                                    <div className='valid-version'>
+                                        <div>构建号</div>
+                                        <div>{validCfInput?.buildNumber}</div>
+                                    </div>
+                                    <div className='valid-version'>
+                                        <div>是否支持导入</div>
+                                        <div>{validCfInput?.support ? '支持':'不支持'}</div>
+                                    </div>
+                                    <div className='valid-version-button'>
+                                        <Button onClick={()=>setCurrent(0)}>
+                                            上一步
+                                        </Button>
+                                        {
+                                            validCfInput?.support ?
+                                                <Button type={'primary'} onClick={analysis}>
+                                                    解析文件
+                                                </Button>
+                                                :
+                                                <Button disabled>
+                                                    解析文件
+                                                </Button>
+                                        }
+                                    </div>
                                 </div>
-                                <div className='valid-version'>
-                                    <div>版本</div>
-                                    <div>{validCfInput?.versionNumber}</div>
-                                </div>
-                                <div className='valid-version'>
-                                    <div>导出类型</div>
-                                    <div>{exportTypeHtml()}</div>
-                                </div>
-                                <div className='valid-version'>
-                                    <div>服务类型</div>
-                                    <div>{validCfInput?.serverType==='server'?'server版本':'其他版本'}</div>
-                                </div>
-                                <div className='valid-version'>
-                                    <div>构建号</div>
-                                    <div>{validCfInput?.buildNumber}</div>
-                                </div>
-                                <div className='valid-version'>
-                                    <div>是否支持导入</div>
-                                    <div>{validCfInput?.support ? '支持':'不支持'}</div>
-                                </div>
-                                <div className='valid-version-button'>
-                                    <Button onClick={()=>setCurrent(0)}>
-                                        上一步
-                                    </Button>
-                                    {
-                                        validCfInput?.support ?
-                                            <Button type={'primary'} onClick={analysis}>
-                                                解析文件
-                                            </Button>
-                                            :
-                                            <Button disabled>
-                                                解析文件
-                                            </Button>
-                                    }
-                                </div>
-                            </div>
+                            </Spin>
                         </Col>
                     </Row>
                 }

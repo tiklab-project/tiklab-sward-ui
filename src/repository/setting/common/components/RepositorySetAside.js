@@ -7,79 +7,47 @@
  * @LastEditTime: 2024-12-31 17:07:38
  */
 
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
-import { Layout, Button } from "antd";
-
-import { useTranslation } from 'react-i18next';
+import { Layout } from "antd";
 import { disableFunction } from 'tiklab-core-ui';
 import ArchivedFree from '../../../../common/components/archivedFree/ArchivedFree';
+import "./RepositorySetAside.scss";
+import {renderRoutes} from "react-router-config";
+import {DownOutlined, UpOutlined} from "@ant-design/icons";
+import {ProjectNav} from "tiklab-privilege-ui";
 
 const { Sider } = Layout;
 
 const RepositorySetAside = (props) => {
-    const { t } = useTranslation();
+
+    const {repositoryRouters,route,AsideTitle,outerPath} = props;
+
     const repositoryId = props.match.params.repositoryId;
+    const path = props.location.pathname;
+
     const disable = disableFunction();
     const [archivedFreeVisable, setArchivedFreeVisable] = useState(false)
     const [archivedFreeType,setArchivedFreeType] = useState('documentVersion')
 
-    // 路由
-    const repositoryrouter = [
-        {
-            title: '知识库信息',
-            icon: 'survey',
-            key: `/repository/${repositoryId}/set/basicInfo`,
-            encoded: "Survey",
-            iseEnhance: false
-        },
-        {
-            title: '成员',
-            icon: 'survey',
-            key: `/repository/${repositoryId}/set/user`,
-            encoded: "User",
-            iseEnhance: false
-        },
-        {
-            title: '权限',
-            icon: 'survey',
-            key: `/repository/${repositoryId}/set/domainRole`,
-            encoded: "Privilege",
-            iseEnhance: false
-        },
-        {
-            title: '消息',
-            icon: 'survey',
-            key: `/repository/${repositoryId}/set/messagenotice`,
-            encoded: "message",
-            iseEnhance: false
-        },
-        {
-            title: '评审',
-            icon: 'review',
-            key: `/repository/${repositoryId}/set/review`,
-            encoded: "review",
-            iseEnhance: true
-        },
-        {
-            title: '回收站',
-            icon: 'recycleBin',
-            key: `/repository/${repositoryId}/set/recycleBin`,
-            encoded: "recycleBin",
-            iseEnhance: true
-        },
-    ];
-    // 当前选中路由
-    const [selectKey, setSelectKey] = useState(`/repository/${repositoryId}/set/basicInfo`);
-
     // 菜单是否折叠
     const [isShowText, SetIsShowText] = useState(true)
+    // 树的展开与闭合
+    const [expandedTree,setExpandedTree] = useState([""])
 
-    useEffect(() => {
-        // 初次进入激活导航菜单
-        setSelectKey(props.location.pathname)
-    }, [repositoryId])
+    const isExpandedTree = key => expandedTree.some(item => item ===key)
 
+    /**
+     * 展开闭合树
+     * @param key
+     */
+    const select = (key) => {
+        if (isExpandedTree(key)) {
+            setExpandedTree(expandedTree.filter(item => item !== key))
+        } else {
+            setExpandedTree(expandedTree.concat(key))
+        }
+    }
 
     /**
      * 点击左侧菜单
@@ -98,50 +66,93 @@ const RepositorySetAside = (props) => {
             }
             return
         }
-        setSelectKey(key)
         props.history.push(key)
     }
 
-    return (
-        <Fragment>
-            <Sider trigger={null} collapsible collapsed={!isShowText} collapsedWidth="50" width="200">
-                <div className={`repository-set-aside ${isShowText ? "" : "repository-icon"}`}>
-                    <div className="repository-set-title">
-                        {/* <svg className="menu-icon" aria-hidden="true" onClick={() => backRepository()}>
-                            <use xlinkHref="#icon-backrepository"></use>
-                        </svg> */}
-                        <span className={`${isShowText ? "" : "repository-notext"}`} style={{ marginRight: "20px" }}>
-                            设置
-                        </span>
-                    </div>
-                    <ul className="repository-menu">
+    const menuHtml = (Item,deep) => {
+        return (
+            <div
+                className={`repository-menu ${Item.key === path ? "repository-menu-select" : ""}`}
+                key={Item.key}
+                onClick={() => selectKeyFun(Item)}
+                style={{paddingLeft: deep}}
+            >
+                <span className={`${isShowText ? "" : "repository-notext"}`}>
+                    {Item.title}
+                </span>
+                {/*{*/}
+                {/*    Item.iseEnhance && versionInfo.expired === true && */}
+                {/*    <svg className="img-icon-16" aria-hidden="true" >*/}
+                {/*        <use xlinkHref="#icon-member"></use>*/}
+                {/*    </svg>*/}
+                {/* }*/}
+            </div>
+        )
+    }
+
+    const renderMenuHtml = (item,deep) => {
+        return (
+            <div key={item.key} className='repository-menu-ui'>
+                <div className="repository-menu-li" onClick={()=>select(item.id)} style={{paddingLeft: deep}}>
+                    <div>{item.title}</div>
+                    <div>
                         {
-                            repositoryrouter && repositoryrouter.map(Item => {
-                                return <div className={`repository-menu-submenu ${Item.key === selectKey ? "repository-menu-select" : ""}`}
-                                    key={Item.key}
-                                    onClick={() => selectKeyFun(Item)}
-                                >
-                                    <span className={`${isShowText ? "" : "repository-notext"}`}>
-                                        {Item.title}
-                                    </span>
-                                    {/*{*/}
-                                    {/*    Item.iseEnhance && versionInfo.expired === true && */}
-                                    {/*    <svg className="img-icon-16" aria-hidden="true" >*/}
-                                    {/*        <use xlinkHref="#icon-member"></use>*/}
-                                    {/*    </svg>*/}
-                                    {/* }*/}
-                                </div>
-                            })
+                            item.children ?
+                                (isExpandedTree(item.id)?
+                                        <DownOutlined style={{fontSize: "10px"}}/> :
+                                        <UpOutlined style={{fontSize: "10px"}}/>
+                                ): ""
                         }
-                    </ul>
+                    </div>
                 </div>
-                <ArchivedFree
-                    type={archivedFreeType}
-                    archivedFreeVisable={archivedFreeVisable}
-                    setArchivedFreeVisable={setArchivedFreeVisable}
-                />
-            </Sider>
-        </Fragment>
+                <div className={`repository-menu-ui ${isExpandedTree(item.id)?"":"repository-menu-hidden"}`}>
+                    {
+                        item.children && item.children.map(item =>{
+                            const deepnew = deep + 15
+                            return item.children && item.children.length ?
+                                renderMenuHtml(item,deepnew) : menuHtml(item,deepnew)
+                        })
+                    }
+                </div>
+            </div>
+        )
+    }
+
+    return (
+        <ProjectNav
+            {...props}
+            domainId={repositoryId}
+            projectRouters={repositoryRouters}
+            outerPath={outerPath}
+            noAccessPath={"/noaccess"}
+            pathKey={'key'}
+        >
+            <Layout className="repository-set">
+                <Sider trigger={null} collapsible collapsed={!isShowText} collapsedWidth="50" width="200">
+                    <div className={`repository-set-aside ${isShowText ? "" : "repository-icon"}`}>
+                        <div className="repository-set-title">
+                        <span className={`${isShowText ? "" : "repository-notext"}`} style={{ marginRight: "20px" }}>
+                            {AsideTitle}
+                        </span>
+                        </div>
+                        <div className="repository-menus">
+                            { repositoryRouters.map(item=>{
+                                return item.children && item.children.length > 0 ?
+                                    renderMenuHtml(item,20) : menuHtml(item,20)
+                            }) }
+                        </div>
+                    </div>
+                    <ArchivedFree
+                        type={archivedFreeType}
+                        archivedFreeVisable={archivedFreeVisable}
+                        setArchivedFreeVisable={setArchivedFreeVisable}
+                    />
+                </Sider>
+                <Layout>
+                    {renderRoutes(route.routes)}
+                </Layout>
+            </Layout>
+        </ProjectNav>
     )
 
 }

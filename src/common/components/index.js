@@ -14,7 +14,10 @@ import Img from "./img/Img";
 import BaseModal from "./modal/Modal";
 import Page from "./page/Page";
 import SearchInput from "./search/SearchInput";
+import SearchPicker from "./search/SearchPicker";
+import SearchSelect from "./search/SearchSelect";
 import Profile from "./profile/Profile";
+import echarts from "./echarts/Echarts";
 
 export {
     ArchivedFree,
@@ -26,5 +29,8 @@ export {
     BaseModal,
     Page,
     SearchInput,
+    SearchPicker,
+    SearchSelect,
     Profile,
+    echarts,
 }

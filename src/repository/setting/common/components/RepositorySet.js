@@ -7,25 +7,18 @@
  * @LastEditTime: 2024-12-31 17:07:27
  */
 import React, { useState,useEffect } from "react";
-import { Layout } from 'antd';
 import RepositorySetAside from "../components/RepositorySetAside";
-import "../components/repositorySet.scss";
-import { renderRoutes } from "react-router-config";
 import RepositorySetStore from "../store/RepositorySetStore";
 import { Provider } from "mobx-react";
 
 const RepositorySetDetail = (props)=>{
-    const route = props.route;
+
     const store = {
         repositorySetStore: RepositorySetStore
     }
 
-    // 当前项目名字
-    const [repositoryname,setRepositoryname] = useState();
-
     // 获取当前项目id
-    const repositoryId = props.match.params.id;
-
+    const repositoryId = props.match.params.repositoryId;
 
     useEffect(() => {
         // 从信息页面跳入项目详情页面时，获取项目id
@@ -36,18 +29,60 @@ const RepositorySetDetail = (props)=>{
         }
     }, [repositoryId])
 
+    // 路由
+    const repositoryRouters = [
+        {
+            title: '知识库信息',
+            icon: 'survey',
+            key: `/repository/${repositoryId}/set/basicInfo`,
+            encoded: "Survey",
+            iseEnhance: false
+        },
+        {
+            title: '成员',
+            icon: 'survey',
+            key: `/repository/${repositoryId}/set/user`,
+            encoded: "User",
+            iseEnhance: false
+        },
+        {
+            title: '权限',
+            icon: 'survey',
+            key: `/repository/${repositoryId}/set/domainRole`,
+            encoded: "Privilege",
+            iseEnhance: false
+        },
+        {
+            title: '消息',
+            icon: 'survey',
+            key: `/repository/${repositoryId}/set/messagenotice`,
+            encoded: "message",
+            iseEnhance: false
+        },
+        {
+            title: '评审',
+            icon: 'review',
+            key: `/repository/${repositoryId}/set/review`,
+            encoded: "review",
+            iseEnhance: true
+        },
+        {
+            title: '回收站',
+            icon: 'recycleBin',
+            key: `/repository/${repositoryId}/set/recycleBin`,
+            encoded: "recycleBin",
+            iseEnhance: true,
+        },
+    ];
 
     return (
          <Provider {...store}>
-             <Layout className="repository-set">
-                 <RepositorySetAside
-                     repositoryName={repositoryname}
-                     {...props}
-                 />
-                 <Layout>
-                     {renderRoutes(route.routes)}
-                 </Layout>
-             </Layout>
+             <RepositorySetAside
+                 {...props}
+                 repositoryRouters={repositoryRouters}
+                 outerPath={`/repository/${repositoryId}/set`}
+                 AsideTitle={`设置`}
+             />
          </Provider>
     )
 

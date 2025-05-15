@@ -30,7 +30,7 @@ import projectOperation from "../../../assets/images/projectOperation.png";
 const DocumentEdit = (props) => {
     const { relationWorkStore, documentStore } = props;
     const { findDocument, updateDocument, findDocumentTemplateList } = DocumentStore;
-    const { documentTitle, setDocumentTitle, repositoryCatalogueList, repository } = RepositoryDetailStore
+    const { documentTitle, setDocumentTitle, repositoryCatalogueList, repository,fileLimit } = RepositoryDetailStore
     const documentId = props.match.params.id;
     const repositoryId = props.match.params.repositoryId;
     const [docInfo, setDocInfo] = useState({ name: "", likenumInt: "", commentNumber: "", master: { name: "" } });
@@ -230,6 +230,7 @@ const DocumentEdit = (props) => {
                             viewImageUrl="/image"
                             ticket={ticket}
                             tenant={tenant}
+                            fileSize={fileLimit?.docFileSize}
                             categoryMenu={true}
                         >
                             <Row className="document-examine-content">

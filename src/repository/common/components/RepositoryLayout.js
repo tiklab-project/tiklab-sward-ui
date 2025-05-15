@@ -7,13 +7,11 @@
  * @LastEditTime: 2021-08-30 15:06:15
  */
 import React, { useState,useEffect } from "react";
-import { Layout} from 'antd';
-import RepositorydeAside from "./RepositoryDetailAside";
-import "../components/RepositoryLayout.scss";
-import { renderRoutes } from "react-router-config";
 import {observer, inject, Provider} from "mobx-react";
 import repositoryDetailStore from "../store/RepositoryDetailStore";
 import {getUser} from "tiklab-core-ui";
+import RepositoryAside from "../../../common/components/repositoryAside/RepositoryAside";
+import RepositoryChangeModal from "./RepositoryChangeModal";
 
 const RepositoryDetail = (props)=>{
 
@@ -23,13 +21,16 @@ const RepositoryDetail = (props)=>{
         repositoryDetailStore: repositoryDetailStore
     }
 
-    const {findRepository} = repositoryDetailStore;
+    const {findRepository,findFileLimit} = repositoryDetailStore;
     const {getInitProjectPermissions} = systemRoleStore;
 
     const [isShowText, SetIsShowText ] = useState(false)
 
     const repositoryId = props.match.params.repositoryId;
     const userId = getUser().userId
+    // 当前选中菜单key
+    const path = props.location.pathname.split("/")[3];
+    const theme = localStorage.getItem("theme") ? localStorage.getItem("theme") : "default";
 
     useEffect(() => {
         findRepository(repositoryId).then(res=>{
@@ -38,20 +39,68 @@ const RepositoryDetail = (props)=>{
                 getInitProjectPermissions(userId,repositoryId,data?.projectLimits === "0")
             }
         })
+        findFileLimit().then()
     }, [repositoryId]);
+
+    // 路由
+    const router = [
+        {
+            title: "概况",
+            icon: 'survey-' + theme,
+            defaultIcon: "survey-default",
+            id: `/repository/${repositoryId}/overview`,
+            key: "overview",
+            encoded: "Survey"
+        },
+        {
+            title: "文档",
+            icon: 'doc-' + theme,
+            defaultIcon: "doc-default",
+            id: `/repository/${repositoryId}/doc`,
+            key: "doc",
+            encoded: "doc"
+        },
+        {
+            title: '收藏',
+            icon: 'focus-' + theme,
+            defaultIcon: "focus-default",
+            id: `/repository/${repositoryId}/collect`,
+            key: 'collect',
+            encoded: "focus"
+        },
+        {
+            title: '评审',
+            icon: 'review-' + theme,
+            defaultIcon: "review-default",
+            id: `/repository/${repositoryId}/review`,
+            key: 'review',
+            encoded: "review",
+            isEnhance: true,
+        },
+        {
+            title: '统计',
+            icon: 'statistics-' + theme,
+            defaultIcon: "statistics-default",
+            id: `/repository/${repositoryId}/statistics`,
+            key: 'statistics',
+            encoded: "statistics",
+            isEnhance: true,
+        }
+    ];
 
     return (
         <Provider {...store}>
-            <Layout className="repositorydetail">
-                <RepositorydeAside
-                    isShowText = {isShowText}
-                    SetIsShowText = {SetIsShowText}
-                    {...props}
-                />
-                <Layout className="repositorydetail-content">
-                    {renderRoutes(route.routes)}
-                </Layout>
-            </Layout>
+            <RepositoryAside
+                {...props}
+                isShowText={isShowText}
+                SetIsShowText={SetIsShowText}
+                ChangeModal={RepositoryChangeModal}
+                initRouters={router}
+                backName={"返回首页"}
+                path={path}
+                setUrl={`/repository/${repositoryId}/set`}
+                backUrl={`/repository`}
+            />
         </Provider>
     )
 

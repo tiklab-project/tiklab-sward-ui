@@ -14,11 +14,13 @@ import MoreMenuModel from "./MoreMenuModal";
 import "./RepositoryAside.scss";
 import {disableFunction} from "tiklab-core-ui";
 import ArchivedFree from "../archivedFree/ArchivedFree";
+import {renderRoutes} from "react-router-config";
 
 const { Sider } = Layout;
 
 const RepositoryAside = (props) => {
-    const { isShowText, SetIsShowText, ChangeModal, initRouters, path, setUrl, backUrl, backName } = props;
+
+    const { route, isShowText, SetIsShowText, ChangeModal, initRouters, path, setUrl, backUrl, backName } = props;
 
     const disable = disableFunction();
 
@@ -30,6 +32,8 @@ const RepositoryAside = (props) => {
     const [theme, setTheme] = useState(localStorage.getItem("theme") ? localStorage.getItem("theme") : "default");
     const [themeClass, setThemeClass] = useState("project-sider-gray")
     const [archivedFreeVisable, setArchivedFreeVisable] = useState(false)
+    //增强功能而类型
+    const [archivedFreeType,setArchivedFreeType] = useState('documentReview')
 
     const resizeUpdate = (e) => {
         // 通过事件对象获取浏览器窗口的高度
@@ -67,9 +71,17 @@ const RepositoryAside = (props) => {
      * 点击左侧菜单
      */
     const selectMenu = (menu) => {
-        const {id,isEnhance} = menu;
+        const {id,isEnhance,key} = menu;
         if(disable && isEnhance){
             setArchivedFreeVisable(true)
+            switch (key) {
+                case 'review':
+                    setArchivedFreeType('documentReview');
+                    break;
+                case 'statistics':
+                    setArchivedFreeType('documentStatistics')
+
+            }
             return
         }
         props.history.push(id)
@@ -109,7 +121,7 @@ const RepositoryAside = (props) => {
     }
 
     return (
-        <Fragment>
+        <Layout className="repositorydetail">
             <Sider trigger={null} collapsible collapsed={!isShowText} collapsedWidth="75" width="200"
                 className={`project-detail-side ${themeClass}`}
             >
@@ -176,11 +188,11 @@ const RepositoryAside = (props) => {
                                 moreMenu={moreMenu}
                                 morePath={morePath}
                                 theme={theme}
-                                setArchivedFreeVisable={setArchivedFreeVisable}
+                                selectMenu={selectMenu}
                             />
                         }
                         <ArchivedFree
-                            type={'documentReview'}
+                            type={archivedFreeType}
                             archivedFreeVisable={archivedFreeVisable}
                             setArchivedFreeVisable={setArchivedFreeVisable}
                         />
@@ -214,8 +226,10 @@ const RepositoryAside = (props) => {
                     </div>
                 </div>
             </Sider>
-
-        </Fragment>
+            <Layout className="repositorydetail-content">
+                {renderRoutes(route.routes)}
+            </Layout>
+        </Layout>
     )
 
 }

@@ -7,7 +7,7 @@
  * @LastEditTime: 2024-12-31 17:02:52
  */
 import React, { useState, useEffect } from "react";
-import { Empty, Layout } from 'antd';
+import {Empty, Layout, Spin} from 'antd';
 import { renderRoutes } from "react-router-config";
 import { observer, inject, Provider } from "mobx-react";
 import RepositoryDocList from "./RepositoryDocList";
@@ -15,28 +15,30 @@ import "./RepositoryDoc.scss"
 
 const RepositoryDoc = (props) => {
 
-    const { repositoryCatalogueList } = props.repositoryDetailStore;
+    const { repositoryCatalogueList,uploadSpinning } = props.repositoryDetailStore;
 
     // 解析props
     const { route } = props;
 
     return (
-        <Layout className="repository-doc">
-            <RepositoryDocList
-                {...props}
-            />
-            <Layout className="repository-doc-content">
-                {
-                    repositoryCatalogueList.length > 0 ?
-                        renderRoutes(route.routes)
-                        :
-                        <div className="repository-doc-empty">
-                            <Empty description="暂无文档" />
-                        </div>
+        <Spin spinning={uploadSpinning} tip={'上传中'} wrapperClassName="repository-doc-spin">
+            <Layout className="repository-doc">
+                <RepositoryDocList
+                    {...props}
+                />
+                <Layout className="repository-doc-content">
+                    {
+                        repositoryCatalogueList.length > 0 ?
+                            renderRoutes(route.routes)
+                            :
+                            <div className="repository-doc-empty">
+                                <Empty description="暂无文档" />
+                            </div>
 
-                }
+                    }
+                </Layout>
             </Layout>
-        </Layout>
+        </Spin>
     )
 }
 

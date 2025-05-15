@@ -1,5 +1,5 @@
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-09-08 14:58:51
@@ -79,10 +79,11 @@ class TemplateStore {
 
     }
 
-    @action 
+    @action
     upload = async(value) => {
         const data = await Service("/dfs/upload", value)
         return data;
     }
+
 }
 export default new TemplateStore();

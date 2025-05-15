@@ -1,0 +1,64 @@
+
+.repository-set {
+    height: 100%;
+    .ant-row {
+        overflow: auto;
+    }
+    .ant-layout {
+        background-color: #fff;
+    }
+    .ant-layout-sider {
+        background-color: var(--tiklab-gray-600);
+        .ant-layout-sider-children {
+            position: fixed;
+            width: 200px;
+            .repository-set-aside {
+                .repository-menu-ui{
+                    .repository-menu-li{
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        cursor: pointer;
+                        height: 40px;
+                        padding-right: 20px;
+                        &:hover {
+                            background-color: var(--tiklab-gray-300);
+                        }
+                    }
+                }
+                .repository-set-title {
+                    width: 100%;
+                    height: 40px;
+                    display: flex;
+                    align-items: center;
+                    padding: 0 20px;
+                    font-weight: 600;
+                    border-bottom: 1px solid #f0f2f5;
+                }
+                .repository-menus {
+                    list-style-type:none;
+                    cursor: pointer;
+                    .repository-menu {
+                        height: 40px;
+                        width: 100%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        i{
+                            margin-right: 10px;
+                        }
+                    }
+                    .repository-menu:hover {
+                        background-color: var(--tiklab-gray-300);
+                    }
+                    .repository-menu-select {
+                        background-color: var(--tiklab-gray-400);
+                    }
+                }
+                .repository-menu-hidden {
+                    display: none;
+                }
+            }
+        }
+    }
+}

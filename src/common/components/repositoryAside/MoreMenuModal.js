@@ -8,15 +8,12 @@
  */
 import React, { useEffect, useRef, useState } from "react";
 import "./MoreMenuModal.scss";
-import { useTranslation } from 'react-i18next';
 import { withRouter } from "react-router";
-import {disableFunction} from "tiklab-core-ui";
 
 const MoreMenuModel = (props) => {
 
-    const { isShowText, moreMenu, morePath, theme, setArchivedFreeVisable } = props;
+    const { isShowText, moreMenu, morePath, theme,selectMenu } = props;
 
-    const disable = disableFunction();
     // 获取当前被激活的菜单
     const path = props.location.pathname.split("/")[3];
     // 菜单的形式，宽菜单，窄菜单
@@ -25,9 +22,6 @@ const MoreMenuModel = (props) => {
     const modelRef = useRef()
     // 更多点击按钮的的ref
     const setButton = useRef()
-    const { t } = useTranslation();
-    // 当前被点击菜单的key
-    const paths = ["statistics"]
 
     /**
      * 显示菜单弹窗
@@ -60,19 +54,6 @@ const MoreMenuModel = (props) => {
         }
     }
 
-    /**
-     * 点击菜单
-     */
-    const selectMenu = (menu) => {
-        const {id,isEnhance} = menu;
-        setShowMenu(false)
-        if(disable && isEnhance){
-            setArchivedFreeVisable(true)
-            return
-        }
-        props.history.push(id)
-    }
-
     return (
         <div className="more-menu">
             {
@@ -103,7 +84,10 @@ const MoreMenuModel = (props) => {
                     moreMenu && moreMenu.map((item,index) => {
                         return <div className={`project-menu-submenu ${path === item.key ? "project-menu-select" : ""}`}
                             key={index}
-                            onClick={() => selectMenu(item)}
+                            onClick={() =>{
+                                setShowMenu(false)
+                                selectMenu(item)
+                            }}
                         >
                             <svg className="icon-18" aria-hidden="true">
                                 <use xlinkHref={`#icon-${item.defaultIcon}`}></use>

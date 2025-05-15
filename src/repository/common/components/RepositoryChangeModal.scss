@@ -20,26 +20,21 @@
             .type {
                 font-size: 12px;
                 font-weight: normal;
-
             }
         }
-
         span {
             width: 100px;
             height: 100%;
             overflow: hidden;
-
             i {
                 margin-right: 10px;
             }
         }
-
         .repository-aside-icon {
             width: 15px;
             height: 15px;
         }
     }
-
     .repository-title-icon {
         display: flex;
         width: 100%;
@@ -83,6 +78,12 @@
             margin-bottom: 5px;
             .item-info {
                 flex: 1;
+                min-width: 0;
+                .item-name,.item-master{
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
                 .item-master {
                     font-size: 12px;
                     color: var(--tiklab-gray-500);
@@ -105,10 +106,6 @@
             font-size: 13px;
         }
     }
-
-
-
-
     .menu-show {
         display: block;
     }

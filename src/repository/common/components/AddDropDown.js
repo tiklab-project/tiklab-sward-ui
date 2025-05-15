@@ -6,7 +6,7 @@
  * @LastEditors: 袁婕轩
  * @LastEditTime: 2024-12-31 16:57:33
  */
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Form, Menu, Dropdown, message} from "antd";
 import CategoryAdd from "./CategoryAdd";
 import { appendNodeInTree } from "../../../common/utils/treeDataAction";
@@ -31,7 +31,7 @@ const AddDropDown = (props) => {
     const [catalogue, setCatalogue] = useState()
     const [contentValue, setContentValue] = useState()
     const { repositoryCatalogueList, setRepositoryCatalogueList,
-        createDocument, findDmUserList, findDocument ,repository} = repositoryDetailStore;
+        createDocument, findDmUserList, findDocument ,repository,fileLimit,setUploadSpinning} = repositoryDetailStore;
 
     const fileInputRef = useRef(null);
 
@@ -107,8 +107,9 @@ const AddDropDown = (props) => {
         setCreateDocument(value.key)
     }
 
-    // 20MB
-    const MAX_FILE_SIZE = 20 * 1024 * 1024;
+    const FILE_SIZE = fileLimit?.docFileSize;
+    //最大文件
+    const MAX_FILE_SIZE = FILE_SIZE * 1024 * 1024;
 
     // 允许的文件类型
     const ALLOWED_FILE_TYPES = [
@@ -136,10 +137,11 @@ const AddDropDown = (props) => {
             // }
             //检查文件大小
             if (file.size > MAX_FILE_SIZE) {
-                message.error(`文件 ${file.name} 大小超过限制（最大 20MB）`);
+                message.error(`文件 ${file.name} 大小超过限制（最大 ${FILE_SIZE}MB）`);
                 event.target.value = '';
                 return;
             }
+            setUploadSpinning(true);
             //格式化文件大小
             const formattedSize = formatFileSize(file.size);
             //请求数据
@@ -157,6 +159,7 @@ const AddDropDown = (props) => {
                 }
             }).finally(()=>{
                 event.target.value = '';
+                setUploadSpinning(false);
             })
         }
     };
@@ -181,10 +184,7 @@ const AddDropDown = (props) => {
         }
         if(documentType==='markdown'){
             params.details = JSON.stringify([
-                {
-                    type: 'paragraph',
-                    children: [{text: '',},],
-                },
+                {type: 'paragraph', children: [{text: '',},],},
             ])
         }
         if(documentType==='file' && value ){

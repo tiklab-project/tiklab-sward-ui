@@ -49,7 +49,12 @@ const MarkdownDocument = (props) => {
     const [loading, setLoading] = useState(true);
     const [documentVersion,setDocumentVersion] = useState(null);
 
+    //仓库归档状态
     const repositoryStatus = repository?.status === 'nomal';
+    //文档评审状态
+    const documentApprove = document?.node?.approve === 'review';
+    //文档是否能编辑
+    const isEdit = repositoryStatus && !documentApprove;
 
     useEffect(() => {
         setDocumentTitle()
@@ -206,7 +211,7 @@ const MarkdownDocument = (props) => {
                                                         </svg>
                                                 }
                                                 {
-                                                    value && repositoryStatus &&
+                                                    value && isEdit &&
                                                     <Button className="document-action-edit" onClick={() => goEdit()}>
                                                         编辑
                                                     </Button>

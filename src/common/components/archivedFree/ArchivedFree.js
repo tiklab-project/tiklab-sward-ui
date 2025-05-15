@@ -10,6 +10,10 @@ import documentVersion from "../../../assets/images/documentVersion.png";
 import fileView from "../../../assets/images/fileView.png";
 import exportWord from "../../../assets/images/exportWord.png";
 import review from "../../../assets/images/review.png";
+import statisticsDocCount from "../../../assets/images/statisticsDocCount.png";
+import statisticsCreation from "../../../assets/images/statisticsCreation.png";
+import statisticsDetails from "../../../assets/images/statisticsDetails.png";
+import statisticsContribution from "../../../assets/images/statisticsContribution.png";
 
 const ArchivedFree = (props) => {
 
@@ -25,13 +29,19 @@ const ArchivedFree = (props) => {
             {id: "version", icon: documentVersion, title: "文档版本"},
         ],
         documentFile: [
-            {id: "fileView", icon: fileView, title: "附件预览"}
+            {id: "fileView", icon: fileView, title: "附件预览"},
         ],
         documentReview: [
-            {id: "review", icon: review, title: "文档评审"}
+            {id: "review", icon: review, title: "文档评审"},
         ],
         documentExport: [
-            {id: "exportWord", icon: exportWord, title: "导出Word"}
+            {id: "exportWord", icon: exportWord, title: "导出Word"},
+        ],
+        documentStatistics: [
+            {id: "statisticsDocCount", icon: statisticsDocCount, title: "文档数量统计"},
+            {id: "statisticsCreation", icon: statisticsCreation, title: "文档创作统计"},
+            {id: "statisticsDetails", icon: statisticsDetails, title: "文档明细统计"},
+            {id: "statisticsContribution", icon: statisticsContribution, title: "成员贡献统计"},
         ],
     }
 
@@ -40,7 +50,8 @@ const ArchivedFree = (props) => {
         documentVersion: '文档版本',
         documentFile: '附件',
         documentReview: '评审',
-        documentExport: '导出'
+        documentExport: '导出',
+        documentStatistics: '统计',
     }
 
     const desc = {
@@ -48,7 +59,8 @@ const ArchivedFree = (props) => {
         documentVersion: '文档版本',
         documentFile: '附件预览',
         documentReview: '评审',
-        documentExport: 'Word'
+        documentExport: 'Word',
+        documentStatistics: '文档数量、创作、明细、成员贡献',
     }
 
     const list = data[type];

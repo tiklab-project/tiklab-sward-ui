@@ -128,7 +128,8 @@ const RepositoryDocList = (props) => {
                         repositoryId: repositoryId,
                         treePath: id,
                         status: "nomal",
-                        dimensions: [node.dimension + 1, node.dimension + 2]
+                        dimensions: [node.dimension + 1, node.dimension + 2],
+                        approveUserId: userId,
                     }
                     findNodePageTree(params).then(data => {
                         if (data.code === 0) {

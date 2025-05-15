@@ -10,12 +10,11 @@ const RepositoryIcon = (props) => {
 
     const [form] = Form.useForm();
 
-    const { visible, setVisible, updateRepository,findRepository } = props;
+    const { visible, setVisible, repositoryId, updateRepository,findRepository } = props;
 
     const [repositoryIconUrl, setProjectIconUrl] = useState("")
 
     const { findIconList, creatIcon } = RepositoryIconStore;
-    const repositoryId = props.match.params.repositoryId;
     const [iconList, setIconList] = useState();
 
     useEffect(() => {

@@ -26,7 +26,7 @@ const Search = (props) => {
         findRecentRepositoryList ,getSearch } = SearchStore;
     const [searchModal, setSearchModal] = useState(false);
     const [isSeach, setIsSeach] = useState(false);
-    const userId = getUser().id;
+    const userId = getUser().userId;
     const searchBox = useRef();
     const [inputValue,setInputValue] = useState('');
     const [repositoryloading, setRepositoryloading] = useState(true)
@@ -92,8 +92,10 @@ const Search = (props) => {
             //         setDocloading(false)
             //     }
             // })
-            getSearch(keyWord).then(res=>{
-
+            getSearch({
+                name : keyWord,
+                userId: userId
+            }).then(res=>{
             }).finally(()=>{
                 setRepositoryloading(false)
                 setDocloading(false)

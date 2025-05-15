@@ -375,6 +375,7 @@ const BasicInfo = props => {
                 <RepositoryIcon
                     visible={visible}
                     setVisible={setVisible}
+                    repositoryId={repositoryId}
                     updateRepository={updateRepository}
                     findRepository={findRepository}
                 />

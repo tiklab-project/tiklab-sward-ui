@@ -1,5 +1,18 @@
-.project-detail-side {
+.repositorydetail {
+    height: 100%;
+    .repositorydetail-content {
+        background-color: #fff;
+        height: 100%;
+        overflow: hidden;
+        .repositorydetail-content-col {
+            background: #fff;
+            height: calc(100% - 64px);
+            overflow: auto;
+        }
+    }
+}
 
+.project-detail-side {
     .project-aside {
         height: 100%;
         display: flex;
@@ -15,8 +28,8 @@
             flex: 1;
 
             .project-back-project {
-                margin-bottom: 10px;
-            border-bottom: 1px solid #d7d7d7;
+                margin-bottom: 5px;
+                border-bottom: 1px solid #d7d7d7;
             }
 
             .project-menu-submenu {
@@ -39,7 +52,7 @@
                 width: 100%;
                 align-items: center;
                 flex-direction: column;
-                margin-bottom: 10px;
+                margin-bottom: 5px;
                 padding: 5px 0;
                 cursor: pointer;
                 border-left: 3px solid transparent;
@@ -110,7 +123,6 @@
 
 
 }
-
 .project-sider-gray {
     background-color: #f0f3fa !important;
     .project-menu-submenu-icon:hover {
@@ -161,7 +173,6 @@
         background-color: #414a5a;
     }
 }
-
 .menu-box-right-border{
     width: 15px;
     position: absolute;

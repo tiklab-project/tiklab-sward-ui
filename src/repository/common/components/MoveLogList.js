@@ -13,12 +13,14 @@ import { observer, inject } from "mobx-react";
 import { withRouter } from 'react-router';
 import { updataTreeSort, findNodeById, appendNodeInTree } from '../../../common/utils/treeDataAction';
 import BaseModal from "../../../common/components/modal/Modal";
+import {getUser} from "tiklab-core-ui";
 
 const MoveLogList = (props) => {
     const { moveLogListVisible, setMoveLogListVisible, moveItem, repositoryDetailStore,
         updateDocumentSort, updateCategorySort } = props;
     const { findNodePageTree } = repositoryDetailStore;
     const [selectKey, setSelectKey] = useState()
+    const userId = getUser().userId;
     const repositoryId = props.match.params.repositoryId;
     const parentItem = moveItem?.type === "category" ? moveItem?.parentWikiCategory : moveItem?.wikiCategory
     const [categoryList, setCategoryList] = useState()
@@ -28,7 +30,8 @@ const MoveLogList = (props) => {
             findNodePageTree({
                 repositoryId: repositoryId,
                 dimensions: [1, 2],
-                type: "category"
+                type: "category",
+                approveUserId: userId,
             }).then((data) => {
                 setCategoryList(data.data)
             })
@@ -92,7 +95,8 @@ const MoveLogList = (props) => {
                 repositoryId: repositoryId,
                 treePath: id,
                 dimensions: [dimension + 1, dimension + 2],
-                type: "category"
+                type: "category",
+                approveUserId: userId,
             }
             findNodePageTree(params).then(data => {
                 if (data.code === 0) {

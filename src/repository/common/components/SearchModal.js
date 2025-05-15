@@ -64,7 +64,8 @@ const SearchModal = (props) => {
             setSpinning(true);
             const param = {
                 repositoryId: repositoryId,
-                name: keyWord
+                name: keyWord,
+                userId: userId,
             }
             // findNodeList(param).then(res => {
             //     console.log(res)

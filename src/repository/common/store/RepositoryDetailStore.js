@@ -175,6 +175,27 @@ export class RepositoryDetailStore {
         return data;
     }
 
+    //文件大小
+    @observable fileLimit = null;
+    @action
+    findFileLimit = async () => {
+        const data = await Service("/sward/limit/findFileLimit");
+        if(data.code===0){
+            this.fileLimit = data.data
+        }
+        return data;
+    }
+
+    //加载
+    @observable uploadSpinning = false;
+
+    @action
+    setUploadSpinning = value =>{
+        this.uploadSpinning = value;
+    }
+
+
+
 }
 
 export default new RepositoryDetailStore();

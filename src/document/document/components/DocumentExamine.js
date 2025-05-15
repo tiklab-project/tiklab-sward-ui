@@ -24,7 +24,7 @@ import {DoubleLeftOutlined, DoubleRightOutlined} from "@ant-design/icons";
 
 const DocumentExamine = (props) => {
 
-    const { relationWorkStore, DocumentVersionList, DocumentVersionAdd ,DocumentReviewAdd,exportsWord } = props;
+    const { relationWorkStore, DocumentVersionList, DocumentVersionAdd ,DocumentReviewAdd } = props;
 
     const { repository, documentTitle, setDocumentTitle } = RepositoryDetailStore;
     const [documentDate, setDocumentDate] = useState();
@@ -38,8 +38,7 @@ const DocumentExamine = (props) => {
 
     const { createLike, createShare, updateShare, deleteLike } = CommentShare;
     const [shareVisible, setShareVisible] = useState(false)
-    const userId = getUser().userId;
-    const tenant = getUser().tenant;
+    const user = getUser();
     const [docInfo, setDocInfo] = useState()
     const [showComment, setShowComment] = useState(false);
 
@@ -49,10 +48,15 @@ const DocumentExamine = (props) => {
     let [commentNum, setCommentNum] = useState()
     const [value, setValue] = useState()
     const [loading, setLoading] = useState(true);
-    const [document, setDocument] = useState()
-    const repositoryStatus = repository?.status === 'nomal';
+    const [documents, setDocument] = useState()
     const [documentVersion,setDocumentVersion] = useState(null);
     const [showCatagory,setShowCatagory] = useState(true);
+    //仓库归档状态
+    const repositoryStatus = repository?.status === 'nomal';
+    //文档评审状态
+    const documentApprove = documents?.node?.approve === 'review';
+    //文档是否能编辑
+    const isEdit = repositoryStatus && !documentApprove;
 
     // 获取文档详情
     useEffect(() => {
@@ -68,7 +72,7 @@ const DocumentExamine = (props) => {
                         setValue(data.data.details)
                     } else {
                         setValue()
-                        if(repositoryStatus){
+                        if(isEdit){
                             if (path === "doc") {
                                 props.history.push(`/repository/${repositoryId}/doc/rich/${documentId}/edit`)
                             }
@@ -97,7 +101,7 @@ const DocumentExamine = (props) => {
         if (like) {
             const data = {
                 toWhomId: documentId,
-                likeUser: userId,
+                likeUser: user.userId,
                 likeType: "doc"
             }
             deleteLike(data).then(res => {
@@ -108,7 +112,7 @@ const DocumentExamine = (props) => {
         } else {
             const data = {
                 toWhomId: documentId,
-                likeUser: { id: userId },
+                likeUser: { id: user.userId },
                 likeType: "doc"
             }
             createLike(data).then(res => {
@@ -127,7 +131,7 @@ const DocumentExamine = (props) => {
     const createFocus = () => {
         const params = {
             documentId: documentId,
-            masterId: userId,
+            masterId: user.userId,
             wikiRepository: {
                 id: repositoryId
             }
@@ -146,7 +150,7 @@ const DocumentExamine = (props) => {
     const deleteFocus = () => {
         const params = {
             documentId: documentId,
-            masterId: userId
+            masterId: user.userId
         }
         deleteDocumentFocusByCondition(params).then(res => {
             if (res.code === 0) {
@@ -170,10 +174,41 @@ const DocumentExamine = (props) => {
         }
     }
 
+    /**
+     * 导出worid
+     */
+    const exportsWord = async () => {
+        setLoading(true);
+        fetch(`${upload_url}/documentExport/exportWord?docId=${documentId}`, {
+            method: 'GET',
+            headers:{
+                ticket: user.ticket,
+                tenant: user.tenant
+            }
+        })
+            .then(response => {
+                if (!response.ok) throw new Error("文件下载失败");
+                return response.blob().then(blob => ({ blob, filename:response.headers.get('filename') }));
+            })
+            .then(({ blob, filename }) => {
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = decodeURIComponent(filename);
+                link.click();
+            })
+            .catch(error => {
+                console.error('文件下载失败', error);
+            })
+            .finally(()=>{
+                setLoading(false)
+            })
+    };
+
+
     return (<Provider {...store}>
-        <Spin wrapperClassName="document-examine-spin" spinning={loading} tip="加载中..." >
+        <Spin wrapperClassName="document-examine-spin" spinning={loading} >
             {
-                document ?
+                documents ?
                     docInfo?.recycle === "0" ?
                         <div className="document-examine">
                             {
@@ -204,7 +239,7 @@ const DocumentExamine = (props) => {
                                                     setValue(null);
                                                     setDocumentVersion(null);
                                                     Promise.resolve().then(() => {
-                                                        setValue(document.details);
+                                                        setValue(documents.details);
                                                     });
                                                 }}
                                             >  退出历史版本
@@ -222,7 +257,7 @@ const DocumentExamine = (props) => {
                                                         </svg>
                                                 }
                                                 {
-                                                    value && repositoryStatus &&
+                                                    value && isEdit &&
                                                     <Button className="document-action-edit" onClick={() => goEdit()}>
                                                         编辑
                                                     </Button>
@@ -236,7 +271,7 @@ const DocumentExamine = (props) => {
                                             </>
                                     }
                                     <DocumentActionMenu
-                                        document={document}
+                                        document={documents}
                                         commentNum={commentNum}
                                         setShowComment={setShowComment}
                                         setValue={setValue}
@@ -265,7 +300,7 @@ const DocumentExamine = (props) => {
                                                         base_url={upload_url}
                                                         img_url={upload_url}
                                                         viewImageUrl="/image"
-                                                        tenant={tenant}
+                                                        tenant={user.tenant}
                                                     />
                                                 </Col>
                                             </Row>
