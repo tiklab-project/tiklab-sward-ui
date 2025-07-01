@@ -27,6 +27,18 @@ export class CollectStore {
     }
 
     @action
+    findDocumentFocusPage = async (value) => {
+        const data = await Service("/documentFocus/findDocumentFocusPage", value);
+        return data;
+    }
+
+    @action
+    deleteDocumentFocusByCondition = async(value) =>{
+        const data = await Service("/documentFocus/deleteDocumentFocusByCondition",value);
+        return data;
+    }
+
+    @action
     findFocusRepositoryList = async (value) => {
         const data = await Service("/repository/findFocusRepositoryList", value);
 

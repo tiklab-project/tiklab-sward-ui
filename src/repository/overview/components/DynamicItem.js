@@ -11,11 +11,10 @@ import "./DynamicItem.scss"
 import { withRouter } from "react-router";
 import {documentPush} from "../../../common/utils/overall";
 const DynamicListItem = (props) => {
-    const { content, actionType, key } = props;
+    const { content, actionType, key, user } = props;
     const data = JSON.parse(content)
     const repositoryId = props.match.params.repositoryId;
-    const { createUserIcon, createUser, updateTime, documentId, createUserName, createTime,
-        documentName, oldValue, newValue, documentType } = data;
+    const { documentId, documentName, newValue, documentType } = data;
 
     const goDynamicDetail = () => {
         documentPush(props.history,repositoryId,{
@@ -33,9 +32,15 @@ const DynamicListItem = (props) => {
                     <div className="dynamic-list-item" key={key}>
                         <div className="dynamic-list-item-content">
                             <div className="dynamic-content">
-                                <div className="dynamic-document-action">{createUser.nickname}添加了文档</div>
+                                <div className="dynamic-document-action"
+                                     onClick={() => goDynamicDetail()}
+                                >
+                                   添加了文档 {documentName}
+                                </div>
                                 <div className="dynamic-document-item">
-                                    <div className="dynamic-document-title" onClick={() => goDynamicDetail()}>{documentName}</div>
+                                    <div className="dynamic-document-title">
+                                        {user.nickname}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -46,19 +51,14 @@ const DynamicListItem = (props) => {
                 dom = <div className="dynamic-list-item" key={key}>
                     <div className="dynamic-list-item-content">
                         <div className="dynamic-content">
-                            <div className="dynamic-document-action">{createUserName}修改了文档名称</div>
+                            <div className="dynamic-document-action"
+                                 onClick={() => goDynamicDetail()}
+                            >
+                                修改了文档名称 {newValue}
+                            </div>
                             <div className="dynamic-document-update">
-                                {/* <div
-                                    className="dynamic-document-oldvalue"
-                                >
-                                    {oldValue}
-                                </div>
-                                ——— */}
-                                <div
-                                    className="dynamic-document-newValue"
-                                    onClick={() => goDynamicDetail()}
-                                >
-                                    {newValue}
+                                <div className="dynamic-document-newValue">
+                                    {user.nickname}
                                 </div>
                             </div>
                         </div>
@@ -71,13 +71,7 @@ const DynamicListItem = (props) => {
         }
         return dom;
     }
-    return (<>
-        {
-            setDom()
-        }
-    </>
-
-    )
+    return setDom()
 }
 
 export default withRouter(DynamicListItem);

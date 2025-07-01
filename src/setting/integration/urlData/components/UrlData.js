@@ -117,6 +117,7 @@ const UrlData = () => {
                             scroll={{
                                 x: "100%"
                             }}
+                            pagination={false}
                         />
                     </div>
                 </Col>

@@ -1,57 +1,16 @@
 .share-page {
     height: 100%;
-    .share-page-head {
+    .repository-aside-logo{
+        height: 48px;
+        padding: 12px 16px;
         display: flex;
         align-items: center;
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
-        justify-content: space-between;
-        position: relative;
-        z-index: 3;
-        padding: 0 10px;
-        .frame-header-logo {
-            height: var(--tiklab-head-height);
-            margin-right: 20px;
-            display: flex;
-            align-items: center;
-            .logo-img {
-                height: 24px;
-                width: 24px;
-            }
-
-            .logo-text {
-                margin-left: 10px;
-                font-size: 20px;
-                font-weight: 500;
-            }
-
+        border-bottom: 1px solid #e8e8e8;
+        .logo-text{
+            margin-left: 8px;
+            font-size: 16px;
+            font-weight: 600;
         }
-        .share-page-icon {
-            position: relative;
-            text-align: center;
-
-            .ant-avatar {
-                width: 22px;
-                height: 22px;
-            }
-        }
-
-        .share-page-help {
-            width: 25px;
-            height: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 25px;
-        }
-
-        .share-page-help:hover {
-            background-color: #0D66E466;
-
-        }
-
-    }
-    .repositorydetail {
-        height: calc(100% - 48px);
     }
 }
 .help-box {

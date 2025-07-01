@@ -18,6 +18,8 @@ import { Collapse } from 'antd';
 import { getVersionInfo } from "tiklab-core-ui";
 import ArchivedFree from "../../../../common/components/archivedFree/ArchivedFree";
 import Img from "../../../../common/components/img/Img";
+import RepositoryDelete from "../../../repository/components/RepositoryDelete";
+
 const { Panel } = Collapse;
 const BasicInfo = props => {
     const layout = {
@@ -41,13 +43,12 @@ const BasicInfo = props => {
     const [form] = Form.useForm();
     const repositoryId = props.match.params.repositoryId;
     const { repositorySetStore, repositoryDetailStore, RepositoryRecycleModal,ArchivedComponent } = props;
-    const { deleteRepository, updateRepository, findAllUser, uselist } = repositorySetStore;
+    const {updateRepository, findAllUser, uselist } = repositorySetStore;
     const { findRepository, repository } = repositoryDetailStore;
 
     const [disable, setDisabled] = useState(true);
     const [visible, setVisible] = useState(false);
 
-    const [confirmForm] = Form.useForm();
     //移到回收站弹出框
     const [repositoryRecycleVisable, setRepositoryRecycleVisable] = useState(false);
     const versionInfo = getVersionInfo();
@@ -110,10 +111,6 @@ const BasicInfo = props => {
         setArchivedFreeVisable(true)
     }
 
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
-
     const repositoryInfoDesc = () => (
         <div>
             <div className="repository-info-title">
@@ -164,19 +161,6 @@ const BasicInfo = props => {
             </div>
         </div>
     );
-
-    const [confirmProjectName, setConfirmProjectName] = useState();
-    const handleOk = () => {
-        confirmForm.validateFields().then((fieldsValue) => {
-            deleteRepository(repositoryId).then(response => {
-                if (response.code === 0) {
-                    message.success('删除成功');
-                    setIsModalVisible(false);
-                    props.history.push("/repository")
-                }
-            })
-        })
-    };
 
     return (
         <Row>
@@ -325,53 +309,11 @@ const BasicInfo = props => {
                         </Panel>
                     </Collapse>
                 </div>
-                <div className="project-delete-confirm">
-                    <Modal
-                        title="确定删除"
-                        getContainer={false}
-                        visible={isModalVisible}
-                        closable={false}
-                        onOk={handleOk}
-                        onCancel={handleCancel}
-                        okText={"确定"}
-                        cancelText={"取消"}
-                        okType="danger"
-                        okButtonProps={{ type: "primary" }}
-                    >
-                        <Alert message=" 此知识库及其目录、文档、附件和评论将被永久删除" type="error" showIcon />
-                        <div style={{ padding: "20px 0" }}>
-                            <Form
-                                form={confirmForm}
-                                name="dependencies"
-                                autoComplete="off"
-                                style={{
-                                    maxWidth: 600,
-                                }}
-                                layout="vertical"
-                            >
-                                <Form.Item
-                                    label="知识库名称"
-                                    name="confirmProjectName"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: `请输入知识库名称`,
-                                        },
-                                        ({ getFieldValue }) => ({
-                                            validator(rule, value) {
-                                                //getFieldValue可以获得其他输入框的内容
-                                                if (repository?.name !== value) return Promise.reject(`请输入正确的知识库名字`);
-                                                return Promise.resolve();
-                                            }
-                                        })
-                                    ]}
-                                >
-                                    <Input value={confirmProjectName} onChange={(value) => setConfirmProjectName(value.target.value)} />
-                                </Form.Item>
-                            </Form>
-                        </div>
-                    </Modal>
-                </div>
+                <RepositoryDelete
+                    delVisible={isModalVisible}
+                    setDelVisible={setIsModalVisible}
+                    repository={repository}
+                />
                 <RepositoryIcon
                     visible={visible}
                     setVisible={setVisible}

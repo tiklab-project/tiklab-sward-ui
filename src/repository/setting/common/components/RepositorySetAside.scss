@@ -5,10 +5,10 @@
         overflow: auto;
     }
     .ant-layout {
-        background-color: #fff;
+        background: #fff !important;
     }
     .ant-layout-sider {
-        background-color: var(--tiklab-gray-600);
+        background: var(--tiklab-gray-600) !important;
         .ant-layout-sider-children {
             position: fixed;
             width: 200px;
@@ -22,7 +22,7 @@
                         height: 40px;
                         padding-right: 20px;
                         &:hover {
-                            background-color: var(--tiklab-gray-300);
+                            background: var(--tiklab-gray-300);
                         }
                     }
                 }
@@ -49,10 +49,10 @@
                         }
                     }
                     .repository-menu:hover {
-                        background-color: var(--tiklab-gray-300);
+                        background: var(--tiklab-gray-300);
                     }
                     .repository-menu-select {
-                        background-color: var(--tiklab-gray-400);
+                        background: var(--tiklab-gray-400);
                     }
                 }
                 .repository-menu-hidden {

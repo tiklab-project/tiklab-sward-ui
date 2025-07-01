@@ -79,7 +79,6 @@ const ArchivedFree = (props) => {
             visible={archivedFreeVisable}
             className="sward-enhance-modal"
             onCancel={()=>setArchivedFreeVisable(false)}
-            closable={true}
             footer={null}
         >
             <div className="enhance-free">

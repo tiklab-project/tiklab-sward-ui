@@ -6,9 +6,8 @@
  * @Description: 知识库列表
  */
 import React, { useEffect, useState, Fragment } from "react";
-import { Table, Space, Row, Col, Empty, Spin } from 'antd';
+import {Table, Space, Row, Col, Empty, Spin, Tooltip, Dropdown} from 'antd';
 import { observer, inject } from "mobx-react";
-import { withRouter } from "react-router-dom";
 import { getUser } from "tiklab-core-ui";
 import Breadcumb from "../../../common/components/breadcrumb/Breadcrumb";
 import SearchInput from "../../../common/components/search/SearchInput";
@@ -18,16 +17,42 @@ import RepositoryStore from "../store/RepositoryStore";
 import { useDebounce } from "../../../common/utils/debounce";
 import UserIcon from "../../../common/components/icon/UserIcon";
 import Img from "../../../common/components/img/Img";
+import {DeleteOutlined, EditOutlined, SettingOutlined} from "@ant-design/icons";
+import RepositoryAdd from "./RepositoryAdd";
+import {PrivilegeProjectButton} from "tiklab-privilege-ui";
+import RepositoryDelete from "./RepositoryDelete";
+
 const RepositoryList = (props) => {
+
+    const {systemRoleStore} = props;
+
     const { findRepositoryList, createRecent,
         repositoryList, findRecentRepositoryList, createRepositoryFocus,
         findFocusRepositoryList, getFocusRepositoryList, deleteRepositoryFocusByCondition,
         activeTabs, setActiveTabs, findRepositoryNum } = RepositoryStore;
+    const {getInitProjectPermissions} = systemRoleStore;
+
+
     const userId = getUser().userId;
     const [focusRepositoryList, setFocusRepositoryList] = useState([])
     const [recentRepositoryDocumentList, setRecentRepositoryDocumentList] = useState([]);
     const [num, setNum] = useState();
     const [recentDocLoading, setRecentDocLoading] = useState(true);
+    //添加弹出框
+    const [addVisible,setAddVisible] = useState(false);
+    //知识库
+    const [repository,setRepository] = useState(null);
+    //下拉框
+    const [dropVisible,setDropVisible] = useState(null);
+    //删除弹出框
+    const [delVisible,setDelVisible] = useState(false);
+
+    useEffect(() => {
+        if(dropVisible){
+            getInitProjectPermissions(userId,repository.id,repository?.limits==="0");
+        }
+    }, [dropVisible]);
+
     const repositoryTab = [
         {
             title: '所有知识库',
@@ -49,24 +74,28 @@ const RepositoryList = (props) => {
             icon: "programbuild"
         }
     ]
+
+
     useEffect(() => {
         selectTabs(activeTabs)
         findFocusRepository()
-        const recentRepositoryParams = {
+        //常用知识库
+        setRecentDocLoading(true)
+        findRecentRepositoryList({
             masterId: userId,
             model: "repository",
             orderParams: [{
                 name: "recentTime",
                 orderType: "desc"
             }]
-        }
-        setRecentDocLoading(true)
-        findRecentRepositoryList(recentRepositoryParams).then(res => {
+        }).then(res => {
             if (res.code === 0) {
                 setRecentRepositoryDocumentList(res.data)
             }
+        }).finally(()=>{
             setRecentDocLoading(false)
         })
+        //知识库统计
         findRepositoryNum({ masterId: userId}).then(res=> {
             if(res.code === 0){
                 setNum(res.data)
@@ -86,78 +115,43 @@ const RepositoryList = (props) => {
         })
     }
 
+    /**
+     * 编辑
+     */
+    const toEdit = (record) => {
+        setDropVisible(null);
+        setAddVisible(true);
+    }
 
-    const columns = [
-        {
-            title: "知识库名称",
-            dataIndex: "name",
-            key: "name",
-            align: "left",
-            render: (text, record) => <div onClick={() => goRepositorydetail(record)} className="repository-title">
-                <Img
-                    src={record.iconUrl}
-                    alt=""
-                    className="list-img"
-                />
-                <div className="repository-info">
-                    <div className="repository-name">{text}</div>
-                    <div className="repository-master">{record.master.nickname}</div>
-                </div>
+    /**
+     * 删除
+     */
+    const toDelete = (record) => {
+        setDropVisible(null);
+        setDelVisible(true);
+    }
 
-            </div>,
-        },
-        {
-            title: "负责人",
-            dataIndex: ["master", "nickname"],
-            key: "master",
-            align: "left",
-            render: (text, record) => (
-                <Space>
-                    <UserIcon name={text} />
-                    {text}
-                </Space>
-            )
+    /**
+     * 删除后重新获取列表
+     */
+    const changFresh = (type) => {
+        selectTabs(activeTabs);
+        if(type==='delete'){
+            findRepositoryNum({ masterId: userId}).then(res=> {
+                if(res.code === 0){
+                    setNum(res.data)
+                }
+            })
+        }
+    }
 
-        },
-        {
-            title: "可见范围",
-            dataIndex: "limits",
-            key: "limits",
-            align: "left",
-            render: (text, record) => <div>
-                {text === "0" ? "公开" : "私有"}
-            </div>,
-
-        },
-        {
-            title: "创建时间",
-            dataIndex: "createTime",
-            key: "createTime",
-            align: "left",
-            width: "20%"
-        },
-        {
-            title: "操作",
-            dataIndex: "action",
-            key: "action",
-            align: "left",
-            width: "15%",
-            render: (text, record) => (
-                <Space size="middle">
-                    {
-                        focusRepositoryList.indexOf(record.id) !== -1 ?
-                            <svg className="svg-icon" aria-hidden="true" onClick={() => deleteFocusRepository(record.id)}>
-                                <use xlinkHref="#icon-focus"></use>
-                            </svg>
-                            :
-                            <svg className="svg-icon" aria-hidden="true" onClick={() => addFocusRepository(record.id)}>
-                                <use xlinkHref="#icon-nofocus"></use>
-                            </svg>
-                    }
-                </Space>
-            ),
-        },
-    ]
+    /**
+     * 设置
+     */
+    const toSetting = (record) =>{
+        setDropVisible(null);
+        props.history.push(`/repository/${record.id}/set/basicInfo`)
+    }
 
     const goRepositorydetail = (repository) => {
         const params = {
@@ -243,11 +237,114 @@ const RepositoryList = (props) => {
     }
 
     const goRepositoryAdd = () => {
-        props.history.push("/repositoryAdd")
+        setRepository(null);
+        setAddVisible(true);
     }
-    // const goRepositoryDetail = repository => {
-    //     props.history.push(`/repository/${repository.id}/overview`)
-    // }
+
+    const columns = [
+        {
+            title: "知识库名称",
+            dataIndex: "name",
+            key: "name",
+            align: "left",
+            render: (text, record) => <div onClick={() => goRepositorydetail(record)} className="repository-title">
+                <Img
+                    src={record.iconUrl}
+                    alt=""
+                    className="list-img"
+                />
+                <div className="repository-info">
+                    <div className="repository-name">{text}</div>
+                    <div className="repository-master">{record.master.nickname}</div>
+                </div>
+            </div>,
+        },
+        {
+            title: "负责人",
+            dataIndex: ["master", "nickname"],
+            key: "master",
+            align: "left",
+            render: (text, record) => (
+                <Space>
+                    <UserIcon name={text} />
+                    {text}
+                </Space>
+            )
+
+        },
+        {
+            title: "可见范围",
+            dataIndex: "limits",
+            key: "limits",
+            align: "left",
+            render: (text, record) => <div>
+                {text === "0" ? "公开" : "私有"}
+            </div>,
+
+        },
+        {
+            title: "创建时间",
+            dataIndex: "createTime",
+            key: "createTime",
+            align: "left",
+            width: "20%"
+        },
+        {
+            title: "操作",
+            dataIndex: "action",
+            key: "action",
+            align: "left",
+            width: "15%",
+            render: (text, record) => (
+                <Space size="middle">
+                    <Tooltip title="收藏">
+                        {
+                            focusRepositoryList.indexOf(record.id) !== -1 ?
+                                <svg className="svg-icon" aria-hidden="true" onClick={() => deleteFocusRepository(record.id)}>
+                                    <use xlinkHref="#icon-focus"></use>
+                                </svg>
+                                :
+                                <svg className="svg-icon" aria-hidden="true" onClick={() => addFocusRepository(record.id)}>
+                                    <use xlinkHref="#icon-nofocus"></use>
+                                </svg>
+                        }
+                    </Tooltip>
+                    <Dropdown
+                        overlay={
+                            <div className="sward-dropdown-more">
+                                <div className="dropdown-more-item" onClick={()=>toEdit(record)}>
+                                    <EditOutlined /> 编辑
+                                </div>
+                                <PrivilegeProjectButton code={"RepositoryDelete"} domainId={record.id}>
+                                    <div className="dropdown-more-item" onClick={()=>toDelete(record)}>
+                                        <DeleteOutlined /> 删除
+                                    </div>
+                                </PrivilegeProjectButton>
+                                <div className="dropdown-more-item" onClick={()=>toSetting(record)}>
+                                    <SettingOutlined /> 设置
+                                </div>
+                            </div>
+                        }
+                        trigger={['click']}
+                        placement={"bottomRight"}
+                        visible={dropVisible === record.id}
+                        onVisibleChange={visible => {
+                            if(visible){
+                                setRepository(record)
+                            }
+                            setDropVisible(visible ? record.id : null);
+                        }}
+                    >
+                        <Tooltip title="更多">
+                            <svg className="svg-icon" aria-hidden="true" >
+                                <use xlinkHref="#icon-more-default"></use>
+                            </svg>
+                        </Tooltip>
+                    </Dropdown>
+                </Space>
+            ),
+        },
+    ]
 
     return (
         <Row className="repository-row">
@@ -256,9 +353,23 @@ const RepositoryList = (props) => {
                     <Breadcumb
                         firstText="知识库"
                     >
-                        <Button type="primary" onClick={() => goRepositoryAdd()} buttonText={"添加知识库"} >
+                        <Button type="primary" onClick={goRepositoryAdd} buttonText={"添加知识库"} >
                         </Button>
                     </Breadcumb>
+                    <RepositoryAdd
+                        {...props}
+                        addVisible={addVisible}
+                        setAddVisible={setAddVisible}
+                        repository={repository}
+                        setRepository={setRepository}
+                        changFresh={changFresh}
+                    />
+                    <RepositoryDelete
+                        repository={repository}
+                        delVisible={delVisible}
+                        setDelVisible={setDelVisible}
+                        changFresh={changFresh}
+                    />
                     <div className="recent-repository">
                         <div className="repository-title">常用知识库</div>
                         <Spin wrapperClassName="repository-spin" spinning={recentDocLoading} tip="加载中..." >
@@ -327,4 +438,4 @@ const RepositoryList = (props) => {
 
     )
 }
-export default withRouter(observer(RepositoryList));
+export default inject("systemRoleStore")(observer(RepositoryList))

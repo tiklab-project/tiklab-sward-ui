@@ -78,6 +78,10 @@
                 width: 20px;
                 height: 20px;
                 cursor: pointer;
+                border-radius: 4px;
+                &:hover {
+                    background-color: #edf0f5;
+                }
             }
         }
 
@@ -99,7 +103,7 @@
         border-radius: 6px;
         background-color: rgb(255, 255, 255);
         position: absolute;
-        bottom: 150;
+        bottom: 150px;
         right: 20px;
 
         .comment-box-item {
@@ -133,7 +137,7 @@
 }
 .more-box {
     right: -20px;
-    top: 5;
+    top: 5px;
     position: absolute;
     display: block;
     box-sizing: border-box;

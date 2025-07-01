@@ -49,6 +49,7 @@ const RepositoryDetail = (props)=>{
             icon: 'survey-' + theme,
             defaultIcon: "survey-default",
             id: `/repository/${repositoryId}/overview`,
+            to: `/repository/${repositoryId}/overview`,
             key: "overview",
             encoded: "Survey"
         },
@@ -57,22 +58,16 @@ const RepositoryDetail = (props)=>{
             icon: 'doc-' + theme,
             defaultIcon: "doc-default",
             id: `/repository/${repositoryId}/doc`,
+            to: `/repository/${repositoryId}/doc/collect`,
             key: "doc",
             encoded: "doc"
-        },
-        {
-            title: '收藏',
-            icon: 'focus-' + theme,
-            defaultIcon: "focus-default",
-            id: `/repository/${repositoryId}/collect`,
-            key: 'collect',
-            encoded: "focus"
         },
         {
             title: '评审',
             icon: 'review-' + theme,
             defaultIcon: "review-default",
             id: `/repository/${repositoryId}/review`,
+            to: `/repository/${repositoryId}/review`,
             key: 'review',
             encoded: "review",
             isEnhance: true,
@@ -82,6 +77,7 @@ const RepositoryDetail = (props)=>{
             icon: 'statistics-' + theme,
             defaultIcon: "statistics-default",
             id: `/repository/${repositoryId}/statistics`,
+            to: `/repository/${repositoryId}/statistics`,
             key: 'statistics',
             encoded: "statistics",
             isEnhance: true,

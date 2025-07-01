@@ -151,6 +151,7 @@ const Search = (props) => {
                     onCancel={handelCancel}
                     width={800}
                     footer={null}
+                    closable={false}
                     getContainer={() =>searchBox.current}
                     className="search-modal"
                 >

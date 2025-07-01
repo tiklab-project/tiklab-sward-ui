@@ -1,5 +1,5 @@
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-09-15 13:23:14
@@ -59,6 +59,20 @@ class ShareStore {
     }
 
     @action
+    findSharePage= async (value)=> {
+        const data = await ServiceShare("/share/findSharePage", value);
+        return data;
+    }
+
+    @action
+    deleteShare= async (value)=> {
+        const params = new FormData()
+        params.append("id", value)
+        const data = await ServiceShare("/share/deleteShare", params);
+        return data;
+    }
+
+    @action
     findNodeList= async(value)=> {
         // const params = new FormData()
         // params.append("id", id)
@@ -66,4 +80,5 @@ class ShareStore {
         return data;
     }
 }
+
 export default new ShareStore();

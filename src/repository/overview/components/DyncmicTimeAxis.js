@@ -37,8 +37,13 @@ const DyncmicTimeAxis = (props) => {
                                         <div className="dynamic-user-icon">{dyncmicItem.user.nickname?.charAt(0)}</div>
 
                                     </div>
-                                    <DyncmicItem content={dyncmicItem.data} actionType={dyncmicItem.actionType.id} key={dyncmicItem.id} />
-                                    
+                                    <DyncmicItem
+                                        content={dyncmicItem.data}
+                                        actionType={dyncmicItem.actionType.id}
+                                        key={dyncmicItem.id}
+                                        user={dyncmicItem.user}
+                                    />
+
                                 </div>
                             })
                         }

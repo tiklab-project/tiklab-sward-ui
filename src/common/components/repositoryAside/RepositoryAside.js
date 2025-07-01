@@ -71,7 +71,7 @@ const RepositoryAside = (props) => {
      * 点击左侧菜单
      */
     const selectMenu = (menu) => {
-        const {id,isEnhance,key} = menu;
+        const {to,isEnhance,key} = menu;
         if(disable && isEnhance){
             setArchivedFreeVisable(true)
             switch (key) {
@@ -84,7 +84,7 @@ const RepositoryAside = (props) => {
             }
             return
         }
-        props.history.push(id)
+        props.history.push(to)
     }
 
     /**

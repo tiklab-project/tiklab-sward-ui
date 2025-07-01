@@ -14,6 +14,9 @@ import { Layout, Form } from 'antd';
 import { useTranslation } from 'react-i18next';
 import "./ShareAside.scss";
 import {getFileIcon} from "../../../common/utils/overall";
+import {productImg} from "tiklab-core-ui";
+import DocumentIcon from "../../../common/components/icon/DocumentIcon";
+
 const { Sider } = Layout;
 const ShareAside = (props) => {
     // 解析props
@@ -148,7 +151,6 @@ const ShareAside = (props) => {
         >
             <div className={`repository-menu-submenu ${item.id === selectKey ? "repository-menu-select" : ""} `}
                 key={item.id}
-
             >
                 <div style={{ paddingLeft: levels * 21 + 24 }} className="repository-menu-submenu-left">
                     {
@@ -200,21 +202,12 @@ const ShareAside = (props) => {
                 <div style={{ paddingLeft: levels * 21 + 24 }} className="repository-menu-submenu-left">
                     <div className="img-icon" aria-hidden="true">
                     </div>
-                    {
-                        item.documentType === "file" && <svg className="img-icon" aria-hidden="true">
-                            <use xlinkHref={`#icon-${getFileIcon(item.name)}`}></use>
-                        </svg>
-                    }
-                    {
-                        item.documentType === "document" && <svg className="img-icon" aria-hidden="true">
-                            <use xlinkHref="#icon-file"></use>
-                        </svg>
-                    }
-                    {
-                        item.documentType === "markdown" && <svg className="img-icon" aria-hidden="true">
-                            <use xlinkHref="#icon-minmap"></use>
-                        </svg>
-                    }
+                    <DocumentIcon
+                        type={item.type}
+                        documentType={item.documentType}
+                        documentName={item.name}
+                        className="img-icon"
+                    />
                     <span className= "repository-view"
                         ref={isRename === item.id ? inputRef : null}
                         id={"file-" + item.id}
@@ -227,24 +220,33 @@ const ShareAside = (props) => {
         </div>
     }
     return (
-        <Fragment>
-            <Sider trigger={null} collapsible collapsed={!isShowText} collapsedWidth="50" width="250">
-                <div className={`repository-aside ${isShowText ? "" : "repository-icon"}`}>
-                    <div className="repository-menu">
-                        {
-                            repositoryCatalogueList && repositoryCatalogueList.map((item, index) => {
-                                if (item.type === "document") {
-                                    return fileTree(repositoryCatalogueList, item, 0, 0, index)
-                                }
-                                if (item.type === "category") {
-                                    return logTree(repositoryCatalogueList, item, 0, 0, index)
-                                }
-                            })
-                        }
-                    </div>
+        <Sider
+            trigger={null}
+            collapsible
+            collapsed={!isShowText}
+            collapsedWidth="50"
+            width="250"
+            theme={'light'}
+        >
+            <div className={`repository-aside ${isShowText ? "" : "repository-icon"}`}>
+                <div className='repository-aside-logo'>
+                    <img src={productImg.sward} alt={''} width={24} height={24}/>
+                    <div className='logo-text'>sward</div>
                 </div>
-            </Sider>
-        </Fragment>
+                <div className="repository-menu">
+                    {
+                        repositoryCatalogueList && repositoryCatalogueList.map((item, index) => {
+                            if (item.type === "document") {
+                                return fileTree(repositoryCatalogueList, item, 0, 0, index)
+                            }
+                            if (item.type === "category") {
+                                return logTree(repositoryCatalogueList, item, 0, 0, index)
+                            }
+                        })
+                    }
+                </div>
+            </div>
+        </Sider>
     )
 }
 export default withRouter(inject("shareStore")(observer(ShareAside)));

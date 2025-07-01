@@ -1,8 +1,8 @@
 import { observable, action} from "mobx";
 import { Service } from "../../../common/utils/requset";
+import {message} from "antd";
 export class RelationWorkStore {
     @observable projectList = [];
-    @observable userList = [];
     @observable userList = [];
     @observable workTypeList = [];
     @observable workList = [];
@@ -13,47 +13,46 @@ export class RelationWorkStore {
         }
     }
     @observable total = 0
+
     @action
     findAllProject = async() => {
-        const data = await Service("/wikiProject/findAllProject")
+        const data = await Service("/wiki/kanass/project/findKanassProjectList",{})
         if(data.code === 0){
             this.projectList = data.data;
+        } else {
+            message.error(data.msg)
         }
         return data;
     }
 
     @action
-    findDmUserPage = async(value) => {
-        const params = {
-            domainId: value.domainId,
-            pageParam: {
-                pageSize: 20,
-                currentPage: 1
-            }
+    findKanassProjectPage = async() => {
+        const data = await Service("/wiki/kanass/project/findKanassProjectPage")
+        return data;
+    }
+
+    @action
+    findDmUserPage = async (params) => {
+        if(!params || JSON.stringify(params) === '{}'){
+            this.userList = []
+            return
         }
-        const data = await Service("/wikiProject/findDmUserList",params);
+        const data = await Service("/wiki/kanass/project/findDmUserList",params);
         if(data.code === 0){
-            const list = data.data;
-            const newList = [];
-            const newIds = [];
-            list.map(item => {
-                if(newIds.indexOf(item.id)> -1){
-                    return null
-                }else {
-                    newIds.push(item.id)
-                    newList.push(item)
-                }
-            })
-            this.userList = newList;
+            this.userList = data.data || [];
         }
         return data.data
     }
 
     @action
     findWorkTypeDmList = async(params) => {
-        const data = await Service("/wikiProject/findWorkTypeList", params)
+        if(!params || JSON.stringify(params) === '{}'){
+            this.workTypeList = []
+            return
+        }
+        const data = await Service("/wiki/kanass/project/findKanassWorkTypeList", params)
         if(data.code === 0){
-            this.workTypeList = data.data;
+            this.workTypeList = data.data  || [];
         }
         return data;
     }
@@ -61,10 +60,10 @@ export class RelationWorkStore {
     @action
     findWorkItemList = async(params) => {
         Object.assign(this.searchCondition, {...params})
-        const data = await Service("/wikiProject/findWorkItemPage", this.searchCondition)
+        const data = await Service("/wiki/kanass/project/findKanassWorkItemPage", this.searchCondition)
         if(data.code === 0){
-            this.workList = data.data.dataList;
-            this.total = data.data.totalRecord
+            this.workList = data.data?.dataList;
+            this.total = data.data?.totalRecord
         }
         return data;
     }
@@ -73,8 +72,7 @@ export class RelationWorkStore {
     findWorkItem = async(param) => {
         const value = new FormData();
         value.append("workItemId", param.id)
-        const data = await Service("/wikiProject/findWorkItem", value)
-
+        const data = await Service("/wiki/kanass/project/findKanassWorkItem", value)
         return data;
     }
 

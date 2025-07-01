@@ -15,7 +15,7 @@ import HomeStore from "../store/HomeStore";
 
 const MessageList = (props) => {
     const {isShowText, theme} = props;
-    const { findMessageDispatchItemPage, messageTotal, messageList, 
+    const { findMessageDispatchItemPage, messageTotal, messageList,
         isMessageReachBottom, updateMessageDispatchItem } = HomeStore;
     const [currenTab, setCurrentTab] = useState("0")
     const [currentPage, setCurrentPage] = useState(0)
@@ -48,7 +48,7 @@ const MessageList = (props) => {
 
     const goToMessage = (link,id) => {
         // props.history.push(link)
-        
+
         const value = {
             id: id,
             status: "1"
@@ -76,68 +76,72 @@ const MessageList = (props) => {
                         </svg>
                     </div>
             }
-            <Drawer
-                title="消息"
-                placement={"left"}
-                closable={true}
-                onClose={onClose}
-                visible={open}
-                mask={true}
-                destroyOnClose={true}
-                width={375}
-                className={`frame-header-drawer ${isShowText ? "message-drawer-expend" : "message-drawer-inpend"} `}
-            >
-                <div className="message-content">
-                    <Tabs onChange={onChange} size = "small" activeKey = {currenTab} className="message-tab">
-                        <Tabs.TabPane tab="未读" key="0">
-                            <div className="message-box">
-                                {
-                                    messageList && messageList.length > 0 ? messageList.map(item => {
-                                        return <div className="message-list" key={item.id} >
-                                            <div
-                                                dangerouslySetInnerHTML={{ __html: item.content }}
-                                                onClick = {() => goToMessage(item.link,item.id)}
-                                                style={{flex: 1}}
-                                            />
-                                            <div className={`message-status ${item.status === 0 ? "status-unread" : "status-read"}`}></div>
-                                        </div>
-                                    })
-                                    :
-                                    <Empty description = "暂无消息" />
-                                }
-                                {
-                                    messageTotal > 1 && 
-                                        (isMessageReachBottom ? 
+            {
+                open &&
+                <Drawer
+                    title="消息"
+                    placement={"left"}
+                    closable={true}
+                    onClose={onClose}
+                    visible={open}
+                    mask={true}
+                    destroyOnClose={true}
+                    width={375}
+                    className={'frame-header-drawer'}
+                    contentWrapperStyle={{transform:isShowText ? `translateX(200px)` :`translateX(75px)`}}
+                >
+                    <div className="message-content">
+                        <Tabs onChange={onChange} size = "small" activeKey = {currenTab} className="message-tab">
+                            <Tabs.TabPane tab="未读" key="0">
+                                <div className="message-box">
+                                    {
+                                        messageList && messageList.length > 0 ? messageList.map(item => {
+                                                return <div className="message-list" key={item.id} >
+                                                    <div
+                                                        dangerouslySetInnerHTML={{ __html: item.content }}
+                                                        onClick = {() => goToMessage(item.link,item.id)}
+                                                        style={{flex: 1}}
+                                                    />
+                                                    <div className={`message-status ${item.status === 0 ? "status-unread" : "status-read"}`}></div>
+                                                </div>
+                                            })
+                                            :
+                                            <Empty description = "暂无消息" />
+                                    }
+                                    {
+                                        messageTotal > 1 &&
+                                        (isMessageReachBottom ?
                                             <div className="message-list-bottom" onClick={() => changePage()}>点击加载更多</div> : <div className="message-list-bottom">第{currentPage}页/总{messageTotal}页</div>)
-                                }
-                                
-                            </div>
-                        </Tabs.TabPane>
-                        <Tabs.TabPane tab="已读" key="1">
-                            <div className="message-box">
-                                {
-                                    messageList && messageList.length > 0 ? messageList.map(item => {
-                                        return <div className="message-list" key={item.id} >
-                                            <div
-                                                dangerouslySetInnerHTML={{ __html: item.content }}
-                                                className = "message-item"
-                                                style={{flex: 1}}
-                                                onClick = {() => goToMessage(item.link,item.id)}
-                                            />
-                                            <div className={`message-status ${item.status === 1 ? "status-read" : "status-unread"}`}></div>
-                                        </div>
-                                    })
-                                    :
-                                    <Empty description = "暂无消息" />
-                                }
-                                { messageTotal > 1 && 
-                                    (isMessageReachBottom ? 
-                                        <div className="message-list-bottom" onClick={() => changePage()}>点击加载更多</div> : <div className="message-list-bottom">第{currentPage}页/总{messageTotal}页</div>)}
-                            </div>
-                        </Tabs.TabPane>
-                    </Tabs>
-                </div>
-            </Drawer>
+                                    }
+
+                                </div>
+                            </Tabs.TabPane>
+                            <Tabs.TabPane tab="已读" key="1">
+                                <div className="message-box">
+                                    {
+                                        messageList && messageList.length > 0 ? messageList.map(item => {
+                                                return <div className="message-list" key={item.id} >
+                                                    <div
+                                                        dangerouslySetInnerHTML={{ __html: item.content }}
+                                                        className = "message-item"
+                                                        style={{flex: 1}}
+                                                        onClick = {() => goToMessage(item.link,item.id)}
+                                                    />
+                                                    <div className={`message-status ${item.status === 1 ? "status-read" : "status-unread"}`}></div>
+                                                </div>
+                                            })
+                                            :
+                                            <Empty description = "暂无消息" />
+                                    }
+                                    { messageTotal > 1 &&
+                                        (isMessageReachBottom ?
+                                            <div className="message-list-bottom" onClick={() => changePage()}>点击加载更多</div> : <div className="message-list-bottom">第{currentPage}页/总{messageTotal}页</div>)}
+                                </div>
+                            </Tabs.TabPane>
+                        </Tabs>
+                    </div>
+                </Drawer>
+            }
         </div>
     );
 };

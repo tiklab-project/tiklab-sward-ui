@@ -20,7 +20,13 @@ const SearchInput = (props) => {
             <svg className="svg-icon" aria-hidden="true">
                 <use xlinkHref="#icon-search"></use>
             </svg>
-            <Input bordered={false} allowClear key={"search"} placeholder = {placeholder} onChange={(value) => handleChange(value)} />
+            <Input
+                bordered={false}
+                allowClear
+                key={"search"}
+                placeholder={placeholder}
+                onChange={(value) => handleChange(value)}
+            />
         </div>
     )
 }

@@ -26,7 +26,6 @@ const BaseModal = ({children,...res}) => {
     return(
         <Modal
             wrapClassName="sward-modal"
-            closable={false}
             footer={modalFooter}
             {...res}
         >

@@ -2,7 +2,6 @@
     background-color: #fff;
     border-right: 1px solid #f0f2f5;
     height: 100%;
-
     ul {
         padding: 0;
         margin: 0;
@@ -52,7 +51,7 @@
 
     .repository-menu {
         list-style-type: none;
-        height: calc(100% - 120px);
+        height: calc(100% - 48px);
         cursor: pointer;
         overflow: auto;
         .repository-menu-firstmenu {

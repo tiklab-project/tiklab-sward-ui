@@ -55,7 +55,7 @@ const CollectAside = (props) => {
                 <div className="collect-doc-search" >
                     <SearchInput onChange = {(value) => onChange(value)} placeholder = "搜索"/>
                 </div>
-                <div>
+                <div className='collect-doc-aside-menu'>
                     {
                         focusDocumentList && focusDocumentList.length > 0 ?
                             focusDocumentList.map((item) => {

@@ -52,7 +52,7 @@
 
 | 文件            | 说明         |
 |---------------|------------|
-| Collect       | 收藏文档列表页面   |
+| Share       | 收藏文档列表页面   |
 | CollectAside  | 收藏文档左侧导航   |
 | CollectEmpty  | 收藏文档为空的页面  |
 | CollectLayout | 收藏入口页面     |

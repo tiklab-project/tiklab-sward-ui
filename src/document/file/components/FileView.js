@@ -198,13 +198,9 @@ const FileView =  ({ ExtendFileView, ...props })=> {
                             </div>
                             <ShareModal
                                 documentIds={[documentId]}
-                                nodeIds={[documentId]}
                                 shareVisible={shareVisible}
                                 setShareVisible={setShareVisible}
                                 docInfo={documentData.node}
-                                createShare={createShare}
-                                updateShare={updateShare}
-                                type={"document"}
                             />
                         </div>
                     ) : (

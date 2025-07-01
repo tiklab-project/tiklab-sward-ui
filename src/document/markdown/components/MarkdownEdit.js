@@ -54,12 +54,10 @@ const MarkdownEdit = (props) => {
                 setDocumentDate(node.updateTime || node.createTime)
             }
         })
-        return;
     }, [documentId])
 
     // 保存文档
     const save = () => {
-        console.log(value)
         saveDocument(value, "click")
         // editRef.current.submit()
     }
@@ -82,7 +80,6 @@ const MarkdownEdit = (props) => {
     const saveDocument = (value, type) => {
         setValue(value)
         const serializeValue = serialize(value)
-        console.log(serialize)
         const data = {
             repositoryId: repositoryId,
             id: documentId,
@@ -109,7 +106,7 @@ const MarkdownEdit = (props) => {
 
     /**
      * 修改标题
-     * @param {} value
+     * @param {*} value
      */
     const changeTitle = (value) => {
         // setTitleValue(value.target.value)
@@ -193,7 +190,7 @@ const MarkdownEdit = (props) => {
                         <Button className="edit-right-eqit" onClick={() => goExamine()}>退出</Button>
                     </div>
                 </div>
-                <div className="edit-markdown" style={{ height: "calc(100% - 50px)" }}>
+                <div className="edit-markdown" style={{ height: "calc(100% - 60px)" }}>
                     {
                         value && <Markdown value={value} setValue={setValue} onChange={(value) => changeEdit(value)} />
                     }

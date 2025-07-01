@@ -31,6 +31,7 @@
 
             .dynamic-document-action {
                 line-height: 30px;
+                cursor: pointer;
             }
 
             .dynamic-document-item {
@@ -43,12 +44,10 @@
                     text-overflow: ellipsis;
                     white-space: nowrap;
                     overflow: hidden;
+                    font-size: 13px;
+                    color: var(--tiklab-gray-500);
                 }
 
-                .dynamic-document-title:hover {
-                    color: var(--tiklab-blue);
-                    cursor: pointer;
-                }
             }
 
             .dynamic-document-update {
@@ -64,17 +63,13 @@
                 }
 
                 .dynamic-document-newValue {
-                    font-size: 12px;
-                    line-height: 15px;
-                    border-radius: 5px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    font-size: 13px;
+                    color: var(--tiklab-gray-500);
                 }
-                .dynamic-document-newValue:hover{
-                    cursor: pointer;
-                    color: var(--tiklab-blue);
-                }
-
             }
-
         }
     }
 }

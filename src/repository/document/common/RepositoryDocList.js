@@ -12,7 +12,6 @@ import { withRouter } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 import { Menu, Dropdown, Layout, Tree, message, Modal, Empty, Spin } from 'antd';
 import { useTranslation } from 'react-i18next';
-import ShareListModal from "../../../document/share/components/ShareListModal"
 import MoveLogList from "../../common/components/MoveLogList"
 import { getUser, getVersionInfo } from 'tiklab-core-ui';
 import "./RepositoryDocList.scss"
@@ -21,11 +20,12 @@ import {
     updataTreeSort, findNodeById, updateNodeName, removeNodeInTree
 } from '../../../common/utils/treeDataAction';
 import AddDropDown from '../../common/components/AddDropDown';
-import { DownOutlined } from '@ant-design/icons';
+import {AppstoreOutlined, DownOutlined, ProfileOutlined, ShareAltOutlined, StarOutlined} from '@ant-design/icons';
 import ArchivedFree from '../../../common/components/archivedFree/ArchivedFree';
 import SearchModal from '../../common/components/SearchModal';
 import {documentPush, getFileExtensionWithDot, removeFileExtension} from "../../../common/utils/overall";
 import DocumentIcon from "../../../common/components/icon/DocumentIcon";
+import ShareModal from "../../../document/share/components/ShareModal";
 const { Sider } = Layout;
 
 const RepositoryDocList = (props) => {
@@ -40,15 +40,18 @@ const RepositoryDocList = (props) => {
 
     // 当前选中目录id
     const id = props.location.pathname.split("/")[5];
+    const type = props.location.pathname.split("/")[4];
     const [selectKey, setSelectKey] = useState(id);
     const repositoryId = props.match.params.repositoryId;
     const [isHover, setIsHover] = useState(false)
     const [requsetedCategory, setRequsetedCategory] = useState([])
 
     const userId = getUser().userId;
-    const tenant = getUser().tenant;
 
-    const [shareListVisible, setShareListVisible] = useState(false)
+    //分享弹出框
+    const [shareVisible, setShareVisible] = useState(false);
+    //分享数据
+    const [shareData,setShareData] = useState(null);
     const inputRef = React.useRef(null);
     const [isRename, setIsRename] = useState()
     const [archivedNode, setArchivedNode] = useState()
@@ -60,6 +63,23 @@ const RepositoryDocList = (props) => {
     const repositoryStatus = repository?.status === 'nomal';
 
     useEffect(() => {
+        if (type === "collect") {
+            setSelectKey("collect")
+        } else if(type === "share"){
+            setSelectKey("share")
+        } else {
+            setSelectKey(id)
+        }
+    }, [props.location.pathname])
+
+    /**
+     * 跳转
+     */
+    const toSelect = path =>{
+        props.history.push(`/repository/${repositoryId}/doc/${path}`)
+    }
+
+    useEffect(() => {
         setLoading(true)
         const data = {
             repositoryId: repositoryId,
@@ -68,26 +88,20 @@ const RepositoryDocList = (props) => {
         }
         findNodePageTree(data).then((data) => {
             setRepositoryCatalogueList([...data.data])
-            if (data.data.length > 0 && !id) {
-                const item = data.data[0];
-                console.log("repositoryCatalogueList",repositoryCatalogueList)
-                goDetail(item)
+            if (data.data.length > 0) {
+                if(!id && !['collect','share'].includes(type)){
+                    props.history.push(`/repository/${repositoryId}/doc/collect`)
+                    // const item = data.data[0];
+                    // goDetail(item)
+                }
             }
+        }).finally(()=>{
             setLoading(false)
         })
         return () => {
             setExpandedTree([])
         };
     }, [repositoryId])
-
-    useEffect(() => {
-        // 初次进入激活导航菜单
-        if (props.location.pathname.split("/")[3] === "overview") {
-            setSelectKey("overview")
-        } else {
-            setSelectKey(id)
-        }
-    }, [id])
 
     //点击左侧菜单
     const selectKeyFun = (event, item) => {
@@ -118,7 +132,6 @@ const RepositoryDocList = (props) => {
     }
 
     const findCategoryChildren = (id, type) => {
-        // setSelectKey(id)
         const isRequested = requsetedCategory.some(category => category === id);
         if (!isRequested) {
             findCategory({ id: id }).then(res => {
@@ -135,7 +148,6 @@ const RepositoryDocList = (props) => {
                         if (data.code === 0) {
                             const list = appendNodeInTree(id, repositoryCatalogueList, data.data, "overview")
                             setRepositoryCatalogueList([...list])
-                            console.log(list)
                             setRequsetedCategory(requsetedCategory.concat(id))
                         }
                     })
@@ -149,28 +161,44 @@ const RepositoryDocList = (props) => {
     const editMenu = (item, index) => {
         return <Menu onClick={(value) => editCatelogue(value, item, index)}>
             <Menu.Item key="edit">
-                重命名
+                <div className='content-add-menu'>
+                    <svg className="content-add-icon" aria-hidden="true">
+                        <use xlinkHref="#icon-edit"></use>
+                    </svg>
+                    重命名
+                </div>
             </Menu.Item>
             <Menu.Item key="delete">
-                删除
+                <div className='content-add-menu'>
+                    <svg className="content-add-icon" aria-hidden="true">
+                        <use xlinkHref="#icon-delete"></use>
+                    </svg>
+                    删除
+                </div>
             </Menu.Item>
             <Menu.Item key="move">
-                移动
+                <div className='content-add-menu'>
+                    <svg className="content-add-icon" aria-hidden="true">
+                        <use xlinkHref="#icon-move"></use>
+                    </svg>
+                    移动
+                </div>
             </Menu.Item>
             <Menu.Item key="share">
-                分享
+                <div className='content-add-menu'>
+                    <svg className="content-add-icon" aria-hidden="true">
+                        <use xlinkHref="#icon-share"></use>
+                    </svg>
+                    分享
+                </div>
             </Menu.Item>
             <Menu.Item key="recycle">
-                移动到回收站
-                {/*<div className="repository-aside-archived">*/}
-                {/*    移动到回收站*/}
-                {/*    {*/}
-                {/*        versionInfo.expired === true &&*/}
-                {/*        <svg className="img-icon" aria-hidden="true" >*/}
-                {/*            <use xlinkHref="#icon-member"></use>*/}
-                {/*        </svg>*/}
-                {/*    }*/}
-                {/*</div>*/}
+                <div className='content-add-menu'>
+                    <svg className="content-add-icon" aria-hidden="true">
+                        <use xlinkHref="#icon-systemrecycle"></use>
+                    </svg>
+                    移动到回收站
+                </div>
             </Menu.Item>
         </Menu>
     };
@@ -204,7 +232,8 @@ const RepositoryDocList = (props) => {
             setMoveItem(item)
         }
         if (value.key === "share") {
-            setShareListVisible(true)
+            setShareData(item)
+            setShareVisible(true)
         }
         if (value.key === "archived") {
             if (versionInfo.expired === false) {
@@ -367,7 +396,6 @@ const RepositoryDocList = (props) => {
         }
         if (dropPosition === -1) {
             // 移动到此知识库的最顶部
-            console.log(node, dragNode, 3)
             params.moveType = "3"
         }
         params = {
@@ -411,8 +439,8 @@ const RepositoryDocList = (props) => {
             key={item.id}
             className={`repository-menu-submenu`}
             onClick={(event) => selectKeyFun(event, item)}
-            onMouseOver={(event) => { event.stopPropagation(), setIsHover(item.id) }}
-            onMouseLeave={(event) => { event.stopPropagation(), setIsHover(null) }}
+            onMouseOver={(event) => { event.stopPropagation(); setIsHover(item.id) }}
+            onMouseLeave={(event) => { event.stopPropagation(); setIsHover(null) }}
         >
             <DocumentIcon
                 documentName={item?.name}
@@ -483,7 +511,6 @@ const RepositoryDocList = (props) => {
                                     <use xlinkHref="#icon-more"></use>
                                 </svg>
                             </div>
-
                         </Dropdown>
                     </div>
                 )
@@ -503,7 +530,7 @@ const RepositoryDocList = (props) => {
                     type={item.type}
                     parentWikiCategory={item.dimension !== 1 ? item.parentWikiCategory?.id : "nullString"}
                     disableCheckbox
-                    className={`repository-menu-node ${item.id === selectKey ? "repository-menu-select" : ""}`}
+                    className={`repository-menu-node ${item.id === selectKey ? "repository-menu-select" : "repository-menu-unselected"}`}
                 >
                     {categoryTree(item.children)}
                 </Tree.TreeNode>
@@ -518,7 +545,7 @@ const RepositoryDocList = (props) => {
                     parentWikiCategory={item.dimension !== 1 ? item.wikiCategory?.id : "nullString"}
                     key={item.id}
                     sort={item.sort}
-                    className={`repository-menu-node ${item.id === selectKey ? "repository-menu-select" : ""} `}
+                    className={`repository-menu-node ${item.id === selectKey ? "repository-menu-select" : "repository-menu-unselected"} `}
                 />
             }
         })
@@ -533,16 +560,42 @@ const RepositoryDocList = (props) => {
                             <div className="repository-title-left">
                                 文档
                             </div>
-                            <AddDropDown category={null} button="icon-gray" />
                         </div>
                         <div className="repository-search" onClick={() => setShowSearchModal(true)}>
-                            {/* <div className="repository-search-input"> */}
                             <svg className="icon-13" aria-hidden="true">
                                 <use xlinkHref="#icon-search"></use>
                             </svg>
                             <span>
                                 搜索
                             </span>
+                        </div>
+                        <div className='repository-aside-ul'>
+                            <div
+                                className={`repository-aside-li ${selectKey==='share' ? 'repository-aside-li-select' : 'repository-aside-li-unselected'}`}
+                                onClick={()=>toSelect('share')}
+                            >
+                                <ShareAltOutlined className='aside-icon'/>
+                                共享
+                            </div>
+                            <div
+                                className={`repository-aside-li ${selectKey==='collect' ? 'repository-aside-li-select' : 'repository-aside-li-unselected'}`}
+                                onClick={()=>toSelect('collect')}
+                            >
+                                <StarOutlined className='aside-icon' />
+                                收藏
+                            </div>
+                            <div className="repository-aside-category">
+                                <div className='category-left'>
+                                    <svg className="icon-20" aria-hidden="true">
+                                        <use xlinkHref="#icon-repository-default"></use>
+                                    </svg>
+                                    {/*<svg className="icon-18" aria-hidden="true">*/}
+                                    {/*    <use xlinkHref="#icon-doc-default"></use>*/}
+                                    {/*</svg>*/}
+                                    目录
+                                </div>
+                                <AddDropDown category={null} button="icon-gray" />
+                            </div>
                         </div>
                         <div className="repository-menu">
                             {
@@ -565,12 +618,6 @@ const RepositoryDocList = (props) => {
                                 </>
                             }
                         </div>
-                        {/* <div className="repository-setting-menu" onClick={() => props.history.push(`/repositorySet/${repositoryId}/basicInfo`)}>
-                        <svg className="img-icon" aria-hidden="true">
-                            <use xlinkHref="#icon-set"></use>
-                        </svg>
-                        设置
-                    </div> */}
                     </div>
                 </Sider>
             </Spin>
@@ -582,12 +629,10 @@ const RepositoryDocList = (props) => {
                 updateDocumentSort={updateDocumentSort}
                 updateCategorySort={updateCategorySort}
             />
-            <ShareListModal
-                repositoryCatalogueList={repositoryCatalogueList}
-                shareListVisible={shareListVisible}
-                setShareListVisible={setShareListVisible}
-                findCategoryChildren={findCategoryChildren}
-                setOpenOrClose={setOpenOrClose}
+            <ShareModal
+                shareVisible={shareVisible}
+                setShareVisible={setShareVisible}
+                docInfo={shareData}
             />
             {
                 NodeArchivedModal && versionInfo.expired === false &&

@@ -116,6 +116,7 @@ const SearchModal = (props) => {
             onCancel={handelCancel}
             width={800}
             footer={null}
+            closable={false}
             className="repository-search-modal"
         >
             <div className="repository-search-modal-input">

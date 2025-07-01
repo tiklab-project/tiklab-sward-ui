@@ -36,7 +36,7 @@ const DocumentExamine = (props) => {
     const repositoryId = props.match.params.repositoryId;
     const { findDocument, createDocumentFocus, deleteDocumentFocusByCondition } = DocumentStore;
 
-    const { createLike, createShare, updateShare, deleteLike } = CommentShare;
+    const { createLike, deleteLike } = CommentShare;
     const [shareVisible, setShareVisible] = useState(false)
     const user = getUser();
     const [docInfo, setDocInfo] = useState()
@@ -358,14 +358,9 @@ const DocumentExamine = (props) => {
                             {/*    </div>*/}
                             {/*</div>*/}
                             <ShareModal
-                                documentIds={[documentId]}
-                                nodeIds={[documentId]}
                                 shareVisible={shareVisible}
                                 setShareVisible={setShareVisible}
                                 docInfo={docInfo}
-                                createShare={createShare}
-                                updateShare={updateShare}
-                                type={"document"}
                             />
                         </div>
                         :

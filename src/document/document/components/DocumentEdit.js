@@ -92,7 +92,7 @@ const DocumentEdit = (props) => {
             repositoryId: repositoryId,
             id: documentId,
             details: value,
-            detailText: editRef.current.innerText
+            detailText: editRef.current?.innerText
         }
         updateDocument(data).then(res => {
             if (res.code === 0) {
@@ -109,10 +109,9 @@ const DocumentEdit = (props) => {
             repositoryId: repositoryId,
             id: documentId,
             details: value,
-            detailText: editRef.current.innerText
+            detailText: editRef.current?.innerText
         }
         updateDocument(data)
-
     }, [500])
 
     const changeTitle = (value) => {
@@ -293,7 +292,6 @@ const DocumentEdit = (props) => {
                         </EditorBig>
                     }
                 </div>
-
                 <SelectTemplateList
                     documentId={documentId}
                     setTemplateVisible={setTemplateVisible}
@@ -302,7 +300,6 @@ const DocumentEdit = (props) => {
                     selectTemplate={selectTemplate}
                     {...props}
                 />
-
             </div>
                 :
                 <div className="document-empty">

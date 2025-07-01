@@ -182,6 +182,7 @@
         "tiklab-licence-ui": "^1.0.3",
         "tiklab-markdown-ui": "^1.0.1",
         "tiklab-message-ui": "^1.0.3",
+        "tiklab-openapi-ui": "^1.0.0",
         "tiklab-postin-client-ui": "^1.0.0",
         "tiklab-privilege-ui": "^1.0.3",
         "tiklab-security-ui": "^1.0.3",

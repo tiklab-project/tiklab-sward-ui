@@ -2,19 +2,67 @@
 
     position: relative;
     z-index: 1;
+    background: transparent;
 
     .ant-layout-sider-children {
         position: fixed;
 
         .repository-aside {
-            background-color: #fff;
-            border-right: 1px solid #f0f2f5;
+            background: var(--tiklab-gray-600);
             height: 100%;
             width: 270px;
-
             ul {
                 padding: 0;
                 margin: 0;
+            }
+
+            .repository-aside-ul{
+                padding-top: 10px;
+                .aside-icon{
+                    font-size: 18px;
+                }
+                .repository-aside-li{
+                    margin: 0 10px;
+                    padding: 0 10px;
+                    display: flex;
+                    align-items: center;
+                    height: 36px;
+                    gap: 10px;
+                    cursor: pointer;
+                    border-radius: 4px;
+                    &-unselected:hover{
+                        background: var(--tiklab-gray-300);
+                    }
+                    &-select {
+                        background: #E8EFFC;
+                        color: var(--tiklab-blue);
+                    }
+                }
+                .repository-aside-category{
+                    margin: 0 10px;
+                    padding: 0 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    height: 36px;
+                    gap: 10px;
+                    border-radius: 4px;
+                    &:hover{
+                        background: var(--tiklab-gray-300);
+                        .category-add{
+                            display: block;
+                        }
+                    }
+                    .category-left{
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    }
+                    .category-add{
+                        display: none;
+                    }
+
+                }
             }
 
             .repository-title {
@@ -44,7 +92,7 @@
 
             .repository-search {
                 margin: 0 10px;
-                background-color: #f6f7f8;
+                background: #ececec;
                 display: flex;
                 align-items: center;
                 gap: 10px;
@@ -83,11 +131,11 @@
             }
 
             .ant-tree-node-selected {
-                background-color: transparent;
+                background: transparent;
             }
 
             .ant-tree-node-content-wrapper:hover {
-                background-color: transparent;
+                background: transparent;
             }
 
             .ant-tree-node-content-wrapper {
@@ -95,23 +143,26 @@
             }
         }
 
-        .repository-menu-node:hover {
-            background-color: #f6f7f8;
+        .repository-menu-unselected:hover {
+            background: var(--tiklab-gray-300);
         }
 
         .repository-menu-select {
-            background-color: #f6f7f8;
+            background: #E8EFFC;
+            color: var(--tiklab-blue);
         }
 
 
 
         .repository-menu {
             list-style-type: none;
-            height: calc(100% - 88px);
+            height: calc(100% - 200px);
             cursor: pointer;
             overflow: auto;
-            background-color: #fff;
-            padding: 10px;
+            padding: 0 10px 10px;
+            .ant-tree{
+                background: transparent !important;
+            }
             .repository-menu-submenu {
                 height: 36px;
                 display: flex;
@@ -185,12 +236,12 @@
             border-radius: 5px;
             height: 20px;
             width: 20px;
-            padding: 1px;
+            padding: 1.5px;
             cursor: pointer;
         }
 
         .category-add:hover {
-            background: #E3e8f0;
+            background: #ffffff;
         }
 
         .icon-show {

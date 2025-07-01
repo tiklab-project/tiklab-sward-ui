@@ -10,12 +10,13 @@
         display: flex;
         align-items: center;
 
-        .page-link:hover {
-            cursor: pointer;
-            color: var(--tiklab-blue);
-            text-decoration: underline;
+        .page-link{
+            display: inline-flex;
+            align-items: center;
+            &:hover {
+                cursor: pointer;
+            }
         }
-
 
         &-icon {
             width: 25px;

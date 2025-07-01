@@ -11,7 +11,7 @@
     color: red;
 }
 
-.layout,.ant-modal,.ant-drawer{
+.layout,.ant-modal,.ant-drawer,.ant-dropdown{
     .ant-modal-close-x {
         display: flex !important;
         justify-content: center;
@@ -99,3 +99,17 @@
     margin-right: 5px;
 }
 
+.sward-dropdown-more{
+    box-shadow: 0 4px 8px -2px #091e4240, 0 0 1px #091e424f;
+    border-radius: 4px;
+    background: #ffffff;
+    width: 150px;
+    padding: 8px;
+    .dropdown-more-item{
+        cursor: pointer;
+        padding: 5px;
+        &:hover{
+            background: #f4f4f4;
+        }
+    }
+}

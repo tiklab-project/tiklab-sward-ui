@@ -30,16 +30,17 @@ const RepositoryDetail = AsyncComponent(() => import('./repository/common/compon
 const Survey = AsyncComponent(() => import('./repository/overview/components/Survey.js'))
 const DynamicList = AsyncComponent(() => import("./repository/overview/components/DynamicList.js"))
 const FocusDocumentList = AsyncComponent(() => import("./home/home/components/FocusDocumentList.js"))
-const LogDetail = AsyncComponent(() => import('./repository/category/CategoryDetail.js'))
+const LogDetail = AsyncComponent(() => import('./repository/document/category/CategoryDetail.js'))
 
 
 // 知识库
 const Repository = AsyncComponent(() => import('./repository/repository/components/RepositoryList.js'))
-const RepositoryDoc = AsyncComponent(() => import('./repository/document/components/RepositoryDoc.js'))
-const RepositoryAdd = AsyncComponent(() => import('./repository/repository/components/RepositoryAdd.js'))
+const RepositoryDoc = AsyncComponent(() => import('./repository/document/common/RepositoryDoc.js'))
 const DocumentEdit = AsyncComponent(() => import("./document/document/components/DocumentEdit.js"))
 const DocumentExamine = AsyncComponent(() => import("./document/document/components/DocumentExamine.js"))
 
+const DocumentShare = AsyncComponent(()=>import('./repository/document/share/components/Share'))
+const DocumentCollect = AsyncComponent(()=>import('./repository/document/collect/components/Collect'))
 const MarkdownDocumentEdit = AsyncComponent(() => import("./document/markdown/components/MarkdownEdit.js"))
 const MarkdownDocumentView = AsyncComponent(() => import("./document/markdown/components/MarkdownView.js"))
 
@@ -93,8 +94,8 @@ const ProjectVirtualRoleList = AsyncComponent(() => import("./setting/user/Proje
 // 系统集成
 const UrlData = AsyncComponent(() => import('./setting/integration/urlData/components/UrlData.js'));
 const Confluence = AsyncComponent(() => import('./setting/integration/confluence/components/Confluence.js'));
-const OpenApi = AsyncComponent(()=>import('./setting/integration/openApi/components/OpenApi.js'));
-const OpenApiDoc = AsyncComponent(()=>import('./setting/integration/openApi/components/OpenApiDoc.js'));
+const OpenApi = AsyncComponent(()=>import('./setting/integration/openApi/OpenApi.js'));
+const OpenApiDoc = AsyncComponent(()=>import('./setting/integration/openApi/OpenApiDoc.js'));
 //工时
 const TaskListContent = AsyncComponent(() => import('./setting/todo/TaskList.js'))
 const TodoTempListContent = AsyncComponent(() => import('./setting/todo/TodoTempList.js'))
@@ -205,12 +206,6 @@ const Routes = [
                 component: Repository,
                 key: 'repository'
 
-            },
-            {
-                path: "/repositoryAdd",
-                exact: true,
-                component: RepositoryAdd,
-                key: 'home'
             },
             {
                 path: "/collect",
@@ -472,6 +467,16 @@ const Routes = [
                         path: "/repository/:repositoryId/doc",
                         component: RepositoryDoc,
                         routes: [
+                            {
+                                path: "/repository/:repositoryId/doc/share",
+                                exact: true,
+                                component: DocumentShare
+                            },
+                            {
+                                path: "/repository/:repositoryId/doc/collect",
+                                exact: true,
+                                component: DocumentCollect
+                            },
                             {
                                 path: "/repository/:repositoryId/doc/rich/:id",
                                 exact: true,

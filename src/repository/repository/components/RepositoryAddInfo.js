@@ -5,40 +5,41 @@
  * @LastEditTime: 2024-12-31 17:05:41
  * @Description: 知识库添加详情
  */
-import React, { Fragment, useEffect } from "react";
-import { Form, Input, message, Upload } from 'antd';
+import React, { useEffect,forwardRef ,useImperativeHandle} from "react";
+import { Form, Input, message } from 'antd';
 import "./repositoryAddInfo.scss";
-import Button from "../../../common/components/button/Button";
 import { useState } from "react";
-import { withRouter } from "react-router";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { getUser } from "tiklab-core-ui";
 import Img from "../../../common/components/img/Img";
-const { TextArea } = Input;
+import repositoryStore from "../store/RepositoryStore";
 
-const layout = {
-    labelCol: {
-        span: 6,
-    }
-};
+const RepositoryAddInfo =  forwardRef((props, ref)  => {
 
+    const { repository,changFresh,onCancel } = props;
 
-const RepositoryAddInfo = (props) => {
-    const { addRepositorylist, repositoryStore } = props;
     const [form] = Form.useForm();
     const [iconUrl, setIconUrl] = useState("repository1.png")
     const [iconList, setIconList] = useState();
-    const { findIconList, creatIcon } = repositoryStore;
+    const { findIconList, creatIcon, addRepositorylist, updateRepository } = repositoryStore;
 
     useEffect(() => {
         getIconList()
-        return;
     }, [])
+
+    useEffect(() => {
+        if(repository){
+            setIconUrl(repository.iconUrl);
+            form.setFieldsValue(repository);
+        }
+    }, [repository]);
 
     const getIconList = () => {
         findIconList({ iconType: "repository" }).then((res) => {
             setIconList(res.data)
-            setIconUrl(res.data[0]?.iconUrl)
+            if(!repository){
+                setIconUrl(res.data[0]?.iconUrl)
+            }
         })
     }
 
@@ -50,21 +51,40 @@ const RepositoryAddInfo = (props) => {
                 limits: values.limits,
                 iconUrl: iconUrl
             }
-            addRepositorylist(data).then(res => {
-                if (res.code === 40000) {
-                    message.error(res.msg);
-                }
-                if (res.code === 0) {
-                    message.success('添加成功');;
-                    // findRepositoryList({masterId: userId})
-                    props.history.push(`/repository/${res.data}/overview`)
-                }
-            })
+            if(repository){
+                updateRepository({
+                    ...data,
+                    id: repository.id
+                }).then(res=>{
+                    if(res.code===0){
+                        message.success('修改成功');
+                        changFresh();
+                        onCancel();
+                    } else {
+                        message.error(res.msg)
+                    }
+                })
+            } else {
+                addRepositorylist(data).then(res => {
+                    if (res.code === 40000) {
+                        message.error(res.msg);
+                    }
+                    if (res.code === 0) {
+                        message.success('添加成功');
+                        onCancel()
+                        props.history.push(`/repository/${res.data}/overview`)
+                    }
+                })
+            }
         })
     }
 
+
+    useImperativeHandle(ref, () => ({
+        onFinish,
+    }));
+
     const checkLimit = (_, value) => {
-        console.log(value)
         if (value) {
             return Promise.resolve();
         }
@@ -73,6 +93,7 @@ const RepositoryAddInfo = (props) => {
 
     const ticket = getUser().ticket;
     const tenant = getUser().tenant;
+
     const upLoadIcon = {
         name: 'uploadFile',
         action: `${upload_url}/dfs/upload`,
@@ -101,6 +122,7 @@ const RepositoryAddInfo = (props) => {
             }
         }
     };
+
     const [limtValue, setLimitValue] = useState("0");
     const LimitComponents = ({ value = {}, onChange }) => {
 
@@ -139,97 +161,81 @@ const RepositoryAddInfo = (props) => {
 
 
     return (
-        <Fragment>
-            <div className="repository-addinfo">
-                {/* <div className="repository-type-head">填写信息</div> */}
-                <Form
-                    {...layout}
-                    name="basic"
-                    initialValues={{
-                        remember: true,
-                        limits: "0"
-                    }}
-                    form={form}
-                    onFinish={onFinish}
-                    layout="vertical"
+        <div className="repository-addinfo">
+            <Form
+                name="basic"
+                initialValues={{
+                    remember: true,
+                    limits: "0"
+                }}
+                form={form}
+                layout="vertical"
+            >
+                <Form.Item
+                    label="知识库名称"
+                    name="name"
+                    rules={[
+                        {
+                            required: true,
+                            message: '使用中英文、数字、空格组合',
+                        },
+                    ]}
                 >
-                    <Form.Item
-                        label="知识库名称"
-                        name="name"
-                        rules={[
-                            {
-                                required: true,
-                                message: '使用中英文、数字、空格组合',
-                            },
-                        ]}
-                    >
-                        <Input placeholder="使用中英文、数字、空格组合" />
-                    </Form.Item>
+                    <Input placeholder="使用中英文、数字、空格组合" />
+                </Form.Item>
 
-                    <Form.Item
-                        label="可见范围"
-                        name="limits"
-                        rules={[
-                            {
-                                validator: checkLimit,
-                            }
-                        ]}
-                    >
-                        <LimitComponents />
-                    </Form.Item>
-                    <Form.Item
-                        label="知识库描述"
-                        name="desc"
-                        rules={[
-                            {
-                                required: false,
-                                message: '请输入知识库描述',
-                            },
-                        ]}
-                    >
-                        <TextArea rows={3} placeholder="知识库描述" />
-                    </Form.Item>
-                    <Form.Item
-                        label="图标"
-                        name="icon"
-                    >
-                        <div className="repository-icon-box">
-                            {
-                                iconList && iconList.map((item) => {
-                                    return <div
-                                        key={item.id}
-                                        className={`repository-icon  ${item.iconUrl === iconUrl ? "icon-select" : null}`}
-                                        onClick={() => { setIconUrl(item.iconUrl) }}
-                                    >
-                                        <Img
-                                            src={item.iconUrl}
-                                            alt="" className="img-icon"
-                                        />
-                                    </div>
-                                })
-                            }
-                            {/* <Upload {...upLoadIcon}>
+                <Form.Item
+                    label="可见范围"
+                    name="limits"
+                    rules={[
+                        {
+                            validator: checkLimit,
+                        }
+                    ]}
+                >
+                    <LimitComponents />
+                </Form.Item>
+                <Form.Item
+                    label="知识库描述"
+                    name="desc"
+                    rules={[
+                        {
+                            required: false,
+                            message: '请输入知识库描述',
+                        },
+                    ]}
+                >
+                    <Input.TextArea rows={3} placeholder="知识库描述" />
+                </Form.Item>
+                <Form.Item
+                    label="图标"
+                    name="icon"
+                >
+                    <div className="repository-icon-box">
+                        {
+                            iconList && iconList.map((item) => {
+                                return <div
+                                    key={item.id}
+                                    className={`repository-icon  ${item.iconUrl === iconUrl ? "icon-select" : null}`}
+                                    onClick={() => { setIconUrl(item.iconUrl) }}
+                                >
+                                    <Img
+                                        src={item.iconUrl}
+                                        alt="" className="img-icon"
+                                    />
+                                </div>
+                            })
+                        }
+                        {/* <Upload {...upLoadIcon}>
                                 <div className="project-icon">
                                     <img src={UploadIcon1} alt="" className="list-img" />
                                 </div>
                             </Upload> */}
-                        </div>
-
-
-                    </Form.Item>
-                    <div className="repository-add-submit">
-                        <Button htmlType="button" onClick={() => props.history.goBack()}>
-                            取消
-                        </Button>
-
-                        <Button type="primary" htmlType="submit" onClick={onFinish}>
-                            提交
-                        </Button>
                     </div>
-                </Form>
-            </div>
-        </Fragment>
-
+                </Form.Item>
+            </Form>
+        </div>
     )
-}
-export default inject("repositoryStore")(withRouter(observer(RepositoryAddInfo)));
+})
+
+export default observer(RepositoryAddInfo);

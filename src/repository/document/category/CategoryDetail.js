@@ -8,14 +8,14 @@
  */
 import React, { useState, useEffect, Fragment } from "react";
 import { Form, Row, Col, Empty } from 'antd';
-import "./categoryDetail.scss"
+import "./CategoryDetail.scss"
 import { observer, Provider } from "mobx-react";
-import CategoryAdd from "../common/components/CategoryAdd"
+import CategoryAdd from "../../common/components/CategoryAdd"
 import { getUser } from "tiklab-core-ui";
-import RepositoryDetailStore from "../common/store/RepositoryDetailStore";
-import AddDropDown from "../common/components/AddDropDown";
-import {documentPush} from "../../common/utils/overall";
-import DocumentIcon from "../../common/components/icon/DocumentIcon";
+import RepositoryDetailStore from "../../common/store/RepositoryDetailStore";
+import AddDropDown from "../../common/components/AddDropDown";
+import {documentPush} from "../../../common/utils/overall";
+import DocumentIcon from "../../../common/components/icon/DocumentIcon";
 
 const CategoryDetail = (props) => {
 

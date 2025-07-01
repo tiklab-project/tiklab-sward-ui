@@ -7,18 +7,19 @@
  * @LastEditTime: 2024-12-31 15:24:12
  */
 import React, { useEffect, useState } from "react";
-import { inject, observer } from "mobx-react";
-import { Input, Button } from 'antd';
+import { observer } from "mobx-react";
+import {Input, Button, message} from 'antd';
 import "./passWord.scss"
 import { withRouter } from "react-router";
-import { useHistory } from 'react-router-dom';
 import ShareStore from "../store/ShareStore";
+import {productImg} from "tiklab-core-ui";
+
 const PassWord = (props) => {
+
     const { verifyAuthCode, setTenant } = ShareStore;
     const tenant = props.location.search.split("=")[1];
     const [value,setValue] = useState();
-    const history = useHistory();
-    console.log(history)
+
     const change = (e) => {
         setValue(e.target.value)
     }
@@ -31,13 +32,15 @@ const PassWord = (props) => {
             shareLink:`${props.match.params.shareId}`,
             authCode:value.trim()
         }).then((data)=> {
-            if(data.data === "true"){
+            if(data.code===0){
                 if(version !== "cloud"){
                     props.history.push({pathname: `/share/${props.match.params.shareId}`, state: {password: data.data}})
                 }
                 if(version === "cloud"){
                     props.history.push({pathname: `/share/${props.match.params.shareId}`,search: `?tenant=${tenant}`, state: {password: data.data}})
                 }
+            } else {
+                message.error(data.msg)
             }
         })
     }
@@ -49,8 +52,8 @@ const PassWord = (props) => {
     }, [])
     return <div className="documment-password">
         <div className="password-log">
-            <img src={('images/logo_k5.png')} alt="" />
-            <span>知识库</span>
+            <img src={productImg.sward} alt="" />
+            <span>sward</span>
         </div>
         <div className="password-box">
             <div className="box-title">

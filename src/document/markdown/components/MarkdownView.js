@@ -30,7 +30,7 @@ const MarkdownDocument = (props) => {
     const documentId = props.match.params.id;
     const { findDocument, createDocumentFocus, deleteDocumentFocusByCondition } = MarkdownStore;
     const { documentTitle, setDocumentTitle, repository} = RepositoryDetailStore;
-    const { createLike, createShare, updateShare, deleteLike } = CommentStore;
+    const { createLike, deleteLike } = CommentStore;
     const [shareVisible, setShareVisible] = useState(false)
     const [documentDate, setDocumentDate] = useState()
     const userId = getUser().userId;
@@ -285,12 +285,9 @@ const MarkdownDocument = (props) => {
                             {/*    </div>*/}
                             {/*</div>*/}
                             <ShareModal
-                                documentIds={[documentId]}
                                 shareVisible={shareVisible}
                                 setShareVisible={setShareVisible}
                                 docInfo={docInfo}
-                                createShare={createShare}
-                                updateShare={updateShare}
                             />
                         </div>
                         :
