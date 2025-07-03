@@ -4,16 +4,42 @@
     z-index: 1;
     background: transparent;
 
-    .ant-layout-sider-children {
-        position: fixed;
 
+    .ant-layout-sider-children {
         .repository-aside {
             background: var(--tiklab-gray-600);
             height: 100%;
-            width: 270px;
+            transition: width 0.3s ease, transform 0.3s ease;
+            &-unfold{
+                width: 0;
+            }
+            &-fold{
+                width: 270px;
+            }
             ul {
                 padding: 0;
                 margin: 0;
+            }
+            .menu-fold{
+                cursor: pointer;
+                font-size: 18px;
+                padding: 3px;
+                border-radius: 4px;
+                &:hover{
+                    background: #ffffff;
+                }
+            }
+            .menu-unfold{
+                position: absolute;
+                right: -30px;
+                top: 21px;
+                cursor: pointer;
+                font-size: 18px;
+                padding: 3px;
+                border-radius: 4px;
+                &:hover{
+                    background: var(--tiklab-gray-300);
+                }
             }
 
             .repository-aside-ul{
@@ -46,22 +72,11 @@
                     justify-content: space-between;
                     height: 36px;
                     gap: 10px;
-                    border-radius: 4px;
-                    &:hover{
-                        background: var(--tiklab-gray-300);
-                        .category-add{
-                            display: block;
-                        }
-                    }
                     .category-left{
                         display: flex;
                         align-items: center;
                         gap: 8px;
                     }
-                    .category-add{
-                        display: none;
-                    }
-
                 }
             }
 
@@ -70,7 +85,7 @@
                 align-items: center;
                 justify-content: space-between;
                 width: 100%;
-                padding: 0px 10px;
+                padding: 0 20px;
                 height: 45px;
                 line-height: 45px;
                 font-size: 16px;
@@ -139,7 +154,7 @@
             }
 
             .ant-tree-node-content-wrapper {
-                width: 90;
+                width: 90px;
             }
         }
 
@@ -214,17 +229,17 @@
         }
 
         .repository-menu::-webkit-scrollbar {
-            width: 0px;
-            height: 0px;
+            width: 0;
+            height: 0;
         }
 
         .repository-menu:hover::-webkit-scrollbar {
             width: 5px;
-            height: 0px;
+            height: 0;
         }
 
         .repository-menu::-webkit-scrollbar-thumb {
-            border-radius: 5px;
+            border-radius: 4px;
             background: var(--tiklab-gray-400);
         }
 
@@ -233,10 +248,8 @@
             background: var(--tiklab-gray-600);
         }
         .category-add {
-            border-radius: 5px;
-            height: 20px;
-            width: 20px;
-            padding: 1.5px;
+            border-radius: 4px;
+            padding: 2px;
             cursor: pointer;
         }
 

@@ -133,7 +133,7 @@ const FileView =  ({ ExtendFileView, ...props })=> {
                 documentData ? (
                     documentData?.node?.recycle === '0' ? (
                         <div className='document-file-examine'>
-                            <div className="examine-top">
+                            <div className="examine-top" style={props?.collapsed ? {paddingLeft:40} : {}}>
                                 <div className="examine-title" id="examine-title">
                                     <div className="examine-title-top">
                                         {documentTitle}
@@ -165,8 +165,9 @@ const FileView =  ({ ExtendFileView, ...props })=> {
                                     <Col
                                         xs={{ span: 24}}
                                         md={{ span: 20, offset: 2 }}
-                                        xl={{ span: 18, offset: 3 }}
                                         lg={{ span: 18, offset: 3 }}
+                                        xl={{ span: 18, offset: 3 }}
+                                        xxl={{ span: 16, offset: 4 }}
                                     >
                                         {
                                             (!disable && ExtendFileView) ?

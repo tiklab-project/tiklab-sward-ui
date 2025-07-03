@@ -220,7 +220,7 @@ const DocumentExamine = (props) => {
                                     setCommentNum={setCommentNum}
                                 />
                             }
-                            <div className="examine-top">
+                            <div className="examine-top" style={props?.collapsed ? {paddingLeft:40} : {}}>
                                 <div className="examine-title" id="examine-title">
                                     <div className="examine-title-top">
                                         {documentTitle}
@@ -291,8 +291,10 @@ const DocumentExamine = (props) => {
                                             <Row>
                                                 <Col
                                                     xs={{ span: 24}}
-                                                    xl={{ span: 20, offset: 2 }}
-                                                    xxl={{ span: 18, offset: 3 }}
+                                                    md={{ span: 20, offset: 2 }}
+                                                    lg={{ span: 18, offset: 3 }}
+                                                    xl={{ span: 18, offset: 3 }}
+                                                    xxl={{ span: 16, offset: 4 }}
                                                 >
                                                     <PreviewEditor
                                                         value={value}

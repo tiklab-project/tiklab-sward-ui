@@ -20,7 +20,14 @@ import {
     updataTreeSort, findNodeById, updateNodeName, removeNodeInTree
 } from '../../../common/utils/treeDataAction';
 import AddDropDown from '../../common/components/AddDropDown';
-import {AppstoreOutlined, DownOutlined, ProfileOutlined, ShareAltOutlined, StarOutlined} from '@ant-design/icons';
+import {
+    AppstoreOutlined,
+    DownOutlined, MenuFoldOutlined,
+    MenuUnfoldOutlined,
+    ProfileOutlined,
+    ShareAltOutlined,
+    StarOutlined
+} from '@ant-design/icons';
 import ArchivedFree from '../../../common/components/archivedFree/ArchivedFree';
 import SearchModal from '../../common/components/SearchModal';
 import {documentPush, getFileExtensionWithDot, removeFileExtension} from "../../../common/utils/overall";
@@ -30,7 +37,7 @@ const { Sider } = Layout;
 
 const RepositoryDocList = (props) => {
     // 解析props
-    const { repositoryDetailStore, NodeRecycleModal, NodeArchivedModal } = props;
+    const { repositoryDetailStore, NodeRecycleModal, NodeArchivedModal,collapsed, setCollapsed } = props;
     const [loading, setLoading] = useState(false)
     //语言包
     const { t } = useTranslation();
@@ -47,19 +54,22 @@ const RepositoryDocList = (props) => {
     const [requsetedCategory, setRequsetedCategory] = useState([])
 
     const userId = getUser().userId;
+    const versionInfo = getVersionInfo();
+    const inputRef = React.useRef(null);
 
     //分享弹出框
     const [shareVisible, setShareVisible] = useState(false);
     //分享数据
     const [shareData,setShareData] = useState(null);
-    const inputRef = React.useRef(null);
     const [isRename, setIsRename] = useState()
     const [archivedNode, setArchivedNode] = useState()
     const [nodeArchivedVisable, setNodeArchivedVisable] = useState(false)
     const [nodeRecycleVisable, setNodeRecycleVisable] = useState(false)
-    const versionInfo = getVersionInfo();
+    //增强引导弹出框
     const [archivedFreeVisable, setArchivedFreeVisable] = useState(false);
+    //搜索弹出框
     const [showSearchModal, setShowSearchModal] = useState(false)
+
     const repositoryStatus = repository?.status === 'nomal';
 
     useEffect(() => {
@@ -554,12 +564,23 @@ const RepositoryDocList = (props) => {
     return (
         <Fragment>
             <Spin spinning={loading} delay={500}>
-                <Sider trigger={null} collapsible collapsedWidth="50" width="270" className="repositorydetail-aside">
-                    <div className='repository-aside'>
+                <Sider
+                    trigger={null}
+                    collapsible
+                    collapsed={collapsed}
+                    collapsedWidth={0}
+                    width={270}
+                    className="repositorydetail-aside"
+                >
+                    <div className={`repository-aside ${collapsed ? 'repository-aside-unfold' : 'repository-aside-fold'}`}>
                         <div className="repository-title title">
                             <div className="repository-title-left">
                                 文档
                             </div>
+                            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                                className: collapsed ? 'menu-unfold' : 'menu-fold',
+                                onClick: () => setCollapsed(!collapsed),
+                            })}
                         </div>
                         <div className="repository-search" onClick={() => setShowSearchModal(true)}>
                             <svg className="icon-13" aria-hidden="true">

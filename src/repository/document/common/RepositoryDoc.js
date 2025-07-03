@@ -6,35 +6,33 @@
  * @LastEditors: 袁婕轩
  * @LastEditTime: 2024-12-31 17:02:52
  */
-import React, { useState, useEffect } from "react";
+import React, {useState} from "react";
 import {Empty, Layout, Spin} from 'antd';
 import { renderRoutes } from "react-router-config";
-import { observer, inject, Provider } from "mobx-react";
+import { observer, inject } from "mobx-react";
 import RepositoryDocList from "./RepositoryDocList";
 import "./RepositoryDoc.scss"
 
 const RepositoryDoc = (props) => {
 
-    const { repositoryCatalogueList,uploadSpinning } = props.repositoryDetailStore;
+    const { route, repositoryDetailStore } = props;
 
-    // 解析props
-    const { route } = props;
+    const { uploadSpinning } = repositoryDetailStore;
+
+    //侧边栏折叠
+    const [collapsed, setCollapsed] = useState(false);
 
     return (
         <Spin spinning={uploadSpinning} tip={'上传中'} wrapperClassName="repository-doc-spin">
             <Layout className="repository-doc">
                 <RepositoryDocList
                     {...props}
+                    collapsed={collapsed}
+                    setCollapsed={setCollapsed}
                 />
                 <Layout className="repository-doc-content">
                     {
-                        repositoryCatalogueList.length > 0 ?
-                            renderRoutes(route.routes)
-                            :
-                            <div className="repository-doc-empty">
-                                <Empty description="暂无文档" />
-                            </div>
-
+                        renderRoutes(route.routes, { collapsed })
                     }
                 </Layout>
             </Layout>

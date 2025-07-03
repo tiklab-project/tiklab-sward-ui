@@ -168,7 +168,7 @@ const MarkdownEdit = (props) => {
         {
             docInfo?.recycle === "0" ?
             <div className="document-markdown-edit">
-                <div className="edit-top">
+                <div className="edit-top" style={props?.collapsed ? {paddingLeft:40} : {}}>
                     <div className={`edit-title`}>
                         <div
                             contentEditable={true}
