@@ -15,12 +15,12 @@ import Button from "../../../common/components/button/Button";
 import "./RepositoryList.scss";
 import RepositoryStore from "../store/RepositoryStore";
 import { useDebounce } from "../../../common/utils/debounce";
-import UserIcon from "../../../common/components/icon/UserIcon";
 import Img from "../../../common/components/img/Img";
 import {DeleteOutlined, EditOutlined, SettingOutlined} from "@ant-design/icons";
 import RepositoryAdd from "./RepositoryAdd";
 import {PrivilegeProjectButton} from "tiklab-privilege-ui";
 import RepositoryDelete from "./RepositoryDelete";
+import Profile from "../../../common/components/profile/Profile";
 
 const RepositoryList = (props) => {
 
@@ -266,7 +266,7 @@ const RepositoryList = (props) => {
             align: "left",
             render: (text, record) => (
                 <Space>
-                    <UserIcon name={text} />
+                    <Profile userInfo={record.master}/>
                     {text}
                 </Space>
             )

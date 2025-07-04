@@ -17,6 +17,7 @@ import Button from "../../../common/components/button/Button";
 import {VerticalAlignBottomOutlined} from "@ant-design/icons";
 
 const ShareFile = (props) => {
+
     const { shareStore } = props;
     const { documentView } = shareStore;
     //文档
@@ -33,7 +34,6 @@ const ShareFile = (props) => {
 
     const details = documentData?.details && JSON.parse(documentData.details);
     const docInfo = documentData?.node;
-
 
     /**
      * 下载
@@ -59,8 +59,8 @@ const ShareFile = (props) => {
                     <Col
                         className="repositorydetail-content-col"
                         xs={{ span: 22, offset: 1 }}
-                        xl={{ span: 18, offset: 3 }}
-                        lg={{ span: 20, offset: 2 }}
+                        lg={{ span: 18, offset: 3 }}
+                        xl={{ span: 16, offset: 4 }}
                     >
                         <div className='document-file'>
                             <svg className="icon-48" aria-hidden="true">

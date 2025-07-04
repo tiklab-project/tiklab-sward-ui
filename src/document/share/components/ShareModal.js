@@ -95,6 +95,7 @@ const ShareModal = (props) => {
         setShareVisible(false);
         setShareUrl(null);
         setAuthCode(null);
+        setValue('publish')
     }
 
     return (

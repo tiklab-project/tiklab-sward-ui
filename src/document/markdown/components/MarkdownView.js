@@ -173,7 +173,7 @@ const MarkdownDocument = (props) => {
                                     setCommentNum={setCommentNum}
                                 />
                             }
-                            <div className="examine-top" style={props?.collapsed ? {paddingLeft:40} : {}}>
+                            <div className="examine-top">
                                 <div className="examine-title" id="examine-title">
                                     <div className="examine-title-top">
                                         {documentTitle}

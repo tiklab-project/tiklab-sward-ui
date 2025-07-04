@@ -57,8 +57,8 @@ const ShareDocument = (props) => {
                     <Col
                         className="repositorydetail-content-col"
                         xs={{ span: 22, offset: 1 }}
-                        xl={{ span: 18, offset: 3 }}
-                        lg={{ span: 20, offset: 2 }}
+                        lg={{ span: 18, offset: 3 }}
+                        xl={{ span: 16, offset: 4 }}
                     >
                         <div style={{paddingTop: "10px"}}>
                             {

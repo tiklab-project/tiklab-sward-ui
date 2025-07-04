@@ -3,14 +3,14 @@
  * @Date: 2023-01-03 13:46:33
  * @LastEditors: 袁婕轩
  * @LastEditTime: 2024-12-31 17:12:25
- * @Description: 
+ * @Description:
  */
 import React from "react";
 import {Task} from "tiklab-message-ui";
 
 // 待办，不用
-const TaskListContent = props =>{
+const TaskContent = props =>{
     return <Task {...props} bgroup={"sward"}/>
 }
 
-export default TaskListContent;
+export default TaskContent;

@@ -6,11 +6,10 @@
  * @Description: 知识库概况页面
  */
 import React, { useState, useEffect, Fragment } from "react";
-import { Row, Col, Form, Dropdown, Menu, Empty, Spin } from 'antd';
+import { Row, Col, Empty, Spin } from 'antd';
 import { withRouter } from "react-router";
 import {inject, observer} from "mobx-react";
 import Button from "../../../common/components/button/Button";
-import UserIcon from "../../../common/components/icon/UserIcon";
 import "./Survey.scss";
 import { getUser } from "tiklab-core-ui";
 import SurveyStore from "../store/SurveyStore";
@@ -19,6 +18,7 @@ import DyncmicTimeAxis from "./DyncmicTimeAxis";
 import Img from "../../../common/components/img/Img";
 import DocumentIcon from "../../../common/components/icon/DocumentIcon";
 import {documentPush} from "../../../common/utils/overall";
+import Profile from "../../../common/components/profile/Profile";
 
 const Survey = (props) => {
 
@@ -120,7 +120,9 @@ const Survey = (props) => {
                                             {
                                                 userList && userList.length > 0 && userList.map((item, index) => {
                                                     if (index < 5) {
-                                                        return <div key={item.id}><UserIcon size="big" name={item.user.nickname}></UserIcon></div>
+                                                        return <div key={item.id}>
+                                                            <Profile userInfo={item.user}/>
+                                                        </div>
                                                     }
                                                 })
                                             }
@@ -130,15 +132,6 @@ const Survey = (props) => {
                                                 </svg>
                                             </div>
                                         </div>
-                                        {/* <div className="desc">
-                                            <span>
-                                                目录 {repositoryInfo.categoryNum ? repositoryInfo.categoryNum : 0}
-                                            </span>
-                                            <span>
-                                                文档 {repositoryInfo.documentNum ? repositoryInfo.documentNum : 0}
-                                            </span>
-
-                                        </div> */}
                                     </div>
                                 </div>
                                 <div className="top-right">

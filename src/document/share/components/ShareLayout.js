@@ -6,10 +6,10 @@
  * @LastEditors: 袁婕轩
  * @LastEditTime: 2022-04-25 16:14:15
  */
-import React from 'react';
+import React, {useState} from 'react';
 import "./ShareLayout.scss";
 import ShareAside from "./ShareAside";
-import { Layout } from "antd"
+import {Empty, Layout} from "antd"
 import { renderRoutes } from "react-router-config";
 import CommentStore from "../../document/store/CommentStore";
 import ShareStore from '../store/ShareStore';
@@ -24,14 +24,24 @@ const ShareLayout = (props) => {
         shareStore: ShareStore
     }
 
+    //分享是否存在
+    const [shareExist,setShareExist] = useState(true);
+
     return (
         <Provider {...store}>
             <Layout className="share-page repositorydetail">
                 <ShareAside
                     {...props}
+                    setShareExist={setShareExist}
                 />
                 <Layout className="repositorydetail-content">
-                    {renderRoutes(route.routes)}
+                    {
+                        shareExist ? renderRoutes(route.routes)
+                        :
+                        <div className='share-empty'>
+                            <Empty description={'该分享不存在'}/>
+                        </div>
+                    }
                 </Layout>
             </Layout>
         </Provider>

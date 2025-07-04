@@ -4,7 +4,7 @@
 }
 .repository {
     padding: var(--tiklab-padding-item);
-    
+
     .recent-repository {
         margin-bottom: 15px;
         margin-top: 15px;
@@ -44,12 +44,12 @@
                 align-items: center;
                 font-size: 16px;
                 span {
-                  
+
                     text-overflow: ellipsis;
                     white-space: nowrap;
                     overflow: hidden;
                     max-width: 140px;
-  
+
                 }
                 .project-icon {
                     width: 30px;
@@ -154,13 +154,19 @@
     }
     .repository-table-box {
         margin-top: 10px;
+        .ant-avatar{
+            width: 22px;
+            height: 22px;
+            line-height: 22px;
+            font-size: 12px;
+        }
     }
     .repository-title {
         display: flex;
         align-items: center;
 
         .repository-info {
-                
+
             .repository-name {
                 cursor: pointer;
                 line-height: 25px;

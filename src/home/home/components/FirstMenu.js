@@ -16,8 +16,8 @@ import HomeStore from "../store/HomeStore";
 import {inject, observer, Provider} from "mobx-react";
 import {renderRoutes} from "react-router-config";
 import MessageList from "./MessageList";
-import UserIcon from "../../../common/components/icon/UserIcon";
 import {getUser, productImg, productTitle, productWhiteImg} from "tiklab-core-ui";
+import Profile from "../../../common/components/profile/Profile";
 const { Sider } = Layout;
 
 const FirstMenu = (props) => {
@@ -272,7 +272,7 @@ const FirstMenu = (props) => {
                                     changeTheme={changeTheme}
                                     iconComponent={
                                         <div className="first-menu-text-item">
-                                            <UserIcon name={nickname} />
+                                            <Profile />
                                             <div>{nickname}</div>
                                         </div>
                                     }
@@ -313,7 +313,7 @@ const FirstMenu = (props) => {
                                     changeTheme={changeTheme}
                                     iconComponent={
                                         <div className="first-menu-link-item" data-title-right={nickname}>
-                                            <UserIcon name={nickname} />
+                                            <Profile />
                                         </div>
                                     }
                                     {...props}

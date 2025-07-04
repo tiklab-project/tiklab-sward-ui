@@ -12,10 +12,10 @@ import { Row, Col, Empty, Spin } from 'antd';
 import { observer } from 'mobx-react';
 import { getUser } from 'tiklab-core-ui';
 import HomeStore from "../store/HomeStore";
-import UserIcon from '../../../common/components/icon/UserIcon';
 import Img from '../../../common/components/img/Img';
 import DocumentIcon from "../../../common/components/icon/DocumentIcon";
 import {documentPush} from "../../../common/utils/overall";
+import Profile from "../../../common/components/profile/Profile";
 const Home = (props) => {
     const { findDocumentRecentList, findRecentRepositoryList } = HomeStore;
     const [recentViewDocumentList, setRecentViewDocumentList] = useState([]);
@@ -143,7 +143,9 @@ const Home = (props) => {
                                                 </div>
                                             </div>
                                             <div className="document-master-name">
-                                                <UserIcon name={item.master.nickname} size="big" />
+                                                <Profile
+                                                    userInfo={item.master}
+                                                />
                                                 {item.master.nickname}
                                             </div>
                                             <div className="document-time">{item.recentTime ? item.recentTime : item.recentTime}</div>

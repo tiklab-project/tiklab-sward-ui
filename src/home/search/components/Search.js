@@ -22,7 +22,7 @@ import BaseModal from "../../../common/components/modal/Modal";
 const Search = (props) => {
     const { isShowText, theme } = props;
 
-    const { findRepositoryListByUser, findNodeList, searchDocumentList, searchWikiList, findDocumentRecentList,
+    const { searchDocumentList, searchWikiList, findDocumentRecentList,
         findRecentRepositoryList ,getSearch } = SearchStore;
     const [searchModal, setSearchModal] = useState(false);
     const [isSeach, setIsSeach] = useState(false);
@@ -77,21 +77,6 @@ const Search = (props) => {
         if (keyWord) {
             setDocloading(true)
             setRepositoryloading(true)
-            // // 搜索知识库
-            // findRepositoryListByUser({name: value.target.value}).then(res => {
-            //     if (res.code === 0) {
-            //         // setDocloading(false)
-            //         setRepositoryloading(false)
-            //     }
-            // })
-            //
-            // // 搜索文档
-            // findNodeList({name: value.target.value, type: "document"}).then(res => {
-            //     if (res.code === 0) {
-            //         // setDocloading(false)
-            //         setDocloading(false)
-            //     }
-            // })
             getSearch({
                 name : keyWord,
                 userId: userId
@@ -174,7 +159,7 @@ const Search = (props) => {
                         </div>
                         {
                             isSeach ?
-                                <div className="search-result-box">
+                            <div className="search-result-box">
                                 <Spin spinning={repositoryloading}>
                                     {
                                         (searchWikiList?.length !== 0 || searchDocumentList?.length !== 0) ?

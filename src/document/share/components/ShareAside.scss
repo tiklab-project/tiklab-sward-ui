@@ -44,11 +44,6 @@
         border-top: 1px solid #f0f2f5;
     }
 
-    .repository-menu-select {
-        background-color: #e3e8f0;
-        border-left: 3px solid var(--tiklab-blue);
-    }
-
     .repository-menu {
         list-style-type: none;
         height: calc(100% - 48px);
@@ -75,7 +70,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 10px 10px 10px 0;
-
+            border-left: 3px solid transparent;
             .repository-menu-submenu-left {
                 display: flex;
                 align-items: center;
@@ -99,6 +94,11 @@
 
         .repository-menu-submenu-hidden {
             display: none;
+        }
+
+        .repository-menu-select {
+            background-color: #e3e8f0;
+            border-color: var(--tiklab-blue);
         }
 
         .iconright {

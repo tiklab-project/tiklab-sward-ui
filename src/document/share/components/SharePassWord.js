@@ -9,16 +9,20 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import {Input, Button, message} from 'antd';
-import "./passWord.scss"
+import "./SharePassWord.scss"
 import { withRouter } from "react-router";
 import ShareStore from "../store/ShareStore";
 import {productImg} from "tiklab-core-ui";
 
-const PassWord = (props) => {
+const SharePassWord = (props) => {
 
     const { verifyAuthCode, setTenant } = ShareStore;
     const tenant = props.location.search.split("=")[1];
     const [value,setValue] = useState();
+
+    useEffect(()=> {
+        setTenant(tenant)
+    }, [])
 
     const change = (e) => {
         setValue(e.target.value)
@@ -30,7 +34,7 @@ const PassWord = (props) => {
     const jump = ()=> {
         verifyAuthCode({
             shareLink:`${props.match.params.shareId}`,
-            authCode:value.trim()
+            authCode: value.trim()
         }).then((data)=> {
             if(data.code===0){
                 if(version !== "cloud"){
@@ -45,34 +49,30 @@ const PassWord = (props) => {
         })
     }
 
-    // sass 版本获取租户
-    useEffect(()=> {
-        setTenant(tenant)
-        return;
-    }, [])
-    return <div className="documment-password">
-        <div className="password-log">
-            <img src={productImg.sward} alt="" />
-            <span>sward</span>
-        </div>
-        <div className="password-box">
-            <div className="box-title">
-                <svg className="icon-svg" aria-hidden="true">
-                    <use xlinkHref="#icon-user5"></use>
-                </svg>
-                <span>
+    return (
+        <div className="documment-password">
+            <div className="password-log">
+                <img src={productImg.sward} alt="" />
+                <span>sward</span>
+            </div>
+            <div className="password-box">
+                <div className="box-title">
+                    <svg className="icon-svg" aria-hidden="true">
+                        <use xlinkHref="#icon-user5"></use>
+                    </svg>
+                    <span>
                     admin
                 </span>
-            </div>
-            <div className="box-content">
-                <div className="box-text">请填写提取码：</div>
-                <div className="box-input">
-                    <Input onChange = {(e)=> change(e)}/>
-                    <Button type="primary" onClick = {()=>jump()}>确定</Button>
+                </div>
+                <div className="box-content">
+                    <div className="box-text">请填写提取码：</div>
+                    <div className="box-input">
+                        <Input onChange = {(e)=> change(e)}/>
+                        <Button type="primary" onClick = {()=>jump()}>确定</Button>
+                    </div>
                 </div>
             </div>
         </div>
-
-    </div>
+    )
 }
-export default withRouter(observer(withRouter(PassWord)));
+export default withRouter(observer(withRouter(SharePassWord)));

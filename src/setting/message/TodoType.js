@@ -1,8 +1,8 @@
 import React from "react";
 import {TodoType} from "tiklab-message-ui";
 
-const TodoTypeListContent = props =>{
+const TodoTypeContent = props =>{
     return <TodoType {...props} bgroup={"sward"}/>
 }
 
-export default TodoTypeListContent;
+export default TodoTypeContent;

@@ -1,5 +1,5 @@
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: 1.0.0
  * @Author: 袁婕轩
  * @Date: 2021-04-19 15:58:49
@@ -27,7 +27,7 @@ fetchMethod = JSON.stringify(fetchMethod);
 let env = "prod";
 env = JSON.stringify(env)
 
-const appKey = JSON.stringify('');
+const appKey = JSON.stringify('tiklab_sward');
 const appSecret = JSON.stringify('');
 const isSaas = false;
 const mobile_url = JSON.stringify("/mobile.html")

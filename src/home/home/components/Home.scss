@@ -60,12 +60,12 @@
                     white-space: nowrap;
                     overflow: hidden;
                     max-width: 140px;
-  
+
                 }
                 .item-icon {
                     width: 20px;
                     height: 20px;
-                    margin-right: 10px; 
+                    margin-right: 10px;
                 }
             }
             .item-work {
@@ -149,7 +149,7 @@
                     flex-shrink: 1;
                     min-width: 0;
                     .document-title {
-                        
+
                         text-overflow: ellipsis;
                         white-space: nowrap;
                         overflow: hidden;
@@ -173,13 +173,19 @@
                 white-space: nowrap;
                 overflow: hidden;
                 flex-shrink: 0;
+                .ant-avatar{
+                    width: 20px;
+                    height: 20px;
+                    line-height: 20px;
+                    font-size: 12px;
+                }
             }
             .document-time {
                 width: 150px;
                 flex-shrink: 0;
             }
         }
-       
+
     }
     .focus-document {
         margin-top: 15px;

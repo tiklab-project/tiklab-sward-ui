@@ -35,13 +35,18 @@
                 .user {
                     display: flex;
                     align-items: center;
-
+                    .ant-avatar{
+                        width: 20px;
+                        height: 20px;
+                        font-size: 12px;
+                        background: #ddd;
+                    }
                     .user-more {
                         width: 20px;
                         height: 20px;
                         border-radius: 20px;
                         font-size: 12px;
-                        background-color: #ddd;
+                        background: #ddd;
                         display: flex;
                         justify-content: center;
                         align-items: center;
@@ -145,30 +150,30 @@
             padding-bottom: 20px;
             .dynamic-item {
                 margin-bottom: 10px;
-    
+
                 .dynamic-repository-title:hover {
                     color: var(--tiklab-blue);
                 }
             }
-    
+
             .dynamic-item:nth-child(4n+1) {
                 .dynamic-user-icon {
                     background-color: #cadbf3;
                 }
             }
-    
+
             .dynamic-item:nth-child(4n+2) {
                 .dynamic-user-icon {
                     background-color: #deedd7;
                 }
             }
-    
+
             .dynamic-item:nth-child(4n+3) {
                 .dynamic-user-icon {
                     background-color: #ffebee;
                 }
             }
-    
+
             .dynamic-item:nth-child(4n+4) {
                 .dynamic-user-icon {
                     background-color: #e8eaf6;
@@ -230,7 +235,7 @@
                     min-width: 0;
                     margin-right: 10px;
                     .document-title {
-                      
+
                         text-overflow: ellipsis;
                         white-space: nowrap;
                         overflow: hidden;

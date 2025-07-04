@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 import { inject, observer } from "mobx-react";
 import { Empty } from "antd";
 import "./CommentShare.scss"
-import UserIcon from "../../../common/components/icon/UserIcon";
+import Profile from "../../../common/components/profile/Profile";
 
 const CommentShare = (props) => {
     const { commentStore, documentId, setShowComment, shareStore } = props;
@@ -36,9 +36,7 @@ const CommentShare = (props) => {
                 setTotalPage(data.data.totalPage)
             }
         })
-        return;
     }, [documentId])
-
 
     // 下一页
     const nextPageCommon = () => {
@@ -77,30 +75,22 @@ const CommentShare = (props) => {
                                 return <div className="comment-item" key={item.id}>
                                     <div className="comment-list-top">
                                         <div className="comment-user">
-                                            <UserIcon size="big" name={item.user.nickname} />
+                                            <Profile userInfo={item.user}/>
                                             <span className="user-name">{item.user.name}</span>
                                         </div>
                                         <div className="comment-time">
                                             {item.createTime.slice(5, 16)}
                                         </div>
                                     </div>
-
                                     <div className="comment-content">
                                         {item.details}
                                     </div>
-                                    {/* <div className="comment-operate">
-
-                                    </div> */}
                                     {
                                         item.commentList && item.commentList.map(children => {
                                             return <div className="comment-item commnet-children-item" key={children.id}>
-                                                {/* <div className="comment-user">
-                                                    <UserIcon size="big" name={children.user.nickname} />
-                                                    <span className="user-name">{children.user.name}回复了：{children.aimAtUser.name}</span>
-                                                </div> */}
                                                 <div className="comment-list-top">
                                                     <div className="comment-user">
-                                                        <UserIcon size="big" name={children.user.nickname} />
+                                                        <Profile userInfo={children.user}/>
                                                         <span className="user-name">{children.user.name}回复了：{children.aimAtUser.name}</span>
                                                     </div>
                                                     <div className="comment-time">
@@ -111,10 +101,8 @@ const CommentShare = (props) => {
                                                     {children.details}
                                                 </div>
                                             </div>
-
                                         })
                                     }
-
                                 </div>
                             })
                         }
@@ -125,8 +113,6 @@ const CommentShare = (props) => {
                         :
                         <Empty description="暂时没有评价~" />
                 }
-
-
             </div>
         </div>
     )

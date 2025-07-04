@@ -204,7 +204,7 @@ const DocumentEdit = (props) => {
     return (<>
         {
             docInfo?.recycle === "0" ? <div className="documnet-edit">
-                <div className="edit-top" style={props?.collapsed ? {paddingLeft:40} : {}}>
+                <div className="edit-top">
                     <div className="edit-title" >
                         <div className="edit-title-top" id="examine-title">
                             {docInfo.name}

@@ -15,7 +15,7 @@ import "./comment.scss"
 import { getUser } from "tiklab-core-ui";
 import moment from "moment";
 import CommentStore from "../store/CommentStore"
-import UserIcon from "../../../common/components/icon/UserIcon";
+import Profile from "../../../common/components/profile/Profile";
 const Comment = (props) => {
     const { documentId, setShowComment, commentNum, setCommentNum } = props;
     const { createComment, findCommentPage, deleteComment, deleteCommentCondition } = CommentStore;
@@ -244,10 +244,7 @@ const Comment = (props) => {
                                 return <div className="comment-item" key={item.id}>
                                     <div className="comment-list-top">
                                         <div className="comment-user">
-                                            {/* <svg className="icon-svg" aria-hidden="true">
-                                                <use xlinkHref="#icon-user5"></use>
-                                            </svg> */}
-                                            <UserIcon size="big" name={item.user.nickname} />
+                                           <Profile userInfo={item.user}/>
                                             <span className="user-name">{item.user.nickname}</span>
                                         </div>
                                         <div className="comment-time">
@@ -261,7 +258,9 @@ const Comment = (props) => {
                                         <div>
                                             {/* <span className="comment-edit" onClick={() => updataFirst(item.id)}>编辑</span> */}
                                             <span onClick={() => deleteFirst(item.id, index)} className="comment-delete">删除</span>
-                                            <span onClick={() => setReply(item.id)} className="comment-reply">回复</span>
+                                            <span onClick={() => setReply(reply ? null : item.id)} className="comment-reply">
+                                                {reply === item.id ? '收起' : '回复'}
+                                            </span>
                                             <span className="comment-like">赞</span>
                                         </div>
                                     </div>
@@ -277,11 +276,9 @@ const Comment = (props) => {
                                             return <div className="comment-item commnet-children-item" key={children.id}>
                                                 <div className="comment-list-top" >
                                                     <div className="comment-user">
-                                                        <UserIcon size="big" name={children.user.nickname} />
+                                                        <Profile userInfo={children.user}/>
                                                         <span className="user-name">{children.user.name}回复了：{children.aimAtUser.name}</span>
                                                     </div>
-
-
                                                     <div className="comment-time">
                                                         {item.createTime.slice(5, 16)}
                                                     </div>
@@ -290,14 +287,13 @@ const Comment = (props) => {
                                                     {children.details}
                                                 </div>
                                                 <div className="comment-operate">
-                                                    {/* <span className="comment-edit">编辑</span> */}
-
                                                     <div>
                                                         <span className="comment-delete" onClick={() => deleteSecond(index, children.id)}>删除</span>
-                                                        <span className="comment-reply" onClick={() => setChildrenReply(children.id)}>回复</span>
+                                                        <span className="comment-reply" onClick={() => setChildrenReply(childrenReply ? null : children.id)}>
+                                                            {childrenReply === children.id ? '收起':'回复'}
+                                                        </span>
                                                         <span className="comment-like">赞</span>
                                                     </div>
-
                                                 </div>
                                                 <div className={`edit-comment ${childrenReply === children.id ? "edit-comment-show" : "edit-comment-hidden"}`}>
                                                     <svg className="icon-svg" aria-hidden="true">
@@ -307,10 +303,8 @@ const Comment = (props) => {
                                                     <Button type="primary" disable={commentThirdContent} onClick={() => announceThirdReply(item.id, children.id, index, children.user)}>发布</Button>
                                                 </div>
                                             </div>
-
                                         })
                                     }
-
                                 </div>
                             })
                         }
@@ -321,8 +315,6 @@ const Comment = (props) => {
                         :
                         <Empty description="暂时没有评价~" />
                 }
-
-
             </div>
         </div>
     )

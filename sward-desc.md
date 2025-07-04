@@ -36,7 +36,7 @@
 | 文件                  | 说明            |
 |---------------------|---------------|
 | CommentShare        | 分享页面的评论       |
-| PassWord            | 分享文档的密码校验     |
+| SharePassWord            | 分享文档的密码校验     |
 | ShareAside          | 知识库详情页面左侧导航栏  |
 | ShareCategoryDetail | 分享的目录详情页面     |
 | ShareDocument       | 分享的文档页面       |
@@ -185,7 +185,7 @@
 |-------------------|-------------------------------|
 | Log               | 日志列表                          |
 | LogTypeList       | 日志类型                          |
-| MyLogTemplateList | 日志模板列表                        |
+| LogTemplate | 日志模板列表                        |
 
 ## message
 

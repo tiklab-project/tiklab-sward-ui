@@ -6,70 +6,68 @@
  * @LastEditors: 袁婕轩
  * @LastEditTime: 2024-12-31 15:29:42
  */
-
-import React, { Fragment, useState, useEffect, useId, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { withRouter } from "react-router-dom";
 import { observer, inject } from "mobx-react";
-import { Layout, Form } from 'antd';
-import { useTranslation } from 'react-i18next';
+import { Layout } from 'antd';
 import "./ShareAside.scss";
-import {getFileIcon} from "../../../common/utils/overall";
 import {productImg} from "tiklab-core-ui";
 import DocumentIcon from "../../../common/components/icon/DocumentIcon";
 
 const { Sider } = Layout;
+
 const ShareAside = (props) => {
     // 解析props
-    const { shareStore} = props;
+    const { shareStore, setShareExist } = props;
     const tenant = props.location.search.split("=")[1];
     const origin = location.origin;
-    //语言包
-    const { t } = useTranslation();
     const moveRef = useRef([]);
     const { findShareCategory, judgeAuthCode, setTenant } = shareStore;
-    // 当前选中目录id
+    //当前选中目录id
     const [selectKey, setSelectKey] = useState();
     const [isShowText, SetIsShowText] = useState(true)
     const shareLink = props.match.params.shareId;
     const id = props.location.pathname.split("/")[4];
+    //分享目录
     const [repositoryCatalogueList, setRepositoryCatalogueList] = useState([])
     const locationStatePassWord = props.location.state?.password;
 
     useEffect(() => {
         setSelectKey(id);
         setTenant(tenant);
-        return
     }, [id])
 
     useEffect(() => {
         const params = new FormData();
         params.append("shareLink", shareLink)
-        const paramsData = {
-            shareId: shareLink,
-            // dimensions: [1, 2]
-        }
         // 判断是否需要验证码
         judgeAuthCode(params).then(data => {
-            if (data.data === "true" && locationStatePassWord!== "true") {
-                if(version !== "cloud"){
-                    window.location.href = `${origin}/#/passWord/${shareLink}`
-                }
-                if(version === "cloud"){
-                    window.location.href = `${origin}/#/passWord/${shareLink}?tenant=${tenant}`
-                }
-                return
-            }
-            if (data.data === "false" || locationStatePassWord === 'true') {
-                findShareCategory(paramsData).then((data) => {
-                    if (data.code === 0) {
-                        setRepositoryCatalogueList(data.data)
-                        const item = data.data[0]
-                        if(item){
-                            setUrl(item)
-                            setSelectKey(item.id)
-                        }
+            if(data.code===0){
+                if (data.data === "true" && locationStatePassWord!== "true") {
+                    if(version !== "cloud"){
+                        window.location.href = `${origin}/#/passWord/${shareLink}`
                     }
-                })
+                    if(version === "cloud"){
+                        window.location.href = `${origin}/#/passWord/${shareLink}?tenant=${tenant}`
+                    }
+                    return
+                }
+                if (data.data === "false" || locationStatePassWord === 'true') {
+                    findShareCategory({
+                        shareId: shareLink,
+                    }).then((data) => {
+                        if (data.code === 0) {
+                            setRepositoryCatalogueList(data.data)
+                            const item = data.data[0]
+                            if(item){
+                                setUrl(item)
+                                setSelectKey(item.id)
+                            }
+                        }
+                    })
+                }
+            } else {
+                setShareExist(false)
             }
         })
     }, [shareLink])
@@ -124,7 +122,6 @@ const ShareAside = (props) => {
             range.selectAllChildren(inputRef.current);
             range.collapseToEnd()
         }
-        return;
     }, [isRename])
 
 
@@ -152,7 +149,7 @@ const ShareAside = (props) => {
             <div className={`repository-menu-submenu ${item.id === selectKey ? "repository-menu-select" : ""} `}
                 key={item.id}
             >
-                <div style={{ paddingLeft: levels * 21 + 24 }} className="repository-menu-submenu-left">
+                <div style={{ paddingLeft: levels * 20 + 15 }} className="repository-menu-submenu-left">
                     {
                         (item.children && item.children.length > 0) || (item.documents && item.documents.length > 0) ?
                             isExpandedTree(item.id) ?
@@ -199,7 +196,7 @@ const ShareAside = (props) => {
                 onClick={(event) => selectKeyFun(event, item)}
                 ref={el => (moveRef.current[item.id] = el)}
             >
-                <div style={{ paddingLeft: levels * 21 + 24 }} className="repository-menu-submenu-left">
+                <div style={{ paddingLeft: levels * 20 + 15 }} className="repository-menu-submenu-left">
                     <div className="img-icon" aria-hidden="true">
                     </div>
                     <DocumentIcon

@@ -10,7 +10,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { withRouter } from "react-router-dom";
 import { observer, inject } from "mobx-react";
-import { Menu, Dropdown, Layout, Tree, message, Modal, Empty, Spin } from 'antd';
+import {Menu, Dropdown, Layout, Tree, message, Modal, Empty, Spin, Tooltip} from 'antd';
 import { useTranslation } from 'react-i18next';
 import MoveLogList from "../../common/components/MoveLogList"
 import { getUser, getVersionInfo } from 'tiklab-core-ui';
@@ -21,10 +21,10 @@ import {
 } from '../../../common/utils/treeDataAction';
 import AddDropDown from '../../common/components/AddDropDown';
 import {
-    AppstoreOutlined,
-    DownOutlined, MenuFoldOutlined,
+    AppstoreOutlined, DeleteOutlined,
+    DownOutlined, EditOutlined, MenuFoldOutlined,
     MenuUnfoldOutlined,
-    ProfileOutlined,
+    ProfileOutlined, SettingOutlined,
     ShareAltOutlined,
     StarOutlined
 } from '@ant-design/icons';
@@ -33,6 +33,7 @@ import SearchModal from '../../common/components/SearchModal';
 import {documentPush, getFileExtensionWithDot, removeFileExtension} from "../../../common/utils/overall";
 import DocumentIcon from "../../../common/components/icon/DocumentIcon";
 import ShareModal from "../../../document/share/components/ShareModal";
+import {PrivilegeProjectButton} from "tiklab-privilege-ui";
 const { Sider } = Layout;
 
 const RepositoryDocList = (props) => {
@@ -69,6 +70,8 @@ const RepositoryDocList = (props) => {
     const [archivedFreeVisable, setArchivedFreeVisable] = useState(false);
     //搜索弹出框
     const [showSearchModal, setShowSearchModal] = useState(false)
+    //增强弹出框类型
+    const [archivedFree,setArchivedFree] = useState('defalut')
 
     const repositoryStatus = repository?.status === 'nomal';
 
@@ -234,6 +237,7 @@ const RepositoryDocList = (props) => {
                 setArchivedNode(item)
                 setNodeRecycleVisable(true)
             } else {
+                setArchivedFree('defalut')
                 setArchivedFreeVisable(true)
             }
         }
@@ -250,9 +254,38 @@ const RepositoryDocList = (props) => {
                 setArchivedNode(item)
                 setNodeArchivedVisable(true)
             } else {
+                setArchivedFree('defalut')
                 setArchivedFreeVisable(true)
             }
 
+        }
+    }
+
+    /**
+     * 跳转到回收站
+     */
+    const toRecycle = () => {
+        if(versionInfo.expired){
+            setArchivedFree('defalut')
+            setArchivedFreeVisable(true)
+        } else {
+            props.history.push(`/repository/${repositoryId}/set/recycleBin`)
+        }
+    }
+
+    /**
+     * 跳转
+     */
+    const toStatistics = (value) => {
+        const {key} = value;
+        switch (key) {
+            case 'statistics':
+                if(versionInfo.expired){
+                    setArchivedFree('documentStatistics')
+                    setArchivedFreeVisable(true)
+                } else {
+                    props.history.push(`/repository/${repositoryId}/statistics`)
+                }
         }
     }
 
@@ -299,6 +332,13 @@ const RepositoryDocList = (props) => {
         return;
     }, [inputRef.current])
 
+    /**
+     * 重命名
+     * @param value
+     * @param reNameId
+     * @param type
+     * @param initName
+     */
     const reName = (value, reNameId, type, initName) => {
         const fileExtensionWithDot = initName ? getFileExtensionWithDot(initName) : '';
         const name = value.target.innerText + fileExtensionWithDot;
@@ -577,10 +617,26 @@ const RepositoryDocList = (props) => {
                             <div className="repository-title-left">
                                 文档
                             </div>
-                            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                                className: collapsed ? 'menu-unfold' : 'menu-fold',
-                                onClick: () => setCollapsed(!collapsed),
-                            })}
+                            <Dropdown
+                                overlay={
+                                    <Menu onClick={toStatistics}>
+                                        <Menu.Item key="statistics">
+                                            <div className='content-add-menu'>
+                                                <svg className="content-add-icon" aria-hidden="true">
+                                                    <use xlinkHref="#icon-edit"></use>
+                                                </svg>
+                                                统计
+                                            </div>
+                                        </Menu.Item>
+                                    </Menu>
+                                }
+                            >
+                                <div className="category-add">
+                                    <svg className="icon-20" aria-hidden="true" >
+                                        <use xlinkHref="#icon-more-default"></use>
+                                    </svg>
+                                </div>
+                            </Dropdown>
                         </div>
                         <div className="repository-search" onClick={() => setShowSearchModal(true)}>
                             <svg className="icon-13" aria-hidden="true">
@@ -610,9 +666,6 @@ const RepositoryDocList = (props) => {
                                     <svg className="icon-20" aria-hidden="true">
                                         <use xlinkHref="#icon-repository-default"></use>
                                     </svg>
-                                    {/*<svg className="icon-18" aria-hidden="true">*/}
-                                    {/*    <use xlinkHref="#icon-doc-default"></use>*/}
-                                    {/*</svg>*/}
                                     目录
                                 </div>
                                 <AddDropDown category={null} button="icon-gray" />
@@ -638,6 +691,18 @@ const RepositoryDocList = (props) => {
                                     {!loading && <Empty description="暂无文档" />}
                                 </>
                             }
+                        </div>
+                        <div className="repository-aside-bottom">
+                            <div className="bottom-left" onClick={toRecycle}>
+                                <svg className="icon-16" aria-hidden="true">
+                                    <use xlinkHref="#icon-delete"></use>
+                                </svg>
+                                回收站
+                            </div>
+                            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                                className: collapsed ? 'menu-unfold' : 'menu-fold',
+                                onClick: () => setCollapsed(!collapsed),
+                            })}
                         </div>
                     </div>
                 </Sider>
@@ -675,6 +740,7 @@ const RepositoryDocList = (props) => {
             }
 
             <ArchivedFree
+                type={archivedFree}
                 archivedFreeVisable={archivedFreeVisable}
                 setArchivedFreeVisable={setArchivedFreeVisable}
             />

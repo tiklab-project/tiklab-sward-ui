@@ -10,7 +10,6 @@ import { Form, Input, message } from 'antd';
 import "./repositoryAddInfo.scss";
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { getUser } from "tiklab-core-ui";
 import Img from "../../../common/components/img/Img";
 import repositoryStore from "../store/RepositoryStore";
 
@@ -91,38 +90,6 @@ const RepositoryAddInfo =  forwardRef((props, ref)  => {
         return Promise.reject(new Error('Price must be greater than zero!'));
     };
 
-    const ticket = getUser().ticket;
-    const tenant = getUser().tenant;
-
-    const upLoadIcon = {
-        name: 'uploadFile',
-        action: `${upload_url}/dfs/upload`,
-        showUploadList: false,
-        headers: {
-            ticket: ticket,
-            tenant: tenant
-        },
-        onChange(info) {
-            if (info.file.status === 'done') {
-                console.log(info.file, info.fileList);
-                const res = info.file.response.data;
-                const params = {
-                    iconName: info.file.name,
-                    iconUrl: "/image/" + res,
-                    iconType: "repository"
-                }
-                creatIcon(params).then((res) => {
-                    if (res.code === 0) {
-                        getIconList()
-                    }
-                })
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        }
-    };
-
     const [limtValue, setLimitValue] = useState("0");
     const LimitComponents = ({ value = {}, onChange }) => {
 
@@ -158,7 +125,6 @@ const RepositoryAddInfo =  forwardRef((props, ref)  => {
             </div>
         )
     }
-
 
     return (
         <div className="repository-addinfo">
@@ -226,11 +192,6 @@ const RepositoryAddInfo =  forwardRef((props, ref)  => {
                                 </div>
                             })
                         }
-                        {/* <Upload {...upLoadIcon}>
-                                <div className="project-icon">
-                                    <img src={UploadIcon1} alt="" className="list-img" />
-                                </div>
-                            </Upload> */}
                     </div>
                 </Form.Item>
             </Form>

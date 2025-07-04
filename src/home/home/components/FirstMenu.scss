@@ -129,10 +129,6 @@
         background-color: #557AC0;
         border-left: 3px solid #ffffff !important;
     }
-    .user-icon {
-        background-color: #8e9bed;
-        color: #ffffff;
-    }
     .first-menu-text-item:hover {
         background-color: #557AC0;
     }
@@ -154,10 +150,6 @@
     .first-menu-text-item:hover {
         background-color: var(--tiklab-gray-400);
     }
-    .user-icon {
-        background-color: var(--tiklab-blue);
-        color: #ffffff;
-    }
 }
 
 .first-sider-black {
@@ -173,10 +165,6 @@
     }
     .first-menu-text-item:hover {
         background-color: #414A5A;
-    }
-    .user-icon {
-        background-color: var(--tiklab-blue);
-        color: #ffffff;
     }
 }
 
@@ -223,19 +211,23 @@
         padding: 8px;
         margin-bottom: 0;
 
-        .user-icon {
+        .ant-avatar {
             width: 24px;
             height: 24px;
-            border-radius: 24px;
+            line-height: 24px;
+            background: #8e9bed;
+            font-size: 13px;
         }
     }
 }
 
 .first-menu-bottom-text {
-    .user-icon {
+    .ant-avatar {
         width: 24px;
         height: 24px;
-        border-radius: 24px;
+        line-height: 24px;
+        background: #8e9bed;
+        font-size: 13px;
     }
     .first-menu-bottom-item {
         height: 40px;

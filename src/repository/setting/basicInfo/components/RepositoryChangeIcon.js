@@ -1,8 +1,7 @@
 // 修改知识库图标
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Upload, message } from 'antd';
+import {Form} from 'antd';
 import { withRouter } from "react-router";
-import { getUser } from "tiklab-core-ui";
 import RepositoryIconStore from "../store/RepositoryStore";
 import Img from "../../../../common/components/img/Img";
 import BaseModal from "../../../../common/components/modal/Modal";
@@ -36,37 +35,6 @@ const RepositoryIcon = (props) => {
                 findRepository(repositoryId)
             }
         })
-    };
-
-    const ticket = getUser().ticket;
-    const tenant = getUser().tenant;
-    const upLoadIcon = {
-        name: 'uploadFile',
-        action: `${upload_url}/dfs/upload`,
-        showUploadList: false,
-        headers: {
-            ticket: ticket,
-            tenant: tenant
-        },
-        onChange(info) {
-            if (info.file.status === 'done') {
-                console.log(info.file, info.fileList);
-                const res = info.file.response.data;
-                const params = {
-                    iconName: info.file.name,
-                    iconUrl: "/image/" + res,
-                    iconType: "repository"
-                }
-                creatIcon(params).then((res) => {
-                    if (res.code === 0) {
-                        getIconList()
-                    }
-                })
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        }
     };
 
     const onCancel = () => {

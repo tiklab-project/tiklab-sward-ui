@@ -23,7 +23,7 @@
     .hidden-comment {
         display: none;
     }
-    
+
     .comment-list {
         margin: 20px 0;
         border-radius: 10px;
@@ -50,7 +50,7 @@
                 background: #f7f7f7;
             }
         }
-    
+
         .comment-item {
             .comment-list-top {
                 display: flex;
@@ -61,6 +61,11 @@
                     display: flex;
                     align-items: center;
                     gap: 10px;
+                    .ant-avatar{
+                        width: 20px;
+                        height: 20px;
+                        font-size: 12px;
+                    }
                     .icon-svg {
                         width: 30px;
                         height: 30px;
@@ -72,15 +77,15 @@
                         font-weight: 600;
                         color: #0053ca;
                     }
-                    
+
                 }
                 .comment-time {
                     font-size: 12px;
                     color: #6b778c;
                 }
             }
-            
-            
+
+
             .comment-content {
                 margin-left: 40px;
                 margin-bottom: 20px;
@@ -99,7 +104,7 @@
                     margin-right: 10px;
                 }
             }
-            
+
         }
         .comment-more-botton {
             height: 40px;

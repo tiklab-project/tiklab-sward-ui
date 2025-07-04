@@ -9,7 +9,6 @@ import ArchivedFree from "./archivedFree/ArchivedFree";
 import BreadCrumb from "./breadcrumb/BreadCrumb";
 import Button from "./button/Button";
 import DocumentIcon from "./icon/DocumentIcon";
-import UserIcon from "./icon/UserIcon";
 import Img from "./img/Img";
 import BaseModal from "./modal/Modal";
 import Page from "./page/Page";
@@ -24,7 +23,6 @@ export {
     BreadCrumb,
     Button,
     DocumentIcon,
-    UserIcon,
     Img,
     BaseModal,
     Page,

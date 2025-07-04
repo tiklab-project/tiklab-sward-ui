@@ -133,7 +133,7 @@ const FileView =  ({ ExtendFileView, ...props })=> {
                 documentData ? (
                     documentData?.node?.recycle === '0' ? (
                         <div className='document-file-examine'>
-                            <div className="examine-top" style={props?.collapsed ? {paddingLeft:40} : {}}>
+                            <div className="examine-top">
                                 <div className="examine-title" id="examine-title">
                                     <div className="examine-title-top">
                                         {documentTitle}

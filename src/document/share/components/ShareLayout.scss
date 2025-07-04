@@ -12,38 +12,18 @@
             font-weight: 600;
         }
     }
-}
-.help-box {
-    width: 200px;
-    background: #fff;
-    box-shadow: var(--ds-shadow-overlay, 0 4px 8px -2px rgba(9, 30, 66, 0.25), 0 0 1px rgba(9, 30, 66, 0.31));
-    border-radius: 4px;
-
-    .help-head {
-        font-size: 15px;
-        font-weight: var(--tiklab-font-weight-bold);
-        padding: 10px 20px 10px;
+    .ant-layout{
+        background: #ffffff;
     }
-    .help-item {
-        height: 40px;
-        line-height: 40px;
-        padding: 0 10px;
-        display: flex;
-        align-items: center;
-        width: 100%;
-        justify-content: space-between;
+    .share-empty{
+        padding-top: 80px;
     }
-    .help-item-left {
-        display: inline-flex;
-        align-items: center;
+    .ant-empty-img-default{
+        width: 100px;
     }
-
-    .help-item:hover {
-        background-color: #F4F5F7;
+    .ant-empty-description{
+        font-size: 13px;
+        color: #999;
+        padding-bottom: 8px;
     }
-
-    .help-item-icon {
-        margin: 0 10px;
-    }
-
 }

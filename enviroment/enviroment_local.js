@@ -27,7 +27,7 @@ const userProduction = true;
 
 let env = "local";
 env = JSON.stringify(env)
-const appKey = JSON.stringify('');
+const appKey = JSON.stringify('tiklab_sward');
 const appSecret = JSON.stringify('');
 const version = JSON.stringify('ce');
 const client = JSON.stringify('web');

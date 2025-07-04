@@ -20,6 +20,21 @@
                 padding: 0;
                 margin: 0;
             }
+
+            .repository-aside-bottom{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                height: 40px;
+                padding: 0 20px;
+                border-top: 1px solid var(--tiklab-gray-200);
+                .bottom-left{
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 3px;
+                }
+            }
             .menu-fold{
                 cursor: pointer;
                 font-size: 18px;
@@ -32,11 +47,12 @@
             .menu-unfold{
                 position: absolute;
                 right: -30px;
-                top: 21px;
+                bottom: 7px;
                 cursor: pointer;
                 font-size: 18px;
                 padding: 3px;
                 border-radius: 4px;
+                background: #ffffff;
                 &:hover{
                     background: var(--tiklab-gray-300);
                 }
@@ -60,7 +76,7 @@
                         background: var(--tiklab-gray-300);
                     }
                     &-select {
-                        background: #E8EFFC;
+                        background: var(--tiklab-gray-300);
                         color: var(--tiklab-blue);
                     }
                 }
@@ -107,7 +123,7 @@
 
             .repository-search {
                 margin: 0 10px;
-                background: #ececec;
+                background: #F0F1F2;
                 display: flex;
                 align-items: center;
                 gap: 10px;
@@ -163,18 +179,16 @@
         }
 
         .repository-menu-select {
-            background: #E8EFFC;
+            background: var(--tiklab-gray-300);
             color: var(--tiklab-blue);
         }
 
-
-
         .repository-menu {
             list-style-type: none;
-            height: calc(100% - 200px);
+            height: calc(100% - 235px);
             cursor: pointer;
             overflow: auto;
-            padding: 0 10px 10px;
+            padding: 0 10px;
             .ant-tree{
                 background: transparent !important;
             }
@@ -277,7 +291,7 @@
 .content-add-menu {
     display: flex;
     align-items: center;
-
+    min-width: 100px;
     .content-add-icon {
         width: 16px;
         height: 16px;
