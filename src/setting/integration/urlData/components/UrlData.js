@@ -10,7 +10,7 @@ import { Table, Space, Row, Col, message } from 'antd';
 import Breadcrumb from "../../../../common/components/breadcrumb/Breadcrumb";
 import "./UrlData.scss";
 import { Provider, observer } from "mobx-react";
-import UrlAddData from "./UrlAddData";
+import UrlDataAdd from "./UrlDataAdd";
 import UrlDataStore from "../store/UrlDataStore";
 import Button from "../../../../common/components/button/Button";
 const UrlData = () => {
@@ -122,7 +122,7 @@ const UrlData = () => {
                     </div>
                 </Col>
             </Row>
-            <UrlAddData
+            <UrlDataAdd
                 urlAddvisible={urlAddvisible}
                 setUrlAddvisible={setUrlAddvisible}
                 modalTitle={modalTitle}

@@ -11,7 +11,6 @@ import {Col, Empty, message, Row, Spin} from "antd";
 import "./FileView.scss";
 import Button from "../../../common/components/button/Button";
 import ShareModal from "../../share/components/ShareModal";
-import CommentShare from "../../document/store/CommentStore";
 import {VerticalAlignBottomOutlined} from "@ant-design/icons";
 import {getUser} from "tiklab-core-ui";
 import RepositoryDetailStore from "../../../repository/common/store/RepositoryDetailStore";
@@ -23,7 +22,6 @@ const FileView =  ({ ExtendFileView, ...props })=> {
 
 
     const { findDocument, createDocumentFocus, deleteDocumentFocusByCondition } = DocumentStore;
-    const { createShare, updateShare } = CommentShare;
 
     const disable = disableFunction();
     const documentId = props.match.params.id;

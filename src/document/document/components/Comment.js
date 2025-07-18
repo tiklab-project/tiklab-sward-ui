@@ -222,7 +222,7 @@ const Comment = (props) => {
     }
 
     return (
-        <div className="comment" ref = {commonBox}>
+        <div className="comment" ref={commonBox}>
             <div className="comment-top">
                 <span className="comment-title">评论</span>
                 <svg className="svg-icon" aria-hidden="true" onClick={() => setShowComment(false)}>
@@ -257,7 +257,10 @@ const Comment = (props) => {
                                     <div className="comment-operate">
                                         <div>
                                             {/* <span className="comment-edit" onClick={() => updataFirst(item.id)}>编辑</span> */}
-                                            <span onClick={() => deleteFirst(item.id, index)} className="comment-delete">删除</span>
+                                            {
+                                                userId === item?.user?.id &&
+                                                <span onClick={() => deleteFirst(item.id, index)} className="comment-delete">删除</span>
+                                            }
                                             <span onClick={() => setReply(reply ? null : item.id)} className="comment-reply">
                                                 {reply === item.id ? '收起' : '回复'}
                                             </span>
@@ -288,7 +291,10 @@ const Comment = (props) => {
                                                 </div>
                                                 <div className="comment-operate">
                                                     <div>
-                                                        <span className="comment-delete" onClick={() => deleteSecond(index, children.id)}>删除</span>
+                                                        {
+                                                            userId === children?.user?.id &&
+                                                            <span className="comment-delete" onClick={() => deleteSecond(index, children.id)}>删除</span>
+                                                        }
                                                         <span className="comment-reply" onClick={() => setChildrenReply(childrenReply ? null : children.id)}>
                                                             {childrenReply === children.id ? '收起':'回复'}
                                                         </span>

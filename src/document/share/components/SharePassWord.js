@@ -37,11 +37,10 @@ const SharePassWord = (props) => {
             authCode: value.trim()
         }).then((data)=> {
             if(data.code===0){
-                if(version !== "cloud"){
-                    props.history.push({pathname: `/share/${props.match.params.shareId}`, state: {password: data.data}})
-                }
-                if(version === "cloud"){
-                    props.history.push({pathname: `/share/${props.match.params.shareId}`,search: `?tenant=${tenant}`, state: {password: data.data}})
+                if(version==="cloud"){
+                    props.history.push(`/share/${props.match.params.shareId}?tenant=${tenant}`)
+                } else {
+                    props.history.push(`/share/${props.match.params.shareId}`)
                 }
             } else {
                 message.error(data.msg)

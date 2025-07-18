@@ -81,8 +81,6 @@ const ShareMarkdown = (props) => {
                     showComment && <Comment documentId={props.match.params.id} setShowComment={setShowComment} />
                 }
             </div>
-
-
             <div className="comment-box">
                 <div className="comment-box-item">
                     <svg className="midden-icon" aria-hidden="true" onClick={() => setShowComment(!showComment)}>
@@ -92,8 +90,6 @@ const ShareMarkdown = (props) => {
                 </div>
             </div>
         </div>
-
-
     )
 }
 

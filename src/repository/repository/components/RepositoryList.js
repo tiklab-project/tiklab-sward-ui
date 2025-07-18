@@ -55,12 +55,11 @@ const RepositoryList = (props) => {
 
     const repositoryTab = [
         {
-            title: '所有知识库',
+            title: '所有',
             key: '1',
             tabName: "all",
             icon: "project"
         },
-
         {
             title: '我收藏的',
             key: '3',
@@ -270,17 +269,6 @@ const RepositoryList = (props) => {
                     {text}
                 </Space>
             )
-
-        },
-        {
-            title: "可见范围",
-            dataIndex: "limits",
-            key: "limits",
-            align: "left",
-            render: (text, record) => <div>
-                {text === "0" ? "公开" : "私有"}
-            </div>,
-
         },
         {
             title: "创建时间",
@@ -305,7 +293,7 @@ const RepositoryList = (props) => {
                                 </svg>
                                 :
                                 <svg className="svg-icon" aria-hidden="true" onClick={() => addFocusRepository(record.id)}>
-                                    <use xlinkHref="#icon-nofocus"></use>
+                                    <use xlinkHref="#icon-xingxing_kong"></use>
                                 </svg>
                         }
                     </Tooltip>
@@ -320,8 +308,11 @@ const RepositoryList = (props) => {
                                         <DeleteOutlined /> 删除
                                     </div>
                                 </PrivilegeProjectButton>
-                                <div className="dropdown-more-item" onClick={()=>toSetting(record)}>
-                                    <SettingOutlined /> 设置
+                                <div className="dropdown-more-item dropdown-more-item-last" onClick={()=>toSetting(record)}>
+                                    <svg className="icon-16" aria-hidden="true">
+                                        <use xlinkHref="#icon-setting"></use>
+                                    </svg>
+                                    <span>设置</span>
                                 </div>
                             </div>
                         }

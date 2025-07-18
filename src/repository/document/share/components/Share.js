@@ -1,5 +1,5 @@
 /**
- * @Description:
+ * @Description: 共享
  * @Author: gaomengyuan
  * @Date: 2025/6/30
  * @LastEditors: gaomengyuan
@@ -34,7 +34,7 @@ const Share = props =>{
     //用户
     const user = getUser();
 
-    //收藏数据
+    //共享数据
     const [shareData,setShareData] = useState({});
     //加载
     const [spinning,setSpinning] = useState(false);
@@ -63,7 +63,8 @@ const Share = props =>{
         findSharePage({
             ...rest,
             ...(type==='all'?{}:{type: type}),
-            rpyId: repositoryId
+            rpyId: repositoryId,
+            orderParams: [{name: "createTime", orderType: "desc"}],
         }).then(res=>{
             if(res.code===0){
                 setShareData(res.data)
@@ -246,7 +247,7 @@ const Share = props =>{
         <Row className='document-share'>
             <Col
                 xs={24}
-                xl={{ span: "20", offset: "2" }}
+                xl={{ span: "18", offset: "3" }}
             >
                 <Breadcrumb
                     firstText={'共享'}

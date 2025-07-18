@@ -84,7 +84,7 @@ const Setting = (props) => {
             ]
         },
         {
-            title: "集成与开放",
+            title: "集成开放",
             icon: 'systemIntergrtion',
             id: '/setting/loadData',
             code: 9,
@@ -100,7 +100,7 @@ const Setting = (props) => {
                     code: 9-2,
                 },
                 {
-                    title: 'openApi',
+                    title: 'OpenApi',
                     id: '/setting/openApi',
                     code: 9-3,
                 }

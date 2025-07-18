@@ -12,16 +12,16 @@ import { withRouter } from "react-router";
 
 const MoreMenuModel = (props) => {
 
-    const { isShowText, moreMenu, morePath, theme,selectMenu } = props;
+    const { isShowText, moreMenu, theme,selectMenu } = props;
 
     // 获取当前被激活的菜单
-    const path = props.location.pathname.split("/")[3];
+    const path = props.location.pathname;
     // 菜单的形式，宽菜单，窄菜单
     const [showMenu, setShowMenu] = useState(false);
     // 菜单弹窗ref
-    const modelRef = useRef()
+    const modelRef = useRef(null);
     // 更多点击按钮的的ref
-    const setButton = useRef()
+    const setButton = useRef(null);
 
     /**
      * 显示菜单弹窗
@@ -54,22 +54,25 @@ const MoreMenuModel = (props) => {
         }
     }
 
+    const isPathInData = moreMenu.some(item => path.indexOf(item.id) !== -1);
+
     return (
         <div className="more-menu">
             {
-                isShowText ? <div className={`project-menu-submenu ${morePath.indexOf(path) !== -1 ? "project-menu-select" : ""}`}
-                    onClick={() => showMoreMenu()}
-                    ref={setButton}
-                >
-                    <svg className="icon-18" aria-hidden="true">
-                        <use xlinkHref={`#icon-more-${theme}`}></use>
-                    </svg>
-                    <span>
-                        更多
-                    </span>
-                </div>
+                isShowText ?
+                    <div className={`project-menu-submenu ${isPathInData ? "project-menu-select" : ""}`}
+                        onClick={() => showMoreMenu()}
+                        ref={setButton}
+                    >
+                        <svg className="icon-18" aria-hidden="true">
+                            <use xlinkHref={`#icon-more-${theme}`}></use>
+                        </svg>
+                        <span>
+                            更多
+                        </span>
+                    </div>
                     :
-                    <div ref={setButton} className={`project-menu-submenu-icon ${morePath.indexOf(path) !== -1 ? "project-menu-select" : ""}`} onClick={() => showMoreMenu()}>
+                    <div ref={setButton} className={`project-menu-submenu-icon ${isPathInData ? "project-menu-select" : ""}`} onClick={() => showMoreMenu()}>
                         <svg aria-hidden="true" style={{width: "28px", height: "28px"}}>
                             <use xlinkHref={`#icon-more-${theme}`}></use>
                         </svg>
@@ -78,11 +81,10 @@ const MoreMenuModel = (props) => {
             <div
                 className={`more-menu-box ${showMenu ? "menu-show" : "menu-hidden"}`}
                 ref={modelRef}
-                style={{}}
             >
                 {
                     moreMenu && moreMenu.map((item,index) => {
-                        return <div className={`project-menu-submenu ${path === item.key ? "project-menu-select" : ""}`}
+                        return <div className={`project-menu-submenu ${path.indexOf(item.id)!==-1 ? "project-menu-select" : ""}`}
                             key={index}
                             onClick={() =>{
                                 setShowMenu(false)

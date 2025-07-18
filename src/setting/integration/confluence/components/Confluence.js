@@ -7,11 +7,11 @@
  * @LastEditTime: 2024-12-31 17:47:55
  */
 import React, {useEffect, useRef, useState} from "react";
-import {Upload, message, Button, Progress, Row, Col, Steps, Spin, Table} from 'antd';
+import {Upload, message, Button, Row, Col, Steps, Spin, Table} from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import "./Confluence.scss";
 import Breadcumb from "../../../../common/components/breadcrumb/Breadcrumb";
-import { getUser } from 'tiklab-core-ui';
+import { getUser,getAPIgateway } from 'tiklab-core-ui';
 import { observer } from "mobx-react";
 import confluenceStore from "../store/ConfluenceStore";
 
@@ -19,7 +19,7 @@ const Confluence = (props) => {
 
     const { findCfInputSchedule,validConfluenceVersion,analysisEntityXml,importJiraData } = confluenceStore;
 
-    const ticket = getUser().ticket;
+    const user = getUser();
     const scrollRef = useRef(null);
 
     //日志滚动条
@@ -49,8 +49,9 @@ const Confluence = (props) => {
         name: 'uploadFile',
         action: `${upload_url}/import/confluence/uploadFile`,
         headers: {
-            ticket: ticket,
-            tenant: getUser().tenant && version === "cloud" ? getUser().tenant : null
+            ticket: user.ticket,
+            tenant: version === "cloud" ? user.tenant : null,
+            ...getAPIgateway()
         },
         progress: {
             strokeWidth: 0,
@@ -92,7 +93,7 @@ const Confluence = (props) => {
         setCurrent(2);
         setSpinning(true);
         const value = new FormData();
-        value.append('confluenceAddress',validCfInput.path)
+        value.append('confluenceAddress',validCfInput.path);
         analysisEntityXml(value).then(res=>{
             if(res.code===0){
                 setEntityXml(res.data)
@@ -207,6 +208,7 @@ const Confluence = (props) => {
     return (
         <Row className="confluence">
             <Col
+                xxl={{ span: 16, offset: 4 }}
                 xl={{ span: 18, offset: 3 }}
                 xs={{ span: 24 }}
             >

@@ -10,7 +10,6 @@ import React, { useState, useEffect, Fragment } from "react";
 import { Form, Row, Col, Empty } from 'antd';
 import "./CategoryDetail.scss"
 import { observer, Provider } from "mobx-react";
-import CategoryAdd from "../../common/components/CategoryAdd"
 import { getUser } from "tiklab-core-ui";
 import RepositoryDetailStore from "../../common/store/RepositoryDetailStore";
 import AddDropDown from "../../common/components/AddDropDown";
@@ -22,15 +21,13 @@ const CategoryDetail = (props) => {
     const store = {
         repositoryDetailStore: RepositoryDetailStore
     }
-    const { findCategory, findNodeList, setRepositoryCatalogueList, createRecent,
-        setCategoryTitle, categoryTitle
-    } = RepositoryDetailStore
+    const { findCategory, findNodeList, createRecent, setCategoryTitle, categoryTitle} = RepositoryDetailStore
     const categoryId = props.match.params.id;
-    const [logList, setLogList] = useState();
-    const [logDetail, setLogDetail] = useState();
-    // 当前知识库id
     const repositoryId = props.match.params.repositoryId;
     const userId = getUser().userId;
+
+    const [logList, setLogList] = useState();
+    const [logDetail, setLogDetail] = useState();
 
     useEffect(() => {
         findCategory({ id: categoryId }).then(data => {
@@ -38,29 +35,11 @@ const CategoryDetail = (props) => {
                 setLogDetail(data.data?.node)
                 setCategoryTitle(data.data?.node.name)
             }
-
         })
         findNodeList({ parentId: categoryId }).then(data => {
             setLogList(data.data)
         })
     }, [categoryId])
-
-    const [addModalVisible, setAddModalVisible] = useState()
-
-    /**
-     * 添加目录
-     */
-    const [contentValue, setContentValue] = useState([
-        {
-            type: "paragraph",
-            children: [{ text: "" }],
-        },
-    ])
-    const [catalogue, setCatalogue] = useState()
-    const [userList, setUserList] = useState()
-    const [form] = Form.useForm();
-    // 当前选中目录id
-    const [selectKey, setSelectKey] = useState();
 
     const goToDocument = (item) => {
         const params = {
@@ -71,7 +50,6 @@ const CategoryDetail = (props) => {
             wikiRepository: { id: repositoryId }
         }
         createRecent(params)
-        setSelectKey(item.id)
         if (item.type === "category") {
             localStorage.setItem("categoryId", item.id);
         }
@@ -81,24 +59,20 @@ const CategoryDetail = (props) => {
     return (
         <Provider {...store}>
             <Row className="log-detail">
-                <Col sm={24} md={24} lg={{ span: 24 }} xl={{ span: "18", offset: "3" }} xxl={{ span: "18", offset: "3" }}>
+                <Col xs={24} xl={{ span: "18", offset: "3" }} xxl={{ span: "18", offset: "3" }}>
                     <div className="log-detail-content">
                         {
-                            logDetail && <Fragment>
-                                <div className="log-title">
-                                    <div className="title-left">
-                                        <svg className="title-icon" aria-hidden="true">
-                                            <use xlinkHref="#icon-folder"></use>
-                                        </svg>
-                                        <div className="title-name">
-                                            <div className="name">{categoryTitle}</div>
-                                            <div className="master">{logDetail.master.nickname}</div>
-                                        </div>
-
-                                    </div>
-                                    <AddDropDown category={logDetail} button = "text" isButton={true} />
+                            logDetail &&
+                            <div className="log-title">
+                                <svg className="title-icon" aria-hidden="true">
+                                    <use xlinkHref="#icon-folder"></use>
+                                </svg>
+                                <div className="title-name">
+                                    <div className="name">{categoryTitle}</div>
+                                    <div className="master">{logDetail.master.nickname}</div>
                                 </div>
-                            </Fragment>
+                                <AddDropDown category={logDetail} button="text" />
+                            </div>
                         }
                         <div className="log-child">
                             {
@@ -129,19 +103,8 @@ const CategoryDetail = (props) => {
                     </div>
                 </Col>
             </Row>
-            <CategoryAdd
-                setAddModalVisible={setAddModalVisible}
-                addModalVisible={addModalVisible}
-                setRepositoryCatalogueList={setRepositoryCatalogueList}
-                form={form}
-                catalogue={catalogue}
-                contentValue={contentValue}
-                setSelectKey={setSelectKey}
-                userList={userList}
-                modalTitle={"添加目录"}
-                {...props}
-            />
         </Provider>
     )
 }
+
 export default observer(CategoryDetail);

@@ -7,7 +7,6 @@
         .repositorydetail-content-col {
             background: #fff;
             height: calc(100% - 64px);
-            overflow: auto;
         }
     }
 }
@@ -29,7 +28,6 @@
 
             .project-back-project {
                 margin-bottom: 5px;
-                border-bottom: 1px solid #d7d7d7;
             }
 
             .project-menu-submenu {
@@ -120,6 +118,9 @@
     .project-setting:hover {
         background: #557ac0;
     }
+    .project-back-project{
+        border-bottom: 1px solid #f6f7f833;
+    }
 
 
 }
@@ -146,6 +147,9 @@
             color: #666;
         }
     }
+    .project-back-project{
+        border-bottom: 1px solid #e4e4e4;
+    }
 }
 .project-sider-black {
     background: #131d30 !important;
@@ -171,6 +175,9 @@
 
     .project-setting:hover {
         background: #414a5a;
+    }
+    .project-back-project{
+        border-bottom: 1px solid #f6f7f833;
     }
 }
 .menu-box-right-border{

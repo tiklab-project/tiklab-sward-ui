@@ -30,16 +30,13 @@
             min-width: 0;
 
             .dynamic-document-action {
-                line-height: 30px;
                 cursor: pointer;
             }
 
             .dynamic-document-item {
-                line-height: 30px;
                 display: flex;
                 align-items: center;
-                height: 30px;
-
+                padding-top: 5px;
                 .dynamic-document-title {
                     text-overflow: ellipsis;
                     white-space: nowrap;
@@ -51,11 +48,10 @@
             }
 
             .dynamic-document-update {
-                line-height: 30px;
                 display: flex;
                 align-items: center;
-                height: 30px;
                 gap: 10px;
+                padding-top: 5px;
                 .dynamic-document-oldvalue {
                     font-size: 12px;
                     line-height: 15px;

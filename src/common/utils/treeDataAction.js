@@ -38,7 +38,7 @@ const appendNodeInTree = (id, tree, obj, setType) => {
 //                 return parentNode;
 //             }
 //         }
-        
+
 
 //         removeNodeInTree(tree[i].children, id)
 //     }

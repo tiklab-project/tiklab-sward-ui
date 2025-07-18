@@ -58,19 +58,18 @@ const RepositoryDetail = (props)=>{
             icon: 'doc-' + theme,
             defaultIcon: "doc-default",
             id: `/repository/${repositoryId}/doc`,
-            to: `/repository/${repositoryId}/doc/collect`,
+            to: `/repository/${repositoryId}/doc`,
             key: "doc",
             encoded: "doc"
         },
         {
-            title: '评审',
-            icon: 'review-' + theme,
-            defaultIcon: "review-default",
-            id: `/repository/${repositoryId}/review`,
-            to: `/repository/${repositoryId}/review`,
-            key: 'review',
-            encoded: "review",
-            isEnhance: true,
+            title: "共享",
+            icon: 'share-' + theme,
+            defaultIcon: "share-default",
+            id: `/repository/${repositoryId}/share`,
+            to: `/repository/${repositoryId}/share`,
+            key: "share",
+            encoded: "share"
         },
         {
             title: '统计',
@@ -81,7 +80,7 @@ const RepositoryDetail = (props)=>{
             key: 'statistics',
             encoded: "statistics",
             isEnhance: true,
-        }
+        },
     ];
 
     return (

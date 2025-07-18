@@ -19,6 +19,7 @@ import Img from "../../../common/components/img/Img";
 import DocumentIcon from "../../../common/components/icon/DocumentIcon";
 import {documentPush} from "../../../common/utils/overall";
 import Profile from "../../../common/components/profile/Profile";
+import {RightOutlined} from "@ant-design/icons";
 
 const Survey = (props) => {
 
@@ -28,16 +29,31 @@ const Survey = (props) => {
     const {findLogpage, logList, findUserList, findRecentList,
         findCategoryListTreeById, findDocumentFocusPage, opLogCondition } = SurveyStore;
 
-    const repositoryId = props.match.params.repositoryId
-    const [recentViewDocumentList, setRecentViewDocumentList] = useState([]);
-    const [focusDocumentList, setFocusDocumentList] = useState([])
-    const [userList, setUserList] = useState();
+    const repositoryId = props.match.params.repositoryId;
     const userId = getUser().userId;
-    const [loading, setLoading] = useState(true);
+    //常用
+    const [recentViewDocumentList, setRecentViewDocumentList] = useState([]);
+    //收藏
+    const [focusDocumentList, setFocusDocumentList] = useState([])
+    //用户
+    const [userList, setUserList] = useState();
+    //加载
+    const [spinning,setSpinning] = useState({
+        logSpinning:true,
+        recentSpinning:true,
+        collectSpinning:true,
+    })
 
     useEffect(() => {
-        findLogpage({ data: { repositoryId: repositoryId }, pageParam: { ...opLogCondition.pageParam, pageSize: 10 } })
-        const recentParams = {
+        //动态
+        findLogpage({
+            data: { repositoryId: repositoryId },
+            pageParam: { ...opLogCondition.pageParam, pageSize: 10 }
+        }).finally(()=>{
+            setSpinning(pev=>({...pev, logSpinning: false}));
+        })
+        //常用
+        findRecentList({
             masterId: userId,
             model: "document",
             repositoryId: repositoryId,
@@ -47,24 +63,25 @@ const Survey = (props) => {
                 name: "recentTime",
                 orderType: "desc"
             }]
-        }
-        setLoading(true)
-        findRecentList(recentParams).then(res => {
+        }).then(res => {
             if (res.code === 0) {
                 setRecentViewDocumentList([...res.data])
-                setLoading(false)
             }
+        }).finally(()=>{
+            setSpinning(pev=>({...pev, recentSpinning: false}));
         })
-        const data = {
+        //收藏
+        findDocumentFocusPage({
             masterId: userId,
             repositoryId: repositoryId
-        }
-        findDocumentFocusPage(data).then(res => {
+        }).then(res => {
             if (res.code === 0) {
-                console.log(res)
                 setFocusDocumentList(res.data.dataList)
             }
+        }).finally(()=>{
+            setSpinning(pev=>({...pev, collectSpinning: false}));
         })
+        //用户
         findUserList({ domainId: repositoryId }).then(res => {
             if (res.code === 0) {
                 setUserList(res.data)
@@ -72,6 +89,9 @@ const Survey = (props) => {
         })
     }, [repositoryId])
 
+    /**
+     * 去文档
+     */
     const goDocumentDetail = document => {
         documentPush(props.history,document.wikiRepository.id,document)
         const params = {
@@ -104,49 +124,48 @@ const Survey = (props) => {
             >
                 <div className="repository-survey">
                     {
-                        repository && <Fragment>
-                            <div className="repository-top">
-                                <div className="top-left">
-                                    <div>
-                                        <Img
-                                            src={repository.iconUrl}
-                                            alt=""
-                                            className="repository-icon"
-                                        />
-                                    </div>
-                                    <div className="top-name">
-                                        <div className="name">{repository?.name}</div>
-                                        <div className="user">
-                                            {
-                                                userList && userList.length > 0 && userList.map((item, index) => {
-                                                    if (index < 5) {
-                                                        return <div key={item.id}>
-                                                            <Profile userInfo={item.user}/>
-                                                        </div>
-                                                    }
-                                                })
-                                            }
-                                            <div className="user-more" onClick={() => props.history.push(`/repository/${repositoryId}/set/user`)}>
-                                                <svg className="user-more-icon" aria-hidden="true">
-                                                    <use xlinkHref="#icon-more-blue"></use>
-                                                </svg>
-                                            </div>
+                        repository &&
+                        <div className="repository-top">
+                            <div className="top-left">
+                                <div>
+                                    <Img
+                                        src={repository.iconUrl}
+                                        alt=""
+                                        className="repository-icon"
+                                    />
+                                </div>
+                                <div className="top-name">
+                                    <div className="name">{repository?.name}</div>
+                                    <div className="user">
+                                        {
+                                            userList && userList.length > 0 && userList.map((item, index) => {
+                                                if (index < 5) {
+                                                    return <div key={item.id}>
+                                                        <Profile userInfo={item.user}/>
+                                                    </div>
+                                                }
+                                            })
+                                        }
+                                        <div className="user-more" onClick={() => props.history.push(`/repository/${repositoryId}/set/user`)}>
+                                            <svg className="user-more-icon" aria-hidden="true">
+                                                <use xlinkHref="#icon-more-blue"></use>
+                                            </svg>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="top-right">
-                                    <AddDropDown category={null} isButton={true} button="text" />
-                                    <Button>分享</Button>
-                                </div>
                             </div>
-                        </Fragment>
+                            <div className="top-right">
+                                <AddDropDown category={null} button="text" />
+                                <Button>分享</Button>
+                            </div>
+                        </div>
                     }
 
                     <div className="home-document">
                         <div className="document-box-title">
                             <span className="name">常用文档</span>
                         </div>
-                        <Spin wrapperClassName="document-spin" spinning={loading} tip="加载中..." >
+                        <Spin wrapperClassName="document-spin" spinning={spinning.recentSpinning}>
                             {
                                 recentViewDocumentList.length > 0 ?
                                     <div>
@@ -175,29 +194,73 @@ const Survey = (props) => {
                                         }
                                     </div>
                                     :
-                                    <>
-                                        {
-                                            !loading && <Empty description="暂时没有查看过文档~" />
-                                        }
-                                    </>
+                                    <Empty description="暂时没有查看过文档~" />
                             }
                         </Spin>
                     </div>
-
-                    <div className="home-dynamic">
-                        <div className="dynamic-box-title">
-                            <span className="name">最新动态</span>
-                            <div className="more" onClick={() => { props.history.push(`/repository/${repositoryId}/dynamicList`) }}>
-                                <svg aria-hidden="true" className="svg-icon">
-                                    <use xlinkHref="#icon-rightjump"></use>
-                                </svg>
+                    <div className="home-collect">
+                        <div className="collect-box-title">
+                            <span className="name">收藏</span>
+                            <div className="more" onClick={() => { props.history.push(`/repository/${repositoryId}/collect`) }}>
+                                <RightOutlined />
                             </div>
                         </div>
-                        <div className="dynamic-list">
-                            {
-                                logList && logList.length > 0 ? <DyncmicTimeAxis logList={logList} /> : <Empty description="暂时没有动态~" />
-                            }
+                        <Spin spinning={spinning.collectSpinning}>
+                            <div className="collect-list">
+                                {
+                                    focusDocumentList && focusDocumentList.length > 0 ?
+                                        focusDocumentList.map(item=>{
+                                            return (
+                                                <div className="collect-list-item" key={item.id} >
+                                                    <div className='collect-list-left'>
+                                                        <div>
+                                                            <DocumentIcon
+                                                                documentType={item.node?.documentType}
+                                                                documentName={item?.name}
+                                                                className={"collect-icon"}
+                                                            />
+                                                        </div>
+                                                        <div className='collect-item-text'>
+                                                            <div className='collect-title' onClick={() => goDocumentDetail(item.node)}>
+                                                                {item?.node?.name}
+                                                            </div>
+                                                            <div className='collect-master'>
+                                                                {item.master.nickname}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div >{item?.focusTime?.slice(0, 10)}</div>
+                                                </div>
+                                            )
+                                        })
+                                        :
+                                        <Empty description="暂时没有收藏~" />
+                                }
+                            </div>
+                        </Spin>
+                    </div>
+                    <div className="home-dynamic">
+                        <div className="dynamic-box-title">
+                            <span className="name">动态</span>
+                            <div
+                                className="more"
+                                 onClick={() => {
+                                    props.history.push(`/repository/${repositoryId}/dynamicList`) }
+                                }
+                            >
+                                <RightOutlined />
+                            </div>
                         </div>
+                        <Spin spinning={spinning.logSpinning}>
+                            <div className="dynamic-list">
+                                {
+                                    logList && logList.length > 0 ?
+                                        <DyncmicTimeAxis logList={logList} />
+                                        :
+                                        <Empty description="暂时没有动态~" />
+                                }
+                            </div>
+                        </Spin>
                     </div>
                 </div>
             </Col>

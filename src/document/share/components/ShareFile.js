@@ -15,13 +15,15 @@ import "./ShareFile.scss"
 import { withRouter } from "react-router";
 import Button from "../../../common/components/button/Button";
 import {VerticalAlignBottomOutlined} from "@ant-design/icons";
+import {disableFunction} from "tiklab-core-ui";
 
 const ShareFile = (props) => {
 
-    const { shareStore } = props;
+    const { shareStore, ExtendShareFileView } = props;
     const { documentView } = shareStore;
     //文档
     const [documentData, setDocumentData] = useState(null);
+    const disable = disableFunction();
 
     useEffect(() => {
         // 获取文档内容
@@ -49,6 +51,25 @@ const ShareFile = (props) => {
         document.body.removeChild(a);
     }
 
+    const defaultContent = (
+        <div className='document-file'>
+            <svg className="icon-48" aria-hidden="true">
+                <use xlinkHref="#icon-file"></use>
+            </svg>
+            <div className='document-file-name'>
+                {docInfo?.name}
+            </div>
+            <Button
+                type={'primary'}
+                onClick={downFile}
+            >
+                <VerticalAlignBottomOutlined />
+                &nbsp;&nbsp;下载
+                {details?.fileSize ? `(${details.fileSize})` : ''}
+            </Button>
+        </div>
+    )
+
     return (
         <div className="file-share-examine">
             <div className="examine-title">
@@ -62,22 +83,16 @@ const ShareFile = (props) => {
                         lg={{ span: 18, offset: 3 }}
                         xl={{ span: 16, offset: 4 }}
                     >
-                        <div className='document-file'>
-                            <svg className="icon-48" aria-hidden="true">
-                                <use xlinkHref="#icon-file"></use>
-                            </svg>
-                            <div className='document-file-name'>
-                                {docInfo?.name}
-                            </div>
-                            <Button
-                                type={'primary'}
-                                onClick={downFile}
-                            >
-                                <VerticalAlignBottomOutlined />
-                                &nbsp;&nbsp;下载
-                                {details?.fileSize ? `(${details.fileSize})` : ''}
-                            </Button>
-                        </div>
+                        {
+                            (!disable && ExtendShareFileView) ?
+                                <ExtendShareFileView
+                                    defaultContent={defaultContent}
+                                    documentTitle={docInfo?.name}
+                                    documentData={documentData}
+                                />
+                                :
+                                defaultContent
+                        }
                     </Col>
                 </Row>
             </div>

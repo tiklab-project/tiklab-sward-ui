@@ -142,7 +142,7 @@
             margin-right: 20px;
             white-space: nowrap;
             .repository-tab-num {
-                padding: 0 5px;
+                padding-left: 5px;
                 font-size: 12px;
                 color: #666;
             }
@@ -184,4 +184,10 @@
     .repository-spin {
         height: 114px;
     }
+}
+
+.dropdown-more-item-last{
+    display: flex;
+    align-items: center;
+    gap: 1px;
 }

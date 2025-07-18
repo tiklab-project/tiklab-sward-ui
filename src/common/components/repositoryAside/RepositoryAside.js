@@ -6,7 +6,7 @@
  * @LastEditors: 袁婕轩
  * @LastEditTime: 2022-04-16 10:58:01
  */
-import React, { Fragment, useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from "react-router-dom";
 import { Layout } from "antd";
 import SetMenu from "./SetMenu";
@@ -23,40 +23,36 @@ const RepositoryAside = (props) => {
     const { route, isShowText, SetIsShowText, ChangeModal, initRouters, path, setUrl, backUrl, backName } = props;
 
     const disable = disableFunction();
+    const repositoryId = props.match.params.repositoryId;
 
     const [projectRouter, setProjectRouter] = useState([]);
 
-    const [moreMenu, setMoreMenu] = useState()
-
-    const [morePath, setMorePath] = useState()
+    const [moreMenu, setMoreMenu] = useState([]);
+    //主题
     const [theme, setTheme] = useState(localStorage.getItem("theme") ? localStorage.getItem("theme") : "default");
+    //主题样式
     const [themeClass, setThemeClass] = useState("project-sider-gray")
+    //增强功能弹出框
     const [archivedFreeVisable, setArchivedFreeVisable] = useState(false)
-    //增强功能而类型
+    //增强功能类型
     const [archivedFreeType,setArchivedFreeType] = useState('documentReview')
 
     const resizeUpdate = (e) => {
         // 通过事件对象获取浏览器窗口的高度
         const documentHeight = e.target ? e.target.innerHeight : e.clientHeight;
-
-        const menuHeight = documentHeight - 250;
+        const menuHeight = documentHeight - 200;
         const menuNum = Math.floor(menuHeight / 60);
         let num = 0;
         num = menuNum > 7 ? 7 : menuNum;
         setProjectRouter(initRouters.slice(0, num))
         const hiddenMenu = initRouters.slice(num, initRouters.length)
-
         setMoreMenu(hiddenMenu)
-        let data = [];
-        hiddenMenu.map(item => {
-            data.push(item.key)
-        })
-        setMorePath([...data])
     };
+
     useEffect(() => {
         getThemeClass(theme)
-        return null;
     }, [])
+
     useEffect(() => {
         resizeUpdate(document.getElementById("root"))
         window.addEventListener("resize", resizeUpdate);
@@ -64,7 +60,6 @@ const RepositoryAside = (props) => {
             // 组件销毁时移除监听事件
             window.removeEventListener('resize', resizeUpdate);
         }
-
     }, [initRouters])
 
     /**
@@ -80,7 +75,6 @@ const RepositoryAside = (props) => {
                     break;
                 case 'statistics':
                     setArchivedFreeType('documentStatistics')
-
             }
             return
         }
@@ -112,7 +106,6 @@ const RepositoryAside = (props) => {
                 break;
             default:
                 name = "first-sider-gray";
-                break;
 
         }
         setThemeClass(name)
@@ -181,35 +174,31 @@ const RepositoryAside = (props) => {
 
                             })
                         }
-                        {
-                            moreMenu && moreMenu.length > 0 &&
-                            <MoreMenuModel
-                                isShowText={isShowText}
-                                moreMenu={moreMenu}
-                                morePath={morePath}
-                                theme={theme}
-                                selectMenu={selectMenu}
-                            />
-                        }
+                        <MoreMenuModel
+                            isShowText={isShowText}
+                            moreMenu={[
+                                ...moreMenu,
+                                {
+                                    title: '评审',
+                                    icon: 'review-' + theme,
+                                    defaultIcon: "review-default",
+                                    id: `/repository/${repositoryId}/review`,
+                                    to: `/repository/${repositoryId}/review`,
+                                    key: 'review',
+                                    encoded: "review",
+                                    isEnhance: true,
+                                },
+                            ]}
+                            theme={theme}
+                            selectMenu={selectMenu}
+                        />
                         <ArchivedFree
                             type={archivedFreeType}
                             archivedFreeVisable={archivedFreeVisable}
                             setArchivedFreeVisable={setArchivedFreeVisable}
                         />
                     </div>
-
                     <SetMenu isShowText={isShowText} setUrl={setUrl} theme={theme} />
-                    {/* <div className="project-expend" onClick={toggleCollapsed} >
-                        {
-                            isShowText ? <svg className="project-expend-icon" aria-hidden="true">
-                                <use xlinkHref="#icon-leftcircle"></use>
-                            </svg>
-                                :
-                                <svg className="project-expend-icon" aria-hidden="true">
-                                    <use xlinkHref="#icon-rightcircle"></use>
-                                </svg>
-                        }
-                    </div> */}
                     <div className={"menu-box-right-border"}>
                         <div className={"menu-box-isexpanded"} onClick={toggleCollapsed}>
                             {

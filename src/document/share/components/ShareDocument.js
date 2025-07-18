@@ -47,8 +47,8 @@ const ShareDocument = (props) => {
     return (
         <div className="document-share-examine">
             {
-                    showComment && <CommentShare documentId={props.match.params.id} setShowComment={setShowComment} />
-                }
+                showComment && <CommentShare documentId={props.match.params.id} setShowComment={setShowComment} />
+            }
             <div className="examine-title">
                 <span className="examine-name">{docInfo.name}</span>
             </div>
@@ -62,23 +62,20 @@ const ShareDocument = (props) => {
                     >
                         <div style={{paddingTop: "10px"}}>
                             {
-                                value && <PreviewEditor value={value}
-                                    relationWorkStore = {relationWorkStore}
-                                    base_url = {upload_url}
-                                    img_url = {upload_url}
-                                    viewImageUrl = "/image"
-                                    tenant = {tenant}
+                                value &&
+                                <PreviewEditor
+                                    value={value}
+                                    relationWorkStore={relationWorkStore}
+                                    base_url={upload_url}
+                                    img_url={upload_url}
+                                    viewImageUrl="/image"
+                                    tenant={tenant}
                                 />
-
                             }
                             </div>
-
                     </Col>
                 </Row>
-
             </div>
-
-
             <div className="comment-box">
                 <div className="comment-box-item">
                     <svg className="midden-icon" aria-hidden="true" onClick={() => setShowComment(!showComment)}>
@@ -88,8 +85,6 @@ const ShareDocument = (props) => {
                 </div>
             </div>
         </div>
-
-
     )
 }
 

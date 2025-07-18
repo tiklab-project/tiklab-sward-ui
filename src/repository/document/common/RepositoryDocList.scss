@@ -7,7 +7,7 @@
 
     .ant-layout-sider-children {
         .repository-aside {
-            background: var(--tiklab-gray-600);
+            background: var(--tiklab-gray-800);
             height: 100%;
             transition: width 0.3s ease, transform 0.3s ease;
             &-unfold{
@@ -22,76 +22,38 @@
             }
 
             .repository-aside-bottom{
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                height: 40px;
-                padding: 0 20px;
-                border-top: 1px solid var(--tiklab-gray-200);
-                .bottom-left{
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    gap: 3px;
-                }
-            }
-            .menu-fold{
-                cursor: pointer;
-                font-size: 18px;
-                padding: 3px;
-                border-radius: 4px;
-                &:hover{
-                    background: #ffffff;
-                }
-            }
-            .menu-unfold{
+                width: 15px;
                 position: absolute;
-                right: -30px;
-                bottom: 7px;
-                cursor: pointer;
-                font-size: 18px;
-                padding: 3px;
-                border-radius: 4px;
-                background: #ffffff;
-                &:hover{
-                    background: var(--tiklab-gray-300);
+                top: 0;
+                right: -5px;
+                height: 100%;
+                &:hover .menu-fold{
+                    opacity: 1;
+                    visibility: visible;
                 }
-            }
-
-            .repository-aside-ul{
-                padding-top: 10px;
-                .aside-icon{
-                    font-size: 18px;
-                }
-                .repository-aside-li{
-                    margin: 0 10px;
-                    padding: 0 10px;
-                    display: flex;
-                    align-items: center;
-                    height: 36px;
-                    gap: 10px;
+                .menu-fold{
+                    position: absolute;
+                    right: 7px;
+                    bottom: 7px;
                     cursor: pointer;
+                    font-size: 16px;
+                    padding: 5px;
                     border-radius: 4px;
-                    &-unselected:hover{
-                        background: var(--tiklab-gray-300);
-                    }
-                    &-select {
-                        background: var(--tiklab-gray-300);
-                        color: var(--tiklab-blue);
-                    }
+                    background: var(--tiklab-gray-200);
+                    opacity: 0;
+                    visibility: hidden;
                 }
-                .repository-aside-category{
-                    margin: 0 10px;
-                    padding: 0 10px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    height: 36px;
-                    gap: 10px;
-                    .category-left{
-                        display: flex;
-                        align-items: center;
-                        gap: 8px;
+                .menu-unfold{
+                    position: absolute;
+                    right: -30px;
+                    bottom: 5px;
+                    cursor: pointer;
+                    font-size: 18px;
+                    padding: 5px;
+                    border-radius: 4px;
+                    background: #ffffff;
+                    &:hover{
+                        background: var(--tiklab-gray-300);
                     }
                 }
             }
@@ -101,7 +63,7 @@
                 align-items: center;
                 justify-content: space-between;
                 width: 100%;
-                padding: 0 20px;
+                padding: 0 10px;
                 height: 45px;
                 line-height: 45px;
                 font-size: 16px;
@@ -185,10 +147,11 @@
 
         .repository-menu {
             list-style-type: none;
-            height: calc(100% - 235px);
+            height: calc(100% - 90px);
             cursor: pointer;
             overflow: auto;
             padding: 0 10px;
+            margin-top: 10px;
             .ant-tree{
                 background: transparent !important;
             }
@@ -213,26 +176,25 @@
                 i {
                     margin-right: 10px;
                 }
-
                 .repository-input {
                     outline: 0;
-                    box-shadow: 0 0 0 2px #1890ff33;
+                    box-shadow: 0 0 0 2px rgba(24, 144, 255, .2);
                     min-width: 100px;
                     height: 30px;
                     line-height: 30px;
                     display: inline-block;
                     border-radius: 2px;
                     width: 120px;
-                    white-space: nowrap;
-                    overflow: hidden;
+                    background: transparent;
+                    border: none;
+                    padding: 0;
                 }
-
                 .repository-view {
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
                     flex: 1;
-
+                    min-width: 0;
                 }
 
             }
@@ -259,7 +221,7 @@
 
         .repository-menu::-webkit-scrollbar-track {
             border-radius: 0;
-            background: var(--tiklab-gray-600);
+            background: var(--tiklab-gray-800);
         }
         .category-add {
             border-radius: 4px;
@@ -296,6 +258,9 @@
         width: 16px;
         height: 16px;
         margin-right: 5px;
+    }
+    &-file{
+        border-top: 1px solid var(--tiklab-gray-200);
     }
 }
 

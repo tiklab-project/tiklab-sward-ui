@@ -23,6 +23,7 @@ import BasicInfo from "./repository/setting/basicInfo/components/BasicInfo";
 import DocumentExamine from "./document/document/components/DocumentExamine";
 import MarkdownView from "./document/markdown/components/MarkdownView";
 import FileView from "./document/file/components/FileView";
+import ShareFile from "./document/share/components/ShareFile";
 import RepositorySetAside from "./repository/setting/common/components/RepositorySetAside";
 
 export {
@@ -43,4 +44,5 @@ export {
     MarkdownView,
     FileView,
     RepositorySetAside,
+    ShareFile,
 }

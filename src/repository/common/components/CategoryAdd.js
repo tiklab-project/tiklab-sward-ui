@@ -25,7 +25,6 @@ const CategoryAdd = (props) => {
     }
     const setOpenOrClose = key => {
         if (isExpandedTree(key)) {
-            return
         } else {
             setExpandedTree(expandedTree.concat(key));
         }

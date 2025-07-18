@@ -13,10 +13,12 @@ import { Layout } from 'antd';
 import "./ShareAside.scss";
 import {productImg} from "tiklab-core-ui";
 import DocumentIcon from "../../../common/components/icon/DocumentIcon";
+import {useVersion} from "tiklab-eam-ui/es/utils";
 
 const { Sider } = Layout;
 
 const ShareAside = (props) => {
+
     // 解析props
     const { shareStore, setShareExist } = props;
     const tenant = props.location.search.split("=")[1];
@@ -30,7 +32,8 @@ const ShareAside = (props) => {
     const id = props.location.pathname.split("/")[4];
     //分享目录
     const [repositoryCatalogueList, setRepositoryCatalogueList] = useState([])
-    const locationStatePassWord = props.location.state?.password;
+
+    useVersion();
 
     useEffect(() => {
         setSelectKey(id);
@@ -43,7 +46,7 @@ const ShareAside = (props) => {
         // 判断是否需要验证码
         judgeAuthCode(params).then(data => {
             if(data.code===0){
-                if (data.data === "true" && locationStatePassWord!== "true") {
+                if (data.data === "true") {
                     if(version !== "cloud"){
                         window.location.href = `${origin}/#/passWord/${shareLink}`
                     }
@@ -52,7 +55,7 @@ const ShareAside = (props) => {
                     }
                     return
                 }
-                if (data.data === "false" || locationStatePassWord === 'true') {
+                if (data.data === "false") {
                     findShareCategory({
                         shareId: shareLink,
                     }).then((data) => {

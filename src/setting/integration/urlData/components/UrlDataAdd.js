@@ -3,7 +3,7 @@ import { Modal, Form,Input } from 'antd';
 import { observer, inject } from "mobx-react";
 import BaseModal from "../../../../common/components/modal/Modal";
 
-const UrlAddData = (props) => {
+const UrlDataAdd = (props) => {
     const [form] = Form.useForm();
     const {urlAddvisible, setUrlAddvisible, urlDataStore, modalTitle, setUrlDataList, actionType, urlId} = props;
     const { createSystemUrl, findAllSystemUrl, findSystemUrl, updateSystemUrl } = urlDataStore;
@@ -58,6 +58,9 @@ const UrlAddData = (props) => {
 
     };
 
+    /**
+     * 关闭弹出框
+     */
     const onCancel = () => {
         form.resetFields();
         setUrlAddvisible(false);
@@ -116,4 +119,4 @@ const UrlAddData = (props) => {
     );
 };
 
-export default inject("urlDataStore")(observer(UrlAddData));
+export default inject("urlDataStore")(observer(UrlDataAdd));

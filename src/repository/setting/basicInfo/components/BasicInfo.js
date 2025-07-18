@@ -43,11 +43,13 @@ const BasicInfo = props => {
     const [form] = Form.useForm();
     const repositoryId = props.match.params.repositoryId;
     const { repositorySetStore, repositoryDetailStore, RepositoryRecycleModal,ArchivedComponent } = props;
-    const {updateRepository, findAllUser, uselist } = repositorySetStore;
-    const { findRepository, repository } = repositoryDetailStore;
+    const {updateRepository} = repositorySetStore;
+    const { findRepository, repository, findDmUserList } = repositoryDetailStore;
 
     const [disable, setDisabled] = useState(true);
     const [visible, setVisible] = useState(false);
+
+    const [userList,setUserList] = useState([]);
 
     //移到回收站弹出框
     const [repositoryRecycleVisable, setRepositoryRecycleVisable] = useState(false);
@@ -55,7 +57,9 @@ const BasicInfo = props => {
     const [archivedFreeVisable, setArchivedFreeVisable] = useState(false)
 
     useEffect(() => {
-        findAllUser()
+        findDmUserList(repositoryId).then(data=>{
+            setUserList(data)
+        })
     }, [])
 
     const cancel = () => {
@@ -234,8 +238,11 @@ const BasicInfo = props => {
                                             allowClear
                                         >
                                             {
-                                                uselist && uselist.map((item, index) => {
-                                                    return <Select.Option value={item.id} key={item.id}>{item.nickname}</Select.Option>
+                                                userList && userList.map(item=> {
+                                                    const {user} = item;
+                                                    return <Select.Option value={user?.id} key={user?.id}>
+                                                        {user?.nickname}
+                                                    </Select.Option>
                                                 })
                                             }
                                         </Select>

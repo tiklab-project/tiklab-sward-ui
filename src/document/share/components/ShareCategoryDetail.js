@@ -10,8 +10,8 @@ import React, { useState, useEffect, Fragment } from "react";
 import { Row, Col, Empty } from 'antd';
 import "./ShareCategoryDetail.scss"
 import { observer, inject } from "mobx-react";
-import {getFileIcon} from "../../../common/utils/overall";
 import DocumentIcon from "../../../common/components/icon/DocumentIcon";
+
 const ShareCategoryDetail = (props) => {
     const { shareStore } = props;
     const { findCategory, findNodeList } = shareStore;
@@ -33,7 +33,6 @@ const ShareCategoryDetail = (props) => {
             setLogList(data.data)
         })
     }, [categoryId])
-
 
     // 跳转到文档
     const goToDocument = (item) => {
@@ -62,14 +61,12 @@ const ShareCategoryDetail = (props) => {
                     {
                         logDetail && <Fragment>
                             <div className="log-title">
-                                <div className="title-left">
-                                    <svg className="title-icon" aria-hidden="true">
-                                        <use xlinkHref="#icon-folder"></use>
-                                    </svg>
-                                    <div className="title-name">
-                                        <div className="name">{logDetail.name}</div>
-                                        <div className="master">{logDetail.master.name}</div>
-                                    </div>
+                                <svg className="title-icon" aria-hidden="true">
+                                    <use xlinkHref="#icon-folder"></use>
+                                </svg>
+                                <div className="title-name">
+                                    <div className="name">{logDetail.name}</div>
+                                    <div className="master">{logDetail.master.name}</div>
                                 </div>
                             </div>
                         </Fragment>
@@ -100,7 +97,6 @@ const ShareCategoryDetail = (props) => {
                                 <Empty description="暂时没有内容~" />
                         }
                     </div>
-
                 </div>
             </Col>
         </Row>

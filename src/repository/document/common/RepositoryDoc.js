@@ -7,7 +7,7 @@
  * @LastEditTime: 2024-12-31 17:02:52
  */
 import React, {useState} from "react";
-import {Empty, Layout, Spin} from 'antd';
+import { Layout, Spin} from 'antd';
 import { renderRoutes } from "react-router-config";
 import { observer, inject } from "mobx-react";
 import RepositoryDocList from "./RepositoryDocList";

@@ -1,5 +1,5 @@
 /**
- * @Description:
+ * @Description: 收藏
  * @Author: gaomengyuan
  * @Date: 2025/6/30
  * @LastEditors: gaomengyuan
@@ -16,7 +16,7 @@ import {deleteSuccessReturnCurrenPage, documentPush} from "../../../../common/ut
 import Profile from "../../../../common/components/profile/Profile";
 import Page from "../../../../common/components/page/Page";
 
-const pageSize = 10;
+const pageSize = 15;
 
 const Collect = props =>{
 
@@ -180,7 +180,10 @@ const Collect = props =>{
                 xl={{ span: "18", offset: "3" }}
             >
                 <Breadcrumb
-                    firstText={'收藏'}
+                    {...props}
+                    firstText="概况"
+                    secondText="收藏"
+                    firstUrl={`/repository/${repositoryId}/overview`}
                 />
                 <Spin spinning={spinning}>
                     <Table

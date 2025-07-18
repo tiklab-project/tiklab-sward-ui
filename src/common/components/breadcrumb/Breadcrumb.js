@@ -5,13 +5,14 @@
  * @LastEditTime: 2024-12-31 14:20:45
  * @Description: 页面顶部面包屑
  */
-
 import React from "react";
 import { withRouter } from "react-router";
 
 import "./Breadcrumb.scss"
+
 const Breadcrumb = (props) => {
-    const { homeImage, firstText, secondText, firstUrl, children } = props;
+
+    const { firstText, secondText, firstUrl, children } = props;
 
     const goUrl = () => {
         if (secondText){
@@ -35,16 +36,9 @@ const Breadcrumb = (props) => {
                     <span>{firstText}</span>
                 </span>
                 {
-                    secondText && <>
-                        {/* <svg className="svg-icon" aria-hidden="true">
-                            <use xlinkHref="#icon-rightBlue"></use>
-                        </svg> */}
-                        <> &nbsp; / &nbsp; <span>{secondText}</span>
-                        </>
-                    </>
+                    secondText &&
+                    <> &nbsp; / &nbsp; <span>{secondText}</span></>
                 }
-
-
             </div>
             {children}
         </div>

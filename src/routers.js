@@ -469,19 +469,19 @@ const Routes = [
                         component: FocusDocumentList
                     },
                     {
+                        path: "/repository/:repositoryId/share",
+                        exact: true,
+                        component: DocumentShare
+                    },
+                    {
+                        path: "/repository/:repositoryId/collect",
+                        exact: true,
+                        component: DocumentCollect
+                    },
+                    {
                         path: "/repository/:repositoryId/doc",
                         component: RepositoryDoc,
                         routes: [
-                            {
-                                path: "/repository/:repositoryId/doc/share",
-                                exact: true,
-                                component: DocumentShare
-                            },
-                            {
-                                path: "/repository/:repositoryId/doc/collect",
-                                exact: true,
-                                component: DocumentCollect
-                            },
                             {
                                 path: "/repository/:repositoryId/doc/rich/:id",
                                 exact: true,
@@ -512,59 +512,6 @@ const Routes = [
                             },
                         ]
                     },
-                    {
-                        path: "/repository/:repositoryId/collect",
-                        component: CollectLayout,
-                        key: 'collect',
-                        routes: [
-                            {
-                                path: "/repository/:repositoryId/collect/rich/:id",
-                                exact: true,
-                                component: DocumentExamine
-                            },
-                            {
-                                path: "/repository/:repositoryId/collect/rich/:id/edit",
-                                exact: true,
-                                component: DocumentEdit
-                            },
-                            {
-                                path: "/repository/:repositoryId/collect/markdown/:id",
-                                component: MarkdownDocumentView,
-                                exact: true
-                            },
-                            {
-                                path: "/repository/:repositoryId/collect/markdown/:id/edit",
-                                component: MarkdownDocumentEdit
-                            },
-                            {
-                                path: "/repository/:repositoryId/collect/file/:id",
-                                component: FileView
-                            },
-                        ]
-                    },
-                    // {
-                    //     path: "/repositorySet/:repositoryId",
-                    //     component: RepositorySet,
-                    //     routes: [
-                    //         {
-                    //             path: "/repositorySet/:repositoryId/basicInfo",
-                    //             component: RepositoryBasicInfo
-                    //         },
-                    //         {
-                    //             path: "/repositorySet/:repositoryId/user",
-                    //             component: RepositoryDomainUser,
-                    //             exact: true
-                    //         },
-                    //         {
-                    //             path: "/repositorySet/:repositoryId/domainRole",
-                    //             component: RepositoryDomainRole
-                    //         },
-                    //         {
-                    //             path: "/repositorySet/:repositoryId/messagenotice",
-                    //             component: DomainMessageNoticeContent,
-                    //         }
-                    //     ]
-                    // },
                     {
                         path: "/repository/:repositoryId/set",
                         component: RepositorySet,

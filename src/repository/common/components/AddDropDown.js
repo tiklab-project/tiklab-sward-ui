@@ -17,21 +17,23 @@ import TemplateStore from "../../../setting/template/store/TemplateStore";
 import { formatFileSize } from "../../../common/utils/overall";
 
 const AddDropDown = (props) => {
-    const [form] = Form.useForm();
-    const { category, repositoryDetailStore, isButton, button } = props;
+    const { category, repositoryDetailStore, button } = props;
 
+    const {
+        repositoryCatalogueList, setRepositoryCatalogueList,
+        createDocument, findDmUserList, findDocument ,repository,fileLimit,setUploadSpinning
+    } = repositoryDetailStore;
     const {upload} = TemplateStore;
 
+    const [form] = Form.useForm();
     const repositoryId = props.match.params.repositoryId;
     const userId = getUser().userId;
     const treePath = category ?
         (category.treePath ? category.treePath + category.id + ";" : category.id + ";") : null;
+
     const [addModalVisible, setAddModalVisible] = useState()
     const [userList, setUserList] = useState()
-    const [catalogue, setCatalogue] = useState()
-    const [contentValue, setContentValue] = useState()
-    const { repositoryCatalogueList, setRepositoryCatalogueList,
-        createDocument, findDmUserList, findDocument ,repository,fileLimit,setUploadSpinning} = repositoryDetailStore;
+
 
     const fileInputRef = useRef(null);
 
@@ -42,7 +44,7 @@ const AddDropDown = (props) => {
                     <svg className="content-add-icon" aria-hidden="true">
                         <use xlinkHref="#icon-folder"></use>
                     </svg>
-                    添加目录
+                    目录
                 </div>
 
             </Menu.Item>
@@ -51,7 +53,7 @@ const AddDropDown = (props) => {
                     <svg className="content-add-icon" aria-hidden="true">
                         <use xlinkHref="#icon-file"></use>
                     </svg>
-                    添加文档
+                   文档
                 </div>
             </Menu.Item>
             <Menu.Item key="markdown">
@@ -59,10 +61,10 @@ const AddDropDown = (props) => {
                     <svg className="content-add-icon" aria-hidden="true">
                         <use xlinkHref="#icon-minmap"></use>
                     </svg>
-                    添加Markdown
+                   Markdown
                 </div>
             </Menu.Item>
-            <Menu.Item key="file">
+            <Menu.Item key="file" className="content-add-menu-file">
                 <div className="content-add-menu">
                     <svg className="content-add-icon" aria-hidden="true">
                         <use xlinkHref="#icon-file"></use>
@@ -86,10 +88,6 @@ const AddDropDown = (props) => {
      */
     const selectAddType = (value) => {
         if (value.key === "category") {
-            if (category) {
-                setCatalogue({ id: category.id, dimension: category.dimension })
-            }
-
             setAddModalVisible(true)
             findDmUserList(repositoryId).then(data => {
                 setUserList(data)
@@ -239,9 +237,7 @@ const AddDropDown = (props) => {
                 addModalVisible={addModalVisible}
                 form={form}
                 category={category}
-                contentValue={contentValue}
                 treePath={treePath}
-                // setSelectKey={setSelectKey}
                 userList={userList}
                 {...props}
             />

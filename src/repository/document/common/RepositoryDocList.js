@@ -10,30 +10,24 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { withRouter } from "react-router-dom";
 import { observer, inject } from "mobx-react";
-import {Menu, Dropdown, Layout, Tree, message, Modal, Empty, Spin, Tooltip} from 'antd';
+import {Menu, Dropdown, Layout, Tree, message, Modal, Empty, Spin, Tooltip, Input} from 'antd';
 import { useTranslation } from 'react-i18next';
 import MoveLogList from "../../common/components/MoveLogList"
 import { getUser, getVersionInfo } from 'tiklab-core-ui';
 import "./RepositoryDocList.scss"
 import {
-    appendNodeInTree, removeNodeAndSort,
-    updataTreeSort, findNodeById, updateNodeName, removeNodeInTree
+    appendNodeInTree, updataTreeSort, updateNodeName, removeNodeInTree
 } from '../../../common/utils/treeDataAction';
 import AddDropDown from '../../common/components/AddDropDown';
 import {
-    AppstoreOutlined, DeleteOutlined,
-    DownOutlined, EditOutlined, MenuFoldOutlined,
+    DownOutlined, MenuFoldOutlined,
     MenuUnfoldOutlined,
-    ProfileOutlined, SettingOutlined,
-    ShareAltOutlined,
-    StarOutlined
 } from '@ant-design/icons';
 import ArchivedFree from '../../../common/components/archivedFree/ArchivedFree';
 import SearchModal from '../../common/components/SearchModal';
 import {documentPush, getFileExtensionWithDot, removeFileExtension} from "../../../common/utils/overall";
 import DocumentIcon from "../../../common/components/icon/DocumentIcon";
 import ShareModal from "../../../document/share/components/ShareModal";
-import {PrivilegeProjectButton} from "tiklab-privilege-ui";
 const { Sider } = Layout;
 
 const RepositoryDocList = (props) => {
@@ -48,7 +42,6 @@ const RepositoryDocList = (props) => {
 
     // 当前选中目录id
     const id = props.location.pathname.split("/")[5];
-    const type = props.location.pathname.split("/")[4];
     const [selectKey, setSelectKey] = useState(id);
     const repositoryId = props.match.params.repositoryId;
     const [isHover, setIsHover] = useState(false)
@@ -76,37 +69,20 @@ const RepositoryDocList = (props) => {
     const repositoryStatus = repository?.status === 'nomal';
 
     useEffect(() => {
-        if (type === "collect") {
-            setSelectKey("collect")
-        } else if(type === "share"){
-            setSelectKey("share")
-        } else {
-            setSelectKey(id)
-        }
+        setSelectKey(id)
     }, [props.location.pathname])
-
-    /**
-     * 跳转
-     */
-    const toSelect = path =>{
-        props.history.push(`/repository/${repositoryId}/doc/${path}`)
-    }
 
     useEffect(() => {
         setLoading(true)
-        const data = {
+        findNodePageTree({
             repositoryId: repositoryId,
             dimensions: [1, 2],
             approveUserId: userId,
-        }
-        findNodePageTree(data).then((data) => {
+        }).then((data) => {
             setRepositoryCatalogueList([...data.data])
-            if (data.data.length > 0) {
-                if(!id && !['collect','share'].includes(type)){
-                    props.history.push(`/repository/${repositoryId}/doc/collect`)
-                    // const item = data.data[0];
-                    // goDetail(item)
-                }
+            if (data.data.length > 0 && !id) {
+                const item = data.data[0];
+                goDetail(item)
             }
         }).finally(()=>{
             setLoading(false)
@@ -118,7 +94,6 @@ const RepositoryDocList = (props) => {
 
     //点击左侧菜单
     const selectKeyFun = (event, item) => {
-        // setSelectKey(item.id)
         event.preventDefault()
         event.stopPropagation();
         event.nativeEvent.stopImmediatePropagation()
@@ -165,7 +140,6 @@ const RepositoryDocList = (props) => {
                         }
                     })
                 }
-
             })
         }
     }
@@ -261,34 +235,6 @@ const RepositoryDocList = (props) => {
         }
     }
 
-    /**
-     * 跳转到回收站
-     */
-    const toRecycle = () => {
-        if(versionInfo.expired){
-            setArchivedFree('defalut')
-            setArchivedFreeVisable(true)
-        } else {
-            props.history.push(`/repository/${repositoryId}/set/recycleBin`)
-        }
-    }
-
-    /**
-     * 跳转
-     */
-    const toStatistics = (value) => {
-        const {key} = value;
-        switch (key) {
-            case 'statistics':
-                if(versionInfo.expired){
-                    setArchivedFree('documentStatistics')
-                    setArchivedFreeVisable(true)
-                } else {
-                    props.history.push(`/repository/${repositoryId}/statistics`)
-                }
-        }
-    }
-
     const deleteDocumentOrCategory = (item, type, id) => {
         if (type === "category") {
             deleteNode(item.id).then(res => {
@@ -324,12 +270,8 @@ const RepositoryDocList = (props) => {
 
     useEffect(() => {
         if (inputRef.current) {
-            inputRef.current.autofocus = true;
-            let range = getSelection();
-            range.selectAllChildren(inputRef.current);
-            range.collapseToEnd()
+            inputRef.current.focus();
         }
-        return;
     }, [inputRef.current])
 
     /**
@@ -341,7 +283,7 @@ const RepositoryDocList = (props) => {
      */
     const reName = (value, reNameId, type, initName) => {
         const fileExtensionWithDot = initName ? getFileExtensionWithDot(initName) : '';
-        const name = value.target.innerText + fileExtensionWithDot;
+        const name = value + fileExtensionWithDot;
         const params = {
             id: reNameId,
             node: {
@@ -352,7 +294,6 @@ const RepositoryDocList = (props) => {
         if (type === "category") {
             updateRepositoryCatalogue(params).then(data => {
                 if (data.code === 0) {
-                    setIsRename(null)
                     updateNodeName(repositoryCatalogueList, reNameId, name)
                     // 为了使右侧的标题与目录的一致
                     if (reNameId === id) {
@@ -369,8 +310,7 @@ const RepositoryDocList = (props) => {
                 repositoryId: repositoryId,
             }).then(data => {
                 if (data.code === 0) {
-                    setIsRename(null)
-                    updateNodeName(repositoryCatalogueList, reNameId, name)
+                    updateNodeName(repositoryCatalogueList, reNameId, name);
                     if (reNameId === id) {
                         setDocumentTitle(name)
                     }
@@ -382,13 +322,6 @@ const RepositoryDocList = (props) => {
         setIsRename(null)
     }
 
-    const enterKeyRename = (value, id, type, initName) => {
-        if (value.keyCode === 13) {
-            event.stopPropagation();
-            event.preventDefault()
-            reName(value, id, type, initName)
-        }
-    }
 
     const isExpandedTree = (key) => {
         return expandedTree.some(item => item === key)
@@ -497,25 +430,28 @@ const RepositoryDocList = (props) => {
                 documentType={item?.documentType}
                 className={"icon-15"}
             />
-            <div
-                className={`${isRename === item.id ? "repository-input" : "repository-view"}`}
-                contentEditable={isRename === item.id ? true : false}
-                suppressContentEditableWarning
-                onBlur={(value) => {
-                    reName(value, item.id, item.type, item.documentType === "file" ? item.name : null)
-                }}
-                onKeyDownCapture={(value) => {
-                    enterKeyRename(value, item.id, item.type, item.documentType === "file" ? item.name : null)
-                }}
-                ref={isRename === item.id ? inputRef : null}
-                id={"file-" + item.id}
-                title={item.name}
-            >
-                {
-                    (item.documentType === "file" && isRename === item.id) ?
-                        removeFileExtension(item.name) : item.name
-                }
-            </div>
+            {
+                isRename === item.id ?
+                    <Input
+                        className="repository-input"
+                        onBlur={(e)=>{
+                            reName(e.target.value, item.id, item.type, item.documentType === "file" ? item.name : null)
+                        }}
+                        onPressEnter={(e)=>{
+                            reName(e.target.value, item.id, item.type, item.documentType === "file" ? item.name : null)
+                        }}
+                        ref={inputRef}
+                        defaultValue={item.documentType === "file" ? removeFileExtension(item.name) : item.name}
+                    />
+                    :
+                    <div
+                        className="repository-view"
+                        id={"file-" + item.id}
+                        title={item.name}
+                    >
+                        {item.name}
+                    </div>
+            }
             {
                 repositoryStatus && (
                     <div className={`${isHover === item.id ? "icon-show" : "icon-hidden"}`}>
@@ -537,23 +473,37 @@ const RepositoryDocList = (props) => {
             className={`repository-menu-submenu`}
             key={item.id}
             onClick={(event) => selectKeyFun(event, item)}
-            onMouseOver={(event) => { event.stopPropagation(), setIsHover(item.id) }}
-            onMouseLeave={(event) => { event.stopPropagation(), setIsHover(null) }}
+            onMouseOver={(event) => { event.stopPropagation(); setIsHover(item.id) }}
+            onMouseLeave={(event) => { event.stopPropagation(); setIsHover(null) }}
         >
             <svg className="icon-15" aria-hidden="true">
                 <use xlinkHref="#icon-folder"></use>
             </svg>
-            <div className={`${isRename === item.id ? "repository-input" : "repository-view"}`}
-                contentEditable={isRename === item.id ? true : false}
-                suppressContentEditableWarning
-                onBlur={(value) => reName(value, item.id, item.type)}
-                ref={isRename === item.id ? inputRef : null}
-                onKeyDownCapture={(value) => enterKeyRename(value, item.id, item.type)}
-            > {item.name}</div>
+            {
+                isRename === item.id ?
+                    <Input
+                        className="repository-input"
+                        onBlur={(e)=>{
+                            reName(e.target.value, item.id, item.type)
+                        }}
+                        onPressEnter={(e)=>{
+                            reName(e.target.value, item.id, item.type)
+                        }}
+                        ref={inputRef}
+                        defaultValue={item.name}
+                    />
+                    :
+                    <div
+                        className="repository-view"
+                        id={"file-" + item.id}
+                        title={item.name}
+                    >
+                        {item.name}
+                    </div>
+            }
             {
                 repositoryStatus && (
                     <div className={`${isHover === item.id ? "icon-show" : "icon-hidden"} icon-action`}>
-                        {/* <div className="icon-action"> */}
                         <AddDropDown category={item} button="icon-gray" />
                         <Dropdown overlay={() => editMenu(item, index)} placement="bottomLeft">
                             <div className="category-add">
@@ -617,26 +567,7 @@ const RepositoryDocList = (props) => {
                             <div className="repository-title-left">
                                 文档
                             </div>
-                            <Dropdown
-                                overlay={
-                                    <Menu onClick={toStatistics}>
-                                        <Menu.Item key="statistics">
-                                            <div className='content-add-menu'>
-                                                <svg className="content-add-icon" aria-hidden="true">
-                                                    <use xlinkHref="#icon-edit"></use>
-                                                </svg>
-                                                统计
-                                            </div>
-                                        </Menu.Item>
-                                    </Menu>
-                                }
-                            >
-                                <div className="category-add">
-                                    <svg className="icon-20" aria-hidden="true" >
-                                        <use xlinkHref="#icon-more-default"></use>
-                                    </svg>
-                                </div>
-                            </Dropdown>
+                            <AddDropDown category={null} button="icon-gray" />
                         </div>
                         <div className="repository-search" onClick={() => setShowSearchModal(true)}>
                             <svg className="icon-13" aria-hidden="true">
@@ -645,31 +576,6 @@ const RepositoryDocList = (props) => {
                             <span>
                                 搜索
                             </span>
-                        </div>
-                        <div className='repository-aside-ul'>
-                            <div
-                                className={`repository-aside-li ${selectKey==='share' ? 'repository-aside-li-select' : 'repository-aside-li-unselected'}`}
-                                onClick={()=>toSelect('share')}
-                            >
-                                <ShareAltOutlined className='aside-icon'/>
-                                共享
-                            </div>
-                            <div
-                                className={`repository-aside-li ${selectKey==='collect' ? 'repository-aside-li-select' : 'repository-aside-li-unselected'}`}
-                                onClick={()=>toSelect('collect')}
-                            >
-                                <StarOutlined className='aside-icon' />
-                                收藏
-                            </div>
-                            <div className="repository-aside-category">
-                                <div className='category-left'>
-                                    <svg className="icon-20" aria-hidden="true">
-                                        <use xlinkHref="#icon-repository-default"></use>
-                                    </svg>
-                                    目录
-                                </div>
-                                <AddDropDown category={null} button="icon-gray" />
-                            </div>
                         </div>
                         <div className="repository-menu">
                             {
@@ -686,19 +592,11 @@ const RepositoryDocList = (props) => {
                                 >
                                     {categoryTree(repositoryCatalogueList)}
                                 </Tree>
-                                    :
-                                <>
-                                    {!loading && <Empty description="暂无文档" />}
-                                </>
+                                :
+                                <Empty description="暂无文档" />
                             }
                         </div>
                         <div className="repository-aside-bottom">
-                            <div className="bottom-left" onClick={toRecycle}>
-                                <svg className="icon-16" aria-hidden="true">
-                                    <use xlinkHref="#icon-delete"></use>
-                                </svg>
-                                回收站
-                            </div>
                             {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                                 className: collapsed ? 'menu-unfold' : 'menu-fold',
                                 onClick: () => setCollapsed(!collapsed),
