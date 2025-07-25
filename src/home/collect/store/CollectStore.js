@@ -45,12 +45,6 @@ export class CollectStore {
         return data;
     }
 
-
-    @action
-    createRecent = async (value) => {
-        const data = await Service("/recent/createRecent", value);
-        return data.data;
-    }
 }
 
 export default new CollectStore();

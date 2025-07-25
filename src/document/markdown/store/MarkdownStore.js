@@ -20,9 +20,9 @@ class DocumentStore {
         this.expandedTree = value;
     }
     /**
-     * 
-     * @param {*} id 
-     * @returns 
+     *
+     * @param {*} id
+     * @returns
      */
     @action
     setRepositoryCatalogueList = (value) => {
@@ -67,12 +67,6 @@ class DocumentStore {
         params.append("id", id)
         const data = await Service("/category/findCategoryDocument", params);
         return data;
-    }
-
-    @action
-    createRecent= async(value)=> {
-        const data = await Service("/recent/createRecent", value);
-        return data.data;
     }
 
     @action

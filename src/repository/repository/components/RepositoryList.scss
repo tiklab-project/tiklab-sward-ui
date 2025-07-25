@@ -6,8 +6,7 @@
     padding: var(--tiklab-padding-item);
 
     .recent-repository {
-        margin-bottom: 15px;
-        margin-top: 15px;
+        margin: 15px 0;
         border-radius: 4px;
         background: #fff;
 
@@ -19,7 +18,7 @@
             padding: 10px 0;
             overflow: hidden;
             flex-wrap: wrap;
-            height: 114px;
+            height: 124px;
             .ant-empty {
                 width: 100%;
             }
@@ -28,7 +27,6 @@
         .repository-item {
             flex: 1;
             padding: var(--tiklab-padding);
-            box-sizing: content-box;
             flex-shrink: 0;
             border-radius: 4px;
             cursor: pointer;
@@ -66,20 +64,19 @@
 
             .item-work {
                 display: flex;
-                gap: 20px;
+                gap: 30px;
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 overflow: hidden;
+                padding: 10px 0;
             }
 
-            .process-work,
-            .end-work {
+            .process-work, .end-work {
                 font-size: 12px;
                 display: inline-flex;
                 width: 100%;
-                justify-content: space-between;
-                height: 30px;
-                line-height: 30px;
+                align-items: center;
+                gap: 15px;
             }
 
             .icon {
@@ -182,7 +179,7 @@
         }
     }
     .repository-spin {
-        height: 114px;
+        height: 124px;
     }
 }
 

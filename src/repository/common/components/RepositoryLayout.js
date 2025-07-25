@@ -21,7 +21,7 @@ const RepositoryDetail = (props)=>{
         repositoryDetailStore: repositoryDetailStore
     }
 
-    const {findRepository,findFileLimit} = repositoryDetailStore;
+    const {findRepository,findFileLimit,createRecent} = repositoryDetailStore;
     const {getInitProjectPermissions} = systemRoleStore;
 
     const [isShowText, SetIsShowText ] = useState(false)
@@ -37,6 +37,13 @@ const RepositoryDetail = (props)=>{
             if(res.code===0){
                 const data = res.data;
                 getInitProjectPermissions(userId,repositoryId,data?.projectLimits === "0")
+                createRecent({
+                    name: data?.name,
+                    model: "repository",
+                    modelId: repositoryId,
+                    master: {id:userId},
+                    wikiRepository: {id:repositoryId}
+                })
             }
         })
         findFileLimit().then()

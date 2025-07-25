@@ -16,27 +16,37 @@ import "./RepositoryList.scss";
 import RepositoryStore from "../store/RepositoryStore";
 import { useDebounce } from "../../../common/utils/debounce";
 import Img from "../../../common/components/img/Img";
-import {DeleteOutlined, EditOutlined, SettingOutlined} from "@ant-design/icons";
+import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import RepositoryAdd from "./RepositoryAdd";
 import {PrivilegeProjectButton} from "tiklab-privilege-ui";
 import RepositoryDelete from "./RepositoryDelete";
 import Profile from "../../../common/components/profile/Profile";
+import {deleteSuccessReturnCurrenPage} from "../../../common/utils/overall";
+import PaginationCommon from "../../../common/components/page/Page";
+
+const pageSize = 10;
 
 const RepositoryList = (props) => {
 
     const {systemRoleStore} = props;
 
-    const { findRepositoryList, createRecent,
-        repositoryList, findRecentRepositoryList, createRepositoryFocus,
-        findFocusRepositoryList, getFocusRepositoryList, deleteRepositoryFocusByCondition,
-        activeTabs, setActiveTabs, findRepositoryNum } = RepositoryStore;
+    const {
+        findFocusRepositoryList,
+        findRepositoryPage,
+        findRecentRepositoryList,
+        createRepositoryFocus,
+        deleteRepositoryFocusByCondition,
+        findRepositoryNum
+    } = RepositoryStore;
     const {getInitProjectPermissions} = systemRoleStore;
-
 
     const userId = getUser().userId;
     const [focusRepositoryList, setFocusRepositoryList] = useState([])
+    //常用知识库
     const [recentRepositoryDocumentList, setRecentRepositoryDocumentList] = useState([]);
+    //知识库统计
     const [num, setNum] = useState();
+    //常用加载
     const [recentDocLoading, setRecentDocLoading] = useState(true);
     //添加弹出框
     const [addVisible,setAddVisible] = useState(false);
@@ -46,6 +56,20 @@ const RepositoryList = (props) => {
     const [dropVisible,setDropVisible] = useState(null);
     //删除弹出框
     const [delVisible,setDelVisible] = useState(false);
+    //选中的tab
+    const [activeTabs,setActiveTabs] = useState('all');
+    const pageParam = {
+        pageSize:pageSize,
+        currentPage: 1,
+    }
+    //请求数据
+    const [requestParam,setRequestParam] = useState({
+        pageParam
+    })
+    //知识库数据
+    const [repositoryData,setRepositoryData] = useState({});
+    //加载
+    const [spinning,setSpinning] = useState(false);
 
     useEffect(() => {
         if(dropVisible){
@@ -53,33 +77,18 @@ const RepositoryList = (props) => {
         }
     }, [dropVisible]);
 
-    const repositoryTab = [
-        {
-            title: '所有',
-            key: '1',
-            tabName: "all",
-            icon: "project"
-        },
-        {
-            title: '我收藏的',
-            key: '3',
-            tabName: "focus",
-            icon: "programconcern"
-        },
-        {
-            title: '我创建的',
-            key: '4',
-            tabName: "create",
-            icon: "programbuild"
-        }
-    ]
-
-
     useEffect(() => {
-        selectTabs(activeTabs)
-        findFocusRepository()
+        //所有收藏
+        findFocusRepositoryList({ masterId: userId }).then(res => {
+            if (res.code === 0) {
+                const focusList = res.data;
+                focusList.map(item => {
+                    focusRepositoryList.push(item.id)
+                })
+                setFocusRepositoryList(focusRepositoryList)
+            }
+        })
         //常用知识库
-        setRecentDocLoading(true)
         findRecentRepositoryList({
             masterId: userId,
             model: "repository",
@@ -94,23 +103,50 @@ const RepositoryList = (props) => {
         }).finally(()=>{
             setRecentDocLoading(false)
         })
-        //知识库统计
-        findRepositoryNum({ masterId: userId}).then(res=> {
+    }, [])
+
+    /**
+     * 知识库统计
+     */
+    const findRepositoryCount = (value) => {
+        findRepositoryNum({ masterId: userId,...value}).then(res=> {
             if(res.code === 0){
                 setNum(res.data)
             }
         })
-    }, [])
+    }
 
-    const findFocusRepository = (id) => {
-        getFocusRepositoryList({ masterId: id }).then(res => {
-            if (res.code === 0) {
-                const focusList = res.data;
-                focusList.map(item => {
-                    focusRepositoryList.push(item.id)
-                })
-                setFocusRepositoryList(focusRepositoryList)
+    useEffect(()=>{
+        //知识库统计
+        findRepositoryCount()
+    },[])
+
+    useEffect(()=>{
+        //知识库
+        findRepository()
+    },[requestParam])
+
+    /**
+     * 获取知识库
+     */
+    const findRepository = () => {
+        setSpinning(true);
+        let param = {...requestParam};
+        if(activeTabs==='focus'){
+            param.collect = userId;
+        }
+        if(activeTabs==='create'){
+            param.masterId = userId;
+        }
+        findRepositoryPage({
+            userId:userId,
+            ...param
+        }).then(res=>{
+            if(res.code===0){
+                setRepositoryData(res.data)
             }
+        }).finally(()=>{
+            setSpinning(false)
         })
     }
 
@@ -134,14 +170,26 @@ const RepositoryList = (props) => {
      * 删除后重新获取列表
      */
     const changFresh = (type) => {
-        selectTabs(activeTabs);
         if(type==='delete'){
-            findRepositoryNum({ masterId: userId}).then(res=> {
-                if(res.code === 0){
-                    setNum(res.data)
-                }
-            })
+            const page = deleteSuccessReturnCurrenPage(repositoryData?.totalRecord,pageSize,repositoryData.currentPage);
+            onPageChange(page)
+        } else {
+            findRepository()
         }
+        findRepositoryCount()
+    }
+
+    /**
+     * 换页
+     */
+    const onPageChange = (page) => {
+        setRequestParam({
+            ...requestParam,
+            pageParam: {
+                pageSize: pageSize,
+                currentPage: page
+            }
+        })
     }
 
     /**
@@ -153,59 +201,38 @@ const RepositoryList = (props) => {
     }
 
     const goRepositorydetail = (repository) => {
-        const params = {
-            name: repository.name,
-            model: "repository",
-            modelId: repository.id,
-            master: { id: userId },
-            wikiRepository: { id: repository.id }
-        }
-        createRecent(params)
-        props.history.push({ pathname: `/repository/${repository.id}/overview` })
+        props.history.push(`/repository/${repository.id}/overview`)
     }
 
-    const handleTableChange = (pagination) => {
-        findRepositoryList({ current: pagination.current })
-    }
-
+    /**
+     * 模糊搜索
+     */
     const onSearch = useDebounce(value => {
-        switch (activeTabs) {
-            case "1":
-                findRepositoryList({ name: value })
-                break;
-            case "3":
-                findFocusRepositoryList({ masterId: userId, name: value })
-                break;
-            case "4":
-                findRepositoryList({ masterId: userId, name: value });
-                break
-            default:
-                break;
-        }
-        findRepositoryNum({ masterId: userId, name: value}).then(res=> {
-            if(res.code === 0){
-                setNum(res.data)
-            }
+        setRequestParam({
+            ...requestParam,
+            pageParam,
+            name: value
+        })
+        findRepositoryCount({
+            name:value
         })
     }, [500]);
 
+    /**
+     * 切换状态
+     */
     const selectTabs = (key) => {
         setActiveTabs(key)
-        switch (key) {
-            case "1":
-                findRepositoryList({})
-                break;
-            case "3":
-                findFocusRepositoryList({ masterId: userId })
-                break;
-            case "4":
-                findRepositoryList({ masterId: userId });
-                break
-            default:
-                break;
-        }
+        setRequestParam({
+            ...requestParam,
+            pageParam,
+        })
     }
 
+    /**
+     * 添加收藏
+     * @param id
+     */
     const addFocusRepository = (id) => {
         createRepositoryFocus({ repositoryId: id }).then(res => {
             if (res.code === 0) {
@@ -217,6 +244,10 @@ const RepositoryList = (props) => {
         })
     }
 
+    /**
+     * 取消收藏
+     * @param id
+     */
     const deleteFocusRepository = (id) => {
         const params = {
             masterId: userId,
@@ -229,12 +260,19 @@ const RepositoryList = (props) => {
                     focusRepositoryList.splice(index, 1);
                 }
                 setFocusRepositoryList([...focusRepositoryList])
-                num.focus = num.focus - 1;
-                setNum({...num})
+                if(activeTabs==='focus'){
+                    changFresh('delete')
+                } else {
+                    num.focus = num.focus - 1;
+                    setNum({...num})
+                }
             }
         })
     }
 
+    /**
+     * 添加知识库
+     */
     const goRepositoryAdd = () => {
         setRepository(null);
         setAddVisible(true);
@@ -337,14 +375,18 @@ const RepositoryList = (props) => {
         },
     ]
 
+    const repositoryTab = [
+        {title: '所有', key: 'all',},
+        {title: '我收藏的', key: 'focus',},
+        {title: '我创建的', key: 'create',}
+    ]
+
     return (
         <Row className="repository-row">
             <Col xs={{span:24}} xl={{ span: 18, offset: 3 }} lg={{ span: 18, offset: 3 }} md={{ span: 20, offset: 2 }}>
                 <div className="repository">
-                    <Breadcumb
-                        firstText="知识库"
-                    >
-                        <Button type="primary" onClick={goRepositoryAdd} buttonText={"添加知识库"} >
+                    <Breadcumb firstText="知识库">
+                        <Button type="primary" onClick={goRepositoryAdd} buttonText={"添加知识库"}>
                         </Button>
                     </Breadcumb>
                     <RepositoryAdd
@@ -362,49 +404,57 @@ const RepositoryList = (props) => {
                         changFresh={changFresh}
                     />
                     <div className="recent-repository">
-                        <div className="repository-title">常用知识库</div>
+                        <div className="repository-title">常用</div>
                         <Spin wrapperClassName="repository-spin" spinning={recentDocLoading} tip="加载中..." >
-                        {
-                            recentRepositoryDocumentList.length > 0 ?
-                                <div className="repository-box">{
-                                    recentRepositoryDocumentList.map(item => {
-                                        return <div className="repository-item" key={item.id} onClick={() => goRepositorydetail(item)} >
-                                            <div className="item-title">
-                                                <Img
-                                                    src={item.iconUrl}
-                                                    alt=""
-                                                    className="list-img"
-                                                />
-                                                <span>{item.name}</span>
-                                            </div>
-                                            <div className="item-work">
-                                                <div className="process-work"><span style={{ color: "#999" }}>文档</span><span>{item.documentNum}篇</span></div>
-                                                <div className="end-work"><span style={{ color: "#999" }}>目录</span><span>{item.categoryNum}个</span></div>
-                                            </div>
-                                        </div>
-                                    })
-                                }
-                                </div>
-                                :
-                                <>
-                                {!recentDocLoading &&  <Empty description="暂时没有查看过知识库~" />}
-                                </>
-                        }
-                        </Spin>
+                            {
+                                recentRepositoryDocumentList.length > 0 ?
+                                    <div className="repository-box">{
+                                        recentRepositoryDocumentList.map(item => {
+                                            return (
+                                                <div className="repository-item" key={item.id} onClick={() => goRepositorydetail(item)} >
+                                                    <div className="item-title">
+                                                        <Img
+                                                            src={item.iconUrl}
+                                                            alt=""
+                                                            className="list-img"
+                                                        />
+                                                        <span>{item.name}</span>
+                                                    </div>
+                                                    <div className="item-work">
+                                                        <div className="process-work">
+                                                            <span style={{ color: "#999" }}>文档</span>
+                                                            <span>{item.documentNum}篇</span>
+                                                        </div>
+                                                        <div className="end-work">
+                                                            <span style={{ color: "#999" }}>目录</span>
+                                                            <span>{item.categoryNum}个</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                    </div>
+                                    :
+                                    <Empty description="暂时没有查看过知识库~" />
+                            }
+                            </Spin>
                     </div>
                     <div className="repository-tabs-search">
                         <div className="repository-filter">
                             <div className="repository-tabs">
                                 {
                                     repositoryTab.map(item => {
-                                        return <div
-                                            className={`repository-tab ${activeTabs === item.key ? "active-tabs" : ""}`}
-                                            key={item.key}
-                                            onClick={() => selectTabs(item.key)}
-                                        >
-                                            {item.title}
-                                            <span className="repository-tab-num">{num && num[item.tabName]}</span>
-                                        </div>
+                                        return (
+                                            <div
+                                                className={`repository-tab ${activeTabs === item.key ? "active-tabs" : ""}`}
+                                                key={item.key}
+                                                onClick={() => selectTabs(item.key)}
+                                            >
+                                                {item.title}
+                                                <span className="repository-tab-num">{num ? num[item.key] : 0}</span>
+                                            </div>
+                                        )
                                     })
                                 }
                             </div>
@@ -412,16 +462,25 @@ const RepositoryList = (props) => {
                         </div>
                     </div>
                     <div className="repository-table-box">
-                        <Table
-                            columns={columns}
-                            dataSource={repositoryList}
-                            rowKey={record => record.id}
-                            onChange={handleTableChange}
-                            pagination={false}
-                            scroll={{
-                                x: "100%"
-                            }}
-                        />
+                        <Spin spinning={spinning}>
+                            <Table
+                                columns={columns}
+                                dataSource={repositoryData?.dataList || []}
+                                rowKey={record => record.id}
+                                pagination={false}
+                                scroll={{
+                                    x: "100%"
+                                }}
+                            />
+                            <PaginationCommon
+                                currentPage={repositoryData?.currentPage}
+                                changePage={(currentPage) => onPageChange(currentPage)}
+                                totalPage={repositoryData?.totalPage}
+                                total={repositoryData?.totalRecord}
+                                refresh={() => onPageChange(1)}
+                                showRefresh={true}
+                            />
+                        </Spin>
                     </div>
                 </div>
             </Col>
@@ -429,4 +488,5 @@ const RepositoryList = (props) => {
 
     )
 }
+
 export default inject("systemRoleStore")(observer(RepositoryList))
