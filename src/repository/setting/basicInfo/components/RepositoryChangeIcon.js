@@ -1,34 +1,48 @@
 // 修改知识库图标
 import React, { useState, useEffect } from "react";
 import {Form} from 'antd';
-import { withRouter } from "react-router";
 import RepositoryIconStore from "../store/RepositoryStore";
 import Img from "../../../../common/components/img/Img";
 import BaseModal from "../../../../common/components/modal/Modal";
+
 const RepositoryIcon = (props) => {
 
     const [form] = Form.useForm();
 
     const { visible, setVisible, repositoryId, updateRepository,findRepository } = props;
 
-    const [repositoryIconUrl, setProjectIconUrl] = useState("")
-
-    const { findIconList, creatIcon } = RepositoryIconStore;
+    const { findIconList } = RepositoryIconStore;
+    //图标
     const [iconList, setIconList] = useState();
+    //选中图标
+    const [repositoryIconUrl, setProjectIconUrl] = useState(null);
 
     useEffect(() => {
+        //获取图标
         getIconList()
-        return;
     }, [])
 
+    /**
+     * 获取图标
+     */
     const getIconList = () => {
         findIconList({ iconType: "repository" }).then((res) => {
             setIconList(res.data)
         })
     }
 
+    /**
+     * 更换图标
+     */
     const onFinish = () => {
-        const data = { id: repositoryId, iconUrl: repositoryIconUrl }
+        if(!repositoryIconUrl){
+            setVisible(false)
+            return;
+        }
+        const data = {
+            id: repositoryId,
+            iconUrl: repositoryIconUrl
+        }
         updateRepository(data).then(res => {
             setVisible(false)
             if(res.code===0){
@@ -37,6 +51,9 @@ const RepositoryIcon = (props) => {
         })
     };
 
+    /**
+     * 关闭弹出框
+     */
     const onCancel = () => {
         form.resetFields();
         setVisible(false);
@@ -72,4 +89,4 @@ const RepositoryIcon = (props) => {
     );
 };
 
-export default withRouter(RepositoryIcon);
+export default RepositoryIcon;

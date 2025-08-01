@@ -8,12 +8,13 @@
  */
 import React, { useEffect, useState } from "react";
 import { inject, observer } from "mobx-react";
-import { Empty } from "antd";
+import {Drawer, Empty} from "antd";
 import "./CommentShare.scss"
 import Profile from "../../../common/components/profile/Profile";
 
 const CommentShare = (props) => {
-    const { commentStore, documentId, setShowComment, shareStore } = props;
+
+    const { commentStore, documentId, showComment,setShowComment, shareStore } = props;
     const { findCommentPage } = commentStore;
     const { commentView } = shareStore;
     const [commonList, setCommonList] = useState();
@@ -60,10 +61,16 @@ const CommentShare = (props) => {
     }
 
     return (
-        <div className="share-comment">
+        <Drawer
+            className="share-comment"
+            visible={showComment}
+            closable={false}
+            width={400}
+            onClose={()=>setShowComment(false)}
+        >
             <div className="comment-top">
                 <span className="comment-title">评论</span>
-                <svg className="svg-icon" aria-hidden="true" onClick={() => setShowComment(false)}>
+                <svg className="icon-24" aria-hidden="true" onClick={() => setShowComment(false)}>
                     <use xlinkHref="#icon-close"></use>
                 </svg>
             </div>
@@ -76,7 +83,7 @@ const CommentShare = (props) => {
                                     <div className="comment-list-top">
                                         <div className="comment-user">
                                             <Profile userInfo={item.user}/>
-                                            <span className="user-name">{item.user.name}</span>
+                                            <span className="user-name">{item.user.nickname}</span>
                                         </div>
                                         <div className="comment-time">
                                             {item.createTime.slice(5, 16)}
@@ -91,7 +98,7 @@ const CommentShare = (props) => {
                                                 <div className="comment-list-top">
                                                     <div className="comment-user">
                                                         <Profile userInfo={children.user}/>
-                                                        <span className="user-name">{children.user.name}回复了：{children.aimAtUser.name}</span>
+                                                        <span className="user-name">{children.user.nickname}回复了：{children.aimAtUser.nickname}</span>
                                                     </div>
                                                     <div className="comment-time">
                                                         {children.createTime.slice(5, 16)}
@@ -107,14 +114,15 @@ const CommentShare = (props) => {
                             })
                         }
                         {
-                            totalPage > 1 && currentPage < totalPage && <div className="comment-more-botton" onClick={() => nextPageCommon()}>查看更多...</div>
+                            totalPage > 1 && currentPage < totalPage &&
+                            <div className="comment-more-botton" onClick={() => nextPageCommon()}>查看更多...</div>
                         }
                     </>
                         :
                         <Empty description="暂时没有评价~" />
                 }
             </div>
-        </div>
+        </Drawer>
     )
 }
 

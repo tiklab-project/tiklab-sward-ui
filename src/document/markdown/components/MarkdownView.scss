@@ -9,13 +9,13 @@
         display: flex;
         justify-content: space-between;
         height: calc(100% - 71px);
-        padding: 10px 10px 0;
     }
 
     .document-examine-row {
         height: 100%;
         overflow: auto;
         flex: 1;
+        padding: 10px 10px 0;
     }
 
     .examine-top {
@@ -107,7 +107,7 @@
         right: 20px;
 
         .comment-box-item {
-            padding: 5px;
+            cursor: pointer;
         }
 
         .comment-item {

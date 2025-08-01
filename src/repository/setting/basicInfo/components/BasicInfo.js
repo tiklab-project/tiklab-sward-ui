@@ -8,13 +8,12 @@
  */
 import React, { useEffect, useState } from "react";
 import { observer, inject } from "mobx-react";
-import { Input, Form, Select, Button, Modal, Row, Col, message, Alert } from "antd";
+import { Input, Form, Select, Button, Row, Col, message, Collapse } from "antd";
 import 'moment/locale/zh-cn';
 import "../components/basicInfo.scss";
 import Breadcumb from "../../../../common/components/breadcrumb/Breadcrumb";
 import RepositoryIcon from "./RepositoryChangeIcon";
 import { PrivilegeProjectButton } from "tiklab-privilege-ui";
-import { Collapse } from 'antd';
 import { getVersionInfo } from "tiklab-core-ui";
 import ArchivedFree from "../../../../common/components/archivedFree/ArchivedFree";
 import Img from "../../../../common/components/img/Img";
@@ -22,38 +21,24 @@ import RepositoryDelete from "../../../repository/components/RepositoryDelete";
 
 const { Panel } = Collapse;
 const BasicInfo = props => {
-    const layout = {
-        labelCol: {
-            span: 4,
-        },
-        wrapperCol: {
-            span: 20,
-        },
-    };
-    const formTailLayout = {
-        labelCol: {
-            span: 4,
-        },
-        wrapperCol: {
-            span: 8,
-            offset: 4,
-        },
-    };
 
-    const [form] = Form.useForm();
-    const repositoryId = props.match.params.repositoryId;
     const { repositorySetStore, repositoryDetailStore, RepositoryRecycleModal,ArchivedComponent } = props;
     const {updateRepository} = repositorySetStore;
     const { findRepository, repository, findDmUserList } = repositoryDetailStore;
 
+    const [form] = Form.useForm();
+    const repositoryId = props.match.params.repositoryId;
+    const versionInfo = getVersionInfo();
+
+    //是否能修改知识库
     const [disable, setDisabled] = useState(true);
+    //图表弹出框
     const [visible, setVisible] = useState(false);
-
+    //知识库成员
     const [userList,setUserList] = useState([]);
-
     //移到回收站弹出框
     const [repositoryRecycleVisable, setRepositoryRecycleVisable] = useState(false);
-    const versionInfo = getVersionInfo();
+    //订阅引导
     const [archivedFreeVisable, setArchivedFreeVisable] = useState(false)
 
     useEffect(() => {
@@ -62,20 +47,29 @@ const BasicInfo = props => {
         })
     }, [])
 
+    /**
+     * 关闭知识库信息
+     */
     const cancel = () => {
         form.setFieldsValue({
             name: repository.name,
             limits: repository.limits,
             desc: repository.desc,
-            master: repository.master.id
+            master: {id: repository.master.id}
         })
         setDisabled(true)
     }
 
+    /**
+     * 更新知识库
+     */
     const onFinish = () => {
         form.validateFields().then((values) => {
+            const {name,limits,master:{id}} = values;
             const data = {
-                ...values,
+                name: name || repository.name,
+                limits: limits || repository.limits,
+                master: {id: id || repository.master.id},
                 id: repositoryId
             }
             updateRepository(data).then(res => {
@@ -93,7 +87,6 @@ const BasicInfo = props => {
      * 删除知识库
      */
     const showModal = () => {
-        // 免费版本
         setIsModalVisible(true);
     };
 
@@ -138,7 +131,7 @@ const BasicInfo = props => {
                 <svg aria-hidden="true" className="img-icon" fill="#fff">
                     <use xlinkHref="#icon-systemreset"></use>
                 </svg>
-                归档知识库
+                知识库归档
             </div>
             <div style={{ fontSize: "12px", color: "#999" }}>
                 <svg aria-hidden="true" className="img-icon" fill="#fff">
@@ -155,7 +148,7 @@ const BasicInfo = props => {
                 <svg aria-hidden="true" className="img-icon" fill="#fff">
                     <use xlinkHref="#icon-projectDelete"></use>
                 </svg>
-                删除知识库
+                知识库删除
             </div>
             <div style={{ fontSize: "12px", color: "#999" }}>
                 <svg aria-hidden="true" className="img-icon" fill="#fff">
@@ -165,6 +158,15 @@ const BasicInfo = props => {
             </div>
         </div>
     );
+
+    const layout = {
+        labelCol: {span: 4,},
+        wrapperCol: {span: 20,},
+    };
+    const formTailLayout = {
+        labelCol: {span: 4,},
+        wrapperCol: {span: 8, offset: 4,},
+    };
 
     return (
         <Row>
@@ -226,12 +228,6 @@ const BasicInfo = props => {
                                     <Form.Item
                                         label="负责人"
                                         name={['master','id']}
-                                        rules={[
-                                            {
-                                                required: false,
-                                                message: '请输入知识库编码',
-                                            }
-                                        ]}
                                     >
                                         <Select
                                             placeholder="负责人"
@@ -279,12 +275,6 @@ const BasicInfo = props => {
                                         <div className="button-row">
                                             <div className="change-button" onClick={() => showArchived()}>
                                                 归档知识库
-                                                {/*{*/}
-                                                {/*    versionInfo.expired &&*/}
-                                                {/*    <svg className="img-icon-16" aria-hidden="true" >*/}
-                                                {/*        <use xlinkHref="#icon-member"></use>*/}
-                                                {/*    </svg>*/}
-                                                {/*}*/}
                                             </div>
                                         </div>
                                     </div>
@@ -300,12 +290,6 @@ const BasicInfo = props => {
                                     <div className="button-row">
                                         <div className="change-button" onClick={() =>showRecycle()}>
                                             移入回收站
-                                            {/*{*/}
-                                            {/*    versionInfo.expired && */}
-                                            {/*    <svg className="img-icon-16" aria-hidden="true" >*/}
-                                            {/*        <use xlinkHref="#icon-member"></use>*/}
-                                            {/*    </svg>*/}
-                                            {/*}*/}
                                         </div>
                                         <div className="change-button delete-button" onClick={() => showModal()}>
                                             删除知识库
@@ -344,4 +328,4 @@ const BasicInfo = props => {
     )
 }
 
-export default inject("repositorySetStore", "systemRoleStore","repositoryDetailStore")(observer(BasicInfo));
+export default inject("repositorySetStore","repositoryDetailStore")(observer(BasicInfo));

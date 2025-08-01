@@ -29,7 +29,7 @@ const MarkdownDocument = (props) => {
     }
     const documentId = props.match.params.id;
     const { findDocument, createDocumentFocus, deleteDocumentFocusByCondition } = MarkdownStore;
-    const { documentTitle, setDocumentTitle, repository} = RepositoryDetailStore;
+    const { documentTitle, setDocumentTitle, repository,createRecent} = RepositoryDetailStore;
     const { createLike, deleteLike } = CommentStore;
     const [shareVisible, setShareVisible] = useState(false)
     const [documentDate, setDocumentDate] = useState()
@@ -77,6 +77,14 @@ const MarkdownDocument = (props) => {
                     setFocus(document.focus)
                     setLikeNum(document.likenumInt)
                     setCommentNum(document.commentNumber)
+
+                    createRecent({
+                        name: node.name,
+                        model: "document",
+                        modelId: documentId,
+                        master: { id: userId },
+                        wikiRepository: { id: repositoryId }
+                    })
                 }
             }
             setLoading(false)
@@ -168,6 +176,7 @@ const MarkdownDocument = (props) => {
                                 showComment &&
                                 <Comment
                                     documentId={documentId}
+                                    showComment={showComment}
                                     setShowComment={setShowComment}
                                     commentNum={commentNum}
                                     setCommentNum={setCommentNum}
@@ -262,29 +271,14 @@ const MarkdownDocument = (props) => {
                                 <>
                                 </>
                             }
-                            {/*<div className="comment-box">*/}
-                            {/*    <div className="comment-box-item top-item">*/}
-                            {/*        <svg className="midden-icon" aria-hidden="true" onClick={() => setShowComment(!showComment)}>*/}
-                            {/*            <use xlinkHref="#icon-comment"></use>*/}
-                            {/*        </svg>*/}
-                            {/*        <div className="commnet-num">{commentNum}</div>*/}
-                            {/*    </div>*/}
-                            {/*    <div className="comment-box-item">*/}
-                            {/*        <span className="comment-item" onClick={addDocLike}>*/}
-                            {/*            {*/}
-                            {/*                like ?*/}
-                            {/*                    <svg className="midden-icon" aria-hidden="true">*/}
-                            {/*                        <use xlinkHref="#icon-zan"></use>*/}
-                            {/*                    </svg>*/}
-                            {/*                    :*/}
-                            {/*                    <svg className="midden-icon" aria-hidden="true">*/}
-                            {/*                        <use xlinkHref="#icon-dianzan"></use>*/}
-                            {/*                    </svg>*/}
-                            {/*            }*/}
-                            {/*        </span>*/}
-                            {/*        <div className="commnet-num" style={{ top: "37px" }}>{likeNum}</div>*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
+                            <div className="comment-box">
+                                <div className="comment-box-item">
+                                    <svg className="midden-icon" aria-hidden="true" onClick={() => setShowComment(!showComment)}>
+                                        <use xlinkHref="#icon-comment"></use>
+                                    </svg>
+                                    {/*<div className="commnet-num">{commentNum}</div>*/}
+                                </div>
+                            </div>
                             <ShareModal
                                 shareVisible={shareVisible}
                                 setShareVisible={setShareVisible}

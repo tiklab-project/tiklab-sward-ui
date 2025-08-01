@@ -60,6 +60,12 @@ const RepositorySetDetail = (props)=>{
             iseEnhance: false
         },
         {
+            title: '共享',
+            icon: 'survey',
+            key: `/repository/${repositoryId}/set/share`,
+            iseEnhance: false
+        },
+        {
             title: '评审',
             icon: 'review',
             key: `/repository/${repositoryId}/set/review`,

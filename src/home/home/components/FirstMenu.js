@@ -33,8 +33,9 @@ const FirstMenu = (props) => {
 
     const {getSystemPermissions} = systemRoleStore;
 
+    //菜单折叠状态
     const [isShowText, setIsShowText] = useState(false)
-
+    //主题
     const [theme, setTheme] = useState(localStorage.getItem("theme") ? localStorage.getItem("theme") : "default");
     const [themeClass, setThemeClass] = useState("first-sider-gray")
 
@@ -51,7 +52,6 @@ const FirstMenu = (props) => {
     const changeCurrentLink = item => {
         localStorage.removeItem("sprintId")
         props.history.push(item.to)
-        sessionStorage.setItem("menuKey", item.key)
     }
 
     /**
@@ -59,7 +59,6 @@ const FirstMenu = (props) => {
      */
     const goHomePage = (router) => {
         props.history.push("/index")
-        sessionStorage.setItem("menuKey", "home")
     }
 
     const goSet = () => {

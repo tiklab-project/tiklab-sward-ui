@@ -28,7 +28,7 @@ const FileView =  ({ ExtendFileView, ...props })=> {
     const repositoryId = props.match.params.repositoryId;
     const userId = getUser().userId;
 
-    const { documentTitle, setDocumentTitle } = RepositoryDetailStore;
+    const { documentTitle, setDocumentTitle, createRecent } = RepositoryDetailStore;
 
     //文档
     const [documentData, setDocumentData] = useState(null);
@@ -47,6 +47,13 @@ const FileView =  ({ ExtendFileView, ...props })=> {
             if(res.code===0){
                 setDocumentData(res.data)
                 setDocumentTitle(res.data?.node?.name)
+                createRecent({
+                    name: res.data?.node?.name,
+                    model: "document",
+                    modelId: documentId,
+                    master: { id: userId },
+                    wikiRepository: { id: repositoryId }
+                })
             }
         }).finally(()=>setSpinning(false))
     }, [documentId]);

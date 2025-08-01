@@ -15,10 +15,6 @@ const LoginRpw = AsyncComponent(() => import('./login/LoginRpwContent'))
 const Logout = AsyncComponent(() => import('./login/Logout'))
 const Home = AsyncComponent(() => import('./home/home/components/Home'))
 const SysExceptionContent = AsyncComponent(() => import("./login/SysExceptionContent"))
-// 收藏
-const Collect = AsyncComponent(() => import("./home/collect/components/CollectAside"))
-const CollectLayout = AsyncComponent(() => import("./home/collect/components/CollectLayout"))
-const CollectEmpty  = AsyncComponent(() => import("./home/collect/components/CollectEmpty"))
 
 const NoFoundPage = AsyncComponent(() => import('./login/NoFoundPage'));
 const NoAccessPage = AsyncComponent(() => import('./login/SystemNoAccessPage'));
@@ -29,8 +25,9 @@ const Index = AsyncComponent(() => import('./home/home/components/Layout'))
 const RepositoryDetail = AsyncComponent(() => import('./repository/common/components/RepositoryLayout'))
 const Survey = AsyncComponent(() => import('./repository/overview/components/Survey'))
 const DynamicList = AsyncComponent(() => import("./repository/overview/components/DynamicList"))
-const FocusDocumentList = AsyncComponent(() => import("./home/home/components/FocusDocumentList"))
 const LogDetail = AsyncComponent(() => import('./repository/document/category/CategoryDetail'))
+// 收藏
+const CollectLayout = AsyncComponent(() => import("./home/collect/components/CollectLayout"))
 
 
 // 知识库
@@ -200,17 +197,10 @@ const Routes = [
                 key: 'home'
             },
             {
-                path: "/focusDocumentList",
-                exact: true,
-                component: FocusDocumentList,
-                key: 'focusDocumentList'
-            },
-            {
                 path: "/repository",
                 exact: true,
                 component: Repository,
                 key: 'repository'
-
             },
             {
                 path: "/collect",
@@ -242,11 +232,6 @@ const Routes = [
                         component: FileView
                     },
                 ]
-            },
-            {
-                path: "/collectEmpty",
-                component: CollectEmpty,
-                key: 'collect',
             },
             {
                 path: "/setting",
@@ -465,10 +450,6 @@ const Routes = [
                         component: DynamicList
                     },
                     {
-                        path: "/repository/:repositoryId/focusDocumentList",
-                        component: FocusDocumentList
-                    },
-                    {
                         path: "/repository/:repositoryId/share",
                         exact: true,
                         component: DocumentShare
@@ -532,7 +513,12 @@ const Routes = [
                             {
                                 path: "/repository/:repositoryId/set/messagenotice",
                                 component: DomainMessageNoticeContent,
-                            }
+                            },
+                            {
+                                path: "/repository/:repositoryId/set/share",
+                                exact: true,
+                                component: DocumentShare
+                            },
                         ]
                     },
 

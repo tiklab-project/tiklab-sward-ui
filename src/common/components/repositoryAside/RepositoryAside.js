@@ -174,31 +174,26 @@ const RepositoryAside = (props) => {
 
                             })
                         }
-                        <MoreMenuModel
-                            isShowText={isShowText}
-                            moreMenu={[
-                                ...moreMenu,
-                                {
-                                    title: '评审',
-                                    icon: 'review-' + theme,
-                                    defaultIcon: "review-default",
-                                    id: `/repository/${repositoryId}/review`,
-                                    to: `/repository/${repositoryId}/review`,
-                                    key: 'review',
-                                    encoded: "review",
-                                    isEnhance: true,
-                                },
-                            ]}
-                            theme={theme}
-                            selectMenu={selectMenu}
-                        />
+                        {
+                            moreMenu?.length > 0 &&
+                            <MoreMenuModel
+                                isShowText={isShowText}
+                                moreMenu={moreMenu}
+                                theme={theme}
+                                selectMenu={selectMenu}
+                            />
+                        }
                         <ArchivedFree
                             type={archivedFreeType}
                             archivedFreeVisable={archivedFreeVisable}
                             setArchivedFreeVisable={setArchivedFreeVisable}
                         />
                     </div>
-                    <SetMenu isShowText={isShowText} setUrl={setUrl} theme={theme} />
+                    <SetMenu
+                        isShowText={isShowText}
+                        setUrl={setUrl}
+                        theme={theme}
+                    />
                     <div className={"menu-box-right-border"}>
                         <div className={"menu-box-isexpanded"} onClick={toggleCollapsed}>
                             {

@@ -47,7 +47,12 @@ const ShareDocument = (props) => {
     return (
         <div className="document-share-examine">
             {
-                showComment && <CommentShare documentId={props.match.params.id} setShowComment={setShowComment} />
+                showComment &&
+                <CommentShare
+                    documentId={props.match.params.id}
+                    showComment={showComment}
+                    setShowComment={setShowComment}
+                />
             }
             <div className="examine-title">
                 <span className="examine-name">{docInfo.name}</span>

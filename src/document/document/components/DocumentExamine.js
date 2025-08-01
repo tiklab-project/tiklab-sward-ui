@@ -20,13 +20,19 @@ import DocumentStore from "../store/DocumentStore";
 import RepositoryDetailStore from "../../../repository/common/store/RepositoryDetailStore";
 import Button from "../../../common/components/button/Button";
 import DocumentActionMenu from "../../../repository/common/components/DocumentActionMenu";
-import {DoubleLeftOutlined, DoubleRightOutlined} from "@ant-design/icons";
+import {
+    DoubleLeftOutlined,
+    DoubleRightOutlined,
+    MessageOutlined,
+    ProfileOutlined,
+    VerticalLeftOutlined
+} from "@ant-design/icons";
 
 const DocumentExamine = (props) => {
 
     const { relationWorkStore, DocumentVersionList, DocumentVersionAdd ,DocumentReviewAdd } = props;
 
-    const { repository, documentTitle, setDocumentTitle } = RepositoryDetailStore;
+    const { repository, documentTitle, setDocumentTitle, createRecent } = RepositoryDetailStore;
     const [documentDate, setDocumentDate] = useState();
     const path = props.location.pathname.split("/")[3];
     const store = {
@@ -89,11 +95,18 @@ const DocumentExamine = (props) => {
                     setFocus(document.focus)
                     setLikeNum(document.likenumInt)
                     setCommentNum(document.commentNumber)
+
+                    createRecent({
+                        name: node.name,
+                        model: "document",
+                        modelId: documentId,
+                        master: { id: user.userId },
+                        wikiRepository: { id: repositoryId }
+                    })
                 }
             }
             setLoading(false)
         })
-        return;
     }, [documentId])
 
     // 点赞
@@ -204,7 +217,6 @@ const DocumentExamine = (props) => {
             })
     };
 
-
     return (<Provider {...store}>
         <Spin wrapperClassName="document-examine-spin" spinning={loading} >
             {
@@ -215,6 +227,7 @@ const DocumentExamine = (props) => {
                                 showComment &&
                                 <Comment
                                     documentId={documentId}
+                                    showComment={showComment}
                                     setShowComment={setShowComment}
                                     commentNum={commentNum}
                                     setCommentNum={setCommentNum}
@@ -308,57 +321,52 @@ const DocumentExamine = (props) => {
                                             </Row>
                                         </div>
                                         <div className="category-editor-box">
-                                            <div className="category-editor">
-                                                <div className="category-editor-top">
-                                                    {
-                                                        showCatagory &&
-                                                        <div className='category-editor-title'>本页目录</div>
-                                                    }
-                                                    <div
-                                                        className={`category-editor-action ${showCatagory ? 'category-hidden':'category-narrow'}`}
-                                                        onClick={()=>setShowCatagory(!showCatagory)}
-                                                    >
-                                                        {
-                                                            showCatagory ?  <DoubleRightOutlined /> : <DoubleLeftOutlined />
-                                                        }
+                                            {
+                                                showCatagory ?
+                                                    <div className="category-editor">
+                                                        <div className="category-editor-top">
+                                                            <div className='category-editor-title'>本页目录</div>
+                                                            <div
+                                                                className="category-hidden"
+                                                                onClick={()=>setShowCatagory(!showCatagory)}
+                                                            >
+                                                                <VerticalLeftOutlined />
+                                                            </div>
+                                                        </div>
+                                                        <div className="category-editor-content">
+                                                            <EditorCategory
+                                                                newValue={JSON.parse(value)}
+                                                                type="simple"
+                                                            />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                {
-                                                    showCatagory &&
-                                                    <div className="category-editor-content">
-                                                        <EditorCategory
-                                                            newValue={JSON.parse(value)}
-                                                            type="simple"
-                                                        />
+                                                    :
+                                                    <div className='category-editor'>
+                                                        <div className='category-narrow'
+                                                             onClick={()=>setShowCatagory(!showCatagory)}
+                                                             data-title-left={'目录'}
+                                                        >
+                                                            <ProfileOutlined />
+                                                        </div>
+                                                        {/*<div className='category-narrow'*/}
+                                                        {/*     onClick={()=>setShowComment(!showComment)}*/}
+                                                        {/*     data-title-left={'评论'}*/}
+                                                        {/*>*/}
+                                                        {/*    <MessageOutlined />*/}
+                                                        {/*</div>*/}
                                                     </div>
-                                                }
-                                            </div>
+                                            }
                                         </div>
                                     </div> : <></>
                             }
-                            {/*<div className="comment-box">*/}
-                            {/*    <div className="comment-box-item top-item">*/}
-                            {/*        <svg className="midden-icon" aria-hidden="true" onClick={() => setShowComment(!showComment)}>*/}
-                            {/*            <use xlinkHref="#icon-comment"></use>*/}
-                            {/*        </svg>*/}
-                            {/*        <div className="commnet-num">{commentNum}</div>*/}
-                            {/*    </div>*/}
-                            {/*    <div className="comment-box-item">*/}
-                            {/*        <span className="comment-item" onClick={addDocLike}>*/}
-                            {/*            {*/}
-                            {/*                like ?*/}
-                            {/*                    <svg className="midden-icon" aria-hidden="true">*/}
-                            {/*                        <use xlinkHref="#icon-zan"></use>*/}
-                            {/*                    </svg>*/}
-                            {/*                    :*/}
-                            {/*                    <svg className="midden-icon" aria-hidden="true">*/}
-                            {/*                        <use xlinkHref="#icon-dianzan"></use>*/}
-                            {/*                    </svg>*/}
-                            {/*            }*/}
-                            {/*        </span>*/}
-                            {/*        <div className="commnet-num" style={{ top: "37px" }}>{likeNum}</div>*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
+                            <div className="comment-box">
+                                <div className="comment-box-item">
+                                    <svg className="midden-icon" aria-hidden="true" onClick={() => setShowComment(!showComment)}>
+                                        <use xlinkHref="#icon-comment"></use>
+                                    </svg>
+                                    {/*<div className="commnet-num">{commentNum}</div>*/}
+                                </div>
+                            </div>
                             <ShareModal
                                 shareVisible={shareVisible}
                                 setShareVisible={setShareVisible}
@@ -373,13 +381,9 @@ const DocumentExamine = (props) => {
                     <div className="document-empty">
                         {!loading && <Empty description="文档不存在或者已被删除~" />}
                     </div>
-
             }
         </Spin>
-
-
     </Provider>
-
     )
 }
 

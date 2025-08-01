@@ -6,7 +6,6 @@
  * @LastEditors: 袁婕轩
  * @LastEditTime: 2024-12-31 17:07:38
  */
-
 import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
 import { Layout } from "antd";
@@ -72,7 +71,7 @@ const RepositorySetAside = (props) => {
     const menuHtml = (Item,deep) => {
         return (
             <div
-                className={`repository-menu ${Item.key === path ? "repository-menu-select" : ""}`}
+                className={`repository-menu ${(path && path.indexOf(Item.key) !== -1) ? "repository-menu-select" : ""}`}
                 key={Item.key}
                 onClick={() => selectKeyFun(Item)}
                 style={{paddingLeft: deep}}

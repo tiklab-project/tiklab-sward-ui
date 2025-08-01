@@ -3,6 +3,77 @@
   height: 100%;
   padding: 20px 30px;
   overflow: auto;
+  &-content{
+    .document-share-table-name{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      .name-text{
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+      }
+      .home-name-text{
+        flex: 1;
+        min-width: 0;
+        .home-name-text-desc,.home-name-text-name{
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          -o-text-overflow: ellipsis;
+        }
+        .home-name-text-desc{
+          padding-top: 5px;
+          font-size: 12px;
+          color: var(--tiklab-gray-500);
+        }
+      }
+    }
+    .action-button{
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .svg-icon{
+      cursor: pointer;
+    }
+    .ant-avatar{
+      width: 22px;
+      height: 22px;
+      line-height: 22px;
+      font-size: 12px;
+    }
+  }
+  &-home{
+    .document-share-search{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 15px;
+      .document-share-tabs{
+        display: flex;
+        justify-content: flex-start;
+        .document-share-tab{
+          border-radius: 4px;
+          padding: 3px 6px;
+          background: var(--tiklab-gray);
+          cursor: pointer;
+          margin-right: 15px;
+          font-size: 13px;
+          &:hover{
+            background: var(--tiklab-gray-300);
+          }
+        }
+        .share-tab-select{
+          background: var(--tiklab-gray-400);
+          color: var(--tiklab-blue);
+        }
+      }
+    }
+  }
+
   .document-share-search{
     display: flex;
     align-items: center;
@@ -25,30 +96,5 @@
       }
     }
   }
-  .document-share-table-name{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    .name-text{
-      flex: 1;
-      min-width: 0;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      -o-text-overflow: ellipsis;
-    }
-  }
-  .action-button{
-    font-size: 16px;
-    cursor: pointer;
-  }
-  .svg-icon{
-    cursor: pointer;
-  }
-  .ant-avatar{
-    width: 22px;
-    height: 22px;
-    line-height: 22px;
-    font-size: 12px;
-  }
+
 }

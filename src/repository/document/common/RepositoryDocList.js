@@ -37,7 +37,7 @@ const RepositoryDocList = (props) => {
     //语言包
     const { t } = useTranslation();
     const { findNodePageTree, updateRepositoryCatalogue, deleteNode, updateDocument,
-        repositoryCatalogueList, setRepositoryCatalogueList, createRecent,
+        repositoryCatalogueList, setRepositoryCatalogueList,
         expandedTree, setExpandedTree, setDocumentTitle, setCategoryTitle, findCategory, repository } = repositoryDetailStore;
 
     // 当前选中目录id
@@ -101,14 +101,6 @@ const RepositoryDocList = (props) => {
     }
 
     const goDetail = (item, action) => {
-        const params = {
-            name: item.name,
-            model: item.type,
-            modelId: item.id,
-            master: { id: userId },
-            wikiRepository: { id: repositoryId }
-        }
-        createRecent(params)
         if (item.type === "category") {
             if(action === "click"){
                 findCategoryChildren(item.id, item.type)

@@ -6,17 +6,16 @@
  * @LastEditors: 袁婕轩
  * @LastEditTime: 2024-12-31 15:40:54
  */
-import React, { useEffect, useState } from "react";
-import "./Collect.scss";
-import { Col, Empty, Layout, Row } from "antd";
-
+import React from "react";
+import { Empty, Layout } from "antd";
 import "./CollectAside.scss"
 import SearchInput from "../../../common/components/search/SearchInput";
 import { useDebounce } from "../../../common/utils/debounce";
-import {getFileIcon} from "../../../common/utils/overall";
 import DocumentIcon from "../../../common/components/icon/DocumentIcon";
 const { Sider } = Layout;
+
 const CollectAside = (props) => {
+
     const { focusDocumentList, selectKey, setSelectKey, findList } = props;
     const repositoryId = props.match.params.repositoryId;
 
@@ -44,7 +43,7 @@ const CollectAside = (props) => {
         findList(params)
     }, 500)
 
-    return (<>
+    return (
         <Sider trigger={null} collapsible collapsedWidth="50" width="270" className="collect-aside">
             <div className='collect-doc-aside'>
                 <div className="collect-doc-title">
@@ -81,14 +80,9 @@ const CollectAside = (props) => {
                             :
                             <Empty description="暂时没有数据~" />
                     }
-
                 </div>
-
             </div>
         </Sider>
-    </>
-
-
     )
 }
 export default CollectAside;

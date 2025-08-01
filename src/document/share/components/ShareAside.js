@@ -32,6 +32,7 @@ const ShareAside = (props) => {
     const id = props.location.pathname.split("/")[4];
     //分享目录
     const [repositoryCatalogueList, setRepositoryCatalogueList] = useState([])
+    const locationStatePassWord = props.location.state?.password;
 
     useVersion();
 
@@ -46,16 +47,7 @@ const ShareAside = (props) => {
         // 判断是否需要验证码
         judgeAuthCode(params).then(data => {
             if(data.code===0){
-                if (data.data === "true") {
-                    if(version !== "cloud"){
-                        window.location.href = `${origin}/#/passWord/${shareLink}`
-                    }
-                    if(version === "cloud"){
-                        window.location.href = `${origin}/#/passWord/${shareLink}?tenant=${tenant}`
-                    }
-                    return
-                }
-                if (data.data === "false") {
+                if (data.data === "false" || locationStatePassWord === "true") {
                     findShareCategory({
                         shareId: shareLink,
                     }).then((data) => {
@@ -68,6 +60,15 @@ const ShareAside = (props) => {
                             }
                         }
                     })
+                    return;
+                }
+                if (data.data === "true") {
+                    if(version !== "cloud"){
+                        window.location.href = `${origin}/#/passWord/${shareLink}`
+                    }
+                    if(version === "cloud"){
+                        window.location.href = `${origin}/#/passWord/${shareLink}?tenant=${tenant}`
+                    }
                 }
             } else {
                 setShareExist(false)

@@ -106,7 +106,7 @@ const Collect = props =>{
             dataIndex: "node",
             key: "node",
             align: "left",
-            width: "35%",
+            width: "40%",
             render: (text,record) =>(
                 <div className='document-collect-table-name' onClick={()=>toDocument(record)}>
                     <DocumentIcon
@@ -114,9 +114,22 @@ const Collect = props =>{
                         documentName={text?.name}
                         className={"icon-24"}
                     />
-                    <div className='name-text'>
-                        {text?.name}
-                    </div>
+                    {
+                        props.route.path === '/index' ? (
+                            <div className='home-name-text'>
+                                <div className='home-name-text-name'>
+                                    {text?.name}
+                                </div>
+                                <div className='home-name-text-desc'>
+                                    {record?.wikiRepository?.name}
+                                </div>
+                            </div>
+                        ) : (
+                            <div className='name-text'>
+                                {text?.name}
+                            </div>
+                        )
+                    }
                 </div>
             )
         },
@@ -125,7 +138,7 @@ const Collect = props =>{
             dataIndex: "master",
             key: "master",
             align: "left",
-            width: "25%",
+            width: "20%",
             ellipsis:true,
             render:text => (
                 <Space>
@@ -173,7 +186,29 @@ const Collect = props =>{
         }
     ]
 
-    return (
+    const tableHtml = (
+        <Spin spinning={spinning}>
+            <div className='document-collect-table'>
+                <Table
+                    columns={columns}
+                    dataSource={focusData?.dataList || []}
+                    rowKey={record => record.id}
+                    pagination={false}
+                    locale={{emptyText: <Empty description="没有查询到数据" />}}
+                />
+                <Page
+                    currentPage={focusData.currentPage}
+                    changePage={(currentPage) => onPageChange(currentPage)}
+                    totalPage={focusData.totalPage}
+                    total={focusData.totalRecord}
+                    refresh={() => onPageChange(1)}
+                    showRefresh={true}
+                />
+            </div>
+        </Spin>
+    )
+
+    return props.route.path === '/index' ? tableHtml : (
         <Row className='document-collect'>
             <Col
                 xs={24}
@@ -185,24 +220,7 @@ const Collect = props =>{
                     secondText="收藏"
                     firstUrl={`/repository/${repositoryId}/overview`}
                 />
-                <Spin spinning={spinning}>
-                    <Table
-                        columns={columns}
-                        dataSource={focusData?.dataList || []}
-                        rowKey={record => record.id}
-                        pagination={false}
-                        locale={{emptyText: <Empty description="没有查询到数据" />}}
-                    />
-                    <Page
-                        currentPage={focusData.currentPage}
-                        changePage={(currentPage) => onPageChange(currentPage)}
-                        totalPage={focusData.totalPage}
-                        total={focusData.totalRecord}
-                        refresh={() => onPageChange(1)}
-                        showRefresh={true}
-                    />
-                </Spin>
-
+                {tableHtml}
             </Col>
         </Row>
     )

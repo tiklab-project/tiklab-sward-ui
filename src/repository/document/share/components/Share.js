@@ -159,7 +159,22 @@ const Share = props =>{
                             documentType={'document'}
                             className={'icon-24'}
                         />
-                        <div className='name-text'>{text}</div>
+                        {
+                            props.route.path === '/index'  ? (
+                                <div className='home-name-text'>
+                                    <div className='home-name-text-name'>
+                                        {text}
+                                    </div>
+                                    <div className='home-name-text-desc'>
+                                        {record?.wikiRepository?.name}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className='name-text'>
+                                    {text}
+                                </div>
+                            )
+                        }
                     </div>
                 )
             }
@@ -243,7 +258,60 @@ const Share = props =>{
         }
     ]
 
-    return (
+    const commonHtml = (
+        <div className='document-share-content'>
+            <div className='document-share-search'>
+                <div className='document-share-tabs'>
+                    <div
+                        className={`document-share-tab ${requestParam?.type==='all' ? 'share-tab-select' : ''}`}
+                        onClick={()=>changeType('all')}
+                    >
+                        全部
+                    </div>
+                    <div
+                        className={`document-share-tab ${requestParam?.type==='category' ? 'share-tab-select' : ''}`}
+                        onClick={()=>changeType('category')}
+                    >
+                        目录
+                    </div>
+                    <div
+                        className={`document-share-tab ${requestParam?.type==='document' ? 'share-tab-select' : ''}`}
+                        onClick={()=>changeType('document')}
+                    >
+                        文档
+                    </div>
+                </div>
+                <SearchInput
+                    placeholder={'搜索名称'}
+                    style={{width:180}}
+                    onChange={(value) => onSearch(value)}
+                />
+            </div>
+            <Spin spinning={spinning}>
+                <Table
+                    columns={columns}
+                    dataSource={shareData?.dataList || []}
+                    rowKey={record => record.id}
+                    pagination={false}
+                    locale={{emptyText: <Empty description="没有查询到数据" />}}
+                />
+                <Page
+                    currentPage={shareData.currentPage}
+                    changePage={(currentPage) => onPageChange(currentPage)}
+                    totalPage={shareData.totalPage}
+                    total={shareData.totalRecord}
+                    refresh={() => onPageChange(1)}
+                    showRefresh={true}
+                />
+            </Spin>
+        </div>
+    )
+
+    return props.route.path === '/index' ? (
+        <div className='document-share-home'>
+            {commonHtml}
+        </div>
+    ) : (
         <Row className='document-share'>
             <Col
                 xs={24}
@@ -252,51 +320,7 @@ const Share = props =>{
                 <Breadcrumb
                     firstText={'共享'}
                 />
-                <div className='document-share-search'>
-                    <div className='document-share-tabs'>
-                        <div
-                            className={`document-share-tab ${requestParam?.type==='all' ? 'share-tab-select' : ''}`}
-                            onClick={()=>changeType('all')}
-                        >
-                            全部
-                        </div>
-                        <div
-                            className={`document-share-tab ${requestParam?.type==='category' ? 'share-tab-select' : ''}`}
-                            onClick={()=>changeType('category')}
-                        >
-                            目录
-                        </div>
-                        <div
-                            className={`document-share-tab ${requestParam?.type==='document' ? 'share-tab-select' : ''}`}
-                            onClick={()=>changeType('document')}
-                        >
-                            文档
-                        </div>
-                    </div>
-                    <SearchInput
-                        placeholder={'搜索名称'}
-                        style={{width:180}}
-                        onChange={(value) => onSearch(value)}
-                    />
-                </div>
-                <Spin spinning={spinning}>
-                    <Table
-                        columns={columns}
-                        dataSource={shareData?.dataList || []}
-                        rowKey={record => record.id}
-                        pagination={false}
-                        locale={{emptyText: <Empty description="没有查询到数据" />}}
-                    />
-                    <Page
-                        currentPage={shareData.currentPage}
-                        changePage={(currentPage) => onPageChange(currentPage)}
-                        totalPage={shareData.totalPage}
-                        total={shareData.totalRecord}
-                        refresh={() => onPageChange(1)}
-                        showRefresh={true}
-                    />
-                </Spin>
-
+                {commonHtml}
             </Col>
         </Row>
     )

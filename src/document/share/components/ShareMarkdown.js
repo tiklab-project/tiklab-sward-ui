@@ -13,8 +13,9 @@ import { Row, Col } from 'antd';
 import { MarkdownView } from "tiklab-markdown-ui";
 import "tiklab-markdown-ui/es/tiklab-markdown.css";
 import "./shareMarkdown.scss"
-import Comment from "./CommentShare";
+import CommentShare from "./CommentShare";
 import { withRouter } from "react-router";
+
 const initValue = [{
     type: 'code',
     children: [
@@ -78,7 +79,12 @@ const ShareMarkdown = (props) => {
                     </Col>
                 </Row>
                 {
-                    showComment && <Comment documentId={props.match.params.id} setShowComment={setShowComment} />
+                    showComment &&
+                    <CommentShare
+                        documentId={props.match.params.id}
+                        showComment={showComment}
+                        setShowComment={setShowComment}
+                    />
                 }
             </div>
             <div className="comment-box">

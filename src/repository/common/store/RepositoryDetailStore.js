@@ -7,7 +7,7 @@
  * @LastEditTime: 2021-12-22 14:34:53
  */
 import { Service } from "../../../common/utils/requset";
-import { observable, action, makeObservable} from "mobx";
+import { observable, action} from "mobx";
 export class RepositoryDetailStore {
     @observable repository = null;
     // 知识库id
@@ -101,14 +101,6 @@ export class RepositoryDetailStore {
         return data;
     }
 
-    // 获取文档
-
-    @action
-    findNodeList= async(param)=> {
-        const data = await Service("/node/findNodeList", param);
-        return data;
-    }
-
     // 查找项目成员
     @action
     findDmUserList= async (id)=> {
@@ -144,9 +136,11 @@ export class RepositoryDetailStore {
         return data;
     }
 
-    // 临时搜索方法
+
+    // 获取文档
+
     @action
-    findNodeList = async(value) => {
+    findNodeList= async (value)=> {
         const data = await Service("/node/findNodeList", value);
         return data;
     }

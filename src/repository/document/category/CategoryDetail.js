@@ -34,6 +34,13 @@ const CategoryDetail = (props) => {
             if (data.code === 0) {
                 setLogDetail(data.data?.node)
                 setCategoryTitle(data.data?.node.name)
+                createRecent({
+                    name: data.data?.node.name,
+                    model: "category",
+                    modelId: categoryId,
+                    master: { id: userId },
+                    wikiRepository: { id: repositoryId }
+                })
             }
         })
         findNodeList({ parentId: categoryId }).then(data => {
@@ -42,14 +49,6 @@ const CategoryDetail = (props) => {
     }, [categoryId])
 
     const goToDocument = (item) => {
-        const params = {
-            name: item.name,
-            model: item.documentType,
-            modelId: item.id,
-            master: { id: userId },
-            wikiRepository: { id: repositoryId }
-        }
-        createRecent(params)
         if (item.type === "category") {
             localStorage.setItem("categoryId", item.id);
         }

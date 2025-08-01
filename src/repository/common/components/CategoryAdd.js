@@ -71,9 +71,7 @@ const CategoryAdd = (props) => {
             })
         })
     }
-    // const selectType = () => {
 
-    // }
     return (
         <BaseModal
             title={"添加目录"}
@@ -85,8 +83,6 @@ const CategoryAdd = (props) => {
             <Form
                 form={form}
                 name="basic"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 24 }}
                 layout="vertical"
                 labelAlign="right"
                 initialValues={{ remember: true }}

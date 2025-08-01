@@ -4,6 +4,24 @@
     .home-row {
         height: 100%;
     }
+    .home-tabs{
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 20px;
+        .home-tab{
+            padding-bottom: 8px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            &:hover{
+                color: var(--tiklab-blue);
+            }
+        }
+        .home-tab-active{
+            color: var(--tiklab-blue);
+            border-bottom: 2px solid var(--tiklab-blue);
+        }
+    }
     .home-col {
         padding: var(--tiklab-padding);
     }

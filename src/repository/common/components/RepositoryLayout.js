@@ -69,15 +69,15 @@ const RepositoryDetail = (props)=>{
             key: "doc",
             encoded: "doc"
         },
-        {
-            title: "共享",
-            icon: 'share-' + theme,
-            defaultIcon: "share-default",
-            id: `/repository/${repositoryId}/share`,
-            to: `/repository/${repositoryId}/share`,
-            key: "share",
-            encoded: "share"
-        },
+        // {
+        //     title: "共享",
+        //     icon: 'share-' + theme,
+        //     defaultIcon: "share-default",
+        //     id: `/repository/${repositoryId}/share`,
+        //     to: `/repository/${repositoryId}/share`,
+        //     key: "share",
+        //     encoded: "share"
+        // },
         {
             title: '统计',
             icon: 'statistics-' + theme,
