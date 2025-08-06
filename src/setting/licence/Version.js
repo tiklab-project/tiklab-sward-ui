@@ -100,12 +100,9 @@ const ProjectAuthConfig = (props) => {
                 columns={columns}
                 dataSource={dataSource}
                 pagination={false}
-                scroll={{
-                    x: "100%"
-                }}
             />
         </Version>
-       
+
     )
 }
 export default ProjectAuthConfig;

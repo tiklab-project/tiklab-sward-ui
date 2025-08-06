@@ -1,6 +1,14 @@
+/**
+ * @Description:
+ * @Author: gaomengyuan
+ * @Date: 2025/8/5
+ * @LastEditors: gaomengyuan
+ * @LastEditTime: 2025/8/5
+ */
 import { observable, action } from "mobx";
 import {Service} from "../../../../common/utils/requset";
-export class UrlDataStore {
+
+class ServerStore {
 
     @action
     findAllSystemUrl = async () => {
@@ -34,4 +42,4 @@ export class UrlDataStore {
 
 }
 
-export default new UrlDataStore();
+export default new ServerStore();

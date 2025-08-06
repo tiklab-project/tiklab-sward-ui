@@ -348,12 +348,6 @@ const DocumentExamine = (props) => {
                                                         >
                                                             <ProfileOutlined />
                                                         </div>
-                                                        {/*<div className='category-narrow'*/}
-                                                        {/*     onClick={()=>setShowComment(!showComment)}*/}
-                                                        {/*     data-title-left={'评论'}*/}
-                                                        {/*>*/}
-                                                        {/*    <MessageOutlined />*/}
-                                                        {/*</div>*/}
                                                     </div>
                                             }
                                         </div>

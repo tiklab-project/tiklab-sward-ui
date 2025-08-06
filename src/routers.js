@@ -88,7 +88,8 @@ const ProjectSystemUserGroup = AsyncComponent(() => import("./setting/user/Proje
 const ProjectVirtualRoleList = AsyncComponent(() => import("./setting/user/ProjectVirtualRoleList"))
 
 // 系统集成
-const UrlData = AsyncComponent(() => import('./setting/integration/urlData/components/UrlData'));
+const Server = AsyncComponent(() => import('./setting/integration/server/components/Server'));
+
 const Confluence = AsyncComponent(() => import('./setting/integration/confluence/components/Confluence'));
 const OpenApi = AsyncComponent(()=>import('./setting/integration/openApi/OpenApi'));
 const OpenApiDoc = AsyncComponent(()=>import('./setting/integration/openApi/OpenApiDoc'));
@@ -411,8 +412,8 @@ const Routes = [
                         exact: true
                     },
                     {
-                        path: "/setting/urlData",
-                        component: UrlData,
+                        path: "/setting/server",
+                        component: Server,
                         exact: true
                     },
                     {

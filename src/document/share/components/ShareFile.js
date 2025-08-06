@@ -76,25 +76,27 @@ const ShareFile = (props) => {
                 <span className="examine-name">{docInfo?.name}</span>
             </div>
             <div className="examine-content">
-                <Row style={{ flex: 1, overflow: "auto" }}>
-                    <Col
-                        className="repositorydetail-content-col"
-                        xs={{ span: 22, offset: 1 }}
-                        lg={{ span: 18, offset: 3 }}
-                        xl={{ span: 16, offset: 4 }}
-                    >
-                        {
-                            (!disable && ExtendShareFileView) ?
-                                <ExtendShareFileView
-                                    defaultContent={defaultContent}
-                                    documentTitle={docInfo?.name}
-                                    documentData={documentData}
-                                />
-                                :
-                                defaultContent
-                        }
-                    </Col>
-                </Row>
+                {
+                    (!disable && ExtendShareFileView) ?
+                        <div style={{ flex: 1, overflow: "auto" }}>
+                            <ExtendShareFileView
+                                defaultContent={defaultContent}
+                                documentTitle={docInfo?.name}
+                                documentData={documentData}
+                            />
+                        </div>
+                        :
+                        <Row style={{ flex: 1, overflow: "auto" }}>
+                            <Col
+                                className="repositorydetail-content-col"
+                                xs={{ span: 22, offset: 1 }}
+                                lg={{ span: 18, offset: 3 }}
+                                xl={{ span: 16, offset: 4 }}
+                            >
+                                {defaultContent}
+                            </Col>
+                        </Row>
+                }
             </div>
         </div>
 

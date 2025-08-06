@@ -18,7 +18,7 @@ import {observer} from "mobx-react";
 import {disableFunction} from "tiklab-core-ui";
 import ArchivedFree from "../../../common/components/archivedFree/ArchivedFree";
 
-const FileView =  ({ ExtendFileView, ...props })=> {
+const FileView =  ({ ExtendFileView, EditButton, ...props })=> {
 
 
     const { findDocument, createDocumentFocus, deleteDocumentFocusByCondition } = DocumentStore;
@@ -158,30 +158,45 @@ const FileView =  ({ ExtendFileView, ...props })=> {
                                                 <use xlinkHref="#icon-collection"></use>
                                             </svg>
                                     }
-                                    <Button className="document-action-edit" onClick={downFile}>下载</Button>
+                                    {
+                                        EditButton ?
+                                        <EditButton
+                                            {...props}
+                                            downFile={downFile}
+                                            documentTitle={documentTitle}
+                                        />
+                                        :
+                                        <Button className="document-action-edit" onClick={downFile}>
+                                            下载
+                                        </Button>
+                                    }
                                     <Button
                                         className="document-action-share"
                                         onClick={() => setShareVisible(true)}
-                                    >分享</Button>
+                                    >
+                                        分享
+                                    </Button>
                                 </div>
                             </div>
                             <div className="document-examine-content">
-                                <Row className="document-examine-row">
-                                    <Col
-                                        xs={{ span: 24}}
-                                        md={{ span: 20, offset: 2 }}
-                                        lg={{ span: 18, offset: 3 }}
-                                        xl={{ span: 18, offset: 3 }}
-                                        xxl={{ span: 16, offset: 4 }}
-                                    >
-                                        {
-                                            (!disable && ExtendFileView) ?
-                                                <ExtendFileView
-                                                    defaultContent={defaultContent}
-                                                    documentTitle={documentTitle}
-                                                    documentData={documentData}
-                                                />
-                                                :
+                                {
+                                    (!disable && ExtendFileView) ?
+                                        <div className="document-examine-row">
+                                            <ExtendFileView
+                                                defaultContent={defaultContent}
+                                                documentTitle={documentTitle}
+                                                documentData={documentData}
+                                            />
+                                        </div>
+                                        :
+                                        <Row className="document-examine-row">
+                                            <Col
+                                                xs={{ span: 24}}
+                                                md={{ span: 20, offset: 2 }}
+                                                lg={{ span: 18, offset: 3 }}
+                                                xl={{ span: 18, offset: 3 }}
+                                                xxl={{ span: 16, offset: 4 }}
+                                            >
                                                 <div className='document-file-defalut'>
                                                     {defaultContent}
                                                     <div className='file-defalut-view'>
@@ -193,14 +208,14 @@ const FileView =  ({ ExtendFileView, ...props })=> {
                                                         </span>
                                                     </div>
                                                 </div>
-                                        }
-                                        <ArchivedFree
-                                            type={'documentFile'}
-                                            archivedFreeVisable={archivedFreeVisable}
-                                            setArchivedFreeVisable={setArchivedFreeVisable}
-                                        />
-                                    </Col>
-                                </Row>
+                                            </Col>
+                                        </Row>
+                                }
+                                <ArchivedFree
+                                    type={'documentFile'}
+                                    archivedFreeVisable={archivedFreeVisable}
+                                    setArchivedFreeVisable={setArchivedFreeVisable}
+                                />
                             </div>
                             <ShareModal
                                 documentIds={[documentId]}

@@ -25,6 +25,7 @@ import MarkdownView from "./document/markdown/components/MarkdownView";
 import FileView from "./document/file/components/FileView";
 import ShareFile from "./document/share/components/ShareFile";
 import RepositorySetAside from "./repository/setting/common/components/RepositorySetAside";
+import Server from "./setting/integration/server/components/Server";
 
 export {
     AsyncComponent,
@@ -45,4 +46,5 @@ export {
     FileView,
     RepositorySetAside,
     ShareFile,
+    Server,
 }

@@ -468,9 +468,6 @@ const RepositoryList = (props) => {
                                 dataSource={repositoryData?.dataList || []}
                                 rowKey={record => record.id}
                                 pagination={false}
-                                scroll={{
-                                    x: "100%"
-                                }}
                             />
                             <PaginationCommon
                                 currentPage={repositoryData?.currentPage}

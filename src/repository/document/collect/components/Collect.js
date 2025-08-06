@@ -80,7 +80,7 @@ const Collect = props =>{
      * @param record
      */
     const toDocument = (record) => {
-        documentPush(props.history,repositoryId,record.node);
+        documentPush(props.history,record.wikiRepository.id,record.node);
     }
 
     /**

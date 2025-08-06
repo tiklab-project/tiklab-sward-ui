@@ -1,0 +1,89 @@
+.server{
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: var(--tiklab-padding);
+  .server-ul{
+    border-radius: 4px;
+    border: 1px solid var(--tiklab-gray-200);
+    .server-li{
+      &:not(:last-child){
+        border-bottom: 1px solid var(--tiklab-gray-200);
+      }
+      &:first-child .server-li-top{
+        border-radius: 4px 4px 0 0;
+      }
+      &:last-child .server-li-unSelect{
+        border-radius: 0 0 4px 4px;
+      }
+      .server-li-top{
+        display: flex;
+        align-items: flex-start;
+        padding: 10px 20px;
+        cursor: pointer;
+        background: var(--tiklab-gray-600);
+      }
+      .server-li-icon{
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        margin-right: 10px;
+        margin-top: 4px;
+        font-weight: var(--tiklab-font-weight-bold);
+      }
+      .server-li-center{
+        flex-grow: 1;
+      }
+      .server-li-title{
+        font-weight: var(--tiklab-font-weight-bold);
+      }
+      .server-li-desc{
+        font-size: var(--tiklab-font-13);
+        color: var(--tiklab-gray-500);
+      }
+      .server-li-down{
+        align-self: center;
+      }
+      .server-li-bottom{
+        padding: 20px;
+      }
+      .server-li-none{
+        display: none;
+      }
+    }
+  }
+  .bottom-kanass{
+    .bottom-kanass-add{
+      text-align: center;
+      padding: 10px 0;
+    }
+    .bottom-kanass-url{
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      .url-label{
+        width: 120px;
+        font-weight: 600;
+        font-size: 13px;
+        color: #666666;
+      }
+      .url-value{
+        word-break:break-all;
+      }
+    }
+    .bottom-kanass-button{
+      border-top: 1px dashed #e8e8e8;
+      padding-top: 15px;
+    }
+    .kanass-button-edit{
+      margin-right: 15px;
+    }
+  }
+  .bottom-onlyOffice{
+    .bottom-onlyOffice-add{
+      text-align: center;
+      padding: 10px 0;
+    }
+  }
+
+}

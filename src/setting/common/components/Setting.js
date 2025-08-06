@@ -91,7 +91,7 @@ const Setting = (props) => {
             children: [
                 {
                     title: '服务集成',
-                    id: '/setting/urlData',
+                    id: '/setting/server',
                     code: 9 - 1,
                 },
                 {

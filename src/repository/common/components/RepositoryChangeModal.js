@@ -18,29 +18,26 @@ import { Tooltip } from "antd";
 const RepositoryChangeModal = (props) => {
 
     const { isShowText, theme } = props;
+
+    const { findRecentRepositoryList, repository } = RepositoryDetailStore;
+
+    //是否展开
     const [showMenu, setShowMenu] = useState(false);
-    const [selectRepository, setSelectRepository] = useState(false)
-    const { findRecentRepositoryList, getAllRepositorylist, repository, searchRepository } = RepositoryDetailStore;
+    //知识库
     const [showRepositoryList, setShowRepositoryList] = useState();
-    const [allRepositorylist,setAllRepositorylist] = useState([]);
+
     const userId = getUser().useId;
-    const modelRef = useRef()
-    const setButton = useRef()
+    const modelRef = useRef(null);
+    const setButton = useRef(null);
     const repositoryId = props.match.params.repositoryId;
 
     // 显示切换弹窗
     const showMoreMenu = () => {
         setShowMenu(!showMenu)
-        const params = {
+        findRecentRepositoryList({
             master: userId,
             repositoryId: repositoryId
-        }
-        getAllRepositorylist().then(res=>{
-            if(res.code===0){
-                setAllRepositorylist(res.data)
-            }
-        })
-        findRecentRepositoryList(params).then(res => {
+        }).then(res => {
             if (res.code === 0) {
                 setShowRepositoryList(res.data.slice(0, 5))
             }
@@ -74,14 +71,6 @@ const RepositoryChangeModal = (props) => {
         location.reload();
     }
 
-    const handleMouseOver = (id) => {
-        setSelectRepository(id)
-    }
-
-    const handleMouseOut = () => {
-        setSelectRepository("")
-    }
-
     return (
         <div className="change-repository">
             <div ref={setButton}>
@@ -108,25 +97,18 @@ const RepositoryChangeModal = (props) => {
                             </svg>
                         </div>
                     </div>
-                        :
-                        <Tooltip placement="right" title={repository?.name}>
-                            <div className='repository-title-icon' onClick={showMoreMenu} >
-                                {
-                                    repository?.iconUrl && <Img
-                                        src={repository?.iconUrl}
-                                        title={repository?.name}
-                                        // alt={repository?.projectName}
-                                        className="icon-32"
-                                    />
-                                }
-
-                                {/* <div className={`repository-toggleCollapsed`}>
-                                <svg className="icon-15" aria-hidden="true">
-                                    <use xlinkHref={`${theme === "default" ? "#icon-down-gray" : "#icon-down-white"}`}></use>
-                                </svg>
-                            </div> */}
-                            </div>
-                        </Tooltip>
+                    :
+                    <Tooltip placement="right" title={repository?.name}>
+                        <div className='repository-title-icon' onClick={showMoreMenu} >
+                            {
+                                repository?.iconUrl && <Img
+                                    src={repository?.iconUrl}
+                                    title={repository?.name}
+                                    className="icon-32"
+                                />
+                            }
+                        </div>
+                    </Tooltip>
                 }
             </div>
             <div className={`change-repository-box ${showMenu ? "menu-show" : "menu-hidden"}`}
@@ -137,8 +119,6 @@ const RepositoryChangeModal = (props) => {
                     repository && <div className={`change-repository-item change-repository-selectItem`}
                         onClick={() => selectRepositoryId(repository?.id)}
                         key={repository.id}
-                        onMouseOver={() => handleMouseOver(repository.id)}
-                        onMouseOut={handleMouseOut}
                     >
                         <Img
                             src={repository.iconUrl}
@@ -160,12 +140,9 @@ const RepositoryChangeModal = (props) => {
                 }
                 {
                     showRepositoryList && showRepositoryList.map((item) => {
-                        return <div className={`change-repository-item ${item.id === selectRepository ? "change-repository-selectItem" : ""}`}
+                        return <div className="change-repository-item"
                             onClick={() => selectRepositoryId(item.id)}
                             key={item.id}
-                            onMouseOver={() => handleMouseOver(item.id)}
-                            onMouseOut={handleMouseOut}
-
                         >
                             <Img
                                 src={item.iconUrl}
@@ -180,16 +157,12 @@ const RepositoryChangeModal = (props) => {
                                     {item.master.name}
                                 </div>
                             </div>
-
                         </div>
                     })
                 }
-                {
-                    allRepositorylist.length > 6 &&
-                    <div className="change-repository-more" onClick={() => props.history.push("/repository")}>
-                        查看更多
-                    </div>
-                }
+                <div className="change-repository-more" onClick={() => props.history.push("/repository")}>
+                    查看更多
+                </div>
             </div>
         </div>
     )

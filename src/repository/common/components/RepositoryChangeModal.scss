@@ -90,10 +90,7 @@
                 }
             }
         }
-        .change-repository-item:hover {
-            background-color: var(--tiklab-gray-400);
-        }
-        .change-repository-selectItem {
+        .change-repository-item:hover,.change-repository-selectItem{
             background-color: var(--tiklab-gray-400);
         }
         .change-repository-more {

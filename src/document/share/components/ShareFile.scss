@@ -36,5 +36,18 @@
             padding: 10px 0;
         }
     }
-
+    .document-file-defalut{
+        text-align: center;
+        .file-defalut-view{
+            margin-top: 10px;
+            .file-defalut-view-text{
+                cursor: pointer;
+                font-size: 13px;
+                color: #666;
+                &:hover{
+                    color: var(--tiklab-blue);
+                }
+            }
+        }
+    }
 }
