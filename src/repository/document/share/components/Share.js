@@ -9,7 +9,7 @@ import React, {useEffect, useState} from "react";
 import {Col, Row, Table, Spin, Space, Tooltip, Dropdown, Modal, message, Empty} from "antd";
 import Breadcrumb from "../../../../common/components/breadcrumb/Breadcrumb";
 import "./Share.scss";
-import shareStore from "../../../../document/share/store/ShareStore";
+import shareStore from "../store/ShareStore";
 import {getUser} from "tiklab-core-ui";
 import DocumentIcon from "../../../../common/components/icon/DocumentIcon";
 import {deleteSuccessReturnCurrenPage} from "../../../../common/utils/overall";
@@ -149,7 +149,7 @@ const Share = props =>{
             dataIndex: "name",
             key: "name",
             align: "left",
-            width: "27%",
+            width: "30%",
             ellipsis:true,
             render:(text,record)=>{
                 return (
@@ -184,25 +184,16 @@ const Share = props =>{
             dataIndex: "type",
             key: "type",
             align: "left",
-            width: "10%",
+            width: "15%",
             ellipsis:true,
-            render: text => text==='document' ? '文档' : '目录'
-        },
-        {
-            title: "权限",
-            dataIndex: "limits",
-            key: "limits",
-            align: "left",
-            width: "10%",
-            ellipsis:true,
-            render: text => text==='publish' ? '公开' : '私密'
+            render: text => text===1 ? '外部' : '知识库'
         },
         {
             title: "创建人",
             dataIndex: "user",
             key: "user",
             align: "left",
-            width: "18%",
+            width: "20%",
             ellipsis: true,
             render: text => (
                 <Space>
@@ -269,16 +260,16 @@ const Share = props =>{
                         全部
                     </div>
                     <div
-                        className={`document-share-tab ${requestParam?.type==='category' ? 'share-tab-select' : ''}`}
-                        onClick={()=>changeType('category')}
+                        className={`document-share-tab ${requestParam?.type===1 ? 'share-tab-select' : ''}`}
+                        onClick={()=>changeType(1)}
                     >
-                        目录
+                        外部
                     </div>
                     <div
-                        className={`document-share-tab ${requestParam?.type==='document' ? 'share-tab-select' : ''}`}
-                        onClick={()=>changeType('document')}
+                        className={`document-share-tab ${requestParam?.type===2 ? 'share-tab-select' : ''}`}
+                        onClick={()=>changeType(2)}
                     >
-                        文档
+                        知识库
                     </div>
                 </div>
                 <SearchInput

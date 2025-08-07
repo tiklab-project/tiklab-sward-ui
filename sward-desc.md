@@ -34,7 +34,7 @@
 
 | 文件                  | 说明            |
 |---------------------|---------------|
-| CommentShare        | 分享页面的评论       |
+| ShareComment        | 分享页面的评论       |
 | SharePassWord       | 分享文档的密码校验     |
 | ShareAside          | 知识库详情页面左侧导航栏  |
 | ShareCategoryDetail | 分享的目录详情页面     |

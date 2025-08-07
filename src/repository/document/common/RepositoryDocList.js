@@ -6,44 +6,38 @@
  * @LastEditors: 袁婕轩
  * @LastEditTime: 2024-12-31 17:03:48
  */
-
 import React, { Fragment, useState, useEffect } from 'react';
 import { withRouter } from "react-router-dom";
 import { observer, inject } from "mobx-react";
-import {Menu, Dropdown, Layout, Tree, message, Modal, Empty, Spin, Tooltip, Input} from 'antd';
-import { useTranslation } from 'react-i18next';
+import {Menu, Dropdown, Layout, Tree, message, Modal, Empty, Spin, Input} from 'antd';
 import MoveLogList from "../../common/components/MoveLogList"
 import { getUser, getVersionInfo } from 'tiklab-core-ui';
 import "./RepositoryDocList.scss"
-import {
-    appendNodeInTree, updataTreeSort, updateNodeName, removeNodeInTree
-} from '../../../common/utils/treeDataAction';
+import {appendNodeInTree, updataTreeSort, updateNodeName, removeNodeInTree} from '../../../common/utils/treeDataAction';
 import AddDropDown from '../../common/components/AddDropDown';
-import {
-    DownOutlined, MenuFoldOutlined,
-    MenuUnfoldOutlined,
-} from '@ant-design/icons';
+import {DownOutlined, MenuFoldOutlined, MenuUnfoldOutlined,} from '@ant-design/icons';
 import ArchivedFree from '../../../common/components/archivedFree/ArchivedFree';
 import SearchModal from '../../common/components/SearchModal';
 import {documentPush, getFileExtensionWithDot, removeFileExtension} from "../../../common/utils/overall";
 import DocumentIcon from "../../../common/components/icon/DocumentIcon";
-import ShareModal from "../../../document/share/components/ShareModal";
+import ShareModal from "../share/components/ShareModal";
 const { Sider } = Layout;
 
 const RepositoryDocList = (props) => {
-    // 解析props
-    const { repositoryDetailStore, NodeRecycleModal, NodeArchivedModal,collapsed, setCollapsed } = props;
-    const [loading, setLoading] = useState(false)
-    //语言包
-    const { t } = useTranslation();
+
+    const { repositoryDetailStore, NodeRecycleModal, NodeArchivedModal,collapsed, setCollapsed,moreComponent } = props;
+
     const { findNodePageTree, updateRepositoryCatalogue, deleteNode, updateDocument,
         repositoryCatalogueList, setRepositoryCatalogueList,
         expandedTree, setExpandedTree, setDocumentTitle, setCategoryTitle, findCategory, repository } = repositoryDetailStore;
 
     // 当前选中目录id
     const id = props.location.pathname.split("/")[5];
+    const repositoryType = props.location.pathname.split("/")[4];
     const [selectKey, setSelectKey] = useState(id);
     const repositoryId = props.match.params.repositoryId;
+
+    const [loading, setLoading] = useState(false)
     const [isHover, setIsHover] = useState(false)
     const [requsetedCategory, setRequsetedCategory] = useState([])
 
@@ -80,10 +74,12 @@ const RepositoryDocList = (props) => {
             approveUserId: userId,
         }).then((data) => {
             setRepositoryCatalogueList([...data.data])
-            if (data.data.length > 0 && !id) {
-                const item = data.data[0];
-                goDetail(item)
+            if (data.data.length === 0 || id) return;
+            if (moreComponent && ['draft', 'review', 'complete'].includes(repositoryType)) {
+                return;
             }
+            const item = data.data[0];
+            goDetail(item);
         }).finally(()=>{
             setLoading(false)
         })
@@ -232,7 +228,6 @@ const RepositoryDocList = (props) => {
             deleteNode(item.id).then(res => {
                 if(res.code === 0){
                     const node = removeNodeInTree(repositoryCatalogueList, null, id)
-                    console.log(node)
                     if (node) {
                         documentPush(props.history, repositoryId, node);
                     } else {
@@ -559,7 +554,10 @@ const RepositoryDocList = (props) => {
                             <div className="repository-title-left">
                                 文档
                             </div>
-                            <AddDropDown category={null} button="icon-gray" />
+                            <div className='repository-title-left'>
+                                <AddDropDown category={null} button="icon-gray" />
+                                {moreComponent}
+                            </div>
                         </div>
                         <div className="repository-search" onClick={() => setShowSearchModal(true)}>
                             <svg className="icon-13" aria-hidden="true">
@@ -606,6 +604,7 @@ const RepositoryDocList = (props) => {
                 updateCategorySort={updateCategorySort}
             />
             <ShareModal
+                repositoryId={repositoryId}
                 shareVisible={shareVisible}
                 setShareVisible={setShareVisible}
                 docInfo={shareData}

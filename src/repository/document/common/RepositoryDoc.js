@@ -15,7 +15,7 @@ import "./RepositoryDoc.scss"
 
 const RepositoryDoc = (props) => {
 
-    const { route, repositoryDetailStore } = props;
+    const { route,repositoryDetailStore, reviewStatus,moreComponent } = props;
 
     const { uploadSpinning } = repositoryDetailStore;
 
@@ -29,11 +29,10 @@ const RepositoryDoc = (props) => {
                     {...props}
                     collapsed={collapsed}
                     setCollapsed={setCollapsed}
+                    moreComponent={moreComponent}
                 />
                 <Layout className="repository-doc-content">
-                    {
-                        renderRoutes(route.routes, { collapsed })
-                    }
+                    {renderRoutes(route.routes, { collapsed, reviewStatus })}
                 </Layout>
             </Layout>
         </Spin>

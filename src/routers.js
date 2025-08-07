@@ -33,15 +33,15 @@ const CollectLayout = AsyncComponent(() => import("./home/collect/components/Col
 // 知识库
 const Repository = AsyncComponent(() => import('./repository/repository/components/RepositoryList'))
 const RepositoryDoc = AsyncComponent(() => import('./repository/document/common/RepositoryDoc'))
-const DocumentEdit = AsyncComponent(() => import("./document/document/components/DocumentEdit"))
-const DocumentExamine = AsyncComponent(() => import("./document/document/components/DocumentExamine"))
+const DocumentEdit = AsyncComponent(() => import("./repository/document/document/components/DocumentEdit"))
+const DocumentExamine = AsyncComponent(() => import("./repository/document/document/components/DocumentExamine"))
 
 const DocumentShare = AsyncComponent(()=>import('./repository/document/share/components/Share'))
 const DocumentCollect = AsyncComponent(()=>import('./repository/document/collect/components/Collect'))
-const MarkdownDocumentEdit = AsyncComponent(() => import("./document/markdown/components/MarkdownEdit"))
-const MarkdownDocumentView = AsyncComponent(() => import("./document/markdown/components/MarkdownView"))
+const MarkdownDocumentEdit = AsyncComponent(() => import("./repository/document/markdown/components/MarkdownEdit"))
+const MarkdownDocumentView = AsyncComponent(() => import("./repository/document/markdown/components/MarkdownView"))
 
-const FileView = AsyncComponent(()=>import("./document/file/components/FileView"))
+const FileView = AsyncComponent(()=>import("./repository/document/file/components/FileView"))
 
 const RepositorySet = AsyncComponent(() => import("./repository/setting/common/components/RepositorySet"))
 const RepositoryDomainRole = AsyncComponent(() => import('./repository/user/RepositoryDomainRole'))
@@ -52,13 +52,14 @@ const RepositoryBasicInfo = AsyncComponent(() => import('./repository/setting/ba
 const Template = AsyncComponent(() => import('./setting/template/components/TemplateList'))
 const TemplateEdit = AsyncComponent(() => import('./setting/template/components/TemplateEdit'))
 const TemplatePreview = AsyncComponent(() => import('./setting/template/components/TemplatePreview'))
+
 // 分享文档页面
-const ShareDocument = AsyncComponent(() => import('./document/share/components/ShareDocument'))
-const SharePage = AsyncComponent(()=> import('./document/share/components/ShareLayout'))
-const ShareCategoryDetail = AsyncComponent(() => import('./document/share/components/ShareCategoryDetail'))
-const ShareMarkdown = AsyncComponent(() => import("./document/share/components/ShareMarkdown"))
-const ShareFile = AsyncComponent(() => import("./document/share/components/ShareFile"))
-const SharePassWord = AsyncComponent(() => import('./document/share/components/SharePassWord'))
+const SharePage = AsyncComponent(()=> import('./repository/document/share/components/ShareLayout'))
+const ShareDocument = AsyncComponent(() => import('./repository/document/share/components/ShareDocument'))
+const ShareCategoryDetail = AsyncComponent(() => import('./repository/document/share/components/ShareCategoryDetail'))
+const ShareMarkdown = AsyncComponent(() => import("./repository/document/share/components/ShareMarkdown"))
+const ShareFile = AsyncComponent(() => import("./repository/document/share/components/ShareFile"))
+const SharePassWord = AsyncComponent(() => import('./repository/document/share/components/SharePassWord'))
 
 
 const SettingHome = AsyncComponent(() => import('./setting/home/components/SettingHome'))

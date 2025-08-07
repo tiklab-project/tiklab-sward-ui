@@ -9,6 +9,7 @@
 import { Service } from "../../../common/utils/requset";
 import { observable, action} from "mobx";
 export class RepositoryDetailStore {
+
     @observable repository = null;
     // 知识库id
     @observable repositoryCatalogue = [];

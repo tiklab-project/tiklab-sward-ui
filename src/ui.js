@@ -20,10 +20,10 @@ import SettingHomeStore from "./setting/home/store/SettingHomeStore";
 import SettingHome from "./setting/home/components/SettingHome";
 import SettingAside from "./setting/common/components/SetAside";
 import BasicInfo from "./repository/setting/basicInfo/components/BasicInfo";
-import DocumentExamine from "./document/document/components/DocumentExamine";
-import MarkdownView from "./document/markdown/components/MarkdownView";
-import FileView from "./document/file/components/FileView";
-import ShareFile from "./document/share/components/ShareFile";
+import DocumentExamine from "./repository/document/document/components/DocumentExamine";
+import MarkdownView from "./repository/document/markdown/components/MarkdownView";
+import FileView from "./repository/document/file/components/FileView";
+import ShareFile from "./repository/document/share/components/ShareFile";
 import RepositorySetAside from "./repository/setting/common/components/RepositorySetAside";
 import Server from "./setting/integration/server/components/Server";
 

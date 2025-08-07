@@ -49,6 +49,12 @@ export class RepositoryStore {
     }
 
     @action
+    findUserPage = async value => {
+        const data = await Service("/user/user/findUserPage",value);
+        return data;
+    }
+
+    @action
     findRecentRepositoryList = async (value) => {
         const data = await Service("/repository/findRecentRepositoryList", value);
         return data;
