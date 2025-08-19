@@ -6,14 +6,12 @@
  * @LastEditors: 袁婕轩
  * @LastEditTime: 2024-12-31 15:51:12
  */
-
 import wikiRoutes from "./routers";
 import {store} from "./stores";
 import AsyncComponent from './common/lazy/SyncComponent.js'
 import App from "./app";
 import FirstMenu from "./home/home/components/FirstMenu";
 import Search from "./home/search/components/Search";
-import RepositoryLayout from "./repository/common/components/RepositoryLayout";
 import Layout from "./home/home/components/Layout";
 import RepositoryDoc from "./repository/document/common/RepositoryDoc";
 import SettingHomeStore from "./setting/home/store/SettingHomeStore";
@@ -26,25 +24,29 @@ import FileView from "./repository/document/file/components/FileView";
 import ShareFile from "./repository/document/share/components/ShareFile";
 import RepositorySetAside from "./repository/setting/common/components/RepositorySetAside";
 import Server from "./setting/integration/server/components/Server";
+import RepositoryDetail from "./repository/common/components/RepositoryDetail";
 
 export {
     AsyncComponent,
     wikiRoutes,
     store,
     Search,
-    RepositoryLayout,
-    BasicInfo,
     Layout,
     App,
+
     FirstMenu,
+    RepositoryDetail,
     RepositoryDoc,
-    SettingHomeStore,
-    SettingHome,
+    RepositorySetAside,
     SettingAside,
+
     DocumentExamine,
     MarkdownView,
     FileView,
-    RepositorySetAside,
     ShareFile,
+    BasicInfo,
     Server,
+    SettingHome,
+
+    SettingHomeStore,
 }

@@ -8,18 +8,8 @@
  */
 import { observable, action } from "mobx";
 import { Service } from "../../../common/utils/requset";
-class TemplateStore {
-    @observable templateList = [];
-    @observable templatePageParams = {
-        current: 1,
-        pageSize: 10,
-        total: 1
-    };
 
-    @action
-    setTemPlateList = (value) => {
-        this.templateList = value;
-    }
+class TemplateStore {
 
     @action
 	createDocumentTemplate = async(value) => {
@@ -29,18 +19,7 @@ class TemplateStore {
 
     @action
 	findDocumentTemplateList = async(value) => {
-        Object.assign(this.templatePageParams, {...value})
-        const params = {
-            name: this.templatePageParams.name,
-            orderParams: [{
-                name: "name",
-                orderType: "asc"
-            }]
-        }
-        const data = await Service("/documentTemplate/findDocumentTemplateList",params);
-        if(data.code === 0){
-            this.templateList = data.data
-        }
+        const data = await Service("/documentTemplate/findDocumentTemplateList",value);
         return data;
     }
 
@@ -64,19 +43,6 @@ class TemplateStore {
         param.append("id", values)
         const data = await Service("/documentTemplate/deleteDocumentTemplate",param);
         return data
-    }
-
-    @action
-    findIconList = async (params) => {
-        const data = await Service("/icon/findIconList", params)
-        return data;
-    }
-
-    @action
-    creatIcon = async (value) => {
-        const data = await Service("/icon/createIcon", value)
-        return data;
-
     }
 
     @action

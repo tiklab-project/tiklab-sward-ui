@@ -179,6 +179,10 @@
     .project-back-project{
         border-bottom: 1px solid #f6f7f833;
     }
+    .project-setting .project-aside-bottom-icon{
+        color: #f6f7f8;
+        opacity: 0.6;
+    }
 }
 .menu-box-right-border{
     width: 15px;
@@ -212,4 +216,30 @@
         opacity: 1;
         visibility: visible;
     }
+}
+
+.project-setting {
+    cursor: pointer;
+    .project-setting-icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 34px;
+    }
+    .project-setting-title {
+        display: flex;
+        align-items: center;
+        margin-left: 15px;
+        height: 34px;
+        gap: 8px;
+    }
+    .project-aside-bottom-icon{
+        font-size: 17px;
+    }
+
+}
+
+.project-menu-fold{
+    margin-bottom: 5px;
 }

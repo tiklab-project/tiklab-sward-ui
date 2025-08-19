@@ -17,6 +17,7 @@ import SearchPicker from "./search/SearchPicker";
 import SearchSelect from "./search/SearchSelect";
 import Profile from "./profile/Profile";
 import echarts from "./echarts/Echarts";
+import EnhanceEntranceModal from "./modal/EnhanceEntranceModal";
 
 export {
     ArchivedFree,
@@ -31,4 +32,5 @@ export {
     SearchSelect,
     Profile,
     echarts,
+    EnhanceEntranceModal,
 }

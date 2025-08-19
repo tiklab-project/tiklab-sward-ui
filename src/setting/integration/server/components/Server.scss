@@ -3,6 +3,7 @@
   height: 100%;
   overflow: auto;
   padding: var(--tiklab-padding);
+  position: relative;
   .server-ul{
     border-radius: 4px;
     border: 1px solid var(--tiklab-gray-200);

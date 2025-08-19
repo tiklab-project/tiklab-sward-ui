@@ -9,7 +9,7 @@ import React, {Fragment, useState} from "react";
 import {Dropdown, Menu} from "antd";
 import "./DocumentActionMenu.scss";
 import {disableFunction} from 'tiklab-core-ui';
-import ArchivedFree from "../../../common/components/archivedFree/ArchivedFree";
+import EnhanceEntranceModal from "../../../common/components/modal/EnhanceEntranceModal";
 
 const DocumentActionMenu = (props) => {
 
@@ -94,6 +94,17 @@ const DocumentActionMenu = (props) => {
      */
     const getFresh = () =>{
         setFresh(!fresh);
+    }
+
+    const configEnhance = {
+        'documentVersion':{
+            title:'版本',
+            desc: '提供文档全生命周期的版本控制能力'
+        },
+        'documentReview':{
+            title:'评审',
+            desc:'规范和管理文档的发布流程'
+        },
     }
 
     return (
@@ -209,10 +220,10 @@ const DocumentActionMenu = (props) => {
                     setVisible={setReviewAddVisible}
                 />
             }
-            <ArchivedFree
-                type={archivedFreeType}
-                archivedFreeVisable={archivedFreeVisable}
-                setArchivedFreeVisable={setArchivedFreeVisable}
+            <EnhanceEntranceModal
+                config={configEnhance[archivedFreeType]}
+                visible={archivedFreeVisable}
+                setVisible={setArchivedFreeVisable}
             />
         </Fragment>
     )

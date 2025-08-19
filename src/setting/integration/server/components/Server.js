@@ -13,8 +13,8 @@ import serverStore from "../store/ServerStore";
 import {productImg,disableFunction} from "tiklab-core-ui";
 import {DownOutlined, RightOutlined} from "@ant-design/icons";
 import Button from "../../../../common/components/button/Button";
-import ArchivedFree from "../../../../common/components/archivedFree/ArchivedFree";
 import ServerKanassModal from "./ServerKanassModal";
+import EnhanceEntranceModal from "../../../../common/components/modal/EnhanceEntranceModal";
 
 
 const Server = (props) => {
@@ -158,6 +158,14 @@ const Server = (props) => {
 
     return (
         <Row className='server'>
+            <EnhanceEntranceModal
+                visible={archivedFreeVisable}
+                setVisible={setArchivedFreeVisable}
+                config={{
+                    title:'服务集成',
+                    desc:'集成OnlyOffice，在线协作办公'
+                }}
+            />
             <Col xs={{ span: 24 }} xl={{ span: "16", offset: "4" }}>
                 <Breadcrumb
                     firstText="服务集成"
@@ -189,11 +197,6 @@ const Server = (props) => {
                         ))
                     }
                 </div>
-                <ArchivedFree
-                    type={'documentFile'}
-                    archivedFreeVisable={archivedFreeVisable}
-                    setArchivedFreeVisable={setArchivedFreeVisable}
-                />
                 <ServerKanassModal
                     visible={kanassVisible}
                     setVisible={setKanassVisible}

@@ -20,41 +20,30 @@
                 padding: 0;
                 margin: 0;
             }
-
             .repository-aside-bottom{
-                width: 15px;
-                position: absolute;
-                top: 0;
-                right: -5px;
-                height: 100%;
+                cursor: pointer;
+                text-align: right;
                 &:hover .menu-fold{
                     opacity: 1;
                     visibility: visible;
                 }
                 .menu-fold{
-                    position: absolute;
-                    right: 7px;
-                    bottom: 7px;
-                    cursor: pointer;
-                    font-size: 16px;
+                    font-size: 17px;
                     padding: 5px;
                     border-radius: 4px;
-                    background: var(--tiklab-gray-200);
                     opacity: 0;
                     visibility: hidden;
                 }
                 .menu-unfold{
                     position: absolute;
                     right: -30px;
-                    bottom: 5px;
+                    bottom: 10px;
                     cursor: pointer;
-                    font-size: 18px;
+                    font-size: 17px;
                     padding: 5px;
                     border-radius: 4px;
                     background: #ffffff;
-                    &:hover{
-                        background: var(--tiklab-gray-300);
-                    }
+                    background: var(--tiklab-gray-300);
                 }
             }
 
@@ -147,7 +136,7 @@
 
         .repository-menu {
             list-style-type: none;
-            height: calc(100% - 90px);
+            height: calc(100% - 122px);
             cursor: pointer;
             overflow: auto;
             padding: 0 10px;

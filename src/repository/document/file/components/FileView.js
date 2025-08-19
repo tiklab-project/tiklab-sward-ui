@@ -16,7 +16,7 @@ import {getUser} from "tiklab-core-ui";
 import RepositoryDetailStore from "../../../common/store/RepositoryDetailStore";
 import {observer} from "mobx-react";
 import {disableFunction} from "tiklab-core-ui";
-import ArchivedFree from "../../../../common/components/archivedFree/ArchivedFree";
+import EnhanceEntranceModal from "../../../../common/components/modal/EnhanceEntranceModal";
 
 const FileView =  ({ ExtendFileView, EditButton, ...props })=> {
 
@@ -138,6 +138,14 @@ const FileView =  ({ ExtendFileView, EditButton, ...props })=> {
                 documentData ? (
                     documentData?.node?.recycle === '0' ? (
                         <div className='document-file-examine'>
+                            <EnhanceEntranceModal
+                                config={{
+                                    title: '附件预览',
+                                    desc: '提升文件查看体验'
+                                }}
+                                visible={archivedFreeVisable}
+                                setVisible={setArchivedFreeVisable}
+                            />
                             <div className="examine-top">
                                 <div className="examine-title" id="examine-title">
                                     <div className='examine-title-desc'>
@@ -214,11 +222,6 @@ const FileView =  ({ ExtendFileView, EditButton, ...props })=> {
                                             </Col>
                                         </Row>
                                 }
-                                <ArchivedFree
-                                    type={'documentFile'}
-                                    archivedFreeVisable={archivedFreeVisable}
-                                    setArchivedFreeVisable={setArchivedFreeVisable}
-                                />
                             </div>
                             <ShareModal
                                 repositoryId={repositoryId}

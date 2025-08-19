@@ -20,6 +20,7 @@ import DocumentIcon from "../../../common/components/icon/DocumentIcon";
 import {documentPush} from "../../../common/utils/overall";
 import Profile from "../../../common/components/profile/Profile";
 import {RightOutlined} from "@ant-design/icons";
+import ListIcon from "../../../common/components/icon/ListIcon";
 
 const Survey = (props) => {
 
@@ -127,13 +128,10 @@ const Survey = (props) => {
                         repository &&
                         <div className="repository-top">
                             <div className="top-left">
-                                <div>
-                                    <Img
-                                        src={repository.iconUrl}
-                                        alt=""
-                                        className="repository-icon"
-                                    />
-                                </div>
+                                <ListIcon
+                                    icon={repository?.iconUrl}
+                                    text={repository?.name}
+                                />
                                 <div className="top-name">
                                     <div className="name">{repository?.name}</div>
                                     <div className="user">

@@ -14,6 +14,8 @@ import { observer } from "mobx-react";
 import { getUser } from "tiklab-core-ui";
 import Img from "../../../common/components/img/Img";
 import { Tooltip } from "antd";
+import ListIcon from "../../../common/components/icon/ListIcon";
+import {DownOutlined} from "@ant-design/icons";
 
 const RepositoryChangeModal = (props) => {
 
@@ -39,7 +41,7 @@ const RepositoryChangeModal = (props) => {
             repositoryId: repositoryId
         }).then(res => {
             if (res.code === 0) {
-                setShowRepositoryList(res.data.slice(0, 5))
+                setShowRepositoryList(res.data.slice(0, 4))
             }
         })
         modelRef.current.style.left = setButton.current.clientWidth
@@ -77,34 +79,30 @@ const RepositoryChangeModal = (props) => {
                 {
                     isShowText ? <div className="repository-title title" onClick={showMoreMenu}>
                         {
-                            repository?.iconUrl && <Img
-                                src={repository?.iconUrl}
-                                className="icon-24"
-                                alt=""
+                            repository?.iconUrl &&
+                            <ListIcon
+                                icon={repository?.iconUrl}
+                                text={repository?.name}
+                                isMar={false}
                             />
                         }
-                        <div className={`repository-text `} >
-                            <div className='name'>
+                        <div className="repository-text">
+                            <div className='name' title={repository?.name}>
                                 {repository?.name}
                             </div>
-                            <div className='type'>
-                                {repository?.master?.name}
-                            </div>
                         </div>
-                        <div className={`repository-toggleCollapsed`}>
-                            <svg className="icon-15" aria-hidden="true">
-                                <use xlinkHref={`${theme === "default" ? "#icon-down-gray" : "#icon-down-white"}`}></use>
-                            </svg>
+                        <div style={{opacity:0.8,fontSize:12}}>
+                            <DownOutlined />
                         </div>
-                    </div>
+                        </div>
                     :
                     <Tooltip placement="right" title={repository?.name}>
                         <div className='repository-title-icon' onClick={showMoreMenu} >
                             {
-                                repository?.iconUrl && <Img
-                                    src={repository?.iconUrl}
-                                    title={repository?.name}
-                                    className="icon-32"
+                                repository?.iconUrl && <ListIcon
+                                    icon={repository?.iconUrl}
+                                    text={repository?.name}
+                                    isMar={false}
                                 />
                             }
                         </div>
@@ -120,10 +118,10 @@ const RepositoryChangeModal = (props) => {
                         onClick={() => selectRepositoryId(repository?.id)}
                         key={repository.id}
                     >
-                        <Img
-                            src={repository.iconUrl}
-                            alt=""
-                            className="list-img"
+
+                        <ListIcon
+                            icon={repository?.iconUrl}
+                            text={repository?.name}
                         />
                         <div className="item-info">
                             <div className="item-name">
@@ -144,10 +142,9 @@ const RepositoryChangeModal = (props) => {
                             onClick={() => selectRepositoryId(item.id)}
                             key={item.id}
                         >
-                            <Img
-                                src={item.iconUrl}
-                                alt=""
-                                className="list-img"
+                            <ListIcon
+                                icon={item?.iconUrl}
+                                text={item?.name}
                             />
                             <div className="item-info">
                                 <div className="item-name">

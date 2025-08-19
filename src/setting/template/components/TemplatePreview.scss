@@ -1,23 +1,6 @@
-.template-view-top {
-    padding: 10px 0;
-    font-weight: 600;
-    align-items: center;
-
-    .template-view-breadcrumb {
-        font-size: var(--tiklab-font-16);
-        font-weight: var(--tiklab-font-weight-bold);
-        display: flex;
-        align-items: center;
-
-        .template-back {
-            cursor: pointer;
-        }
-    }
-
-    .template-view-title {
-        background: #fff;
-        position: sticky;
-        top: 0;
-        z-index: 3;
-    }
+.template-view {
+    height: 100%;
+    width: 100%;
+    padding: 20px;
+    overflow: auto;
 }

@@ -9,13 +9,12 @@ import React, { useEffect, useState, Fragment } from "react";
 import {Table, Space, Row, Col, Empty, Spin, Tooltip, Dropdown} from 'antd';
 import { observer, inject } from "mobx-react";
 import { getUser } from "tiklab-core-ui";
-import Breadcumb from "../../../common/components/breadcrumb/Breadcrumb";
+import Breadcrumb from "../../../common/components/breadcrumb/Breadcrumb";
 import SearchInput from "../../../common/components/search/SearchInput";
 import Button from "../../../common/components/button/Button";
-import "./RepositoryList.scss";
+import "./Repository.scss";
 import RepositoryStore from "../store/RepositoryStore";
 import { useDebounce } from "../../../common/utils/debounce";
-import Img from "../../../common/components/img/Img";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import RepositoryAdd from "./RepositoryAdd";
 import {PrivilegeProjectButton} from "tiklab-privilege-ui";
@@ -23,10 +22,11 @@ import RepositoryDelete from "./RepositoryDelete";
 import Profile from "../../../common/components/profile/Profile";
 import {deleteSuccessReturnCurrenPage} from "../../../common/utils/overall";
 import PaginationCommon from "../../../common/components/page/Page";
+import ListIcon from "../../../common/components/icon/ListIcon";
 
 const pageSize = 10;
 
-const RepositoryList = (props) => {
+const Repository = (props) => {
 
     const {systemRoleStore} = props;
 
@@ -284,11 +284,12 @@ const RepositoryList = (props) => {
             dataIndex: "name",
             key: "name",
             align: "left",
+            width:"45%",
+            ellipsis:true,
             render: (text, record) => <div onClick={() => goRepositorydetail(record)} className="repository-title">
-                <Img
-                    src={record.iconUrl}
-                    alt=""
-                    className="list-img"
+                <ListIcon
+                    icon={record.iconUrl}
+                    text={text}
                 />
                 <div className="repository-info">
                     <div className="repository-name">{text}</div>
@@ -301,6 +302,8 @@ const RepositoryList = (props) => {
             dataIndex: ["master", "nickname"],
             key: "master",
             align: "left",
+            width:"20%",
+            ellipsis:true,
             render: (text, record) => (
                 <Space>
                     <Profile userInfo={record.master}/>
@@ -385,10 +388,10 @@ const RepositoryList = (props) => {
         <Row className="repository-row">
             <Col xs={{span:24}} xl={{ span: 18, offset: 3 }} lg={{ span: 18, offset: 3 }} md={{ span: 20, offset: 2 }}>
                 <div className="repository">
-                    <Breadcumb firstText="知识库">
+                    <Breadcrumb firstText="知识库">
                         <Button type="primary" onClick={goRepositoryAdd} buttonText={"添加知识库"}>
                         </Button>
-                    </Breadcumb>
+                    </Breadcrumb>
                     <RepositoryAdd
                         {...props}
                         addVisible={addVisible}
@@ -413,12 +416,11 @@ const RepositoryList = (props) => {
                                             return (
                                                 <div className="repository-item" key={item.id} onClick={() => goRepositorydetail(item)} >
                                                     <div className="item-title">
-                                                        <Img
-                                                            src={item.iconUrl}
-                                                            alt=""
-                                                            className="list-img"
+                                                        <ListIcon
+                                                            icon={item.iconUrl}
+                                                            text={item.name}
                                                         />
-                                                        <span>{item.name}</span>
+                                                        <span className='item-title-name'>{item.name}</span>
                                                     </div>
                                                     <div className="item-work">
                                                         <div className="process-work">
@@ -486,4 +488,4 @@ const RepositoryList = (props) => {
     )
 }
 
-export default inject("systemRoleStore")(observer(RepositoryList))
+export default inject("systemRoleStore")(observer(Repository))

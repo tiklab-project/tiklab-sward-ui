@@ -7,12 +7,17 @@
         justify-content: space-between;
         gap: 5px;
         padding: 15px;
-        font-weight: 600;
         cursor: pointer;
+        .sward-listname-icon{
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+        }
         .repository-text {
             min-width: 0;
             flex: 1;
             .name {
+                font-weight: 600;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
@@ -20,14 +25,6 @@
             .type {
                 font-size: 12px;
                 font-weight: normal;
-            }
-        }
-        span {
-            width: 100px;
-            height: 100%;
-            overflow: hidden;
-            i {
-                margin-right: 10px;
             }
         }
         .repository-aside-icon {

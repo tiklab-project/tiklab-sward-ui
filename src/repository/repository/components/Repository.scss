@@ -37,28 +37,15 @@
             max-width: 260px;
             .item-title {
                 margin-bottom: 10px;
-                font-weight: var(--tiklab-font-weight-bold);
                 display: inline-flex;
                 align-items: center;
-                font-size: 16px;
-                span {
-
+                .item-title-name{
+                    font-weight: var(--tiklab-font-weight-bold);
                     text-overflow: ellipsis;
                     white-space: nowrap;
                     overflow: hidden;
                     max-width: 140px;
-
-                }
-                .project-icon {
-                    width: 30px;
-                    height: 30px;
-                    margin-right: 10px;
-                }
-
-                .item-icon {
-                    width: 20px;
-                    height: 20px;
-                    margin-right: 10px;
+                    font-size: 16px;
                 }
             }
 

@@ -21,6 +21,7 @@ import SearchModal from '../../common/components/SearchModal';
 import {documentPush, getFileExtensionWithDot, removeFileExtension} from "../../../common/utils/overall";
 import DocumentIcon from "../../../common/components/icon/DocumentIcon";
 import ShareModal from "../share/components/ShareModal";
+import EnhanceEntranceModal from "../../../common/components/modal/EnhanceEntranceModal";
 const { Sider } = Layout;
 
 const RepositoryDocList = (props) => {
@@ -58,7 +59,7 @@ const RepositoryDocList = (props) => {
     //搜索弹出框
     const [showSearchModal, setShowSearchModal] = useState(false)
     //增强弹出框类型
-    const [archivedFree,setArchivedFree] = useState('defalut')
+    const [archivedFree,setArchivedFree] = useState('recycle')
 
     const repositoryStatus = repository?.status === 'nomal';
 
@@ -167,6 +168,14 @@ const RepositoryDocList = (props) => {
                     分享
                 </div>
             </Menu.Item>
+            <Menu.Item key="archived">
+                <div className='content-add-menu'>
+                    <svg className="content-add-icon" aria-hidden="true">
+                        <use xlinkHref="#icon-systemreset"></use>
+                    </svg>
+                    归档
+                </div>
+            </Menu.Item>
             <Menu.Item key="recycle">
                 <div className='content-add-menu'>
                     <svg className="content-add-icon" aria-hidden="true">
@@ -199,7 +208,7 @@ const RepositoryDocList = (props) => {
                 setArchivedNode(item)
                 setNodeRecycleVisable(true)
             } else {
-                setArchivedFree('defalut')
+                setArchivedFree('recycle')
                 setArchivedFreeVisable(true)
             }
         }
@@ -216,7 +225,7 @@ const RepositoryDocList = (props) => {
                 setArchivedNode(item)
                 setNodeArchivedVisable(true)
             } else {
-                setArchivedFree('defalut')
+                setArchivedFree('archived')
                 setArchivedFreeVisable(true)
             }
 
@@ -538,6 +547,17 @@ const RepositoryDocList = (props) => {
         })
     }
 
+    const configEnhance = {
+        'archived':{
+            title:'归档',
+            desc: '长期存储不常用但需保留的文档'
+        },
+        'recycle':{
+            title:'回收站',
+            desc: '防止误删重要文件，提供灵活的数据恢复机制'
+        },
+    }
+
     return (
         <Fragment>
             <Spin spinning={loading} delay={500}>
@@ -627,11 +647,10 @@ const RepositoryDocList = (props) => {
                     repositoryCatalogueList={repositoryCatalogueList}
                 />
             }
-
-            <ArchivedFree
-                type={archivedFree}
-                archivedFreeVisable={archivedFreeVisable}
-                setArchivedFreeVisable={setArchivedFreeVisable}
+            <EnhanceEntranceModal
+                config={configEnhance[archivedFree]}
+                visible={archivedFreeVisable}
+                setVisible={setArchivedFreeVisable}
             />
             <SearchModal
                 showSearchModal={showSearchModal}

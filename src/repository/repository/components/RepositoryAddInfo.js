@@ -10,7 +10,6 @@ import { Form, Input, message } from 'antd';
 import "./repositoryAddInfo.scss";
 import { useState } from "react";
 import { observer } from "mobx-react";
-import Img from "../../../common/components/img/Img";
 import repositoryStore from "../store/RepositoryStore";
 
 const RepositoryAddInfo =  forwardRef((props, ref)  => {
@@ -20,10 +19,10 @@ const RepositoryAddInfo =  forwardRef((props, ref)  => {
     const [form] = Form.useForm();
     const [iconUrl, setIconUrl] = useState("repository1.png")
     const [iconList, setIconList] = useState();
-    const { findIconList, creatIcon, addRepositorylist, updateRepository } = repositoryStore;
+    const { findIconList, addRepositorylist, updateRepository } = repositoryStore;
 
     useEffect(() => {
-        getIconList()
+        // getIconList()
     }, [])
 
     useEffect(() => {
@@ -42,17 +41,13 @@ const RepositoryAddInfo =  forwardRef((props, ref)  => {
         })
     }
 
+    const icons = ['repository1.png','repository2.png','repository3.png','repository4.png'];
+
     const onFinish = () => {
         form.validateFields().then((values) => {
-            const data = {
-                name: values.name,
-                desc: values.desc,
-                limits: values.limits,
-                iconUrl: iconUrl
-            }
             if(repository){
                 updateRepository({
-                    ...data,
+                    ...values,
                     id: repository.id
                 }).then(res=>{
                     if(res.code===0){
@@ -64,7 +59,10 @@ const RepositoryAddInfo =  forwardRef((props, ref)  => {
                     }
                 })
             } else {
-                addRepositorylist(data).then(res => {
+                addRepositorylist({
+                    ...values,
+                    iconUrl: icons[Math.floor(Math.random() * icons.length)]
+                }).then(res => {
                     if (res.code === 40000) {
                         message.error(res.msg);
                     }
@@ -77,7 +75,6 @@ const RepositoryAddInfo =  forwardRef((props, ref)  => {
             }
         })
     }
-
 
     useImperativeHandle(ref, () => ({
         onFinish,
@@ -172,27 +169,6 @@ const RepositoryAddInfo =  forwardRef((props, ref)  => {
                     ]}
                 >
                     <Input.TextArea rows={3} placeholder="知识库描述" />
-                </Form.Item>
-                <Form.Item
-                    label="图标"
-                    name="icon"
-                >
-                    <div className="repository-icon-box">
-                        {
-                            iconList && iconList.map((item) => {
-                                return <div
-                                    key={item.id}
-                                    className={`repository-icon  ${item.iconUrl === iconUrl ? "icon-select" : null}`}
-                                    onClick={() => { setIconUrl(item.iconUrl) }}
-                                >
-                                    <Img
-                                        src={item.iconUrl}
-                                        alt="" className="img-icon"
-                                    />
-                                </div>
-                            })
-                        }
-                    </div>
                 </Form.Item>
             </Form>
         </div>

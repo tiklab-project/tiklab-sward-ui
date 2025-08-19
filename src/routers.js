@@ -31,7 +31,7 @@ const CollectLayout = AsyncComponent(() => import("./home/collect/components/Col
 
 
 // 知识库
-const Repository = AsyncComponent(() => import('./repository/repository/components/RepositoryList'))
+const Repository = AsyncComponent(() => import('./repository/repository/components/Repository'))
 const RepositoryDoc = AsyncComponent(() => import('./repository/document/common/RepositoryDoc'))
 const DocumentEdit = AsyncComponent(() => import("./repository/document/document/components/DocumentEdit"))
 const DocumentExamine = AsyncComponent(() => import("./repository/document/document/components/DocumentExamine"))
@@ -49,7 +49,7 @@ const RepositoryDomainUser = AsyncComponent(() => import('./repository/user/Repo
 const RepositoryBasicInfo = AsyncComponent(() => import('./repository/setting/basicInfo/components/BasicInfo'))
 
 // 模版
-const Template = AsyncComponent(() => import('./setting/template/components/TemplateList'))
+const Template = AsyncComponent(() => import('./setting/template/components/Template'))
 const TemplateEdit = AsyncComponent(() => import('./setting/template/components/TemplateEdit'))
 const TemplatePreview = AsyncComponent(() => import('./setting/template/components/TemplatePreview'))
 
@@ -258,11 +258,6 @@ const Routes = [
                         exact: true,
                         component: Template,
                         key: 'template'
-                    },
-                    {
-                        path: "/setting/templateAdd",
-                        component: TemplateEdit,
-                        exact: true
                     },
                     {
                         path: "/setting/templateView/:templateId",

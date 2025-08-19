@@ -9,33 +9,29 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from "react-router-dom";
 import { Layout } from "antd";
-import SetMenu from "./SetMenu";
 import MoreMenuModel from "./MoreMenuModal";
 import "./RepositoryAside.scss";
-import {disableFunction} from "tiklab-core-ui";
-import ArchivedFree from "../archivedFree/ArchivedFree";
 import {renderRoutes} from "react-router-config";
+import {MenuFoldOutlined, MenuUnfoldOutlined, SettingOutlined} from "@ant-design/icons";
 
 const { Sider } = Layout;
 
 const RepositoryAside = (props) => {
 
-    const { route, isShowText, SetIsShowText, ChangeModal, initRouters, path, setUrl, backUrl, backName } = props;
-
-    const disable = disableFunction();
-    const repositoryId = props.match.params.repositoryId;
+    const { route, ChangeModal, initRouters, path, setUrl, backUrl, backName } = props;
 
     const [projectRouter, setProjectRouter] = useState([]);
 
     const [moreMenu, setMoreMenu] = useState([]);
+    //是否折叠
+    const [isShowText,SetIsShowText] = useState(()=>{
+        const expand = localStorage.getItem('menuExpand');
+        return expand==='true'
+    });
     //主题
     const [theme, setTheme] = useState(localStorage.getItem("theme") ? localStorage.getItem("theme") : "default");
     //主题样式
     const [themeClass, setThemeClass] = useState("project-sider-gray")
-    //增强功能弹出框
-    const [archivedFreeVisable, setArchivedFreeVisable] = useState(false)
-    //增强功能类型
-    const [archivedFreeType,setArchivedFreeType] = useState('documentReview')
 
     const resizeUpdate = (e) => {
         // 通过事件对象获取浏览器窗口的高度
@@ -66,19 +62,7 @@ const RepositoryAside = (props) => {
      * 点击左侧菜单
      */
     const selectMenu = (menu) => {
-        const {to,isEnhance,key} = menu;
-        if(disable && isEnhance){
-            setArchivedFreeVisable(true)
-            switch (key) {
-                case 'review':
-                    setArchivedFreeType('documentReview');
-                    break;
-                case 'statistics':
-                    setArchivedFreeType('documentStatistics')
-            }
-            return
-        }
-        props.history.push(to)
+        props.history.push(menu.to)
     }
 
     /**
@@ -86,6 +70,7 @@ const RepositoryAside = (props) => {
      */
     const toggleCollapsed = () => {
         SetIsShowText(!isShowText)
+        localStorage.setItem('menuExpand',String(!isShowText))
     }
 
     const backProject = () => {
@@ -183,30 +168,44 @@ const RepositoryAside = (props) => {
                                 selectMenu={selectMenu}
                             />
                         }
-                        <ArchivedFree
-                            type={archivedFreeType}
-                            archivedFreeVisable={archivedFreeVisable}
-                            setArchivedFreeVisable={setArchivedFreeVisable}
-                        />
                     </div>
-                    <SetMenu
-                        isShowText={isShowText}
-                        setUrl={setUrl}
-                        theme={theme}
-                    />
-                    <div className={"menu-box-right-border"}>
-                        <div className={"menu-box-isexpanded"} onClick={toggleCollapsed}>
-                            {
-                                isShowText ?
-                                <svg className="first-menu-expend-icon" aria-hidden="true">
-                                    <use xlinkHref="#icon-leftcircle"></use>
-                                </svg>
+                    <div className="project-setting" onClick={() =>props.history.push(setUrl)}>
+                        {
+                            isShowText ?
+                                <div className="project-setting-title setting">
+                                    <div className='project-aside-bottom-icon'>
+                                        <SettingOutlined />
+                                    </div>
+                                    <div>
+                                        设置
+                                    </div>
+                                </div>
                                 :
-                                <svg className="first-menu-expend-icon" aria-hidden="true">
-                                    <use xlinkHref="#icon-rightcircle"></use>
-                                </svg>
-                            }
-                        </div>
+                                <div className="project-setting-icon setting" data-title-right={"设置"}>
+                                    <div className='project-aside-bottom-icon'>
+                                        <SettingOutlined />
+                                    </div>
+                                </div>
+                        }
+                    </div>
+                    <div className="project-setting project-menu-fold" onClick={toggleCollapsed}>
+                        {
+                            isShowText ?
+                                <div className="project-setting-title setting">
+                                    <div className='project-aside-bottom-icon'>
+                                        <MenuFoldOutlined />
+                                    </div>
+                                    <div>
+                                        折叠
+                                    </div>
+                                </div>
+                                :
+                                <div className="project-setting-icon setting" data-title-right={"展开"}>
+                                    <div className='project-aside-bottom-icon'>
+                                        <MenuUnfoldOutlined />
+                                    </div>
+                                </div>
+                        }
                     </div>
                 </div>
             </Sider>

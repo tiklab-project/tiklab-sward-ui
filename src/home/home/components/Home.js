@@ -18,6 +18,7 @@ import {documentPush} from "../../../common/utils/overall";
 import Profile from "../../../common/components/profile/Profile";
 import Collect from "../../../repository/document/collect/components/Collect";
 import Share from "../../../repository/document/share/components/Share";
+import ListIcon from "../../../common/components/icon/ListIcon";
 
 const Home = (props) => {
 
@@ -119,12 +120,11 @@ const Home = (props) => {
                                                     recentRepositoryDocumentList.map(item => {
                                                         return <div className="repository-item" key={item.id} onClick={() => goRepositoryDetail(item)} >
                                                             <div className="item-title">
-                                                                <Img
-                                                                    src={item.iconUrl}
-                                                                    alt=""
-                                                                    className="list-img"
+                                                                <ListIcon
+                                                                    icon={item.iconUrl}
+                                                                    text={item.name}
                                                                 />
-                                                                <span>{item.name}</span>
+                                                                <span className='item-title-name'>{item.name}</span>
                                                             </div>
                                                             <div className="item-work">
                                                                 <div className="process-work"><span style={{ color: "#999" }}>文档</span><span>{item.documentNum}篇</span></div>

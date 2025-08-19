@@ -1,0 +1,15 @@
+.repository-template {
+    height: 100%;
+    padding: var(--tiklab-padding);
+    width: 100%;
+    overflow: auto;
+    .template-name{
+        cursor: pointer;
+        &:hover {
+            color: var(--tiklab-blue);
+        }
+    }
+    .repository-template-search{
+        padding-bottom: 10px;
+    }
+}

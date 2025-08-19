@@ -3,11 +3,56 @@
     .ant-modal-body {
         padding: 0;
     }
+    .template-modal-content{
+        height: 100%;
+        border-top: 1px solid var(--tiklab-gray-200);
+    }
+    .template-modal-left{
+        height: 100%;
+        overflow-y: auto;
+        border-right: 1px solid var(--tiklab-gray-200);
+        .mould-group{
+            padding: 5px var(--tiklab-padding);
+            cursor: pointer;
+            position: relative;
+            &:before{
+                width: 3px;
+                height: 32px;
+                -webkit-transition: all .4s cubic-bezier(.23,1,.32,1);
+                transition: all .4s cubic-bezier(.23,1,.32,1);
+                content: " ";
+                position: absolute;
+                z-index: 2;
+                left: 0;
+                top: 0;
+            }
+        }
+        .mould-group-select{
+            background:var(--tiklab-gray-300);
+            &:before{
+                background:var(--tiklab-blue);
+            }
+        }
+    }
+    .template-modal-right{
+        height: 100%;
+        overflow: auto;
+        padding: 20px;
+        .mould-group{
+            &:not(:last-child){
+                margin-bottom: var(--tiklab-padding);
+            }
+            .mould-group-title{
+                margin-bottom: 8px;
+                color: #999999;
+                font-size: 13px;
+            }
+        }
+    }
     .template-list {
         display: flex;
         gap: 10px;
         flex-wrap: wrap;
-        padding: 10px;
         .template-box {
             padding: 10px;
             border: 1px solid rgba(126, 134, 142, 0.16);
@@ -18,12 +63,12 @@
             .template-image {
                 width: 120px;
             }
-    
+
             .template-name {
                 height: 27px;
                 background: rgb(249, 250, 252);
                 width: 100%;
-                border-radius: 0px 0px 6px 6px;
+                border-radius: 0 0 6px 6px;
                 position: absolute;
                 left: 0;
                 bottom: 0;

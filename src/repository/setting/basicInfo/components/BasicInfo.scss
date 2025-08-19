@@ -1,5 +1,9 @@
 .repository-set-basicinfo {
     padding: 20px;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    position: relative;
     .repository-info-title {
         display: flex;
         align-items: center;

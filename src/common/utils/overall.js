@@ -17,6 +17,14 @@ export const getFileIcon = (fileName) => {
         case "pptx":
         case "pdf":
             return 'ppt';
+        case 'mp3':
+        case 'wav':
+        case 'ogg':
+            return 'audio'
+        case 'mp4':
+        case 'avi':
+        case 'mkv':
+            return 'video'
         default:
             return 'file';
     }

@@ -16,7 +16,7 @@ import { withRouter } from "react-router";
 import Button from "../../../../common/components/button/Button";
 import {VerticalAlignBottomOutlined} from "@ant-design/icons";
 import {disableFunction} from "tiklab-core-ui";
-import ArchivedFree from "../../../../common/components/archivedFree/ArchivedFree";
+import EnhanceEntranceModal from "../../../../common/components/modal/EnhanceEntranceModal";
 
 const ShareFile = (props) => {
 
@@ -76,6 +76,14 @@ const ShareFile = (props) => {
 
     return (
         <div className="file-share-examine">
+            <EnhanceEntranceModal
+                config={{
+                    title: '附件预览',
+                    desc: '提升文件查看体验'
+                }}
+                visible={archivedFreeVisable}
+                setVisible={setArchivedFreeVisable}
+            />
             <div className="examine-title">
                 <span className="examine-name">{docInfo?.name}</span>
             </div>
@@ -111,11 +119,6 @@ const ShareFile = (props) => {
                             </Col>
                         </Row>
                 }
-                <ArchivedFree
-                    type={'documentFile'}
-                    archivedFreeVisable={archivedFreeVisable}
-                    setArchivedFreeVisable={setArchivedFreeVisable}
-                />
             </div>
         </div>
 

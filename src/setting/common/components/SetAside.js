@@ -12,8 +12,6 @@ import { withRouter } from "react-router-dom";
 import {PrivilegeButton, SystemNav} from "tiklab-privilege-ui";
 import SettingHomeStore from "../../home/store/SettingHomeStore"
 import { observer } from 'mobx-react';
-import {disableFunction} from 'tiklab-core-ui';
-import ArchivedFree from '../../../common/components/archivedFree/ArchivedFree';
 import {Layout} from "antd";
 import {renderRoutes} from "react-router-config";
 import "./SetAside.scss"
@@ -117,16 +115,13 @@ const templateRouter = [
 
 const SetAside = (props) => {
 
-    const {route,applicationRouters,enhance} = props;
+    const {route,applicationRouters} = props;
     // 无子级菜单处理
     const { expandedTree, setExpandedTree } = SettingHomeStore;
 
     const [router, setRouterMenu] = useState(applicationRouters);
     const authConfig = JSON.parse(localStorage.getItem("authConfig"));
-    const disable = disableFunction();
     let path = props.location.pathname;
-
-    const [archivedFreeVisable, setArchivedFreeVisable] = useState(false)
 
     useEffect(() => {
         if (env === "local") {
@@ -135,24 +130,13 @@ const SetAside = (props) => {
         if (env !== "local") {
             setRouterMenu(applicationRouters)
         }
-        return
     }, [])
 
     const select = (data) => {
-        const {id,islink,iseEnhance} = data;
+        const {id,islink} = data;
         if (islink && !authConfig?.authType) {
             const authUrl = JSON.parse(localStorage.getItem("authConfig"))?.authServiceUrl + "#" + id;
             window.open(authUrl, '_blank');
-            return;
-        }
-        if(iseEnhance && disable){
-            if(id==='/setting/archived' || id==='/setting/recycle'){
-                setArchivedFreeVisable(true)
-                return;
-            }
-            if(typeof enhance === 'function') {
-                enhance(data);
-            }
             return;
         }
         props.history.push(id)
@@ -185,12 +169,6 @@ const SetAside = (props) => {
                             </svg>
                         </div>
                     }
-                    {/*{*/}
-                    {/*    data.iseEnhance && disable &&*/}
-                    {/*    <svg className="img-icon-16" aria-hidden="true" >*/}
-                    {/*        <use xlinkHref="#icon-member"></use>*/}
-                    {/*    </svg>*/}
-                    {/*}*/}
                 </li>
             </PrivilegeButton>
         )
@@ -275,10 +253,6 @@ const SetAside = (props) => {
                                 })
                             }
                         </ul>
-                        <ArchivedFree
-                            archivedFreeVisable={archivedFreeVisable}
-                            setArchivedFreeVisable={setArchivedFreeVisable}
-                        />
                     </div>
                     {props.children}
                 </Sider>

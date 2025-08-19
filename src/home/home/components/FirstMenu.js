@@ -243,18 +243,6 @@ const FirstMenu = (props) => {
                                     <div>设置</div>
                                 </div>
                                 <MessageList isShowText={isShowText} theme={theme} />
-                                <HelpLink
-                                    bgroup={"sward"}
-                                    iconComponent={
-                                        <div className="first-menu-text-item">
-                                            <svg className="icon-18" aria-hidden="true">
-                                                <use xlinkHref={`#icon-help-${theme}`} ></use>
-                                            </svg>
-                                            <div>帮助</div>
-                                        </div>
-
-                                    }
-                                />
                                 <AppLink
                                     translateX={isShowText ? 200 : 75}
                                     iconComponent={
@@ -268,6 +256,7 @@ const FirstMenu = (props) => {
                                     }
                                 />
                                 <AvatarLink
+                                    isHelp={true}
                                     changeTheme={changeTheme}
                                     iconComponent={
                                         <div className="first-menu-text-item">
@@ -286,17 +275,6 @@ const FirstMenu = (props) => {
                                     </svg>
                                 </div>
                                 <MessageList isShowText={isShowText} theme={theme} />
-                                <HelpLink
-                                    bgroup={"sward"}
-                                    iconComponent={
-                                        <div className="first-menu-link-item" data-title-right="帮助">
-                                            <svg className="icon-18 " aria-hidden="true">
-                                                <use xlinkHref={`#icon-help-${theme}`} ></use>
-                                            </svg>
-                                        </div>
-
-                                    }
-                                />
                                 <AppLink
                                     translateX={isShowText ? 200 : 75}
                                     iconComponent={
@@ -309,13 +287,15 @@ const FirstMenu = (props) => {
                                     }
                                 />
                                 <AvatarLink
+                                    {...props}
+                                    isHelp={true}
+                                    bgroup={"sward"}
                                     changeTheme={changeTheme}
                                     iconComponent={
                                         <div className="first-menu-link-item" data-title-right={nickname}>
                                             <Profile />
                                         </div>
                                     }
-                                    {...props}
                                 />
                             </div>
                     }

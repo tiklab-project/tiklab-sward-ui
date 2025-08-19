@@ -16,34 +16,27 @@ import "tiklab-slate-ui/es/tiklab-slate.css";
 import Button from "../../../../common/components/button/Button";
 import DocumentStore from "../store/DocumentStore";
 import RepositoryDetailStore from "../../../common/store/RepositoryDetailStore";
-
 import { getUser } from "tiklab-core-ui";
 import { useDebounce } from "../../../../common/utils/debounce";
 import { updateNodeName } from "../../../../common/utils/treeDataAction";
 import SelectTemplateList from "./SelectTemplateList";
 import Template from "../../../../assets/images/template.png";
-import weekly from "../../../../assets/images/weekly.png";
-import weeklyNomal from "../../../../assets/images/weeklyNomal.png";
-import todoWork from "../../../../assets/images/todoWork.png";
-import projectPlan from "../../../../assets/images/projectPlan.png";
-import projectOperation from "../../../../assets/images/projectOperation.png";
+
 const DocumentEdit = (props) => {
-    const { relationWorkStore, documentStore } = props;
+    const { relationWorkStore } = props;
     const { findDocument, updateDocument, findDocumentTemplateList } = DocumentStore;
-    const { documentTitle, setDocumentTitle, repositoryCatalogueList, repository,fileLimit } = RepositoryDetailStore
+    const { documentTitle, setDocumentTitle, repositoryCatalogueList,fileLimit } = RepositoryDetailStore
     const documentId = props.match.params.id;
     const repositoryId = props.match.params.repositoryId;
+    const tmp = "[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]";
     const [docInfo, setDocInfo] = useState({ name: "", likenumInt: "", commentNumber: "", master: { name: "" } });
-    const [value, setValue] = useState();
+    const [value, setValue] = useState(null);
     const [valueIsEmpty, setValueIsEmpty] = useState(false);
-    const editRef = useRef();
+    const editRef = useRef(null);
     const ticket = getUser().ticket;
     const tenant = getUser().tenant;
     const [templateVisible, setTemplateVisible] = useState(false);
-    const [templateList, setTemplateList] = useState()
-    const imgUrlArray = [weekly, weeklyNomal, todoWork, projectPlan, projectOperation]
-    const path = props.location.pathname.split("/")[3];
-    const repositoryStatus = repository?.status !== 'nomal';
+    const [templateList, setTemplateList] = useState([])
 
     /**
      * 查找文档模版
@@ -51,7 +44,7 @@ const DocumentEdit = (props) => {
     useEffect(() => {
         findDocumentTemplateList().then(data => {
             if (data.code === 0) {
-                setTemplateList(data.data.slice(0, 3))
+                setTemplateList(data?.data || [])
             }
         })
     }, [])
@@ -60,7 +53,7 @@ const DocumentEdit = (props) => {
      * 查找文档详情接口
      */
     useEffect(() => {
-        setValue()
+        setValue(null)
         findDocument(documentId).then((data) => {
             if (data.code === 0) {
                 const detailDocument = data?.data?.node;
@@ -68,7 +61,7 @@ const DocumentEdit = (props) => {
                 if (data?.data?.details) {
                     setValue(data?.data?.details);
                 } else {
-                    setValue("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+                    setValue(tmp)
                 }
                 setDocInfo(detailDocument)
             }
@@ -170,7 +163,6 @@ const DocumentEdit = (props) => {
      * @param {模板} item
      */
     const selectTemplate = (item) => {
-        // detailText 没更新到
         const data = {
             repositoryId: repositoryId,
             id: documentId,
@@ -183,6 +175,7 @@ const DocumentEdit = (props) => {
                 setValue(item.details)
             } else {
                 message.error("保存失败")
+                setValue(tmp)
             }
         })
     }
@@ -191,14 +184,7 @@ const DocumentEdit = (props) => {
      * 跳转到文档查看模式
      */
     const goExamine = () => {
-        // 在目录界面
-        if (path === "doc") {
-            props.history.push(`/repository/${repositoryId}/doc/rich/${documentId}`)
-        }
-        //在收藏界面
-        if (path === "collect") {
-            props.history.push(`/repository/${repositoryId}/collect/rich/${documentId}`)
-        }
+        props.history.push(`/repository/${repositoryId}/doc/rich/${documentId}`)
     }
 
     return (<>
@@ -263,13 +249,12 @@ const DocumentEdit = (props) => {
                                             <div className="template-list">
                                                 {
                                                     templateList && templateList.map((item, index) => {
+                                                        if(index > 2){
+                                                            return
+                                                        }
                                                         return (
                                                             <div className="template-box" key={index} onClick={() => selectTemplate(item)}>
-                                                                <img
-                                                                    src={imgUrlArray[index]}
-                                                                    alt=""
-                                                                    className="template-image"
-                                                                />
+                                                                <img src={item.iconUrl} alt="" className="template-image"/>
                                                                 <div className="template-name">{item.name}</div>
                                                             </div>
                                                         )
@@ -293,12 +278,11 @@ const DocumentEdit = (props) => {
                     }
                 </div>
                 <SelectTemplateList
-                    documentId={documentId}
-                    setTemplateVisible={setTemplateVisible}
-                    templateVisible={templateVisible}
-                    documentStore={DocumentStore}
-                    selectTemplate={selectTemplate}
                     {...props}
+                    templateVisible={templateVisible}
+                    setTemplateVisible={setTemplateVisible}
+                    selectTemplate={selectTemplate}
+                    templateList={templateList}
                 />
             </div>
                 :

@@ -9,8 +9,6 @@
 import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
 import { Layout } from "antd";
-import { disableFunction } from 'tiklab-core-ui';
-import ArchivedFree from '../../../../common/components/archivedFree/ArchivedFree';
 import "./RepositorySetAside.scss";
 import {renderRoutes} from "react-router-config";
 import {DownOutlined, UpOutlined} from "@ant-design/icons";
@@ -24,10 +22,6 @@ const RepositorySetAside = (props) => {
 
     const repositoryId = props.match.params.repositoryId;
     const path = props.location.pathname;
-
-    const disable = disableFunction();
-    const [archivedFreeVisable, setArchivedFreeVisable] = useState(false)
-    const [archivedFreeType,setArchivedFreeType] = useState('documentVersion')
 
     // 菜单是否折叠
     const [isShowText, SetIsShowText] = useState(true)
@@ -53,19 +47,7 @@ const RepositorySetAside = (props) => {
      * @param {*} Item
      */
     const selectKeyFun = (Item) => {
-        const {key, iseEnhance, encoded} = Item
-        if (iseEnhance && disable) {
-            setArchivedFreeVisable(true);
-            switch (encoded) {
-                case 'review':
-                    setArchivedFreeType('documentReview');
-                    break
-                case 'recycleBin':
-                    setArchivedFreeType('defalut')
-            }
-            return
-        }
-        props.history.push(key)
+        props.history.push(Item.key)
     }
 
     const menuHtml = (Item,deep) => {
@@ -141,15 +123,11 @@ const RepositorySetAside = (props) => {
                             }) }
                         </div>
                     </div>
-                    <ArchivedFree
-                        type={archivedFreeType}
-                        archivedFreeVisable={archivedFreeVisable}
-                        setArchivedFreeVisable={setArchivedFreeVisable}
-                    />
                 </Sider>
                 <Layout>
                     {renderRoutes(route.routes)}
                 </Layout>
+                {props.children}
             </Layout>
         </ProjectNav>
     )

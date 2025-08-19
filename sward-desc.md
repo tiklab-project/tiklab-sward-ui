@@ -107,7 +107,7 @@
 | MoveLogList           | 移动文档弹窗       |
 | RepositoryChangeModal | 切换知识库弹窗      |
 | RepositoryDetailAside | 知识库详情页面左侧导航栏 |
-| RepositoryLayout      | 知识库详情页入口     |
+| RepositoryDetail      | 知识库详情页入口     |
 | SearchModal           | 搜索弹窗         |
 
 ## document 文档
@@ -132,7 +132,7 @@
 |-------------------|-------------------------------|
 | RepositoryAdd     | 添加知识库页面                       |
 | RepositoryAddInfo | 知识库添加详情                       |
-| RepositoryList    | 知识库列表                         |
+| Repository    | 知识库列表                         |
 
 ## setting
 ### basicInfo

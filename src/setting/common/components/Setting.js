@@ -110,7 +110,6 @@ const Setting = (props) => {
             title: "安全",
             icon: 'systemlog',
             id: '/setting/log',
-            // purviewCode: "SysLog",
             code: 10,
             children: [
                 {
@@ -122,12 +121,6 @@ const Setting = (props) => {
                     title: '备份与恢复',
                     id: '/setting/backup',
                     code: 10 - 2,
-                },
-                {
-                    title: '回收站',
-                    id: '/setting/recycle',
-                    code: 'recycle',
-                    iseEnhance: true
                 },
             ]
         },

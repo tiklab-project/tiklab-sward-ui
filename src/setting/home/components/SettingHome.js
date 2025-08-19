@@ -2,44 +2,30 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col } from "antd";
 import SettingHomeStore from "../store/SettingHomeStore";
-import { applyJump, disableFunction, applySubscription, getUser, getVersionInfo } from "tiklab-core-ui";
+import { disableFunction, applySubscription, getUser, getVersionInfo } from "tiklab-core-ui";
 import versionStore from "tiklab-licence-ui/es/version/VersionStore";
-// import overviewStore from "../../../pipeline/overview/store/OverviewStore";
 import vipDark from '../../../assets/images/vip-one.png';
-import  vipLight from '../../../assets/images/vip-two.png';
+import vipLight from '../../../assets/images/vip-two.png';
 import "./SettingHome.scss";
 import moment from "moment";
 import {
     ApartmentOutlined,
     UserOutlined,
-    MessageOutlined,
     GroupOutlined,
     ScheduleOutlined,
     InsertRowBelowOutlined,
     IdcardOutlined,
-    ConsoleSqlOutlined,
-    VerifiedOutlined,
-    ToolOutlined,
     AlertOutlined,
-    CloudOutlined,
-    NodeIndexOutlined,
-    HourglassOutlined,
-    InboxOutlined,
-    ShoppingOutlined,
-    RightOutlined,
-    MacCommandOutlined,
-    MergeCellsOutlined,
-    FileProtectOutlined,
     HistoryOutlined,
-    LaptopOutlined, DeleteOutlined,
 } from "@ant-design/icons"
-import ArchivedFree from "../../../common/components/archivedFree/ArchivedFree";
+import EnhanceEntranceModal from "../../../common/components/modal/EnhanceEntranceModal";
 
 const SettingHome = props => {
-    const {cloudVersion, setBackupVisible} = props;
+    const {cloudVersion} = props;
     const { findOrgaNum, findlogpage, setExpandedTree, expandedTree } = SettingHomeStore;
     const { findUseLicence } = versionStore;
     const versionInfo = getVersionInfo();
+    const [archivedFreeType,setArchivedFreeType] = useState('archived')
     const [archivedFreeVisable, setArchivedFreeVisable] = useState(false);
     const authType = JSON.parse(localStorage.getItem("authConfig"))?.authType;
     //系统设置统计数据
@@ -62,48 +48,29 @@ const SettingHome = props => {
     const select = (data) => {
         const id = data.id;
         const iseEnhance = data.iseEnhance;
-        if(version === "cloud") {
-            if(data.islink){
+        if(data.islink){
+            if(version==='cloud'){
                 window.open(workUrl + "#" + data.id, '_blank');
-            }else {
-                if (versionInfo.expired === false) {
-                    props.history.push(id)
-                    setOpenOrClose(data.parentUrl)
-                } else {
-                    if (!iseEnhance) {
-                        props.history.push(id)
-                        setOpenOrClose(data.parentUrl)
-                    } else {
-                        if(id === "/setting/backup"){
-                            setBackupVisible(true)
-                        }else {
-                            setArchivedFreeVisable(true)
-                        }
-
-                    }
-                }
-
+                return
             }
-        }else {
-            if (data.islink && !authType) {
+            if(!authType){
                 const authUrl = JSON.parse(localStorage.getItem("authConfig"))?.authServiceUrl + "#" + data.id;
                 window.open(authUrl, '_blank');
-            } else {
-                if (versionInfo.expired === false) {
-                    props.history.push(id)
-                } else {
-                    if (!iseEnhance) {
-                        props.history.push(id)
-                    } else {
-                        setArchivedFreeVisable(true)
-                    }
-                }
-
+                return;
             }
-            setOpenOrClose(data.parentUrl)
         }
-
-
+        if (versionInfo.expired === false) {
+            props.history.push(id)
+            setOpenOrClose(data.parentUrl)
+        } else {
+            if (!iseEnhance) {
+                props.history.push(id)
+                setOpenOrClose(data.parentUrl)
+            } else {
+                setArchivedFreeVisable(true)
+                setArchivedFreeType(id)
+            }
+        }
     }
 
     const array = [
@@ -196,6 +163,15 @@ const SettingHome = props => {
                     num: log?.totalRecord || '0'
                 },
                 {
+                    title: '归档',
+                    id: '/setting/archived',
+                    iseEnhance: true,
+                    icon: <svg className="icon-15" aria-hidden="true">
+                        <use xlinkHref={`#icon-systemreset`}></use>
+                    </svg>,
+                    num: count?.archived || 0
+                },
+                {
                     title: '回收站',
                     id: '/setting/recycle',
                     iseEnhance: true,
@@ -244,8 +220,28 @@ const SettingHome = props => {
         }
     }
 
+    const configEnhance = {
+        '/setting/archived':{
+            title:'归档',
+            desc: '长期存储不常用但需保留的文档'
+        },
+        '/setting/recycle':{
+            title:'回收站',
+            desc: '防止误删重要文件，提供灵活的数据恢复机制'
+        },
+        '/setting/backup':{
+            title: '备份与恢复',
+            desc: '提供完善的数据容灾和快速恢复能力'
+        },
+    }
+
     return (
         <Row className='setting-home'>
+            <EnhanceEntranceModal
+                config={configEnhance[archivedFreeType]}
+                visible={archivedFreeVisable}
+                setVisible={setArchivedFreeVisable}
+            />
             <Col
                 xs={{ span: "24" }}
                 sm={{ span: "24" }}
@@ -363,10 +359,6 @@ const SettingHome = props => {
                             </>
                     }
                 </div>
-                <ArchivedFree
-                    archivedFreeVisable={archivedFreeVisable}
-                    setArchivedFreeVisable={setArchivedFreeVisable}
-                />
             </Col>
         </Row>
     )
