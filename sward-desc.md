@@ -87,7 +87,7 @@
 | NoFoundPage             | 用户没有经过产品授权登录的页面 |
 | ProjectNoAccessPage     | 没有资源访问权限        |
 | SysExceptionContent     | 系统异常            |
-| SystemNoAccessPage      | 没有资源访问权限        |
+| NoAccess      | 没有资源访问权限        |
 | VaildProductUserPage    | 用户没有经过产品授权登录的页面 |
 
 # repository 知识库
@@ -234,9 +234,9 @@
 ## user
 | 文件                     | 说明                            |
 |------------------------|-------------------------------|
-| ProjectDirectory       | 用户目录                          |
-| ProjectSystemUserGroup | 用户组                           |
-| ProjectUserGroup       | 用户组                           |
-| ProjectVirtualRoleList | 虚拟角色                          |
+| Directory       | 用户目录                          |
+| UserGroup | 用户组                           |
+| UserGroup       | 用户组                           |
+| ProjectVirtualRole | 虚拟角色                          |
 
 

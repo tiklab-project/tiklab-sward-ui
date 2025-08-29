@@ -21,12 +21,10 @@ import RepositoryDetailStore from "../../../common/store/RepositoryDetailStore";
 import Button from "../../../../common/components/button/Button";
 import DocumentActionMenu from "../../common/DocumentActionMenu";
 import {
-    DoubleLeftOutlined,
-    DoubleRightOutlined,
-    MessageOutlined,
     ProfileOutlined,
     VerticalLeftOutlined
 } from "@ant-design/icons";
+import {PrivilegeProjectButton} from "tiklab-privilege-ui";
 
 const DocumentExamine = (props) => {
 
@@ -76,14 +74,6 @@ const DocumentExamine = (props) => {
                         setValue(data.data.details)
                     } else {
                         setValue()
-                        if(isEdit){
-                            if (path === "doc") {
-                                props.history.push(`/repository/${repositoryId}/doc/rich/${documentId}/edit`)
-                            }
-                            if (path === "collect") {
-                                props.history.push(`/repository/${repositoryId}/collect/rich/${documentId}/edit`)
-                            }
-                        }
                     }
                     const node = document.node;
                     setDocumentTitle(node.name)
@@ -92,7 +82,6 @@ const DocumentExamine = (props) => {
                     setFocus(document.focus)
                     setLikeNum(document.likenumInt)
                     setCommentNum(document.commentNumber)
-
                     createRecent({
                         name: node.name,
                         model: "document",
@@ -102,6 +91,7 @@ const DocumentExamine = (props) => {
                     })
                 }
             }
+        }).finally(()=>{
             setLoading(false)
         })
     }, [documentId])
@@ -301,17 +291,21 @@ const DocumentExamine = (props) => {
                                                         </svg>
                                                 }
                                                 {
-                                                    value && isEdit &&
-                                                    <Button className="document-action-edit" onClick={() => goEdit()}>
-                                                        编辑
-                                                    </Button>
+                                                    isEdit &&
+                                                    <PrivilegeProjectButton domainId={repositoryId} code={'wi_doc_update'}>
+                                                        <Button className="document-action-edit" onClick={() => goEdit()}>
+                                                            编辑
+                                                        </Button>
+                                                    </PrivilegeProjectButton>
                                                 }
-                                                <Button
-                                                    className="document-action-share"
-                                                    onClick={() => setShareVisible(true)}
-                                                >
-                                                    分享
-                                                </Button>
+                                                <PrivilegeProjectButton domainId={repositoryId} code={'wi_doc_share'}>
+                                                    <Button
+                                                        className="document-action-share"
+                                                        onClick={() => setShareVisible(true)}
+                                                    >
+                                                        分享
+                                                    </Button>
+                                                </PrivilegeProjectButton>
                                             </>
                                     }
                                     <DocumentActionMenu
@@ -385,14 +379,16 @@ const DocumentExamine = (props) => {
                                         </div>
                                     </div> : <></>
                             }
-                            <div className="comment-box">
-                                <div className="comment-box-item">
-                                    <svg className="midden-icon" aria-hidden="true" onClick={() => setShowComment(!showComment)}>
-                                        <use xlinkHref="#icon-comment"></use>
-                                    </svg>
-                                    {/*<div className="commnet-num">{commentNum}</div>*/}
+                            <PrivilegeProjectButton domainId={repositoryId} code={'wi_doc_comment'}>
+                                <div className="comment-box">
+                                    <div className="comment-box-item">
+                                        <svg className="midden-icon" aria-hidden="true" onClick={() => setShowComment(!showComment)}>
+                                            <use xlinkHref="#icon-comment"></use>
+                                        </svg>
+                                        {/*<div className="commnet-num">{commentNum}</div>*/}
+                                    </div>
                                 </div>
-                            </div>
+                            </PrivilegeProjectButton>
                             <ShareModal
                                 repositoryId={repositoryId}
                                 shareVisible={shareVisible}

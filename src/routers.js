@@ -17,7 +17,7 @@ const Home = AsyncComponent(() => import('./home/home/components/Home'))
 const SysExceptionContent = AsyncComponent(() => import("./login/SysExceptionContent"))
 
 const NoFoundPage = AsyncComponent(() => import('./login/NoFoundPage'));
-const NoAccessPage = AsyncComponent(() => import('./login/SystemNoAccessPage'));
+const NoAccessPage = AsyncComponent(() => import('./setting/privilege/NoAccess'));
 const ProjectNoAccessPage = AsyncComponent(() => import('./login/ProjectNoAccessPage'));
 const ExcludeProductUserContent = AsyncComponent(() => import('./login/ExcludeProductUserPage'))
 
@@ -61,32 +61,17 @@ const ShareMarkdown = AsyncComponent(() => import("./repository/document/share/c
 const ShareFile = AsyncComponent(() => import("./repository/document/share/components/ShareFile"))
 const SharePassWord = AsyncComponent(() => import('./repository/document/share/components/SharePassWord'))
 
-
+const Setting = AsyncComponent(() => import('./setting/common/components/Setting'))
 const SettingHome = AsyncComponent(() => import('./setting/home/components/SettingHome'))
 // 消息
-const SystemMessageSendType = AsyncComponent(() => import('./setting/message/SystemMessageSendType'))
-const SystemMessageType = AsyncComponent(() => import('./setting/message/SystemMessageType'))
-const SystemMessageTemplate = AsyncComponent(() => import('./setting/message/SystemMessageTemplate'))
-const SystemMessageNotice = AsyncComponent(() => import('./setting/message/SystemMessageNotice'))
-const SystemMessageNoticeBase = AsyncComponent(() => import('./setting/message/SystemMessageNoticeBase'))
-const ProjectMessageNoticeContent = AsyncComponent(() => import("./setting/message/ProjectMessageNoticeContent"))
+const SystemMessage = AsyncComponent(() => import('./setting/message/Message'))
 const DomainMessageNoticeContent = AsyncComponent(() => import("./repository/setting/projectMessage/DomainMessageNoticeContent"))
 
-const Setting = AsyncComponent(() => import('./setting/common/components/Setting'))
-
-const SystemFeature = AsyncComponent(() => import('./setting/privilege/SystemFeature'))
-const SystemRoleBuilt = AsyncComponent(() => import('./setting/privilege/SystemRoleBuilt'))
-const SystemRole = AsyncComponent(() => import('./setting/privilege/SystemRole'))
-const ProjectFeature = AsyncComponent(() => import('./setting/privilege/ProjectFeature'))
-const ProjectRole = AsyncComponent(() => import('./setting/privilege/ProjectRole'))
-
 //组织用户
-const OrgaContent = AsyncComponent(() => import('./setting/orga/Orga'))
-const OrgaUser = AsyncComponent(() => import('./setting/orga/User'))
-const ProjectDirectory = AsyncComponent(() => import("./setting/user/ProjectDirectory"))
-const ProjectUserGroup = AsyncComponent(() => import("./setting/user/ProjectUserGroup"))
-const ProjectSystemUserGroup = AsyncComponent(() => import("./setting/user/ProjectSystemUserGroup"))
-const ProjectVirtualRoleList = AsyncComponent(() => import("./setting/user/ProjectVirtualRoleList"))
+const OrgaContent = AsyncComponent(() => import('./setting/user/Orga'))
+const OrgaUser = AsyncComponent(() => import('./setting/user/User'))
+const ProjectDirectory = AsyncComponent(() => import("./setting/user/Directory"))
+const ProjectUserGroup = AsyncComponent(() => import("./setting/user/UserGroup"))
 
 // 系统集成
 const Server = AsyncComponent(() => import('./setting/integration/server/components/Server'));
@@ -95,19 +80,35 @@ const Confluence = AsyncComponent(() => import('./setting/integration/confluence
 const OpenApi = AsyncComponent(()=>import('./setting/integration/openApi/OpenApi'));
 const OpenApiDoc = AsyncComponent(()=>import('./setting/integration/openApi/OpenApiDoc'));
 
-const Task = AsyncComponent(() => import('./setting/message/Task'))
-const TodoTemp = AsyncComponent(() => import('./setting/message/TodoTemp'))
-const MyTodoTask = AsyncComponent(() => import('./setting/message/MyTodoTask'))
-const TodoType = AsyncComponent(() => import('./setting/message/TodoType'))
-
 const MyLog = AsyncComponent(() => import('./setting/security/MyLog'))
-const LogTemplate = AsyncComponent(() => import('./setting/security/LogTemplate'))
-const LogType = AsyncComponent(() => import('./setting/security/LogType'))
 const Backups = AsyncComponent(() => import('./setting/security/Backups'))
 const RequestError = AsyncComponent(() => import('./setting/security/RequestError'))
 
 const Version = AsyncComponent(() => import('./setting/licence/Version'))
 const ProductAuth = AsyncComponent(() => import('./setting/licence/ProductAuth'))
+
+//基础数据
+const SystemMessageType = AsyncComponent(() => import('./setting/base/message/SystemMessageType'))
+const SystemMessageTemplate = AsyncComponent(() => import('./setting/base/message/SystemMessageTemplate'))
+const SystemMessageNoticeBase = AsyncComponent(() => import('./setting/base/message/SystemMessageNoticeBase'))
+const ProjectMessageNoticeContent = AsyncComponent(() => import("./setting/base/message/ProjectMessageNoticeContent"))
+
+const Task = AsyncComponent(() => import('./setting/base/message/Task'))
+const TodoTemp = AsyncComponent(() => import('./setting/base/message/TodoTemp'))
+const MyTodoTask = AsyncComponent(() => import('./setting/base/message/MyTodoTask'))
+const TodoType = AsyncComponent(() => import('./setting/base/message/TodoType'))
+
+const SystemFeature = AsyncComponent(() => import('./setting/base/privilege/SystemFeature'))
+const SystemRoleBuilt = AsyncComponent(() => import('./setting/base/privilege/SystemRoleBuilt'))
+const SystemRole = AsyncComponent(() => import('./setting/privilege/SystemRole'))
+const ProjectFeature = AsyncComponent(() => import('./setting/base/privilege/ProjectFeature'))
+const ProjectRole = AsyncComponent(() => import('./setting/base/privilege/ProjectRole'))
+
+const ProjectSystemUserGroup = AsyncComponent(() => import("./setting/base/user/UserGroup"))
+const ProjectVirtualRoleList = AsyncComponent(() => import("./setting/base/user/ProjectVirtualRole"))
+
+const LogTemplate = AsyncComponent(() => import('./setting/base/security/LogTemplate'))
+const LogType = AsyncComponent(() => import('./setting/base/security/LogType'))
 
 const Routes = [
     {
@@ -134,11 +135,6 @@ const Routes = [
         exact: true,
         path: '/404',
         component: NoFoundPage,
-    },
-    {
-        exact: true,
-        path: '/noaccess',
-        component: NoAccessPage,
     },
     {
         path:"/requestError",
@@ -203,6 +199,11 @@ const Routes = [
                 exact: true,
                 component: Repository,
                 key: 'repository'
+            },
+            {
+                exact: true,
+                path: '/noaccess',
+                component: NoAccessPage,
             },
             {
                 path: "/collect",
@@ -325,8 +326,8 @@ const Routes = [
                         exact: true
                     },
                     {
-                        path: "/setting/messageNotice",
-                        component: SystemMessageNotice,
+                        path: "/setting/message",
+                        component: SystemMessage,
                         row: true,
                         exact: true
                     },
@@ -355,13 +356,6 @@ const Routes = [
                         row: true,
                         exact: true
                     },
-                    {
-                        path: "/setting/messageSendType",
-                        component: SystemMessageSendType,
-                        row: true,
-                        exact: true
-                    },
-
                     {
                         path: "/setting/taskList",
                         component: Task,
@@ -433,6 +427,11 @@ const Routes = [
                 path: "/repository/:repositoryId",
                 component: RepositoryDetail,
                 routes: [
+                    {
+                        exact: true,
+                        path: '/repository/:repositoryId/noaccess',
+                        component: NoAccessPage,
+                    },
                     {
                         path: "/repository/:id/noAccess",
                         exact: true,

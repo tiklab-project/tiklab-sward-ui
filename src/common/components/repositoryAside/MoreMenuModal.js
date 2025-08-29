@@ -84,7 +84,7 @@ const MoreMenuModel = (props) => {
             >
                 {
                     moreMenu && moreMenu.map((item,index) => {
-                        return <div className={`project-menu-submenu ${path.indexOf(item.id)!==-1 ? "project-menu-select" : ""}`}
+                        return <div className={`project-menu-submenu ${path.indexOf(item.id) === 0 ? "project-menu-select" : ""}`}
                             key={index}
                             onClick={() =>{
                                 setShowMenu(false)

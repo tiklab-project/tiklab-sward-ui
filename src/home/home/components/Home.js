@@ -195,6 +195,7 @@ const Home = (props) => {
                         active === 'share' &&
                         <Share
                             {...props}
+                            type={'home'}
                         />
                     }
                 </Col>

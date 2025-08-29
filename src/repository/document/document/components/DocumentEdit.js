@@ -21,22 +21,34 @@ import { useDebounce } from "../../../../common/utils/debounce";
 import { updateNodeName } from "../../../../common/utils/treeDataAction";
 import SelectTemplateList from "./SelectTemplateList";
 import Template from "../../../../assets/images/template.png";
+import {delay} from "../../../../common/utils/overall";
 
 const DocumentEdit = (props) => {
+
     const { relationWorkStore } = props;
+
     const { findDocument, updateDocument, findDocumentTemplateList } = DocumentStore;
     const { documentTitle, setDocumentTitle, repositoryCatalogueList,fileLimit } = RepositoryDetailStore
+
     const documentId = props.match.params.id;
     const repositoryId = props.match.params.repositoryId;
     const tmp = "[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]";
-    const [docInfo, setDocInfo] = useState({ name: "", likenumInt: "", commentNumber: "", master: { name: "" } });
-    const [value, setValue] = useState(null);
-    const [valueIsEmpty, setValueIsEmpty] = useState(false);
-    const editRef = useRef(null);
     const ticket = getUser().ticket;
     const tenant = getUser().tenant;
+    const editRef = useRef(null);
+
+    //文档
+    const [docInfo, setDocInfo] = useState({ name: "", likenumInt: "", commentNumber: "", master: { name: "" } });
+    //富文本内容
+    const [value, setValue] = useState(null);
+    //内容是否为空
+    const [valueIsEmpty, setValueIsEmpty] = useState(false);
+    //更多模版
     const [templateVisible, setTemplateVisible] = useState(false);
-    const [templateList, setTemplateList] = useState([])
+    //模版
+    const [templateList, setTemplateList] = useState([]);
+    //保存提示
+    const [saveTip,setSaveTip] = useState(null);
 
     /**
      * 查找文档模版
@@ -70,15 +82,29 @@ const DocumentEdit = (props) => {
 
     useEffect(() => {
         if (value) {
-            setValueIsEmpty(determineValue(value))
+            setValueIsEmpty(determineValue(value));
         }
     }, [value])
 
-    const save = () => {
-        saveDocument(value)
-        // editRef.current.submit()
-    }
+    useEffect(()=>{
+        window.addEventListener("keydown", handleKeyDown);
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    },[value])
 
+    const handleKeyDown = (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+            e.preventDefault();
+            if(value){
+                saveDocument(value)
+            }
+        }
+    };
+
+    /**
+     * 保存
+     */
     const saveDocument = (value) => {
         setValue(value)
         const data = {
@@ -96,7 +122,7 @@ const DocumentEdit = (props) => {
         })
     }
 
-    const updataDesc = useDebounce((value) => {
+    const updateDesc = useDebounce((value) => {
         setValue(value);
         const data = {
             repositoryId: repositoryId,
@@ -104,8 +130,12 @@ const DocumentEdit = (props) => {
             details: value,
             detailText: editRef.current?.innerText
         }
-        updateDocument(data)
-    }, [500])
+        setSaveTip('正在保存')
+        updateDocument(data).finally(async ()=>{
+            await delay(300);
+            setSaveTip('已保存');
+        })
+    }, [5000])
 
     const changeTitle = (value) => {
         setDocumentTitle(value.target.value)
@@ -116,7 +146,6 @@ const DocumentEdit = (props) => {
                 id: documentId,
                 name: value.target.value
             }
-
         }
         updateDocument(data).then(res => {
             if (res.code === 0) {
@@ -154,13 +183,12 @@ const DocumentEdit = (props) => {
                 isEmpty = false;
             }
         }
-        console.log(isEmpty)
         return isEmpty;
     }
 
     /**
      * 选择模板
-     * @param {模板} item
+     * @param item
      */
     const selectTemplate = (item) => {
         const data = {
@@ -195,12 +223,15 @@ const DocumentEdit = (props) => {
                         <div className="edit-title-top" id="examine-title">
                             {docInfo.name}
                         </div>
-                        <div className="edit-title-date">
-                            更新日期：{docInfo.updateTime ? docInfo.updateTime : docInfo.createTime}
+                        <div className='edit-title-bottom'>
+                            <div className="edit-title-date">
+                                更新日期：{docInfo.updateTime ? docInfo.updateTime : docInfo.createTime}
+                            </div>
+                            {saveTip && saveTip}
                         </div>
                     </div>
                     <div className="edit-right">
-                        <Button type="primary" className="edit-right-save" onClick={() => save()}>保存</Button>
+                        <Button type="primary" className="edit-right-save" onClick={() =>saveDocument(value)}>保存</Button>
                         <Button className="edit-right-eqit" onClick={() => goExamine()}>退出</Button>
                     </div>
                 </div>
@@ -208,7 +239,7 @@ const DocumentEdit = (props) => {
                     {
                         value && <EditorBig
                             value={value}
-                            onChange={value => updataDesc(value)}
+                            onChange={value=>updateDesc(value)}
                             relationWorkStore={relationWorkStore}
                             base_url={upload_url}
                             img_url={upload_url}

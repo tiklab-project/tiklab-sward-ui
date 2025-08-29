@@ -6,8 +6,8 @@
  * @LastEditors: 袁婕轩
  * @LastEditTime: 2024-12-31 16:57:33
  */
-import React, {useEffect, useRef, useState} from "react";
-import {Form, Menu, Dropdown, message} from "antd";
+import React, {useRef, useState} from "react";
+import {Form, Dropdown, message, Divider} from "antd";
 import CategoryAdd from "./CategoryAdd";
 import { appendNodeInTree } from "../../../common/utils/treeDataAction";
 import { inject, observer } from "mobx-react";
@@ -15,9 +15,11 @@ import { withRouter } from "react-router";
 import { getUser } from "tiklab-core-ui";
 import TemplateStore from "../../../setting/template/store/TemplateStore";
 import { formatFileSize } from "../../../common/utils/overall";
+import {PrivilegeProjectButton} from "tiklab-privilege-ui";
 
 const AddDropDown = (props) => {
-    const { category, repositoryDetailStore, button } = props;
+
+    const { category, repositoryDetailStore, button, code } = props;
 
     const {
         repositoryCatalogueList, setRepositoryCatalogueList,
@@ -31,78 +33,33 @@ const AddDropDown = (props) => {
     const treePath = category ?
         (category.treePath ? category.treePath + category.id + ";" : category.id + ";") : null;
 
-    const [addModalVisible, setAddModalVisible] = useState()
+    const [addModalVisible, setAddModalVisible] = useState(false)
     const [userList, setUserList] = useState()
 
 
     const fileInputRef = useRef(null);
 
-    const addMenu = () => {
-        return <Menu onClick={(value) => selectAddType(value)}>
-            <Menu.Item key="category">
-                <div className="content-add-menu">
-                    <svg className="content-add-icon" aria-hidden="true">
-                        <use xlinkHref="#icon-folder"></use>
-                    </svg>
-                    目录
-                </div>
-
-            </Menu.Item>
-            <Menu.Item key="document">
-                <div className="content-add-menu">
-                    <svg className="content-add-icon" aria-hidden="true">
-                        <use xlinkHref="#icon-file"></use>
-                    </svg>
-                   文档
-                </div>
-            </Menu.Item>
-            <Menu.Item key="markdown">
-                <div className="content-add-menu">
-                    <svg className="content-add-icon" aria-hidden="true">
-                        <use xlinkHref="#icon-minmap"></use>
-                    </svg>
-                   Markdown
-                </div>
-            </Menu.Item>
-            <Menu.Item key="file" className="content-add-menu-file">
-                <div className="content-add-menu">
-                    <svg className="content-add-icon" aria-hidden="true">
-                        <use xlinkHref="#icon-file"></use>
-                    </svg>
-                    上传本地文件
-                </div>
-            </Menu.Item>
-            <input
-                type="file"
-                ref={fileInputRef}
-                style={{ display: 'none' }}
-                onChange={handleFileChange}
-                // accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx"
-            />
-        </Menu>
-    }
-
     /**
      * 创建类型
-     * @param value
+     * @param key
      */
-    const selectAddType = (value) => {
-        if (value.key === "category") {
+    const selectAddType = (key) => {
+        if (key === "category") {
             setAddModalVisible(true)
             findDmUserList(repositoryId).then(data => {
                 setUserList(data)
             })
             form.setFieldsValue({
-                formatType: value.key
+                formatType: key
             })
             return
         }
-        if (value.key === 'file') {
+        if (key === 'file') {
             fileInputRef.current.click();
             return;
         }
         //创建文档
-        setCreateDocument(value.key)
+        setCreateDocument(key)
     }
 
     const FILE_SIZE = fileLimit?.docFileSize;
@@ -210,23 +167,78 @@ const AddDropDown = (props) => {
         })
     }
 
+    const addMenu = (
+        <div className='sward-dropdown-more'>
+            <PrivilegeProjectButton domainId={repositoryId} code={code.category}>
+                <div
+                    className="content-add-menu dropdown-more-item"
+                    onClick={() => selectAddType('category')}
+                >
+                    <svg className="content-add-icon" aria-hidden="true">
+                        <use xlinkHref="#icon-folder"></use>
+                    </svg>
+                    目录
+                </div>
+            </PrivilegeProjectButton>
+            <PrivilegeProjectButton domainId={repositoryId} code={code.document}>
+                <div
+                    className="content-add-menu dropdown-more-item"
+                    onClick={() => selectAddType('document')}
+                >
+                    <svg className="content-add-icon" aria-hidden="true">
+                        <use xlinkHref="#icon-file"></use>
+                    </svg>
+                    文档
+                </div>
+            </PrivilegeProjectButton>
+            <PrivilegeProjectButton domainId={repositoryId} code={code.markdown}>
+                <div
+                    className="content-add-menu dropdown-more-item"
+                    onClick={() => selectAddType('markdown')}
+                >
+                    <svg className="content-add-icon" aria-hidden="true">
+                        <use xlinkHref="#icon-minmap"></use>
+                    </svg>
+                    Markdown
+                </div>
+            </PrivilegeProjectButton>
+            <PrivilegeProjectButton domainId={repositoryId} code={code.file}>
+                <Divider />
+                <div
+                    className="content-add-menu dropdown-more-item"
+                    onClick={() => selectAddType('file')}
+                >
+                    <svg className="content-add-icon" aria-hidden="true">
+                        <use xlinkHref="#icon-file"></use>
+                    </svg>
+                    上传本地文件
+                </div>
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    style={{ display: 'none' }}
+                    onChange={handleFileChange}
+                />
+            </PrivilegeProjectButton>
+        </div>
+    )
+
     return repository?.status === 'nomal' && (
         <div onClick={(event) => event.stopPropagation()} className="category-add">
             {
-                button === "icon-gray" && <Dropdown overlay={() => addMenu()} placement="bottomLeft">
+                button === "icon-gray" && <Dropdown overlay={addMenu} placement="bottomLeft">
                     <svg className="icon-18" aria-hidden="true">
                         <use xlinkHref="#icon-plusBlue"></use>
                     </svg>
                 </Dropdown>
             }
             {
-                button === "text" && <Dropdown overlay={() => addMenu()} placement="bottomLeft">
+                button === "text" && <Dropdown overlay={addMenu} placement="bottomLeft">
                     <div className="top-add-botton">添加</div>
                 </Dropdown>
             }
-
             {
-                button === "icon-blue" && <Dropdown overlay={() => addMenu()} placement="bottomLeft">
+                button === "icon-blue" && <Dropdown overlay={addMenu} placement="bottomLeft">
                     <svg className="icon-18" aria-hidden="true">
                         <use xlinkHref="#icon-add-blue"></use>
                     </svg>
@@ -242,7 +254,6 @@ const AddDropDown = (props) => {
                 {...props}
             />
         </div>
-
     )
 }
 

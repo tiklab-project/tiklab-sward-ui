@@ -12,7 +12,7 @@ import { Layout } from "antd";
 import "./RepositorySetAside.scss";
 import {renderRoutes} from "react-router-config";
 import {DownOutlined, UpOutlined} from "@ant-design/icons";
-import {ProjectNav} from "tiklab-privilege-ui";
+import {ProjectNav,PrivilegeProjectButton} from "tiklab-privilege-ui";
 
 const { Sider } = Layout;
 
@@ -52,22 +52,24 @@ const RepositorySetAside = (props) => {
 
     const menuHtml = (Item,deep) => {
         return (
-            <div
-                className={`repository-menu ${(path && path.indexOf(Item.key) !== -1) ? "repository-menu-select" : ""}`}
-                key={Item.key}
-                onClick={() => selectKeyFun(Item)}
-                style={{paddingLeft: deep}}
-            >
-                <span className={`${isShowText ? "" : "repository-notext"}`}>
-                    {Item.title}
-                </span>
-                {/*{*/}
-                {/*    Item.iseEnhance && versionInfo.expired === true && */}
-                {/*    <svg className="img-icon-16" aria-hidden="true" >*/}
-                {/*        <use xlinkHref="#icon-member"></use>*/}
-                {/*    </svg>*/}
-                {/* }*/}
-            </div>
+            <PrivilegeProjectButton key={Item.key} code={Item.purviewCode} domainId={repositoryId}>
+                <div
+                    className={`repository-menu ${path === Item.key ? "repository-menu-select" : ""}`}
+                    key={Item.key}
+                    onClick={() => selectKeyFun(Item)}
+                    style={{paddingLeft: deep}}
+                >
+                    <span className={`${isShowText ? "" : "repository-notext"}`}>
+                        {Item.title}
+                    </span>
+                    {/*{*/}
+                    {/*    Item.iseEnhance && versionInfo.expired === true && */}
+                    {/*    <svg className="img-icon-16" aria-hidden="true" >*/}
+                    {/*        <use xlinkHref="#icon-member"></use>*/}
+                    {/*    </svg>*/}
+                    {/* }*/}
+                </div>
+            </PrivilegeProjectButton>
         )
     }
 
@@ -105,7 +107,7 @@ const RepositorySetAside = (props) => {
             domainId={repositoryId}
             projectRouters={repositoryRouters}
             outerPath={outerPath}
-            noAccessPath={"/noaccess"}
+            noAccessPath={`/repository/${repositoryId}/noaccess`}
             pathKey={'key'}
         >
             <Layout className="repository-set">

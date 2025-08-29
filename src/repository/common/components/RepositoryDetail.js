@@ -26,14 +26,12 @@ const RepositoryDetail = (props)=>{
 
     const repositoryId = props.match.params.repositoryId;
     const userId = getUser().userId
-    // 当前选中菜单key
-    const path = props.location.pathname.split("/")[3];
 
     useEffect(() => {
         findRepository(repositoryId).then(res=>{
             if(res.code===0){
                 const data = res.data;
-                getInitProjectPermissions(userId,repositoryId,data?.projectLimits === "0")
+                getInitProjectPermissions(userId,repositoryId,data?.limits === "0")
                 createRecent({
                     name: data?.name,
                     model: "repository",
@@ -53,9 +51,9 @@ const RepositoryDetail = (props)=>{
                 ChangeModal={RepositoryChangeModal}
                 initRouters={router}
                 backName={"返回首页"}
-                path={path}
                 setUrl={`/repository/${repositoryId}/set`}
                 backUrl={`/repository`}
+                domainId={repositoryId}
             />
         </Provider>
     )

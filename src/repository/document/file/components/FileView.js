@@ -17,6 +17,7 @@ import RepositoryDetailStore from "../../../common/store/RepositoryDetailStore";
 import {observer} from "mobx-react";
 import {disableFunction} from "tiklab-core-ui";
 import EnhanceEntranceModal from "../../../../common/components/modal/EnhanceEntranceModal";
+import {PrivilegeProjectButton} from "tiklab-privilege-ui";
 
 const FileView =  ({ ExtendFileView, EditButton, ...props })=> {
 
@@ -124,11 +125,13 @@ const FileView =  ({ ExtendFileView, EditButton, ...props })=> {
             <div className='document-file-name'>
                 {documentTitle}
             </div>
-            <Button type={'primary'} onClick={downFile}>
-                <VerticalAlignBottomOutlined />
-                &nbsp;&nbsp;下载
-                {details?.fileSize ? `(${details.fileSize})` : ''}
-            </Button>
+            <PrivilegeProjectButton domainId={repositoryId} code={'wi_doc_download'}>
+                <Button type={'primary'} onClick={downFile}>
+                    <VerticalAlignBottomOutlined />
+                    &nbsp;&nbsp;下载
+                    {details?.fileSize ? `(${details.fileSize})` : ''}
+                </Button>
+            </PrivilegeProjectButton>
         </div>
     )
 
@@ -171,22 +174,25 @@ const FileView =  ({ ExtendFileView, EditButton, ...props })=> {
                                     {
                                         EditButton ?
                                         <EditButton
-                                            {...props}
                                             downFile={downFile}
                                             documentTitle={documentTitle}
                                             documentData={documentData}
                                         />
                                         :
-                                        <Button className="document-action-edit" onClick={downFile}>
-                                            下载
-                                        </Button>
+                                        <PrivilegeProjectButton domainId={repositoryId} code={'wi_doc_download'}>
+                                            <Button className="document-action-edit" onClick={downFile}>
+                                                下载
+                                            </Button>
+                                        </PrivilegeProjectButton>
                                     }
-                                    <Button
-                                        className="document-action-share"
-                                        onClick={() => setShareVisible(true)}
-                                    >
-                                        分享
-                                    </Button>
+                                    <PrivilegeProjectButton domainId={repositoryId} code={'wi_doc_share'}>
+                                        <Button
+                                            className="document-action-share"
+                                            onClick={() => setShareVisible(true)}
+                                        >
+                                            分享
+                                        </Button>
+                                    </PrivilegeProjectButton>
                                 </div>
                             </div>
                             <div className="document-examine-content">
@@ -194,6 +200,7 @@ const FileView =  ({ ExtendFileView, EditButton, ...props })=> {
                                     (!disable && ExtendFileView) ?
                                         <div className="document-examine-row">
                                             <ExtendFileView
+                                                repositoryId={repositoryId}
                                                 defaultContent={defaultContent}
                                                 documentTitle={documentTitle}
                                                 documentData={documentData}

@@ -19,6 +19,12 @@ class ShareStore {
     }
 
     @action
+    findNodeList= async(value)=> {
+        const data = await ServiceShare("/node/findNodeList", value);
+        return data;
+    }
+
+    @action
     documentView = async(value)=> {
         const params = new FormData()
         params.append("id", value.documentId)
@@ -68,13 +74,6 @@ class ShareStore {
         return data;
     }
 
-    @action
-    findNodeList= async(value)=> {
-        // const params = new FormData()
-        // params.append("id", id)
-        const data = await ServiceShare("/node/findNodeList", value);
-        return data;
-    }
 }
 
 export default new ShareStore();

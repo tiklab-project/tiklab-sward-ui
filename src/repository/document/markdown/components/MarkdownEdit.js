@@ -17,36 +17,34 @@ import RepositoryDetailStore from "../../../common/store/RepositoryDetailStore";
 import { Node } from "slate";
 import { Empty, message } from "antd";
 import { useDebounce } from "../../../../common/utils/debounce";
+import {delay} from "../../../../common/utils/overall";
+
 const MarkdownEdit = (props) => {
+
     const { findDocument, updateDocument } = MarkdownStore;
-    const { documentTitle, setDocumentTitle,repository } = RepositoryDetailStore;
-    const [documentDate, setDocumentDate] = useState();
-    const [docInfo, setDocInfo] = useState();
+    const { documentTitle, setDocumentTitle } = RepositoryDetailStore;
+
     const documentId = props.match.params.id;
     const repositoryId = props.match.params.repositoryId;
-    const [value, setValue] = useState();
     const path = props.location.pathname.split("/")[3];
-    const repositoryStatus = repository?.status !== 'nomal';
+
+    const [documentDate, setDocumentDate] = useState();
+    const [docInfo, setDocInfo] = useState();
+
+    const [value, setValue] = useState(null);
+    //保存提示
+    const [saveTip,setSaveTip] = useState(null);
 
     // 查找文档详情
     useEffect(() => {
-        setValue()
+        setValue(null)
         findDocument(documentId).then((data) => {
             if (data.code === 0) {
                 if (data.data.details) {
                     const value = data.data.details;
                     setValue(JSON.parse(value))
                 } else {
-                    setValue([
-                        {
-                            type: 'paragraph',
-                            children: [
-                                {
-                                    text: '**make** **decorations** to  it _dead_ simple .',
-                                },
-                            ],
-                        }
-                    ])
+                    setValue([{type: 'paragraph', children: [{text: ' '}]}])
                 }
                 const node = data.data.node;
                 setDocInfo(node)
@@ -56,11 +54,21 @@ const MarkdownEdit = (props) => {
         })
     }, [documentId])
 
-    // 保存文档
-    const save = () => {
-        saveDocument(value, "click")
-        // editRef.current.submit()
-    }
+    useEffect(()=>{
+        window.addEventListener("keydown", handleKeyDown);
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    },[value])
+
+    const handleKeyDown = (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+            e.preventDefault();
+            if(value){
+                saveDocument(value)
+            }
+        }
+    };
 
     /**
      * 获取文档中的文本， 文本用于搜索
@@ -75,9 +83,8 @@ const MarkdownEdit = (props) => {
     /**
      * 保存文档
      * @param {*} value
-     * @param {*} type
      */
-    const saveDocument = (value, type) => {
+    const saveDocument = value => {
         setValue(value)
         const serializeValue = serialize(value)
         const data = {
@@ -87,30 +94,38 @@ const MarkdownEdit = (props) => {
             detailText: serializeValue
         }
         updateDocument(data).then(res => {
-            if (type === "click") {
-                if (res.code === 0) {
-                    message.success("保存成功")
-                } else {
-                    message.error("保存失败")
-                }
+            if (res.code === 0) {
+                message.success("保存成功")
+            } else {
+                message.error("保存失败")
             }
         })
     }
 
     /**
-     * 节流保存，500ms 保存一次
+     * 节流保存，1000ms 保存一次
      */
     const changeEdit = useDebounce((value) => {
-        saveDocument(value, "auto")
-    }, [500])
+        setValue(value)
+        const serializeValue = serialize(value)
+        const data = {
+            repositoryId: repositoryId,
+            id: documentId,
+            details: JSON.stringify(value),
+            detailText: serializeValue
+        }
+        setSaveTip('正在保存')
+        updateDocument(data).finally(async ()=>{
+            await delay(300);
+            setSaveTip('已保存');
+        })
+    }, [5000])
 
     /**
      * 修改标题
      * @param {*} value
      */
     const changeTitle = (value) => {
-        // setTitleValue(value.target.value)
-        console.log(value)
         const data = {
             repositoryId: repositoryId,
             id: documentId,
@@ -181,12 +196,15 @@ const MarkdownEdit = (props) => {
                         >
                             {documentTitle}
                         </div>
-                        <div className="edit-title-date">
-                            更新日期：{documentDate}
+                        <div className='edit-title-bottom'>
+                            <div className="edit-title-date">
+                                更新日期：{documentDate}
+                            </div>
+                            {saveTip && saveTip}
                         </div>
                     </div>
                     <div className="edit-right">
-                        <Button type="primary" className="edit-right-save" onClick={() => save()}>保存</Button>
+                        <Button type="primary" className="edit-right-save" onClick={() => saveDocument(value)}>保存</Button>
                         <Button className="edit-right-eqit" onClick={() => goExamine()}>退出</Button>
                     </div>
                 </div>

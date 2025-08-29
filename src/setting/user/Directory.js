@@ -8,9 +8,9 @@
 import React from "react";
 import {Directory} from 'tiklab-user-ui';
 // 用户目录
-const ProjectDirectory = (props) => {
+const DirectoryPage = (props) => {
     return (
         <Directory bgroup = "sward"/>
     )
 }
-export default ProjectDirectory;
+export default DirectoryPage;

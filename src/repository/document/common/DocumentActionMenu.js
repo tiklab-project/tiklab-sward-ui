@@ -6,10 +6,11 @@
  * @LastEditTime: 2025/4/14
  */
 import React, {Fragment, useState} from "react";
-import {Dropdown, Menu} from "antd";
+import {Divider, Dropdown} from "antd";
 import "./DocumentActionMenu.scss";
 import {disableFunction} from 'tiklab-core-ui';
 import EnhanceEntranceModal from "../../../common/components/modal/EnhanceEntranceModal";
+import {PrivilegeProjectButton} from "tiklab-privilege-ui";
 
 const DocumentActionMenu = (props) => {
 
@@ -34,12 +35,14 @@ const DocumentActionMenu = (props) => {
     const [fresh,setFresh] = useState(false);
     //审批弹出框
     const [reviewAddVisible,setReviewAddVisible] = useState(false);
+    //下拉框
+    const [dropdownVisible,setDropdownVisible] = useState(false);
 
     /**
      * 文档更多操作
      */
-    const selectMoreType = (value) => {
-        const {key} = value;
+    const selectMoreType = (key) => {
+        setDropdownVisible(false);
         if(key==='comment'){
             setShowComment(true);
             return;
@@ -110,66 +113,94 @@ const DocumentActionMenu = (props) => {
     return (
         <Fragment>
             <Dropdown
+                visible={dropdownVisible}
+                onVisibleChange={visible => {
+                    setDropdownVisible(visible);
+                }}
                 overlay={ documentVersion ?
-                    <Menu onClick={(value) => selectMoreType(value)}>
-                        <Menu.Item key="version-view">
-                            <div className='document-more-actions'>
+                    <div className='sward-dropdown-more'>
+                        <PrivilegeProjectButton domainId={document?.repositoryId} code={disable ? null:'wi_doc_find_version'}>
+                            <div
+                                className='document-more-actions dropdown-more-item'
+                                onClick={() => selectMoreType('version-view')}
+                            >
                                 <svg className="document-more-actions-icon" aria-hidden="true">
                                     <use xlinkHref="#icon-history"></use>
                                 </svg>
                                 查看版本
                             </div>
-                        </Menu.Item>
-                    </Menu>
+                        </PrivilegeProjectButton>
+                    </div>
                     :
-                    <Menu onClick={(value) => selectMoreType(value)}>
+                    <div className='sward-dropdown-more'>
                         {
                             document?.node?.nodeStatus === 2 ? null :
                                 <>
-                                    <Menu.Item key="review">
-                                        <div className='document-more-actions'>
+                                    <PrivilegeProjectButton
+                                        domainId={document?.repositoryId}
+                                        code={
+                                            disable ? null :
+                                            document?.node?.nodeStatus === 3 ? 'wi_doc_offline' : 'wi_doc_commit_review'
+                                        }
+                                    >
+                                        <div
+                                            className='document-more-actions dropdown-more-item'
+                                            onClick={() => selectMoreType('review')}
+                                        >
                                             <svg className="document-more-actions-icon" aria-hidden="true">
                                                 <use xlinkHref="#icon-commit"></use>
                                             </svg>
                                             {document?.node?.nodeStatus === 3 ? '下线' : '提交评审'}
                                         </div>
-                                    </Menu.Item>
-                                    <Menu.Divider />
+                                    </PrivilegeProjectButton>
+                                    <Divider />
                                 </>
                         }
-                        <Menu.Item key="version-add">
-                            <div className='document-more-actions'>
+                        <PrivilegeProjectButton domainId={document?.repositoryId} code={disable ? null:'wi_doc_add_version'}>
+                            <div
+                                className='document-more-actions dropdown-more-item'
+                                onClick={() => selectMoreType('version-add')}
+                            >
                                 <svg className="document-more-actions-icon" aria-hidden="true">
                                     <use xlinkHref="#icon-flag"></use>
                                 </svg>
                                 添加版本
                             </div>
-                        </Menu.Item>
-                        <Menu.Item key="version-view">
-                            <div className='document-more-actions'>
+                        </PrivilegeProjectButton>
+                        <PrivilegeProjectButton domainId={document?.repositoryId} code={disable ? null:'wi_doc_find_version'}>
+                            <div
+                                className='document-more-actions dropdown-more-item'
+                                onClick={() => selectMoreType('version-view')}
+                            >
                                 <svg className="document-more-actions-icon" aria-hidden="true">
                                     <use xlinkHref="#icon-history"></use>
                                 </svg>
                                 查看版本
                             </div>
-                        </Menu.Item>
+                        </PrivilegeProjectButton>
                         {
                             document?.node?.documentType === 'document' &&
                             <>
-                                <Menu.Divider />
-                                <Menu.Item key="export-word">
-                                    <div className='document-more-actions'>
+                                <Divider />
+                                <PrivilegeProjectButton domainId={document?.repositoryId} code={'wi_doc_import_word'}>
+                                    <div
+                                        className='document-more-actions dropdown-more-item'
+                                        onClick={() => selectMoreType('export-word')}
+                                    >
                                         <svg className="document-more-actions-icon" aria-hidden="true">
                                             <use xlinkHref="#icon-history"></use>
                                         </svg>
                                         导出Word
                                     </div>
-                                </Menu.Item>
+                                </PrivilegeProjectButton>
                             </>
                         }
-                        <Menu.Divider />
-                        <Menu.Item key="comment">
-                            <div className='document-more-actions'>
+                        <Divider />
+                        <PrivilegeProjectButton domainId={document?.repositoryId} code={'wi_doc_comment'}>
+                            <div
+                                className='document-more-actions dropdown-more-item'
+                                onClick={() => selectMoreType('comment')}
+                            >
                                 <svg className="document-more-actions-icon" aria-hidden="true">
                                     <use xlinkHref="#icon-comment"></use>
                                 </svg>
@@ -178,8 +209,8 @@ const DocumentActionMenu = (props) => {
                                     {commentNum}
                                 </div>
                             </div>
-                        </Menu.Item>
-                    </Menu>
+                        </PrivilegeProjectButton>
+                    </div>
                 }
                 trigger={['click']}
             >

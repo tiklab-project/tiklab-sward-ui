@@ -15,9 +15,7 @@ const Setting = (props) => {
         {
             title: "用户",
             icon: 'systemuser',
-            id: '/setting/orga',
-            purviewCode: "orga",
-            code: 1,
+            id: 'user',
             children: [
                 {
                     title: '用户',
@@ -25,7 +23,6 @@ const Setting = (props) => {
                     easId: '/user/user',
                     purviewCode: "user",
                     islink: true,
-                    code: 1 - 2,
                 },
                 {
                     title: "部门",
@@ -33,8 +30,6 @@ const Setting = (props) => {
                     easId: '/user/orga',
                     purviewCode: "orga",
                     islink: true,
-                    code: 1 - 1,
-
                 },
                 {
                     title: '用户组',
@@ -42,7 +37,6 @@ const Setting = (props) => {
                     easId: '/user/userGroup',
                     purviewCode: "user_group",
                     islink: true,
-                    code: 1 - 3,
                 },
                 {
 
@@ -51,94 +45,74 @@ const Setting = (props) => {
                     easId: '/user/dir',
                     purviewCode: "user_dir",
                     islink: true,
-                    code: 1 - 4,
                 },
             ]
         },
         {
             title: '权限',
             id: "/setting/systemRole",
-            purviewCode: "SysPermission",
-            code: 2,
+            purviewCode: "permission",
             icon: 'systempermissions'
         },
         {
             title: "消息",
             icon: 'systemmessage',
-            id: '/setting/messageNotice',
-            purviewCode: "SysMessage",
-            code: 4,
-            children: [
-                {
-                    title: "消息通知方案",
-                    id: '/setting/messageNotice',
-                    purviewCode: "SysMessageNotice",
-                    code: 4 - 1
-                },
-                {
-                    title: '消息发送方式',
-                    id: '/setting/messageSendType',
-                    purviewCode: "SysMessageSendType",
-                    code: 4 - 2,
-                }
-            ]
+            id: '/setting/message',
+            purviewCode: "message",
         },
         {
             title: "集成开放",
             icon: 'systemIntergrtion',
-            id: '/setting/loadData',
-            code: 9,
+            id: 'integration',
             children: [
                 {
                     title: '服务集成',
                     id: '/setting/server',
-                    code: 9 - 1,
+                    purviewCode: "wiki_service_integration",
                 },
                 {
                     title: 'Confluence导入',
                     id: '/setting/loadData',
-                    code: 9-2,
+                    purviewCode: "wiki_confluence",
                 },
                 {
                     title: 'OpenApi',
                     id: '/setting/openApi',
-                    code: 9-3,
+                    purviewCode: "openapi",
                 }
             ]
         },
         {
             title: "安全",
             icon: 'systemlog',
-            id: '/setting/log',
-            code: 10,
+            id: 'security',
             children: [
                 {
                     title: '操作日志',
                     id: '/setting/log',
-                    code: 10 - 1,
+                    purviewCode: "log",
                 },
                 {
                     title: '备份与恢复',
                     id: '/setting/backup',
-                    code: 10 - 2,
+                    purviewCode: "backups_and_recover",
                 },
             ]
         },
         {
             title: "系统",
             icon: 'systemversion',
-            id: '/setting/version',
-            code: 11,
+            id: 'licence',
             children: [
                 {
                     title: '版本与许可证',
                     id: "/setting/version",
-                    code: 11 - 1,
+                    purviewCode: "licence",
                 },
                 {
                     title: '系统访问权限',
                     id: "/setting/productAuth",
-                    code: 11 - 2,
+                    purviewCode: "apply_limits",
                 },
             ]
         },

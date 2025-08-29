@@ -13,15 +13,18 @@ import MoreMenuModel from "./MoreMenuModal";
 import "./RepositoryAside.scss";
 import {renderRoutes} from "react-router-config";
 import {MenuFoldOutlined, MenuUnfoldOutlined, SettingOutlined} from "@ant-design/icons";
+import {PrivilegeProjectButton} from "tiklab-privilege-ui";
 
 const { Sider } = Layout;
 
 const RepositoryAside = (props) => {
 
-    const { route, ChangeModal, initRouters, path, setUrl, backUrl, backName } = props;
+    const { route, ChangeModal, initRouters, setUrl, backUrl, backName, domainId } = props;
 
     const [projectRouter, setProjectRouter] = useState([]);
 
+    const path = props.location.pathname;
+    //更多路由
     const [moreMenu, setMoreMenu] = useState([]);
     //是否折叠
     const [isShowText,SetIsShowText] = useState(()=>{
@@ -33,30 +36,13 @@ const RepositoryAside = (props) => {
     //主题样式
     const [themeClass, setThemeClass] = useState("project-sider-gray")
 
-    const resizeUpdate = (e) => {
-        // 通过事件对象获取浏览器窗口的高度
-        const documentHeight = e.target ? e.target.innerHeight : e.clientHeight;
-        const menuHeight = documentHeight - 200;
-        const menuNum = Math.floor(menuHeight / 60);
-        let num = 0;
-        num = menuNum > 7 ? 7 : menuNum;
-        setProjectRouter(initRouters.slice(0, num))
-        const hiddenMenu = initRouters.slice(num, initRouters.length)
-        setMoreMenu(hiddenMenu)
-    };
-
     useEffect(() => {
         getThemeClass(theme)
     }, [])
 
     useEffect(() => {
-        resizeUpdate(document.getElementById("root"))
-        window.addEventListener("resize", resizeUpdate);
-        return () => {
-            // 组件销毁时移除监听事件
-            window.removeEventListener('resize', resizeUpdate);
-        }
-    }, [initRouters])
+        setProjectRouter(initRouters)
+    }, [domainId]);
 
     /**
      * 点击左侧菜单
@@ -78,7 +64,7 @@ const RepositoryAside = (props) => {
     }
 
     const getThemeClass = (theme) => {
-        let name = "default"
+        let name = ""
         switch (theme) {
             case "black":
                 name = "project-sider-black";
@@ -132,41 +118,37 @@ const RepositoryAside = (props) => {
                         </div>
                         {
                             projectRouter && projectRouter.map((item, index) => {
-                                return isShowText ?
-                                    <div className={`project-menu-submenu ${(path && path.indexOf(item.key) !== -1) ? "project-menu-select" : ""}`}
-                                        key={item.encoded}
-                                        onClick={() => selectMenu(item)}
-                                    >
-                                        <svg className="icon-18" aria-hidden="true">
-                                            <use xlinkHref={`#icon-${item.icon}`}></use>
-                                        </svg>
-                                        <span>
-                                            {item.title}
-                                        </span>
-                                    </div>
-                                    :
-                                    <div className={`project-menu-submenu-icon ${(path && path.indexOf(item.key) !== -1) ? "project-menu-select" : ""}`}
-                                        key={item.encoded}
-                                        onClick={() => selectMenu(item)}
-                                    >
-                                        <svg className="svg-icon" aria-hidden="true">
-                                            <use xlinkHref={`#icon-${item.icon}`}></use>
-                                        </svg>
-                                        <span>
-                                            {item.title}
-                                        </span>
-                                    </div>
-
+                                return (
+                                    <PrivilegeProjectButton code={item.purviewCode} domainId={domainId} key={item.id}>
+                                        {
+                                            isShowText ?
+                                                <div className={`project-menu-submenu ${path.indexOf(item.id) === 0? "project-menu-select" : ""}`}
+                                                     key={item.id}
+                                                     onClick={() => selectMenu(item)}
+                                                >
+                                                    <svg className="icon-18" aria-hidden="true">
+                                                        <use xlinkHref={`#icon-${item.icon}`}></use>
+                                                    </svg>
+                                                    <span>
+                                                        {item.title}
+                                                    </span>
+                                                </div>
+                                                :
+                                                <div className={`project-menu-submenu-icon ${path.indexOf(item.id) === 0 ? "project-menu-select" : ""}`}
+                                                     key={item.id}
+                                                     onClick={() => selectMenu(item)}
+                                                >
+                                                    <svg className="svg-icon" aria-hidden="true">
+                                                        <use xlinkHref={`#icon-${item.icon}`}></use>
+                                                    </svg>
+                                                    <span>
+                                                        {item.title}
+                                                    </span>
+                                                </div>
+                                        }
+                                    </PrivilegeProjectButton>
+                                )
                             })
-                        }
-                        {
-                            moreMenu?.length > 0 &&
-                            <MoreMenuModel
-                                isShowText={isShowText}
-                                moreMenu={moreMenu}
-                                theme={theme}
-                                selectMenu={selectMenu}
-                            />
                         }
                     </div>
                     <div className="project-setting" onClick={() =>props.history.push(setUrl)}>

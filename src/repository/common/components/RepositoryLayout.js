@@ -21,8 +21,6 @@ const RepositoryLayout = (props) => {
             defaultIcon: "survey-default",
             id: `/repository/${repositoryId}/overview`,
             to: `/repository/${repositoryId}/overview`,
-            key: "overview",
-            encoded: "Survey"
         },
         {
             title: "文档",
@@ -30,8 +28,6 @@ const RepositoryLayout = (props) => {
             defaultIcon: "doc-default",
             id: `/repository/${repositoryId}/doc`,
             to: `/repository/${repositoryId}/doc`,
-            key: "doc",
-            encoded: "doc"
         },
     ];
 

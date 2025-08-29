@@ -7,18 +7,16 @@
  */
 import React from "react";
 import { ProjectFeature } from 'tiklab-privilege-ui';
-import { inject, observer } from "mobx-react";
 
 // 知识库功能管理
 const ProjectFeatureList = props => {
 
-
     return (
         <ProjectFeature
-            bgroup={'teamwire'}
+            bgroup={'sward'}
             {...props}
         />
     )
 }
 
-export default inject("privilegeProjectFeatureStore")(observer(ProjectFeatureList));
+export default ProjectFeatureList;

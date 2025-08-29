@@ -105,6 +105,9 @@
     background: #ffffff;
     width: 150px;
     padding: 8px;
+    &:empty{
+        display: none;
+    }
     .dropdown-more-item{
         cursor: pointer;
         padding: 5px;
@@ -112,7 +115,11 @@
             background: #f4f4f4;
         }
     }
+    .ant-divider-horizontal{
+        margin: 6px 0 !important;
+    }
 }
+
 
 [data-title-left]{
     position: relative;

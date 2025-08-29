@@ -15,17 +15,16 @@ import DocumentIcon from "../../../../common/components/icon/DocumentIcon";
 import {deleteSuccessReturnCurrenPage} from "../../../../common/utils/overall";
 import Profile from "../../../../common/components/profile/Profile";
 import Page from "../../../../common/components/page/Page";
-import {
-    ShareAltOutlined
-} from "@ant-design/icons";
+import {ShareAltOutlined} from "@ant-design/icons";
 import SearchInput from "../../../../common/components/search/SearchInput";
 import {useDebounce} from "../../../../common/utils/debounce";
+import {PrivilegeButton,PrivilegeProjectButton} from "tiklab-privilege-ui";
 
 const pageSize = 10;
 
 const Share = props =>{
 
-    const {match} = props;
+    const {match,type} = props;
 
     const { findSharePage, deleteShare } = shareStore;
 
@@ -220,29 +219,68 @@ const Share = props =>{
             render:(_,record)=>{
                 return (
                     <Space size={'middle'}>
-                        <Tooltip title={'查看分享'}>
-                            <ShareAltOutlined
-                                className='action-button'
-                                onClick={()=>toShare(record)}
-                            />
-                        </Tooltip>
-                        <Dropdown
-                            overlay={
-                                <div className="sward-dropdown-more">
-                                    <div className="dropdown-more-item" onClick={()=>toDelete(record)}>
-                                        删除
-                                    </div>
-                                </div>
-                            }
-                            trigger={['click']}
-                            placement={'bottomRight'}
-                        >
-                            <Tooltip title="更多">
-                                <svg className="svg-icon" aria-hidden="true" >
-                                    <use xlinkHref="#icon-more-default"></use>
-                                </svg>
-                            </Tooltip>
-                        </Dropdown>
+                        {
+                            type === 'home' ?
+                                <>
+                                    <PrivilegeButton code={'wiki_find_share'}>
+                                        <Tooltip title={'查看分享'}>
+                                            <ShareAltOutlined
+                                                className='action-button'
+                                                onClick={()=>toShare(record)}
+                                            />
+                                        </Tooltip>
+                                    </PrivilegeButton>
+                                    <PrivilegeButton code={'wiki_delete_share'}>
+                                        <Dropdown
+                                            overlay={
+                                                <div className="sward-dropdown-more">
+                                                    <div className="dropdown-more-item" onClick={()=>toDelete(record)}>
+                                                        删除
+                                                    </div>
+                                                </div>
+                                            }
+                                            trigger={['click']}
+                                            placement={'bottomRight'}
+                                        >
+                                            <Tooltip title="更多">
+                                                <svg className="svg-icon" aria-hidden="true" >
+                                                    <use xlinkHref="#icon-more-default"></use>
+                                                </svg>
+                                            </Tooltip>
+                                        </Dropdown>
+                                    </PrivilegeButton>
+                                </>
+                                :
+                                <>
+                                    <PrivilegeProjectButton domainId={repositoryId} code={'wi_setting_doc_share_find'}>
+                                        <Tooltip title={'查看分享'}>
+                                            <ShareAltOutlined
+                                                className='action-button'
+                                                onClick={()=>toShare(record)}
+                                            />
+                                        </Tooltip>
+                                    </PrivilegeProjectButton>
+                                    <PrivilegeProjectButton domainId={repositoryId} code={'wi_setting_doc_share_delete'}>
+                                        <Dropdown
+                                            overlay={
+                                                <div className="sward-dropdown-more">
+                                                    <div className="dropdown-more-item" onClick={()=>toDelete(record)}>
+                                                        删除
+                                                    </div>
+                                                </div>
+                                            }
+                                            trigger={['click']}
+                                            placement={'bottomRight'}
+                                        >
+                                            <Tooltip title="更多">
+                                                <svg className="svg-icon" aria-hidden="true" >
+                                                    <use xlinkHref="#icon-more-default"></use>
+                                                </svg>
+                                            </Tooltip>
+                                        </Dropdown>
+                                    </PrivilegeProjectButton>
+                                </>
+                        }
                     </Space>
                 )
             }

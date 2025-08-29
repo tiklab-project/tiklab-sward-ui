@@ -7,7 +7,7 @@ import {NoAccess} from "tiklab-privilege-ui";
  * @returns {JSX.Element}
  * @constructor
  */
-const SystemNoAccessPage = props =>{
+const NoAccessPage = props =>{
     return (
         <NoAccess
             {...props}
@@ -16,4 +16,4 @@ const SystemNoAccessPage = props =>{
     )
 }
 
-export default SystemNoAccessPage;
+export default NoAccessPage;

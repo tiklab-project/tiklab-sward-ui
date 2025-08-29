@@ -24,36 +24,32 @@ const RepositorySetDetail = (props)=>{
     const repositoryRouters = [
         {
             title: '知识库信息',
-            icon: 'survey',
             key: `/repository/${repositoryId}/set/basicInfo`,
-            encoded: "Survey",
+            purviewCode: "wi_setting_wiki_setting",
             iseEnhance: false
         },
         {
             title: '成员',
-            icon: 'survey',
             key: `/repository/${repositoryId}/set/user`,
-            encoded: "User",
+            purviewCode: "domain_user",
             iseEnhance: false
         },
         {
             title: '权限',
-            icon: 'survey',
             key: `/repository/${repositoryId}/set/domainRole`,
-            encoded: "Privilege",
+            purviewCode: "domain_role",
             iseEnhance: false
         },
         {
             title: '消息',
-            icon: 'survey',
             key: `/repository/${repositoryId}/set/messagenotice`,
-            encoded: "message",
+            purviewCode: "domain_message",
             iseEnhance: false
         },
         {
             title: '共享',
-            icon: 'survey',
             key: `/repository/${repositoryId}/set/share`,
+            purviewCode: 'wi_setting_doc_share',
             iseEnhance: false
         },
     ];

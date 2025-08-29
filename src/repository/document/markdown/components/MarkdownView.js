@@ -20,6 +20,7 @@ import CommentStore from "../../document/store/CommentStore";
 import MarkdownStore from "../store/MarkdownStore";
 import RepositoryDetailStore from "../../../common/store/RepositoryDetailStore";
 import DocumentActionMenu from "../../common/DocumentActionMenu";
+import {PrivilegeProjectButton} from "tiklab-privilege-ui";
 
 const MarkdownDocument = (props) => {
 
@@ -251,17 +252,21 @@ const MarkdownDocument = (props) => {
                                                         </svg>
                                                 }
                                                 {
-                                                    value && isEdit &&
-                                                    <Button className="document-action-edit" onClick={() => goEdit()}>
-                                                        编辑
-                                                    </Button>
+                                                    isEdit &&
+                                                    <PrivilegeProjectButton domainId={repositoryId} code={'wi_doc_update'}>
+                                                        <Button className="document-action-edit" onClick={() => goEdit()}>
+                                                            编辑
+                                                        </Button>
+                                                    </PrivilegeProjectButton>
                                                 }
-                                                <Button
-                                                    className="document-action-share"
-                                                    onClick={() => setShareVisible(true)}
-                                                >
-                                                    分享
-                                                </Button>
+                                                <PrivilegeProjectButton domainId={repositoryId} code={'wi_doc_share'}>
+                                                    <Button
+                                                        className="document-action-share"
+                                                        onClick={() => setShareVisible(true)}
+                                                    >
+                                                        分享
+                                                    </Button>
+                                                </PrivilegeProjectButton>
                                             </>
                                     }
                                     <DocumentActionMenu
@@ -303,14 +308,16 @@ const MarkdownDocument = (props) => {
                                 <>
                                 </>
                             }
-                            <div className="comment-box">
-                                <div className="comment-box-item">
-                                    <svg className="midden-icon" aria-hidden="true" onClick={() => setShowComment(!showComment)}>
-                                        <use xlinkHref="#icon-comment"></use>
-                                    </svg>
-                                    {/*<div className="commnet-num">{commentNum}</div>*/}
+                            <PrivilegeProjectButton domainId={repositoryId} code={'wi_doc_comment'}>
+                                <div className="comment-box">
+                                    <div className="comment-box-item">
+                                        <svg className="midden-icon" aria-hidden="true" onClick={() => setShowComment(!showComment)}>
+                                            <use xlinkHref="#icon-comment"></use>
+                                        </svg>
+                                        {/*<div className="commnet-num">{commentNum}</div>*/}
+                                    </div>
                                 </div>
-                            </div>
+                            </PrivilegeProjectButton>
                             <ShareModal
                                 repositoryId={repositoryId}
                                 shareVisible={shareVisible}

@@ -5,9 +5,8 @@
  * @LastEditTime: 2024-12-31 17:05:41
  * @Description: 知识库列表
  */
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState } from "react";
 import {Table, Space, Row, Col, Empty, Spin, Tooltip, Dropdown} from 'antd';
-import { observer, inject } from "mobx-react";
 import { getUser } from "tiklab-core-ui";
 import Breadcrumb from "../../../common/components/breadcrumb/Breadcrumb";
 import SearchInput from "../../../common/components/search/SearchInput";
@@ -17,7 +16,7 @@ import RepositoryStore from "../store/RepositoryStore";
 import { useDebounce } from "../../../common/utils/debounce";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import RepositoryAdd from "./RepositoryAdd";
-import {PrivilegeProjectButton} from "tiklab-privilege-ui";
+import {PrivilegeButton} from "tiklab-privilege-ui";
 import RepositoryDelete from "./RepositoryDelete";
 import Profile from "../../../common/components/profile/Profile";
 import {deleteSuccessReturnCurrenPage} from "../../../common/utils/overall";
@@ -28,8 +27,6 @@ const pageSize = 10;
 
 const Repository = (props) => {
 
-    const {systemRoleStore} = props;
-
     const {
         findFocusRepositoryList,
         findRepositoryPage,
@@ -38,7 +35,6 @@ const Repository = (props) => {
         deleteRepositoryFocusByCondition,
         findRepositoryNum
     } = RepositoryStore;
-    const {getInitProjectPermissions} = systemRoleStore;
 
     const userId = getUser().userId;
     const [focusRepositoryList, setFocusRepositoryList] = useState([])
@@ -71,11 +67,6 @@ const Repository = (props) => {
     //加载
     const [spinning,setSpinning] = useState(false);
 
-    useEffect(() => {
-        if(dropVisible){
-            getInitProjectPermissions(userId,repository.id,repository?.limits==="0");
-        }
-    }, [dropVisible]);
 
     useEffect(() => {
         //所有收藏
@@ -341,20 +332,24 @@ const Repository = (props) => {
                     <Dropdown
                         overlay={
                             <div className="sward-dropdown-more">
-                                <div className="dropdown-more-item" onClick={()=>toEdit(record)}>
-                                    <EditOutlined /> 编辑
-                                </div>
-                                <PrivilegeProjectButton code={"RepositoryDelete"} domainId={record.id}>
+                                <PrivilegeButton code={"wiki_update"}>
+                                    <div className="dropdown-more-item" onClick={()=>toEdit(record)}>
+                                        <EditOutlined /> 编辑
+                                    </div>
+                                </PrivilegeButton>
+                                <PrivilegeButton code={"wiki_delete"}>
                                     <div className="dropdown-more-item" onClick={()=>toDelete(record)}>
                                         <DeleteOutlined /> 删除
                                     </div>
-                                </PrivilegeProjectButton>
-                                <div className="dropdown-more-item dropdown-more-item-last" onClick={()=>toSetting(record)}>
-                                    <svg className="icon-16" aria-hidden="true">
-                                        <use xlinkHref="#icon-setting"></use>
-                                    </svg>
-                                    <span>设置</span>
-                                </div>
+                                </PrivilegeButton>
+                                <PrivilegeButton code={"wiki_setting"}>
+                                    <div className="dropdown-more-item dropdown-more-item-last" onClick={()=>toSetting(record)}>
+                                        <svg className="icon-16" aria-hidden="true">
+                                            <use xlinkHref="#icon-setting"></use>
+                                        </svg>
+                                        <span>设置</span>
+                                    </div>
+                                </PrivilegeButton>
                             </div>
                         }
                         trigger={['click']}
@@ -389,8 +384,10 @@ const Repository = (props) => {
             <Col xs={{span:24}} xl={{ span: 18, offset: 3 }} lg={{ span: 18, offset: 3 }} md={{ span: 20, offset: 2 }}>
                 <div className="repository">
                     <Breadcrumb firstText="知识库">
-                        <Button type="primary" onClick={goRepositoryAdd} buttonText={"添加知识库"}>
-                        </Button>
+                        <PrivilegeButton code={'wiki_create'}>
+                            <Button type="primary" onClick={goRepositoryAdd} buttonText={"添加知识库"}>
+                            </Button>
+                        </PrivilegeButton>
                     </Breadcrumb>
                     <RepositoryAdd
                         {...props}
@@ -488,4 +485,4 @@ const Repository = (props) => {
     )
 }
 
-export default inject("systemRoleStore")(observer(Repository))
+export default Repository

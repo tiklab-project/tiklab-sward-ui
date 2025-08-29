@@ -52,9 +52,12 @@
                 -o-text-overflow: ellipsis;
             }
 
-            .edit-title-date {
+            .edit-title-bottom{
+                display: flex;
+                align-items: center;
+                white-space: nowrap;
+                gap: 10px;
                 height: 25px;
-                line-height: 25px;
                 font-size: 11px;
                 color: #666;
             }

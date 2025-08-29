@@ -70,7 +70,16 @@ const CategoryDetail = (props) => {
                                     <div className="name">{categoryTitle}</div>
                                     <div className="master">{logDetail.master.nickname}</div>
                                 </div>
-                                <AddDropDown category={logDetail} button="text" />
+                                <AddDropDown
+                                    category={logDetail}
+                                    button="text"
+                                    code={{
+                                        category:'wi_doc_add_dir',
+                                        document:'wi_doc_add_doc',
+                                        markdown:'wi_doc_add_markdown',
+                                        file:'wi_doc_upload_local_file',
+                                    }}
+                                />
                             </div>
                         }
                         <div className="log-child">

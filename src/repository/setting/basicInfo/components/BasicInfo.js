@@ -14,22 +14,21 @@ import "../components/basicInfo.scss";
 import Breadcumb from "../../../../common/components/breadcrumb/Breadcrumb";
 import RepositoryIcon from "./RepositoryChangeIcon";
 import { PrivilegeProjectButton } from "tiklab-privilege-ui";
-import { getVersionInfo } from "tiklab-core-ui";
-import ArchivedFree from "../../../../common/components/archivedFree/ArchivedFree";
-import Img from "../../../../common/components/img/Img";
+import { getVersionInfo,disableFunction } from "tiklab-core-ui";
 import RepositoryDelete from "../../../repository/components/RepositoryDelete";
 import EnhanceEntranceModal from "../../../../common/components/modal/EnhanceEntranceModal";
 
 const { Panel } = Collapse;
 const BasicInfo = props => {
 
-    const { repositorySetStore, repositoryDetailStore, RepositoryRecycleModal,ArchivedComponent } = props;
+    const { repositorySetStore, repositoryDetailStore,ArchivedComponent,RecycleComponent } = props;
     const {updateRepository} = repositorySetStore;
     const { findRepository, repository, findDmUserList } = repositoryDetailStore;
 
     const [form] = Form.useForm();
     const repositoryId = props.match.params.repositoryId;
     const versionInfo = getVersionInfo();
+    const isVersion = disableFunction();
 
     //是否能修改知识库
     const [disable, setDisabled] = useState(true);
@@ -37,8 +36,6 @@ const BasicInfo = props => {
     const [visible, setVisible] = useState(false);
     //知识库成员
     const [userList,setUserList] = useState([]);
-    //移到回收站弹出框
-    const [repositoryRecycleVisable, setRepositoryRecycleVisable] = useState(false);
     //订阅引导
     const [archivedFreeVisable, setArchivedFreeVisable] = useState(false)
     //增强弹出框类型
@@ -97,12 +94,8 @@ const BasicInfo = props => {
      * 移到回收站
      */
     const showRecycle = () => {
-        if (versionInfo.expired === false) {
-            setRepositoryRecycleVisable(true)
-        } else {
-            setArchivedFree('recycle')
-            setArchivedFreeVisable(true)
-        }
+        setArchivedFree('recycle')
+        setArchivedFreeVisable(true)
     }
 
     /**
@@ -253,22 +246,27 @@ const BasicInfo = props => {
                                     <Button onClick={() => cancel()}>
                                         取消
                                     </Button>
-                                    <Button htmlType="submit" type="primary" disabled={disable}>
-                                        保存
-                                    </Button>
+                                    <PrivilegeProjectButton code={'wi_setting_wiki_update'} domainId={repositoryId}>
+                                        <Button htmlType="submit" type="primary" disabled={disable}>
+                                            保存
+                                        </Button>
+                                    </PrivilegeProjectButton>
                                 </Form.Item>
                             </Form>
                         </div>
                     </Panel>
                     <Panel header={repositoryInfoArchived()} key="archived">
                         {
-                            ArchivedComponent ? (
-                                <ArchivedComponent
-                                    {...props}
-                                    setArchivedFree={setArchivedFree}
-                                    setArchivedFreeVisable={setArchivedFreeVisable}
-                                />
-                            ) : (
+                            (ArchivedComponent && !isVersion) ?
+                                <PrivilegeProjectButton code={'wi_setting_wiki_archive'} domainId={repositoryId}>
+                                    <ArchivedComponent
+                                        {...props}
+                                        repositoryId={repositoryId}
+                                        setArchivedFree={setArchivedFree}
+                                        setArchivedFreeVisable={setArchivedFreeVisable}
+                                    />
+                                </PrivilegeProjectButton>
+                                :
                                 <div className="repository-set-info">
                                     <div className="repository-set-icon-block">
                                         可将知识库标记为归档，知识库内将不支持新建操作以及文档编辑操作。
@@ -279,7 +277,7 @@ const BasicInfo = props => {
                                         </div>
                                     </div>
                                 </div>
-                            )
+
                         }
                     </Panel>
                     <Panel header={repositoryDelete()} key="recycle">
@@ -287,16 +285,26 @@ const BasicInfo = props => {
                             <div className="repository-set-icon-block">
                                 删除知识库会直接把知识库，知识库内的文档，目录都删除；移入回收站此知识库及其目录将在回收站中保留
                             </div>
-                            <PrivilegeProjectButton code={'RepositoryDelete'} domainId={repositoryId}  {...props}>
-                                <div className="button-row">
-                                    <div className="change-button" onClick={() =>showRecycle()}>
-                                        移入回收站
-                                    </div>
+                            <div className="button-row">
+                                <PrivilegeProjectButton code={isVersion ? null : 'wi_setting_wiki_mv_recycle'} domainId={repositoryId}>
+                                    {
+                                        (RecycleComponent && !isVersion) ?
+                                            <RecycleComponent
+                                                {...props}
+                                                repositoryId={repositoryId}
+                                            />
+                                            :
+                                            <div className="change-button" onClick={() =>showRecycle()}>
+                                                移入回收站
+                                            </div>
+                                    }
+                                </PrivilegeProjectButton>
+                                <PrivilegeProjectButton code={'wi_setting_wiki_delete'} domainId={repositoryId}>
                                     <div className="change-button delete-button" onClick={() => showModal()}>
                                         删除知识库
                                     </div>
-                                </div>
-                            </PrivilegeProjectButton>
+                                </PrivilegeProjectButton>
+                            </div>
                         </div>
                     </Panel>
                 </Collapse>
@@ -313,13 +321,6 @@ const BasicInfo = props => {
                     updateRepository={updateRepository}
                     findRepository={findRepository}
                 />
-                {
-                    RepositoryRecycleModal &&
-                    <RepositoryRecycleModal
-                        repositoryRecycleVisable={repositoryRecycleVisable}
-                        setRepositoryRecycleVisable={setRepositoryRecycleVisable}
-                    />
-                }
             </Col>
         </Row >
     )

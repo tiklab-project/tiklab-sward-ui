@@ -165,6 +165,9 @@
                 i {
                     margin-right: 10px;
                 }
+                .repository-view-inpout{
+                    flex: 1;
+                }
                 .repository-input {
                     outline: 0;
                     box-shadow: 0 0 0 2px rgba(24, 144, 255, .2);
@@ -247,9 +250,6 @@
         width: 16px;
         height: 16px;
         margin-right: 5px;
-    }
-    &-file{
-        border-top: 1px solid var(--tiklab-gray-200);
     }
 }
 

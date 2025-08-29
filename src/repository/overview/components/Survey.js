@@ -153,7 +153,16 @@ const Survey = (props) => {
                                 </div>
                             </div>
                             <div className="top-right">
-                                <AddDropDown category={null} button="text" />
+                                <AddDropDown
+                                    category={null}
+                                    button="text"
+                                    code={{
+                                        category:'wi_overview_add_dir',
+                                        document:'wi_overview_add_doc',
+                                        markdown:'wi_overview_add_markdown',
+                                        file:'wi_overview_upload_local_file',
+                                    }}
+                                />
                                 <Button>分享</Button>
                             </div>
                         </div>

@@ -11,7 +11,7 @@ import { message } from 'antd';
 import "./moveLogList.scss";
 import { observer, inject } from "mobx-react";
 import { withRouter } from 'react-router';
-import { updataTreeSort, findNodeById, appendNodeInTree } from '../../../common/utils/treeDataAction';
+import { appendNodeInTree } from '../../../common/utils/treeDataAction';
 import BaseModal from "../../../common/components/modal/Modal";
 import {getUser} from "tiklab-core-ui";
 
@@ -127,7 +127,6 @@ const MoveLogList = (props) => {
                         onClick={() => selectMoveParent(category)}
                         style={{ paddingLeft: levels * 10 }}
                     >
-                        {/* <div > */}
                         {
                             category.children?.length > 0 ?
                                 (!isExpandedTree(category.id) ?
@@ -146,7 +145,6 @@ const MoveLogList = (props) => {
                             <use xlinkHref="#icon-folder"></use>
                         </svg>
                         <span>{category.name} </span>
-                        {/* </div> */}
                     </div>
                     {
                         category.children && category.children.length > 0 && (newLevels = levels + 1) && logTree(category.children, newLevels, category.id)

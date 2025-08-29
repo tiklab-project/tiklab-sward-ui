@@ -94,6 +94,9 @@ export const documentPush = (history,repositoryId,document) =>{
     }
 }
 
+/**
+ * 分页
+ */
 export const deleteSuccessReturnCurrenPage = (totalRecord, pageSize, current) => {
     const maxCurrentCount = current * pageSize;
     const minCurrentCount = (current - 1) * pageSize + 1;
@@ -105,3 +108,10 @@ export const deleteSuccessReturnCurrenPage = (totalRecord, pageSize, current) =>
     }
     return current
 }
+
+/**
+ * 延迟
+ * @param ms
+ * @returns {Promise<unknown>}
+ */
+export const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));

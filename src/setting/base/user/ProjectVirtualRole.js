@@ -7,10 +7,10 @@ import {ProjectVirtualRole} from "tiklab-privilege-ui";
  * @returns {JSX.Element}
  * @constructor
  */
-const ProjectVirtualRoleList = props =>{
+const ProjectVirtualRolePage = props =>{
 
     return <ProjectVirtualRole {...props}/>
 
 }
 
-export default ProjectVirtualRoleList
+export default ProjectVirtualRolePage

@@ -11,11 +11,10 @@ import {DownOutlined, UpOutlined} from '@ant-design/icons';
 import { withRouter } from "react-router-dom";
 import {PrivilegeButton, SystemNav} from "tiklab-privilege-ui";
 import SettingHomeStore from "../../home/store/SettingHomeStore"
-import { observer } from 'mobx-react';
+import {inject, observer} from 'mobx-react';
 import {Layout} from "antd";
 import {renderRoutes} from "react-router-config";
 import "./SetAside.scss"
-
 
 const { Sider, Content } = Layout;
 
@@ -23,91 +22,64 @@ const templateRouter = [
     {
         title: "基础数据",
         icon: 'systemcenter',
-        id: '/setting/systemFeature',
-        code: 12,
+        id: 'base',
         children: [
             {
                 title: '模板',
                 id: "/setting/template",
-                code: 12 - 1,
             },
             {
                 title: '用户组',
                 id: '/setting/usersystemgroup',
-                purviewCode: "user_group",
-                code: 12 - 18,
             },
             {
                 title: '虚拟角色',
                 id: '/setting/virtual',
-                code: "virtual",
             },
             {
                 title: '系统功能',
                 id: '/setting/systemFeature',
-                purviewCode: "SysFeatrueSys",
-                code: 12 - 3,
             },
             {
                 title: '系统角色',
                 id: '/setting/systemRoleBuilt',
-                purviewCode: "SysRoleSys",
-                code: 12 - 4,
             },
             {
                 title: '项目功能',
                 id: '/setting/projectFeature',
-                purviewCode: "SysFeatrueProject",
-                code: 12 - 5,
             },
             {
                 title: '项目角色',
                 id: '/setting/projectRole',
-                purviewCode: "SysRoleProject",
-                code: 12 - 6
             },
             {
                 title: '消息通知方式',
                 id: '/setting/messageNoticeSystem',
-                purviewCode: "SysMessageNotice",
-                code: 12 - 7,
             },
             {
                 title: '项目消息通知方式',
                 id: '/setting/projectMessageNotice',
-                purviewCode: "SysMessageType",
-                code: 12 - 8,
             },
             {
                 title: '消息类型',
                 id: '/setting/messageType',
-                purviewCode: "SysMessageType",
-                code: "messageType",
             },
 
             {
                 title: '日志模板',
                 id: '/setting/myLogTemplateList',
-                // purviewCode: "SysLogTemplate",
-                code: 12 - 10,
             },
             {
                 title: '日志类型',
                 id: '/setting/projectLogTypeList',
-                // purviewCode: "SysLogType",
-                code: 12 - 11,
             },
             {
                 title: '待办模板',
                 id: '/setting/todoTempList',
-                purviewCode: "SysSetting",
-                code: 12 - 12,
             },
             {
                 title: '待办类型',
                 id: '/setting/todoTypeTask',
-                purviewCode: "SysSetting",
-                code: 12 - 13,
             }
         ]
     }
@@ -115,9 +87,11 @@ const templateRouter = [
 
 const SetAside = (props) => {
 
-    const {route,applicationRouters} = props;
-    // 无子级菜单处理
+    const {route,applicationRouters,systemRoleStore} = props;
+
     const { expandedTree, setExpandedTree } = SettingHomeStore;
+    const {systemPermissions} = systemRoleStore;
+
 
     const [router, setRouterMenu] = useState(applicationRouters);
     const authConfig = JSON.parse(localStorage.getItem("authConfig"));
@@ -142,15 +116,30 @@ const SetAside = (props) => {
         props.history.push(id)
     }
 
+    const isExpandedTree = (key) => {
+        return expandedTree.some(item => item === key)
+    }
+
+    const setOpenOrClose = key => {
+        if (isExpandedTree(key)) {
+            setExpandedTree(expandedTree.filter(item => item !== key))
+        } else {
+            setExpandedTree(expandedTree.concat(key))
+        }
+    }
+
+    const backProject = () => {
+        props.history.push(`/index`)
+    }
+
     const renderMenu = (data, deep, index) => {
         return (
-            <PrivilegeButton code={data.purviewCode} key={data.code}>
+            <PrivilegeButton code={data.purviewCode} key={data.id}>
                 <li
                     style={{ cursor: "pointer", paddingLeft: `${deep * 20 + 20}` }}
                     className={`orga-aside-item ${data.id === path ? "orga-aside-select" : ""}`}
                     onClick={() => select(data)}
-                    key={data.code}
-                    code={data.encoded}
+                    key={data.id}
                 >
                     <span className="orga-aside-item-left">
                         {
@@ -174,58 +163,51 @@ const SetAside = (props) => {
         )
     }
 
-    const isExpandedTree = (key) => {
-        return expandedTree.some(item => item === key)
-    }
-
-    const setOpenOrClose = key => {
-        if (isExpandedTree(key)) {
-            setExpandedTree(expandedTree.filter(item => item !== key))
-        } else {
-            setExpandedTree(expandedTree.concat(key))
-        }
-    }
-
-    const renderSubMenu = (item, deep, index) => {
+    const subMenu = (item, deep, index) => {
         return (
-            <PrivilegeButton code={item.purviewCode} key={item.code}>
-                <li key={item.code} title={item.title} className="orga-aside-li">
-                    <div className="orga-aside-item orga-aside-first" style={{ paddingLeft: `${deep * 20 + 20}` }} onClick={() => setOpenOrClose(item.id)}>
+            <li key={item.id} className="orga-aside-li">
+                <div
+                    className="orga-aside-item orga-aside-first"
+                    style={{ paddingLeft: `${deep * 20 + 20}` }}
+                    onClick={() => setOpenOrClose(item.id)}
+                >
+                    {
+                        item.icon &&
+                        <span className="orga-aside-item-left">
+                            <svg className="icon-15" aria-hidden="true">
+                                <use xlinkHref={`#icon-${item.icon}`}></use>
+                            </svg>
+                            <span className="orga-aside-title">{item.title}</span>
+                        </span>
+                    }
+                    <div className="orga-aside-item-icon">
                         {
-                            item.icon &&
-                            <span to={item.id} className="orga-aside-item-left">
-                                <svg className="icon-15" aria-hidden="true">
-                                    <use xlinkHref={`#icon-${item.icon}`}></use>
-                                </svg>
-                                <span className="orga-aside-title">{item.title}</span>
-                            </span>
-                        }
-                        <div className="orga-aside-item-icon">
-                            {
-                                item.children ?
-                                    (isExpandedTree(item.id) ?
+                            item.children ?
+                                (isExpandedTree(item.id) ?
                                         <DownOutlined style={{ fontSize: "10px" }} /> :
                                         <UpOutlined style={{ fontSize: "10px" }} />
-                                    ) : ""
-                            }
-                        </div>
-                    </div>
-                    <ul title={item.title} className={`orga-aside-ul ${isExpandedTree(item.id) ? null : 'orga-aside-hidden'}`}>
-                        {
-                            item.children && item.children.map(item => {
-                                const deepnew = deep + 1
-                                return item.children && item.children.length ?
-                                    renderSubMenu(item, deepnew, index) : renderMenu(item, deepnew, index)
-                            })
+                                ) : ""
                         }
-                    </ul>
-                </li>
-            </PrivilegeButton>
+                    </div>
+                </div>
+                <ul className={`orga-aside-ul ${isExpandedTree(item.id) ? null : 'orga-aside-hidden'}`}>
+                    {
+                        item.children && item.children.map(item => {
+                            const deepnew = deep + 1
+                            return item.children && item.children.length ?
+                                renderSubMenu(item, deepnew, index) : renderMenu(item, deepnew, index)
+                        })
+                    }
+                </ul>
+            </li>
         )
     }
 
-    const backProject = () => {
-        props.history.push(`/index`)
+    const renderSubMenu = (item,deep)=> {
+        const isCode = item.children.some(list=>!list.purviewCode)
+        if(isCode) return subMenu(item,deep)
+        const isPromise = item.children.some(list=> systemPermissions.includes(list.purviewCode))
+        return isPromise && subMenu(item,deep)
     }
 
     return (
@@ -233,7 +215,7 @@ const SetAside = (props) => {
             {...props}
             applicationRouters={router}
             outerPath={"/setting"}
-            noAccessPath={"/noaccess"} //没有资源访问权限页面的路由参数
+            noAccessPath={"/noaccess"}
         >
             <Layout className="setting-aside">
                 <Sider width={200} className="site-layout-background">
@@ -264,4 +246,5 @@ const SetAside = (props) => {
     )
 
 }
-export default withRouter(observer(SetAside));
+export default inject("systemRoleStore")(observer(SetAside))
+
