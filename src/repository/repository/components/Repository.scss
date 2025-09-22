@@ -1,174 +1,155 @@
 .repository-row {
     height: 100%;
     overflow: auto;
-}
-.repository {
-    padding: var(--tiklab-padding-item);
-
-    .recent-repository {
-        margin: 15px 0;
-        border-radius: 4px;
-        background: #fff;
-
-
-        .repository-box {
-            display: flex;
-            justify-content: flex-start;
-            gap: 15px;
-            padding: 10px 0;
-            overflow: hidden;
-            flex-wrap: wrap;
-            height: 124px;
-            .ant-empty {
-                width: 100%;
-            }
-        }
-
-        .repository-item {
-            flex: 1;
-            padding: var(--tiklab-padding);
-            flex-shrink: 0;
+    .repository {
+        .recent-repository {
+            margin: 15px 0;
             border-radius: 4px;
-            cursor: pointer;
-            background-color: var(--tiklab-gray-600);
-            box-sizing: border-box;
-            border-bottom: 2px solid var(--tiklab-gray-600);
-            min-width: 200px;
-            max-width: 260px;
-            .item-title {
-                margin-bottom: 10px;
-                display: inline-flex;
-                align-items: center;
-                .item-title-name{
-                    font-weight: var(--tiklab-font-weight-bold);
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    max-width: 140px;
-                    font-size: 16px;
+            background: #fff;
+
+            .repository-box {
+                display: flex;
+                justify-content: flex-start;
+                gap: 15px;
+                padding: 10px 0;
+                overflow: hidden;
+                flex-wrap: wrap;
+                height: 124px;
+                .ant-empty {
+                    width: 100%;
                 }
             }
 
-            .item-work {
-                display: flex;
-                gap: 30px;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-                padding: 10px 0;
+            .repository-item {
+                flex: 1;
+                padding: 15px;
+                flex-shrink: 0;
+                border-radius: 4px;
+                cursor: pointer;
+                background-color: var(--tiklab-gray-600);
+                box-sizing: border-box;
+                border-bottom: 2px solid var(--tiklab-gray-600);
+                min-width: 200px;
+                max-width: 260px;
+                .item-title {
+                    margin-bottom: 10px;
+                    display: inline-flex;
+                    align-items: center;
+                    .item-title-name{
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        max-width: 140px;
+                    }
+                }
+
+                .item-work {
+                    display: flex;
+                    gap: 30px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    padding: 10px 0;
+                }
+
+                .process-work, .end-work {
+                    font-size: 12px;
+                    display: inline-flex;
+                    width: 100%;
+                    align-items: center;
+                    gap: 15px;
+                }
+
+                .icon {
+                    width: 40px;
+                    height: 40px;
+                }
+
+                .title {
+                    margin-top: 10px;
+                    font-size: 18px;
+                    font-weight: 600;
+                }
             }
 
-            .process-work, .end-work {
-                font-size: 12px;
-                display: inline-flex;
-                width: 100%;
-                align-items: center;
-                gap: 15px;
-            }
-
-            .icon {
-                width: 40px;
-                height: 40px;
-            }
-
-            .title {
-                margin-top: 10px;
-                font-size: 18px;
-                font-weight: 600;
+            .repository-item:hover {
+                border-radius: 4px 4px 0 0;
+                border-bottom: 2px solid var(--tiklab-blue);
             }
         }
 
-        .repository-item:hover {
-            border-radius: 4px 4px 0 0;
-            border-bottom: 2px solid var(--tiklab-blue);
-        }
-    }
-
-    .repository-filter {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 50px;
-        line-height: 50px;
-        gap: 20px;
-
-        .vertical-bar {
-            width: 1px;
-            height: 15px;
-            background-color: #d7d7d7;
-            margin: 0 10px;
-        }
-
-        .active-tabs {
-            color: #000;
-            border-bottom: 2px solid var(--tiklab-blue);
-        }
-
-        .filter-search {
-            width: 150px;
-            border-radius: 4px;
-            ;
-        }
-    }
-
-    .repository-tabs {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        height: 50px;
-        line-height: 50px;
-
-        .repository-tab {
-            font-size: var(--tiklab-font-13);
-            cursor: pointer;
+        .repository-filter {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             height: 50px;
             line-height: 50px;
-            margin-right: 20px;
-            white-space: nowrap;
-            .repository-tab-num {
-                padding-left: 5px;
-                font-size: 12px;
-                color: #666;
+            gap: 20px;
+
+            .vertical-bar {
+                width: 1px;
+                height: 15px;
+                background-color: #d7d7d7;
+                margin: 0 10px;
+            }
+
+            .active-tabs {
+                color: #000;
+                border-bottom: 2px solid var(--tiklab-blue);
+            }
+
+            .filter-search {
+                width: 150px;
+                border-radius: 4px;
             }
         }
 
-        .repository-tab:last-child {
-            margin-right: 0;
-        }
-    }
-    .repository-table-box {
-        margin-top: 10px;
-        .ant-avatar{
-            width: 22px;
-            height: 22px;
-            line-height: 22px;
-            font-size: 12px;
-        }
-    }
-    .repository-title {
-        display: flex;
-        align-items: center;
+        .repository-tabs {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            height: 50px;
+            line-height: 50px;
 
-        .repository-info {
-
-            .repository-name {
+            .repository-tab {
+                font-size: var(--tiklab-font-13);
                 cursor: pointer;
-                line-height: 25px;
+                height: 50px;
+                line-height: 50px;
+                margin-right: 20px;
+                white-space: nowrap;
+                .repository-tab-num {
+                    padding-left: 5px;
+                    font-size: 12px;
+                    color: #666;
+                }
             }
-            .repository-name:hover {
+
+            .repository-tab:last-child {
+                margin-right: 0;
+            }
+        }
+        .repository-table-box {
+            margin-top: 10px;
+            .ant-avatar{
+                width: 22px;
+                height: 22px;
+                line-height: 22px;
+                font-size: 12px;
+            }
+        }
+        .repository-title {
+            cursor: pointer;
+            &:hover{
                 color: var(--tiklab-blue);
             }
-            .repository-master {
-                font-size: 12px;
-                line-height: 25px;
-                color: var(--tiklab-gray-500);
-            }
+        }
+        .repository-spin {
+            height: 124px;
         }
     }
-    .repository-spin {
-        height: 124px;
-    }
 }
+
 
 .dropdown-more-item-last{
     display: flex;

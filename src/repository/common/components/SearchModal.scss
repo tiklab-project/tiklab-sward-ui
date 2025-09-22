@@ -30,18 +30,21 @@
                 align-items: center;
                 height: 35px;
                 cursor: pointer;
-                img {
+                gap: 15px;
+                .sward-listname-icon{
                     width: 20px;
                     height: 20px;
+                    line-height: 20px;
+                    font-size: 12px;
                 }
-                span{
-                    width: 100px;
-                    text-align: left;
-                    margin-left: 10px;
-                    overflow: hidden;
+                .item-one-name{
                     flex: 1;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    -o-text-overflow: ellipsis;
                 }
-                .item-desc {
+                .item-one-desc {
                     color: #999;
                     font-size: 12px;
                 }
@@ -68,18 +71,21 @@
                 align-items: center;
                 height: 35px;
                 cursor: pointer;
-                img {
+                gap: 15px;
+                .sward-listname-icon{
                     width: 20px;
                     height: 20px;
+                    line-height: 20px;
+                    font-size: 12px;
                 }
-                span{
-                    width: 100px;
-                    text-align: left;
-                    margin-left: 10px;
-                    overflow: hidden;
+                .item-one-name{
                     flex: 1;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    -o-text-overflow: ellipsis;
                 }
-                .item-desc {
+                .item-one-desc {
                     color: #999;
                     font-size: 12px;
                 }

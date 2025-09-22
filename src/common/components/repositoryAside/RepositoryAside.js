@@ -19,7 +19,7 @@ const { Sider } = Layout;
 
 const RepositoryAside = (props) => {
 
-    const { route, ChangeModal, initRouters, setUrl, backUrl, backName, domainId } = props;
+    const { route, ChangeModal, initRouters, backUrl, backName, domainId } = props;
 
     const [projectRouter, setProjectRouter] = useState([]);
 
@@ -149,25 +149,6 @@ const RepositoryAside = (props) => {
                                     </PrivilegeProjectButton>
                                 )
                             })
-                        }
-                    </div>
-                    <div className="project-setting" onClick={() =>props.history.push(setUrl)}>
-                        {
-                            isShowText ?
-                                <div className="project-setting-title setting">
-                                    <div className='project-aside-bottom-icon'>
-                                        <SettingOutlined />
-                                    </div>
-                                    <div>
-                                        设置
-                                    </div>
-                                </div>
-                                :
-                                <div className="project-setting-icon setting" data-title-right={"设置"}>
-                                    <div className='project-aside-bottom-icon'>
-                                        <SettingOutlined />
-                                    </div>
-                                </div>
                         }
                     </div>
                     <div className="project-setting project-menu-fold" onClick={toggleCollapsed}>

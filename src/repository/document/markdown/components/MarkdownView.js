@@ -289,10 +289,10 @@ const MarkdownDocument = (props) => {
                                     <Row className="document-examine-row">
                                         <Col
                                             xs={{ span: 24}}
-                                            md={{ span: 20, offset: 2 }}
-                                            lg={{ span: 18, offset: 3 }}
-                                            xl={{ span: 18, offset: 3 }}
-                                            xxl={{ span: 16, offset: 4 }}
+                                            md={{ span: 24 }}
+                                            lg={{ span: 22, offset: 1 }}
+                                            xl={{ span: 20, offset: 2 }}
+                                            xxl={{ span: 18, offset: 3 }}
                                         >
                                             <div className="document-previeweditor">
                                                 <MarkdownView

@@ -21,12 +21,11 @@ import {
 import EnhanceEntranceModal from "../../../common/components/modal/EnhanceEntranceModal";
 
 const SettingHome = props => {
+
     const {cloudVersion} = props;
     const { findOrgaNum, findlogpage, setExpandedTree, expandedTree } = SettingHomeStore;
     const { findUseLicence } = versionStore;
-    const versionInfo = getVersionInfo();
-    const [archivedFreeType,setArchivedFreeType] = useState('archived')
-    const [archivedFreeVisable, setArchivedFreeVisable] = useState(false);
+
     const authType = JSON.parse(localStorage.getItem("authConfig"))?.authType;
     //系统设置统计数据
     const [count, setCount] = useState({});
@@ -47,7 +46,6 @@ const SettingHome = props => {
 
     const select = (data) => {
         const id = data.id;
-        const iseEnhance = data.iseEnhance;
         if(data.islink){
             if(version==='cloud'){
                 window.open(workUrl + "#" + data.id, '_blank');
@@ -59,18 +57,8 @@ const SettingHome = props => {
                 return;
             }
         }
-        if (versionInfo.expired === false) {
-            props.history.push(id)
-            setOpenOrClose(data.parentUrl)
-        } else {
-            if (!iseEnhance) {
-                props.history.push(id)
-                setOpenOrClose(data.parentUrl)
-            } else {
-                setArchivedFreeVisable(true)
-                setArchivedFreeType(id)
-            }
-        }
+        props.history.push(id)
+        setOpenOrClose(data.parentUrl)
     }
 
     const array = [
@@ -115,7 +103,7 @@ const SettingHome = props => {
                 {
                     title: '权限',
                     id: "/setting/systemRole",
-                    parentUrl: '/setting/orga',
+                    parentUrl: '/setting/systemRole',
                     icon: <ScheduleOutlined />,
                     num: count?.role || 0
                 }
@@ -127,17 +115,17 @@ const SettingHome = props => {
             children: [
                 {
                     title: "消息通知方案",
-                    id: '/setting/messageNotice',
-                    parentUrl: '/setting/messageNotice',
+                    id: '/setting/message',
+                    parentUrl: '/setting/message',
                     icon: <svg className="icon-15" aria-hidden="true">
-                        <use xlinkHref={`#icon-systemmessage`}></use>
-                    </svg>,
+                            <use xlinkHref={`#icon-systemmessage`}></use>
+                        </svg>,
                     num: count?.messageNotice || 0
                 },
                 {
                     title: '消息发送方式',
-                    id: '/setting/messageSendType',
-                    parentUrl: '/setting/messageNotice',
+                    id: '/setting/message',
+                    parentUrl: '/setting/message',
                     icon: <AlertOutlined />,
                     num: count?.sendType || 0
                 }
@@ -151,7 +139,7 @@ const SettingHome = props => {
                     title: "上次备份",
                     id: '/setting/backup',
                     parentUrl: '/setting/log',
-                    iseEnhance: version === "cloud" ? true : false,
+                    iseEnhance: version === "cloud",
                     icon: <HistoryOutlined />,
                     num: count?.lastBackups && moment(count.lastBackups).format('MM-DD') || '无'
                 },
@@ -159,6 +147,7 @@ const SettingHome = props => {
                     title: '操作日志',
                     id: '/setting/log',
                     parentUrl: '/setting/log',
+                    iseEnhance: true,
                     icon: <InsertRowBelowOutlined />,
                     num: log?.totalRecord || '0'
                 },
@@ -220,144 +209,81 @@ const SettingHome = props => {
         }
     }
 
-    const configEnhance = {
-        '/setting/archived':{
-            title:'归档',
-            desc: '长期存储不常用但需保留的文档'
-        },
-        '/setting/recycle':{
-            title:'回收站',
-            desc: '防止误删重要文件，提供灵活的数据恢复机制'
-        },
-        '/setting/backup':{
-            title: '备份与恢复',
-            desc: '提供完善的数据容灾和快速恢复能力'
-        },
-    }
-
     return (
         <Row className='setting-home'>
-            <EnhanceEntranceModal
-                config={configEnhance[archivedFreeType]}
-                visible={archivedFreeVisable}
-                setVisible={setArchivedFreeVisable}
-            />
             <Col
                 xs={{ span: "24" }}
                 sm={{ span: "24" }}
                 md={{ span: "24" }}
-                lg={{ span: "18", offset: "3" }}
-                xl={{ span: "14", offset: "5" }}
+                lg={{ span: "20" , offset: "2"  }}
+                xl={{ span: "18", offset: "3" }}
                 xxl={{ span: "14", offset: "5" }}
             >
-                <div className='setting-home-limited'>
+                <div className='sward-home-limited'>
                     {
-                        version === "cloud" ? <>
+                        version === "cloud" ?
                             <div className='home-licence-box'>
                                 {cloudVersion}
                             </div>
-                            <div className='home-chunk-box'>
-                                {
-                                    array.map((item, index) => {
-                                        return (
-                                            <div className='home-user-box' key={index}>
-                                                <div className='home-title'>{item.title}</div>
-                                                <div className='home-user'>
-                                                    {
-                                                        item.children.map(childrenItem => {
-                                                            return <div className='home-user-item' onClick={() => select(childrenItem)} key={childrenItem.id}>
-                                                                <div className='home-icon'>
-                                                                    {childrenItem.icon}
-                                                                </div>
-                                                                <div className='home-label'>
-                                                                    {childrenItem.title}
-                                                                    {/*{*/}
-                                                                    {/*    childrenItem.iseEnhance && versionInfo.expired === true &&*/}
-                                                                    {/*    <svg className="img-icon-16" aria-hidden="true" >*/}
-                                                                    {/*        <use xlinkHref="#icon-member"></use>*/}
-                                                                    {/*    </svg>*/}
-                                                                    {/*}*/}
-                                                                </div>
-                                                                <div className='home-info'>
-                                                                    {childrenItem.num}
-                                                                </div>
-                                                            </div>
-                                                        })
-                                                    }
-                                                </div>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                        </>
                             :
-                            <>
-                               <div className='home-licence-box'>
-                                    <div className='home-licence'>
-                                        <div className='home-licence-item'>
-                                            <div className='home-licence-item-level'>
-                                                <div className='licence-level-img'>
-                                                    <img src={disableFunction() ? vipDark : vipLight } alt={''} />
-                                                </div>
+                            <div className='home-licence-box'>
+                                <div className='home-licence'>
+                                    <div className='home-licence-item'>
+                                        <div className='home-licence-item-level'>
+                                            <div className='licence-level-img'>
+                                                <img src={disableFunction() ? vipDark : vipLight } alt={''} />
+                                            </div>
+                                            <div>
                                                 <div>
-                                                    <div>
-                                                        <span className='licence-level-info'>{disableFunction() ? '社区版' : '企业版'}</span>
-                                                        {licence?.issuedTime &&
-                                                            <span className='licence-level-issuedTime'>
-                                                                {moment(licence.issuedTime).format('YYYY-MM-DD HH:mm:ss')}到期
-                                                            </span>}
-                                                    </div>
-                                                    <div className='licence-level-applyAuth'>
-                                                        <span className='licence-level-applyAuth-title'>授权人数：</span>
-                                                        <span className='licence-level-info licence-level-click' onClick={()=> goAuth()}>
+                                                    <span className='licence-level-info'>{disableFunction() ? '社区版' : '企业版'}</span>
+                                                    {licence?.issuedTime &&
+                                                        <span className='licence-level-issuedTime'>
+                                                            {moment(licence.issuedTime).format('YYYY-MM-DD HH:mm:ss')}到期
+                                                        </span>}
+                                                </div>
+                                                <div className='licence-level-applyAuth'>
+                                                    <span className='licence-level-applyAuth-title'>授权人数：</span>
+                                                    <span className='licence-level-info licence-level-click' onClick={()=> goAuth()}>
                                                         {showProductInfo()?.authUser } / {showProductInfo()?.expired ? "不限制" : showProductInfo()?.userNum > 0 ? showProductInfo().userNum+'人' : "不限制"}
-                                                        </span>
-                                                    </div>
+                                                    </span>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className='home-licence-sub' onClick={() => applySubscription('sward')}>
-                                            {count?.version ? '订阅' : '续订'}
                                         </div>
                                     </div>
+                                    <div className='home-licence-sub' onClick={() => applySubscription('sward')}>
+                                        {count?.version ? '订阅' : '续订'}
+                                    </div>
                                 </div>
-                                <div className='home-chunk-box'>
-                                    {
-                                        array.map((item, index) => {
-                                            return (
-                                                <div className='home-user-box' key={index}>
-                                                    <div className='home-title'>{item.title}</div>
-                                                    <div className='home-user'>
-                                                        {
-                                                            item.children.map(childrenItem => {
-                                                                return <div className='home-user-item' onClick={() => select(childrenItem)} key={childrenItem.id}>
-                                                                    <div className='home-icon'>
-                                                                        {childrenItem.icon}
-                                                                    </div>
-                                                                    <div className='home-label'>
-                                                                        {childrenItem.title}
-                                                                        {/*{*/}
-                                                                        {/*    childrenItem.iseEnhance && versionInfo.expired === true && */}
-                                                                        {/*    <svg className="img-icon-16" aria-hidden="true" >*/}
-                                                                        {/*        <use xlinkHref="#icon-member"></use>*/}
-                                                                        {/*    </svg>*/}
-                                                                        {/*}*/}
-                                                                    </div>
-                                                                    <div className='home-info'>
-                                                                        {childrenItem.num}
-                                                                    </div>
-                                                                </div>
-                                                            })
-                                                        }
-                                                    </div>
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                </div>
-                            </>
+                            </div>
                     }
+                    <div className='home-chunk-box'>
+                        {
+                            array.map((item, index) => {
+                                return (
+                                    <div className='home-user-box' key={index}>
+                                        <div className='home-title'>{item.title}</div>
+                                        <div className='home-user'>
+                                            {
+                                                item.children.map((childrenItem,childrenIndex) => {
+                                                    return <div className='home-user-item' onClick={() => select(childrenItem)} key={childrenIndex}>
+                                                        <div className='home-icon'>
+                                                            {childrenItem.icon}
+                                                        </div>
+                                                        <div className='home-label'>
+                                                            {childrenItem.title}
+                                                        </div>
+                                                        <div className='home-info'>
+                                                            {childrenItem.num}
+                                                        </div>
+                                                    </div>
+                                                })
+                                            }
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
                 </div>
             </Col>
         </Row>

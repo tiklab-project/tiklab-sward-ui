@@ -2,15 +2,6 @@
 @import "_base";
 @import "_normalize";
 
-.span-botton {
-    color: #1890ff;
-    cursor: pointer;
-}
-
-.delete {
-    color: red;
-}
-
 .layout,.ant-modal,.ant-drawer,.ant-dropdown{
     .ant-modal-close-x {
         display: flex !important;
@@ -77,6 +68,10 @@
         color: #999;
         padding-bottom: 8px;
     }
+    .ant-tag, .ant-tag a, .ant-tag a:hover{
+        border: none;
+        padding: 2px 8px;
+    }
 }
 
 .ant-input-search .ant-input-group .ant-input-affix-wrapper:not(:last-child) {
@@ -120,7 +115,6 @@
     }
 }
 
-
 [data-title-left]{
     position: relative;
     &::before,
@@ -159,4 +153,9 @@
             opacity: 1;
         }
     }
+}
+
+.sward-home-limited{
+    padding: 20px;
+    min-width: 576px;
 }

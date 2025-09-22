@@ -121,9 +121,9 @@ const Survey = (props) => {
                 lg={{ span: 18, offset: 3 }}
                 md={{ span: 20, offset: 2 }}
                 xs={{ span: 24 }}
-                className="repository-col"
+                sm={{ span: 24 }}
             >
-                <div className="repository-survey">
+                <div className="repository-survey sward-home-limited">
                     {
                         repository &&
                         <div className="repository-top">

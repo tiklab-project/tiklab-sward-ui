@@ -106,7 +106,6 @@ const MarkdownEdit = (props) => {
      * 节流保存，1000ms 保存一次
      */
     const changeEdit = useDebounce((value) => {
-        setValue(value)
         const serializeValue = serialize(value)
         const data = {
             repositoryId: repositoryId,
@@ -119,7 +118,7 @@ const MarkdownEdit = (props) => {
             await delay(300);
             setSaveTip('已保存');
         })
-    }, [5000])
+    }, 3000)
 
     /**
      * 修改标题
@@ -210,7 +209,15 @@ const MarkdownEdit = (props) => {
                 </div>
                 <div className="edit-markdown" style={{ height: "calc(100% - 60px)" }}>
                     {
-                        value && <Markdown value={value} setValue={setValue} onChange={(value) => changeEdit(value)} />
+                        value &&
+                        <Markdown
+                            value={value}
+                            setValue={setValue}
+                            onChange={(value) =>{
+                                setValue(value)
+                                changeEdit(value)
+                            }}
+                        />
                     }
                 </div>
             </div>

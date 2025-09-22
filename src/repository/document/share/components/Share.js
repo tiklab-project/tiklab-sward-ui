@@ -106,7 +106,7 @@ const Share = props =>{
             pageParam,
             name:value
         })
-    }, [500]);
+    }, 500);
 
     /**
      * 跳转
@@ -343,8 +343,10 @@ const Share = props =>{
     ) : (
         <Row className='document-share'>
             <Col
+                sm={24}
                 xs={24}
                 xl={{ span: "18", offset: "3" }}
+                className='sward-home-limited'
             >
                 <Breadcrumb
                     firstText={'共享'}

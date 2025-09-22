@@ -80,7 +80,6 @@ const Confluence = AsyncComponent(() => import('./setting/integration/confluence
 const OpenApi = AsyncComponent(()=>import('./setting/integration/openApi/OpenApi'));
 const OpenApiDoc = AsyncComponent(()=>import('./setting/integration/openApi/OpenApiDoc'));
 
-const MyLog = AsyncComponent(() => import('./setting/security/MyLog'))
 const Backups = AsyncComponent(() => import('./setting/security/Backups'))
 const RequestError = AsyncComponent(() => import('./setting/security/RequestError'))
 
@@ -374,11 +373,6 @@ const Routes = [
                     {
                         path: "/setting/todoTempList",
                         component: TodoTemp,
-                        exact: true
-                    },
-                    {
-                        path: "/setting/log",
-                        component: MyLog,
                         exact: true
                     },
                     {

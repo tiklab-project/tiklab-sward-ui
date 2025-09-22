@@ -124,12 +124,7 @@ const RepositoryChangeModal = (props) => {
                             text={repository?.name}
                         />
                         <div className="item-info">
-                            <div className="item-name">
-                                {repository.name}
-                            </div>
-                            <div className="item-master">
-                                {repository.master.name}
-                            </div>
+                            {repository.name}
                         </div>
                         <svg className="svg-icon" aria-hidden="true">
                             <use xlinkHref="#icon-selected"></use>
@@ -147,12 +142,7 @@ const RepositoryChangeModal = (props) => {
                                 text={item?.name}
                             />
                             <div className="item-info">
-                                <div className="item-name">
-                                    {item.name}
-                                </div>
-                                <div className="item-master">
-                                    {item.master.name}
-                                </div>
+                                {item.name}
                             </div>
                         </div>
                     })

@@ -65,30 +65,35 @@
             font-size: 14px;
             padding: 0 20px;
             border-bottom: 1px solid #F0F0F0;
+            margin-bottom: 10px;
         }
         .change-repository-item {
-            line-height: 30px;
-            padding:0 20px;
+            height: 40px;
+            padding:0 15px;
+            margin: 0 15px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            margin-bottom: 5px;
+            border-radius: 4px;
             .item-info {
                 flex: 1;
                 min-width: 0;
-                .item-name,.item-master{
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                    overflow: hidden;
-                }
-                .item-master {
-                    font-size: 12px;
-                    color: var(--tiklab-gray-500);
-                }
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+            .sward-listname-icon{
+                display: inline-block;
+                width: 25px;
+                height: 25px;
+                line-height: 25px;
+                text-align: center;
+                margin-right: 10px;
+                border-radius: 4px;
             }
         }
         .change-repository-item:hover,.change-repository-selectItem{
-            background-color: var(--tiklab-gray-400);
+            background-color: var(--tiklab-gray-300);
         }
         .change-repository-more {
             padding: 0 20px;
@@ -98,6 +103,8 @@
             border-top: 1px solid #F0F0F0;
             color: var(--tiklab-blue);
             font-size: 13px;
+            text-align: center;
+            margin-top: 10px;
         }
     }
     .menu-show {

@@ -42,7 +42,7 @@ const EnhanceEntranceModal = (props) => {
     // 处理模式为page时的显示逻辑
     if (mode === "page") {
         return disableFunction() ? (
-            <div className="sward-enhance-entrance-modal">
+            <div className="sward-enhance-entrance-modal sward-enhance-entrance-modal-page">
                 <ModalContent config={config} />
             </div>
         ) : null;
@@ -72,7 +72,7 @@ const EnhanceEntranceModal = (props) => {
     }, [visible]);
 
     return (
-        <div className={`sward-enhance-entrance-modal ${visible ? "" : "sward-enhance-entrance-modal-hidden"}`}>
+        <div className={`sward-enhance-entrance-modal ${visible ? "sward-enhance-entrance-modal-block" : "sward-enhance-entrance-modal-hidden"}`}>
             <ModalContent config={config} contentRef={modalRef} />
         </div>
     );

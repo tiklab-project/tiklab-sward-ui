@@ -1,37 +1,59 @@
 .repository-set-basicinfo {
-    padding: 20px;
     height: 100%;
     width: 100%;
     overflow: auto;
     position: relative;
-    .repository-info-title {
-        display: flex;
-        align-items: center;
-        font-size: 15px;
-        font-weight: 600;
-    }
-    .repository-set-info {
-        .repository-form-icon {
-            align-items: center;
-            .form-icon {
-                width: 50px;
-                height: 50px;
+
+    .repositoryReDel-ul{
+        border-radius: 4px;
+        border: 1px solid var(--tiklab-gray-200);
+        .repositoryReDel-li{
+            &:not(:last-child){
+                border-bottom: 1px solid var(--tiklab-gray-200);
             }
-            .form-icon-col {
-                display: flex;
-                align-items: center;
-                gap: 10px;
+            &:first-child .repositoryReDel-li-top{
+                border-radius: 4px 4px 0 0;
             }
-            .ant-form-item-control-input-content {
+            &:last-child .repositoryReDel-li-unSelect{
+                border-radius: 0 0 4px 4px;
+            }
+            .repositoryReDel-li-top{
                 display: flex;
-                align-items: center;
-                justify-content: space-between;
+                align-items: flex-start;
+                padding: 10px 20px;
+                cursor: pointer;
+                background: var(--tiklab-gray-600);
+            }
+            .repositoryReDel-li-icon{
+                width: 16px;
+                height: 16px;
+                line-height: 16px;
+                margin-right: 10px;
+                margin-top: 4px;
+                font-weight: var(--tiklab-font-weight-bold);
+            }
+            .repositoryReDel-li-center{
+                flex-grow: 1;
+            }
+            .repositoryReDel-li-title{
+                font-weight: var(--tiklab-font-weight-bold);
+            }
+            .repositoryReDel-li-desc{
+                font-size: var(--tiklab-font-13);
+                color: var(--tiklab-gray-500);
+            }
+            .repositoryReDel-li-down{
+                align-self: center;
+            }
+            .repositoryReDel-li-bottom{
+                padding:10px 20px;
+            }
+            .repositoryReDel-li-none{
+                display: none;
             }
         }
     }
-    .repository-set-icon-block {
-        color: #ff0000;
-    }
+
     .change-button {
         height: 30px;
         line-height: 30px;
@@ -53,6 +75,10 @@
     }
     .delete-button {
         background-color: #ff0000;
+    }
+
+    .repository-set-icon-block {
+        color: #ff0000;
     }
 
 }

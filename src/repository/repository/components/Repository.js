@@ -207,7 +207,7 @@ const Repository = (props) => {
         findRepositoryCount({
             name:value
         })
-    }, [500]);
+    }, 500);
 
     /**
      * 切换状态
@@ -275,18 +275,25 @@ const Repository = (props) => {
             dataIndex: "name",
             key: "name",
             align: "left",
-            width:"45%",
+            width:"30%",
             ellipsis:true,
-            render: (text, record) => <div onClick={() => goRepositorydetail(record)} className="repository-title">
-                <ListIcon
-                    icon={record.iconUrl}
-                    text={text}
-                />
-                <div className="repository-info">
-                    <div className="repository-name">{text}</div>
-                    <div className="repository-master">{record.master.nickname}</div>
-                </div>
-            </div>,
+            render: (text, record) => (
+                <span onClick={() => goRepositorydetail(record)} className="repository-title">
+                    <ListIcon
+                        icon={record.iconUrl}
+                        text={text}
+                    />
+                    <span className="repository-name">{text}</span>
+                </span>
+            ),
+        },
+        {
+            title: "文档数",
+            dataIndex: "documentNum",
+            key: "documentNum",
+            align: "left",
+            width:"15%",
+            ellipsis:true,
         },
         {
             title: "负责人",
@@ -382,7 +389,7 @@ const Repository = (props) => {
     return (
         <Row className="repository-row">
             <Col xs={{span:24}} xl={{ span: 18, offset: 3 }} lg={{ span: 18, offset: 3 }} md={{ span: 20, offset: 2 }}>
-                <div className="repository">
+                <div className="repository sward-home-limited">
                     <Breadcrumb firstText="知识库">
                         <PrivilegeButton code={'wiki_create'}>
                             <Button type="primary" onClick={goRepositoryAdd} buttonText={"添加知识库"}>
@@ -467,6 +474,7 @@ const Repository = (props) => {
                                 dataSource={repositoryData?.dataList || []}
                                 rowKey={record => record.id}
                                 pagination={false}
+                                locale={{emptyText: <Empty description="没有查询到数据" />}}
                             />
                             <PaginationCommon
                                 currentPage={repositoryData?.currentPage}

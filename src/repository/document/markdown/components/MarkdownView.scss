@@ -8,14 +8,17 @@
     .document-examine-content {
         display: flex;
         justify-content: space-between;
-        height: calc(100% - 71px);
+        height: calc(100% - 62px);
     }
 
     .document-examine-row {
         height: 100%;
         overflow: auto;
         flex: 1;
-        padding: 10px 10px 0;
+        padding: 10px;
+        .document-previeweditor{
+            min-width: 576px;
+        }
     }
 
     .examine-top {

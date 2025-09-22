@@ -29,11 +29,14 @@
             max-height: calc(100% - 86px);
             overflow: auto;
             .search-doc-spin {
-                min-height: 150px;
+                min-height: 100px;
             }
         }
         .sort-box {
             padding: 0 10px;
+            &:first-child{
+                margin-bottom: 15px;
+            }
             .sort-title {
                 color: #202d407a;
                 font-weight: 600;
@@ -49,18 +52,21 @@
                     align-items: center;
                     height: 35px;
                     cursor: pointer;
-                    img {
+                    gap: 15px;
+                    .sward-listname-icon{
                         width: 20px;
                         height: 20px;
+                        line-height: 20px;
+                        font-size: 12px;
                     }
-                    span{
-                        width: 100px;
-                        text-align: left;
-                        margin-left: 10px;
-                        overflow: hidden;
+                    .item-one-name{
                         flex: 1;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        -o-text-overflow: ellipsis;
                     }
-                    .item-desc {
+                    .item-one-desc {
                         color: #999;
                         font-size: 12px;
                     }

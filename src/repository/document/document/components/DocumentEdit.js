@@ -123,7 +123,6 @@ const DocumentEdit = (props) => {
     }
 
     const updateDesc = useDebounce((value) => {
-        setValue(value);
         const data = {
             repositoryId: repositoryId,
             id: documentId,
@@ -135,7 +134,7 @@ const DocumentEdit = (props) => {
             await delay(300);
             setSaveTip('已保存');
         })
-    }, [5000])
+    }, 3000)
 
     const changeTitle = (value) => {
         setDocumentTitle(value.target.value)
@@ -239,7 +238,10 @@ const DocumentEdit = (props) => {
                     {
                         value && <EditorBig
                             value={value}
-                            onChange={value=>updateDesc(value)}
+                            onChange={value=>{
+                                setValue(value)
+                                updateDesc(value)
+                            }}
                             relationWorkStore={relationWorkStore}
                             base_url={upload_url}
                             img_url={upload_url}
@@ -251,10 +253,11 @@ const DocumentEdit = (props) => {
                         >
                             <Row className="document-examine-content">
                                 <Col
-                                    xs={{ span: 24}}
-                                    md={{ span: 20, offset: 2 }}
+                                    xs={{ span: 24 }}
+                                    sm={{ span: 24 }}
+                                    md={{ span: 24 }}
+                                    lg={{ span: 20, offset: 2 }}
                                     xl={{ span: 18, offset: 3 }}
-                                    lg={{ span: 18, offset: 3 }}
                                 >
                                     <div className="document-title">
                                         <Input

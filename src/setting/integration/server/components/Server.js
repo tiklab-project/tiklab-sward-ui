@@ -166,7 +166,12 @@ const Server = (props) => {
                     desc:'集成OnlyOffice，在线协作办公'
                 }}
             />
-            <Col xs={{ span: 24 }} xl={{ span: "16", offset: "4" }}>
+            <Col
+                sm={{ span: 24 }}
+                xs={{ span: 24 }}
+                xl={{ span: "16", offset: "4" }}
+                className='sward-home-limited'
+            >
                 <Breadcrumb
                     firstText="服务集成"
                 >

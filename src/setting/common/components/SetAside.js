@@ -218,7 +218,7 @@ const SetAside = (props) => {
             noAccessPath={"/noaccess"}
         >
             <Layout className="setting-aside">
-                <Sider width={200} className="site-layout-background">
+                <Sider width={220} className="site-layout-background">
                     <div className="orga-aside">
                         <ul style={{ padding: 0 }} key="0" className="orga-aside-top">
                             <div className="orga-aside-name" onClick={()=> props.history.push("/setting/home")}>设置</div>

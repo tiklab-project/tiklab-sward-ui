@@ -88,11 +88,6 @@ const Setting = (props) => {
             id: 'security',
             children: [
                 {
-                    title: '操作日志',
-                    id: '/setting/log',
-                    purviewCode: "log",
-                },
-                {
                     title: '备份与恢复',
                     id: '/setting/backup',
                     purviewCode: "backups_and_recover",

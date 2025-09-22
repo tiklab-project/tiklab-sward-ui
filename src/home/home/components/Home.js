@@ -84,16 +84,15 @@ const Home = (props) => {
     }
 
     return (
-        <div className="home">
-            <Row className="home-row">
-                <Col
-                    xxl={{ span: 16, offset: 4 }}
-                    xl={{ span: 18, offset: 3 }}
-                    lg={{ span: 18, offset: 3 }}
-                    md={{ span: 20, offset: 2 }}
-                    xs={{ span: 24 }}
-                    className="home-col"
-                >
+        <Row className="home-row">
+            <Col
+                xxl={{ span: 16, offset: 4 }}
+                xl={{ span: 18, offset: 3 }}
+                lg={{ span: 18, offset: 3 }}
+                md={{ span: 20, offset: 2 }}
+                xs={{ span: 24 }}
+            >
+                <div className='sward-home-limited'>
                     <div className='home-tabs'>
                         <div className={`home-tab ${active==='common' ? 'home-tab-active' : ''}`}
                              onClick={()=>setActive('common')}
@@ -187,20 +186,15 @@ const Home = (props) => {
                     }
                     {
                         active === 'collect' &&
-                        <Collect
-                            {...props}
-                        />
+                        <Collect  {...props} />
                     }
                     {
                         active === 'share' &&
-                        <Share
-                            {...props}
-                            type={'home'}
-                        />
+                        <Share {...props} type={'home'}/>
                     }
-                </Col>
-            </Row>
-        </div >
+                </div>
+            </Col>
+        </Row>
     );
 }
 

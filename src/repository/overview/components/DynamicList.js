@@ -45,7 +45,7 @@ const DynamicList = (props) => {
     return (
         <Row className="dynamic-row">
             <Col xs={{ span: 24 }} xl={{ span: 18, offset: 3 }} lg={{ span: 18, offset: 3 }} md={{ span: 20, offset: 2 }} className="dynamic-col">
-                <div className="dynamic-list-page">
+                <div className="dynamic-list-page sward-home-limited">
                     <div className="dynamic-list-top">
                         <Breadcrumb
                             {...props}

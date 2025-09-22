@@ -7,13 +7,13 @@
     height: 100%;
     .document-examine-content {
         display: flex;
-        height: calc(100% - 71px);
-        padding: 10px 10px 0;
+        height: calc(100% - 62px);
+        padding: 10px;
         overflow: auto;
         gap: 30px;
         .document-previeweditor{
             flex: 9999 1 auto;
-            min-width: 0;
+            min-width: 400px;
             -webkit-transition: min-width .3s ease-in;
             -o-transition: .3s min-width ease-in;
             transition: min-width .3s ease-in;

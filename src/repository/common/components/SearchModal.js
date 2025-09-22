@@ -81,7 +81,7 @@ const SearchModal = (props) => {
         } else {
             setIsSeach(false)
         }
-    }, [])
+    }, 500)
 
     // const search = useDebounce((value) => {
     //     const keyWord = value.target.value;
@@ -151,10 +151,10 @@ const SearchModal = (props) => {
                                                     <DocumentIcon
                                                         documentName={node?.name}
                                                         documentType={documentType}
-                                                        className={"img-icon"}
+                                                        className={"icon-18"}
                                                     />
-                                                    <span>{node?.name}</span>
-                                                    <div className="item-desc">
+                                                    <span className='item-one-name'>{node?.name}</span>
+                                                    <div className="item-one-desc">
                                                         {node?.wikiRepository?.name}
                                                     </div>
                                                 </div>
@@ -180,10 +180,10 @@ const SearchModal = (props) => {
                                                     <DocumentIcon
                                                         documentName={documentItem?.name}
                                                         documentType={documentType}
-                                                        className={"img-icon"}
+                                                        className={"icon-18"}
                                                     />
-                                                    <span>{documentItem.name}</span>
-                                                    <div className="item-desc">
+                                                    <span className='item-one-name'>{documentItem.name}</span>
+                                                    <div className="item-one-desc">
                                                         {documentItem.wikiRepository?.name}
                                                     </div>
                                                 </div>

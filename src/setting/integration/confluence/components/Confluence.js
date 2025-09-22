@@ -211,6 +211,8 @@ const Confluence = (props) => {
                 xxl={{ span: 16, offset: 4 }}
                 xl={{ span: 18, offset: 3 }}
                 xs={{ span: 24 }}
+                sm={{ span: 24 }}
+                className='sward-home-limited'
             >
                 <Breadcumb firstText="Confluence导入"/>
                 <div className='confluence-steps'>

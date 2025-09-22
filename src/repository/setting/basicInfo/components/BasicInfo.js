@@ -8,17 +8,17 @@
  */
 import React, { useEffect, useState } from "react";
 import { observer, inject } from "mobx-react";
-import { Input, Form, Select, Button, Row, Col, message, Collapse } from "antd";
+import { Input, Form, Select, Button, Row, Col, message } from "antd";
 import 'moment/locale/zh-cn';
 import "../components/basicInfo.scss";
 import Breadcumb from "../../../../common/components/breadcrumb/Breadcrumb";
 import RepositoryIcon from "./RepositoryChangeIcon";
 import { PrivilegeProjectButton } from "tiklab-privilege-ui";
-import { getVersionInfo,disableFunction } from "tiklab-core-ui";
+import { disableFunction } from "tiklab-core-ui";
 import RepositoryDelete from "../../../repository/components/RepositoryDelete";
 import EnhanceEntranceModal from "../../../../common/components/modal/EnhanceEntranceModal";
+import {DownOutlined, RightOutlined} from "@ant-design/icons";
 
-const { Panel } = Collapse;
 const BasicInfo = props => {
 
     const { repositorySetStore, repositoryDetailStore,ArchivedComponent,RecycleComponent } = props;
@@ -27,7 +27,6 @@ const BasicInfo = props => {
 
     const [form] = Form.useForm();
     const repositoryId = props.match.params.repositoryId;
-    const versionInfo = getVersionInfo();
     const isVersion = disableFunction();
 
     //是否能修改知识库
@@ -40,12 +39,37 @@ const BasicInfo = props => {
     const [archivedFreeVisable, setArchivedFreeVisable] = useState(false)
     //增强弹出框类型
     const [archivedFree,setArchivedFree] = useState('recycle')
+    //树的展开与闭合
+    const [expandedTree,setExpandedTree] = useState([]);
 
     useEffect(() => {
         findDmUserList(repositoryId).then(data=>{
             setUserList(data)
         })
     }, [])
+
+    /**
+     * 是否符合要求
+     * @param key
+     * @returns {boolean}
+     */
+    const isExpandedTree = key => {
+        return expandedTree.some(item => item ===key)
+    }
+
+    /**
+     * 展开和闭合
+     * @param key
+     */
+    const setOpenOrClose = key => {
+        if (isExpandedTree(key)) {
+            // false--闭合
+            setExpandedTree(expandedTree.filter(item => item !== key))
+        } else {
+            // ture--展开
+            setExpandedTree(expandedTree.concat(key))
+        }
+    }
 
     /**
      * 关闭知识库信息
@@ -106,57 +130,6 @@ const BasicInfo = props => {
         setArchivedFreeVisable(true)
     }
 
-    const repositoryInfoDesc = () => (
-        <div>
-            <div className="repository-info-title">
-                <svg aria-hidden="true" className="img-icon" fill="#fff">
-                    <use xlinkHref="#icon-projectDetail"></use>
-                </svg>
-                知识库信息
-            </div>
-            <div style={{ fontSize: "12px", color: "#999" }}>
-                <svg aria-hidden="true" className="img-icon" fill="#fff">
-                    <use></use>
-                </svg>
-                知识库信息图标信息，可见范围，负责人等信息，可点击修改
-            </div>
-        </div>
-    );
-
-    const repositoryInfoArchived = () => (
-        <div>
-            <div className="repository-info-title">
-                <svg aria-hidden="true" className="img-icon" fill="#fff">
-                    <use xlinkHref="#icon-systemreset"></use>
-                </svg>
-                知识库归档
-            </div>
-            <div style={{ fontSize: "12px", color: "#999" }}>
-                <svg aria-hidden="true" className="img-icon" fill="#fff">
-                    <use></use>
-                </svg>
-                归档知识库
-            </div>
-        </div>
-    )
-
-    const repositoryDelete = () => (
-        <div>
-            <div className="repository-info-title">
-                <svg aria-hidden="true" className="img-icon" fill="#fff">
-                    <use xlinkHref="#icon-projectDelete"></use>
-                </svg>
-                知识库删除
-            </div>
-            <div style={{ fontSize: "12px", color: "#999" }}>
-                <svg aria-hidden="true" className="img-icon" fill="#fff">
-                    <use></use>
-                </svg>
-                删除知识库
-            </div>
-        </div>
-    );
-
     const configEnhance = {
         'archived':{
             title:'归档',
@@ -168,14 +141,154 @@ const BasicInfo = props => {
         },
     }
 
-    const layout = {
-        labelCol: {span: 4,},
-        wrapperCol: {span: 20,},
-    };
-    const formTailLayout = {
-        labelCol: {span: 4,},
-        wrapperCol: {span: 8, offset: 4,},
-    };
+    const lis = [
+        {
+            key: 'info',
+            title:"知识库信息",
+            desc: "知识库信息，可见范围，负责人等信息，可点击修改",
+            icon: (
+                <svg aria-hidden="true" className="img-icon" fill="#fff">
+                    <use xlinkHref="#icon-projectDetail"></use>
+                </svg>
+            ),
+            content: (
+                <div className="repository-set-info">
+                    <Form
+                        name="basic"
+                        initialValues={{
+                            remember: true,
+                            ...repository,
+                        }}
+                        form={form}
+                        onFinish={onFinish}
+                        onFieldsChange={() => setDisabled(false)}
+                        layout={"vertical"}
+                    >
+                        <Form.Item
+                            label="知识库名称"
+                            name="name"
+                        >
+                            <Input placeholder="知识库名称" />
+                        </Form.Item>
+                        <Form.Item
+                            label="可见人员"
+                            name="limits"
+                        >
+                            <Select
+                                allowClear
+                            >
+                                <Select.Option value="0" key="0">全部成员</Select.Option>
+                                <Select.Option value="1" key="1">知识库成员</Select.Option>
+                            </Select>
+                        </Form.Item>
+                        <Form.Item
+                            label="负责人"
+                            name={['master','id']}
+                        >
+                            <Select
+                                placeholder="负责人"
+                                allowClear
+                            >
+                                {
+                                    userList && userList.map(item=> {
+                                        const {user} = item;
+                                        return <Select.Option value={user?.id} key={user?.id}>
+                                            {user?.nickname}
+                                        </Select.Option>
+                                    })
+                                }
+                            </Select>
+                        </Form.Item>
+                        <Form.Item
+                            label="知识库描述"
+                            name="desc"
+                        >
+                            <Input placeholder="知识库描述" />
+                        </Form.Item>
+                        <Form.Item >
+                            <Button onClick={() => cancel()}>
+                                取消
+                            </Button>
+                            <PrivilegeProjectButton code={'wi_setting_wiki_update'} domainId={repositoryId}>
+                                <Button htmlType="submit" type="primary" disabled={disable}>
+                                    保存
+                                </Button>
+                            </PrivilegeProjectButton>
+                        </Form.Item>
+                    </Form>
+                </div>
+            )
+        },
+        {
+            key: 'archive',
+            title:"知识库归档",
+            desc: "归档知识库",
+            icon: (
+                <svg aria-hidden="true" className="img-icon" fill="#fff">
+                    <use xlinkHref="#icon-systemreset"></use>
+                </svg>
+            ),
+            content: (
+                (ArchivedComponent && !isVersion) ?
+                    <PrivilegeProjectButton code={'wi_setting_wiki_archive'} domainId={repositoryId}>
+                        <ArchivedComponent
+                            {...props}
+                            repositoryId={repositoryId}
+                            setArchivedFree={setArchivedFree}
+                            setArchivedFreeVisable={setArchivedFreeVisable}
+                        />
+                    </PrivilegeProjectButton>
+                    :
+                    <div className="repository-set-info">
+                        <div className="repository-set-icon-block">
+                            可将知识库标记为归档，知识库内将不支持新建操作以及文档编辑操作。
+                        </div>
+                        <div className="button-row">
+                            <div className="change-button" onClick={() => showArchived()}>
+                                归档知识库
+                            </div>
+                        </div>
+                    </div>
+            )
+        },
+        {
+            key:'delete',
+            title:"知识库删除",
+            desc: "删除知识库",
+            icon: (
+                <svg aria-hidden="true" className="img-icon" fill="#fff">
+                    <use xlinkHref="#icon-projectDelete"></use>
+                </svg>
+            ),
+            content: (
+                <div className="repository-set-delete">
+                    <div className="repository-set-icon-block">
+                        删除知识库会直接把知识库，知识库内的文档，目录都删除；移入回收站此知识库及其目录将在回收站中保留
+                    </div>
+                    <div className="button-row">
+                        <PrivilegeProjectButton code={isVersion ? null : 'wi_setting_wiki_mv_recycle'} domainId={repositoryId}>
+                            {
+                                (RecycleComponent && !isVersion) ?
+                                    <RecycleComponent
+                                        {...props}
+                                        repositoryId={repositoryId}
+                                    />
+                                    :
+                                    <div className="change-button" onClick={() =>showRecycle()}>
+                                        移入回收站
+                                    </div>
+                            }
+                        </PrivilegeProjectButton>
+                        <PrivilegeProjectButton code={'wi_setting_wiki_delete'} domainId={repositoryId}>
+                            <div className="change-button delete-button" onClick={() => showModal()}>
+                                删除知识库
+                            </div>
+                        </PrivilegeProjectButton>
+                    </div>
+                </div>
+            )
+        },
+    ]
 
     return (
         <Row className='repository-set-basicinfo'>
@@ -184,130 +297,42 @@ const BasicInfo = props => {
                 visible={archivedFreeVisable}
                 setVisible={setArchivedFreeVisable}
             />
-            <Col xs={{ span: 24 }} xxl={{ span: "18", offset: "3" }} xl={{ span: "18", offset: "3" }}>
+            <Col
+                xs={{ span: "24" }}
+                sm={{ span: "24" }}
+                md={{ span: "24" }}
+                lg={{ span: "24" }}
+                xl={{ span: "16", offset: "4" }}
+                xxl={{ span: "14", offset: "5" }}
+                className='sward-home-limited'
+            >
                 <Breadcumb firstText="知识库信息"/>
-                <Collapse expandIconPosition={"right"}>
-                    <Panel header={repositoryInfoDesc()} key="info">
-                        <div className="repository-set-info">
-                            <Form
-                                {...layout}
-                                name="basic"
-                                initialValues={{
-                                    remember: true,
-                                    ...repository,
-                                }}
-                                form={form}
-                                onFinish={onFinish}
-                                onFieldsChange={() => setDisabled(false)}
-                                labelAlign={"left"}
-                            >
-                                <Form.Item
-                                    label="知识库名称"
-                                    name="name"
+                <div className="repositoryReDel-ul">
+                    {
+                        lis.map(item=> (
+                            <div key={item.key} className="repositoryReDel-li">
+                                <div className={`repositoryReDel-li-top ${isExpandedTree(item.key) ?"repositoryReDel-li-select":"repositoryReDel-li-unSelect"}`}
+                                     onClick={()=>setOpenOrClose(item.key)}
                                 >
-                                    <Input placeholder="知识库名称" />
-                                </Form.Item>
-                                <Form.Item
-                                    label="可见人员"
-                                    name="limits"
-                                >
-                                    <Select
-                                        allowClear
-                                    >
-                                        <Select.Option value="0" key="0">全部成员</Select.Option>
-                                        <Select.Option value="1" key="1">知识库成员</Select.Option>
-                                    </Select>
-                                </Form.Item>
-                                <Form.Item
-                                    label="负责人"
-                                    name={['master','id']}
-                                >
-                                    <Select
-                                        placeholder="负责人"
-                                        allowClear
-                                    >
+                                    <div className="repositoryReDel-li-icon">{item.icon}</div>
+                                    <div className="repositoryReDel-li-center">
+                                        <div className="repositoryReDel-li-title">{item.title}</div>
                                         {
-                                            userList && userList.map(item=> {
-                                                const {user} = item;
-                                                return <Select.Option value={user?.id} key={user?.id}>
-                                                    {user?.nickname}
-                                                </Select.Option>
-                                            })
+                                            !isExpandedTree(item.key) &&
+                                            <div className="repositoryReDel-li-desc">{item.desc}</div>
                                         }
-                                    </Select>
-                                </Form.Item>
-                                <Form.Item
-                                    label="知识库描述"
-                                    name="desc"
-                                >
-                                    <Input placeholder="知识库描述" />
-                                </Form.Item>
-                                <Form.Item {...formTailLayout} >
-                                    <Button onClick={() => cancel()}>
-                                        取消
-                                    </Button>
-                                    <PrivilegeProjectButton code={'wi_setting_wiki_update'} domainId={repositoryId}>
-                                        <Button htmlType="submit" type="primary" disabled={disable}>
-                                            保存
-                                        </Button>
-                                    </PrivilegeProjectButton>
-                                </Form.Item>
-                            </Form>
-                        </div>
-                    </Panel>
-                    <Panel header={repositoryInfoArchived()} key="archived">
-                        {
-                            (ArchivedComponent && !isVersion) ?
-                                <PrivilegeProjectButton code={'wi_setting_wiki_archive'} domainId={repositoryId}>
-                                    <ArchivedComponent
-                                        {...props}
-                                        repositoryId={repositoryId}
-                                        setArchivedFree={setArchivedFree}
-                                        setArchivedFreeVisable={setArchivedFreeVisable}
-                                    />
-                                </PrivilegeProjectButton>
-                                :
-                                <div className="repository-set-info">
-                                    <div className="repository-set-icon-block">
-                                        可将知识库标记为归档，知识库内将不支持新建操作以及文档编辑操作。
                                     </div>
-                                    <div className="button-row">
-                                        <div className="change-button" onClick={() => showArchived()}>
-                                            归档知识库
-                                        </div>
+                                    <div className="repositoryReDel-li-down">
+                                        { isExpandedTree(item.key)? <DownOutlined />:<RightOutlined /> }
                                     </div>
                                 </div>
-
-                        }
-                    </Panel>
-                    <Panel header={repositoryDelete()} key="recycle">
-                        <div className="repository-set-delete">
-                            <div className="repository-set-icon-block">
-                                删除知识库会直接把知识库，知识库内的文档，目录都删除；移入回收站此知识库及其目录将在回收站中保留
+                                <div className={`${isExpandedTree(item.key)? "repositoryReDel-li-bottom":"repositoryReDel-li-none"}`}>
+                                    { isExpandedTree(item.key) && item.content }
+                                </div>
                             </div>
-                            <div className="button-row">
-                                <PrivilegeProjectButton code={isVersion ? null : 'wi_setting_wiki_mv_recycle'} domainId={repositoryId}>
-                                    {
-                                        (RecycleComponent && !isVersion) ?
-                                            <RecycleComponent
-                                                {...props}
-                                                repositoryId={repositoryId}
-                                            />
-                                            :
-                                            <div className="change-button" onClick={() =>showRecycle()}>
-                                                移入回收站
-                                            </div>
-                                    }
-                                </PrivilegeProjectButton>
-                                <PrivilegeProjectButton code={'wi_setting_wiki_delete'} domainId={repositoryId}>
-                                    <div className="change-button delete-button" onClick={() => showModal()}>
-                                        删除知识库
-                                    </div>
-                                </PrivilegeProjectButton>
-                            </div>
-                        </div>
-                    </Panel>
-                </Collapse>
+                        ))
+                    }
+                </div>
                 <RepositoryDelete
                     {...props}
                     delVisible={isModalVisible}

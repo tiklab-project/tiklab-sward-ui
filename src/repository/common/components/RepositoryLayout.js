@@ -29,6 +29,13 @@ const RepositoryLayout = (props) => {
             id: `/repository/${repositoryId}/doc`,
             to: `/repository/${repositoryId}/doc`,
         },
+        {
+            title: "设置",
+            icon: 'set-' + theme,
+            defaultIcon: "set-default",
+            id: `/repository/${repositoryId}/set`,
+            to: `/repository/${repositoryId}/set`,
+        },
     ];
 
     return (

@@ -1,148 +1,302 @@
-/*
- * @Descripttion: 信息抽屉列表组件
- * @version: 1.0.0
- * @Author: 袁婕轩
- * @Date: 2020-12-18 16:05:16
- * @LastEditors: 袁婕轩
- * @LastEditTime: 2024-12-31 15:55:56
+/**
+ * @Description: 消息
+ * @Author: gaomengyuan
+ * @Date:
+ * @LastEditors: gaomengyuan
+ * @LastEditTime: 2025/3/12
  */
-import React, { useState, useRef } from 'react';
-import { Drawer, Tabs, Empty, } from 'antd';
-import { observer } from "mobx-react";
-import "./MessageList.scss"
-import { withRouter } from 'react-router';
-import HomeStore from "../store/HomeStore";
+import React,{useEffect,useState} from "react";
+import {Drawer,Divider,Space,Tooltip,Spin,Empty} from "antd";
+import {
+    BellOutlined,
+    LoadingOutlined,
+    CloseOutlined,
+    DeleteOutlined
+} from "@ant-design/icons";
+import Button from "../../../common/components/button/Button";
+import messageStore from "../../home/store/MessageStore"
+import Profile from "../../../common/components/profile/Profile";
+import "./MessageList.scss";
 
-const MessageList = (props) => {
-    const {isShowText, theme} = props;
-    const { findMessageDispatchItemPage, messageTotal, messageList,
-        isMessageReachBottom, updateMessageDispatchItem } = HomeStore;
-    const [currenTab, setCurrentTab] = useState("0")
-    const [currentPage, setCurrentPage] = useState(0)
-    const [open, setOpen] = useState(false);
-    const messageRef = useRef()
-    const [unReadMessage, setUnReadMessage] = useState(0)
+const pageSize = 12;
 
+const MessageList = props =>{
+
+    const {theme,isShowText} = props;
+
+    const {findMessageItemPage,updateMessageItem,deleteMessageItem} = messageStore
+    const pageParam = {
+        pageSize: pageSize,
+        currentPage: 1
+    }
+    //消息弹出框
+    const [visible,setVisible] = useState(false);
+    //未读消息
+    const [unread,setUnread] = useState(false);
+    //初始以及切换加载
+    const [spinning,setSpinning] = useState(true);
+    //消息列表
+    const [messageList,setMessageList] = useState([]);
+    //消息参数
+    const [messageParams,setMessageParams] = useState({
+        status:0,
+        pageParam
+    });
+    //消息分页
+    const [messagePagination,setMessagePagination] = useState({});
+    //加载更多
+    const [isLoading,setIsLoading] = useState(false);
+
+    useEffect(()=>{
+        findMessageItemPage({
+            status:0,
+            pageParam,
+        }).then(res=>{
+            if(res.code===0){
+                setUnread(res.data.totalRecord || 0)
+            }
+        })
+    },[])
+
+    useEffect(()=>{
+        if(visible){
+            findMessage()
+        }
+    },[visible,messageParams])
 
     /**
-     * 翻页
+     * 获取信息
      */
-    const changePage = () => {
-        const current = currentPage + 1
-        setCurrentPage(current)
-        findMessageDispatchItemPage({ page: current, status: currenTab })
-    }
-
-
-    const onClose = () => {
-        setOpen(false);
-    };
-
-    // tab 切换
-    const onChange = (e) => {
-        // setPlacement(e.target.value);
-        setCurrentTab(e)
-        findMessageDispatchItemPage({ page: 1, status: e })
-
-    };
-
-    const goToMessage = (link,id) => {
-        // props.history.push(link)
-
-        const value = {
-            id: id,
-            status: "1"
+    const findMessage = () => {
+        let param = {...messageParams};
+        if(param.status===2){
+            delete param.status
         }
-        updateMessageDispatchItem(value)
-        window.location.href = link
+        findMessageItemPage(param).then(res=>{
+            setSpinning(false)
+            setIsLoading(false)
+            if(res.code===0){
+                setMessagePagination({
+                    currentPage: res.data.currentPage,
+                    totalPage: res.data.totalPage
+                })
+                if(messageParams.status===0){
+                    setUnread(res.data.totalRecord || 0)
+                }
+                if(res.data.currentPage===1){
+                    setMessageList(res.data.dataList || [])
+                }
+                if (res.data.currentPage > 1){
+                    setMessageList([...messageList,...res.data.dataList])
+                }
+            }
+        })
     }
+
+    /**
+     * 加载更多消息
+     */
+    const moreMessage = () =>{
+        setMessageParams({
+            ...messageParams,
+            pageParam:{
+                pageSize: pageSize,
+                currentPage: messagePagination.currentPage + 1
+            }
+        })
+        setIsLoading(true)
+    }
+
+    const tabs = [
+        { id:2, title:"全部"},
+        { id:0, title:"未读"},
+        { id:1, title:"已读",}
+    ]
+
+    /**
+     * 消息详情路由跳转
+     * @param item
+     */
+    const goHref = item => {
+        const {message,status,...resItem } = item
+        if (item.status === 0) {
+            const updateParams = {
+                ...resItem,
+                message: {
+                    id: message.id
+                },
+                status: 1
+            }
+            // 更新消息（已读）
+            updateMessageItem(updateParams).then(res=>{
+                setUnread(unread - 1)
+            })
+        }
+        if(item.link){
+            props.history.push(item.link.split("#")[1])
+        }
+        onClose()
+    }
+
+    /**
+     * 删除消息
+     * @param e
+     * @param item
+     */
+    const delMessage = (e,item) =>{
+        //屏蔽父层点击事件
+        e.stopPropagation()
+        deleteMessageItem(item.id).then(res=>{
+            if(res.code===0){
+                setMessageList(messageList.filter(li=>item.id!==li.id))
+            }
+        })
+    }
+
+    /**
+     * 切换消息类型
+     * @param item
+     */
+    const changMessage = item => {
+        setSpinning(true)
+        setMessageParams({
+            pageParam,
+            status: item.id
+        })
+    }
+
+    const onClose = () =>{
+        setVisible(false)
+        setMessageParams({
+            ...messageParams,
+            pageParam
+        })
+    }
+
     return (
-        <div ref = {messageRef}>
-             {
+        <>
+            {
                 isShowText ?
-                    <div className="message-text first-menu-text-item" onClick={() => setOpen(true)}>
+                    <div className="message-text first-menu-text-item" onClick={() => setVisible(true)}>
                         <svg className="icon-18" aria-hidden="true">
                             <use xlinkHref={`#icon-message-${theme}`} ></use>
                         </svg>
                         <div className="message-text-name">消息</div>
                         <div className="message-text-count">
-                            {unReadMessage}
+                            {unread}
                         </div>
                     </div>
                     :
-                    <div className="message-icon first-menu-link-item" data-title-right="消息" onClick={() => setOpen(true)}>
+                    <div className="first-menu-link-item" data-title-right="消息" onClick={() => setVisible(true)}>
                         <svg className="icon-18" aria-hidden="true">
                             <use xlinkHref={`#icon-message-${theme}`} ></use>
                         </svg>
                     </div>
             }
             {
-                open &&
-                <Drawer
-                    title="消息"
-                    placement={"left"}
-                    closable={true}
-                    onClose={onClose}
-                    visible={open}
-                    mask={true}
-                    destroyOnClose={true}
-                    width={375}
-                    className={'frame-header-drawer'}
-                    contentWrapperStyle={{transform:isShowText ? `translateX(200px)` :`translateX(75px)`}}
-                >
-                    <div className="message-content">
-                        <Tabs onChange={onChange} size = "small" activeKey = {currenTab} className="message-tab">
-                            <Tabs.TabPane tab="未读" key="0">
-                                <div className="message-box">
-                                    {
-                                        messageList && messageList.length > 0 ? messageList.map(item => {
-                                                return <div className="message-list" key={item.id} >
-                                                    <div
-                                                        dangerouslySetInnerHTML={{ __html: item.content }}
-                                                        onClick = {() => goToMessage(item.link,item.id)}
-                                                        style={{flex: 1}}
-                                                    />
-                                                    <div className={`message-status ${item.status === 0 ? "status-unread" : "status-read"}`}></div>
-                                                </div>
-                                            })
-                                            :
-                                            <Empty description = "暂无消息" />
-                                    }
-                                    {
-                                        messageTotal > 1 &&
-                                        (isMessageReachBottom ?
-                                            <div className="message-list-bottom" onClick={() => changePage()}>点击加载更多</div> : <div className="message-list-bottom">第{currentPage}页/总{messageTotal}页</div>)
-                                    }
-
+                visible && (
+                    <Drawer
+                        closable={false}
+                        placement="left"
+                        visible={visible}
+                        onClose={onClose}
+                        width={450}
+                        maskStyle={{background:"transparent"}}
+                        bodyStyle={{padding:0}}
+                        contentWrapperStyle={visible?{transform:`translateX(${isShowText?200:75}px)`}:{}}
+                    >
+                        <div className="messageModal">
+                            <div className="messageModal-up">
+                                <div className="messageModal-up-title">
+                                    消息
                                 </div>
-                            </Tabs.TabPane>
-                            <Tabs.TabPane tab="已读" key="1">
-                                <div className="message-box">
+                                <Button className='messageModal-button' onClick={onClose}>
+                                    <CloseOutlined />
+                                </Button>
+                            </div>
+                            <div className="messageModal-content">
+                                <div className="messageModal-title">
                                     {
-                                        messageList && messageList.length > 0 ? messageList.map(item => {
-                                                return <div className="message-list" key={item.id} >
-                                                    <div
-                                                        dangerouslySetInnerHTML={{ __html: item.content }}
-                                                        className = "message-item"
-                                                        style={{flex: 1}}
-                                                        onClick = {() => goToMessage(item.link,item.id)}
-                                                    />
-                                                    <div className={`message-status ${item.status === 1 ? "status-read" : "status-unread"}`}></div>
-                                                </div>
-                                            })
-                                            :
-                                            <Empty description = "暂无消息" />
+                                        tabs.map(item=> (
+                                            <div
+                                                key={item.id}
+                                                className={`title-item ${item.id===messageParams.status?"title-select":""}`}
+                                                onClick={()=>changMessage(item)}
+                                            >
+                                                {item.title}
+                                                {
+                                                    item.id === 0 &&
+                                                    <span className={`messageModal-screen-tab ${unread< 100 ?"":"messageModal-screen-much"}`}>
+                                                        {unread < 100 ? unread : 99}
+                                                    </span>
+                                                }
+                                            </div>
+                                        ))
                                     }
-                                    { messageTotal > 1 &&
-                                        (isMessageReachBottom ?
-                                            <div className="message-list-bottom" onClick={() => changePage()}>点击加载更多</div> : <div className="message-list-bottom">第{currentPage}页/总{messageTotal}页</div>)}
                                 </div>
-                            </Tabs.TabPane>
-                        </Tabs>
-                    </div>
-                </Drawer>
+                                <Spin spinning={spinning}>
+                                    <div className="messageModal-list">
+                                        {
+                                            messageList && messageList.map((item,index)=>{
+                                                const {sendUser,messageType,sendTime,action,data} = item
+                                                const dataObj = JSON.parse(data)
+                                                return(
+                                                    <div key={index} className={`message-item arbess-user-avatar ${item.status===1 ? "message-read":""}`} onClick={()=>goHref(item)}>
+                                                        <div className="message-item-left">
+                                                            <div className="message-item-icon">
+                                                                <Profile
+                                                                    userInfo={sendUser}
+                                                                />
+                                                            </div>
+                                                            <div className="message-item-center">
+                                                                <div className="message-item-user">
+                                                                    <Space>
+                                                                        <div className="user-title">{sendUser?.nickname || sendUser?.name} {messageType.name}</div>
+                                                                        <div className="user-time">{sendTime}</div>
+                                                                    </Space>
+                                                                    <Tooltip title={"删除"}>
+                                                                        <div onClick={e=>delMessage(e,item)} className={`message-hidden`}>
+                                                                            <DeleteOutlined />
+                                                                        </div>
+                                                                    </Tooltip>
+                                                                </div>
+                                                                <div className='message-item-info'>
+                                                                    <div className='message-item-info-action'>{action}</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                        {
+                                            isLoading ?
+                                                <div className="messageModal-more">
+                                                    <LoadingOutlined/>
+                                                </div>
+                                                :
+                                                messagePagination?.totalPage > messagePagination?.currentPage &&
+                                                <div className="messageModal-more" onClick={moreMessage}>
+                                                    加载更多……
+                                                </div>
+                                        }
+                                        {
+                                            messagePagination?.currentPage === messagePagination?.totalPage && messagePagination?.currentPage > 1 &&
+                                            <Divider plain>没有更多了 🤐</Divider>
+                                        }
+                                        {
+                                            messageList && messageList.length===0 &&
+                                            <Empty />
+                                        }
+                                    </div>
+                                </Spin>
+                            </div>
+                        </div>
+                    </Drawer>
+                )
             }
-        </div>
-    );
-};
-export default withRouter(observer(MessageList));
+        </>
+    )
+}
+
+export default MessageList

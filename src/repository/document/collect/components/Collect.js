@@ -211,8 +211,10 @@ const Collect = props =>{
     return props.route.path === '/index' ? tableHtml : (
         <Row className='document-collect'>
             <Col
+                sm={24}
                 xs={24}
                 xl={{ span: "18", offset: "3" }}
+                className='sward-home-limited'
             >
                 <Breadcrumb
                     {...props}

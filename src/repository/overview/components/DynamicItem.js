@@ -35,11 +35,11 @@ const DynamicListItem = (props) => {
                                 <div className="dynamic-document-action"
                                      onClick={() => goDynamicDetail()}
                                 >
-                                   添加了文档 {documentName}
+                                    {user.nickname} 添加了文档
                                 </div>
                                 <div className="dynamic-document-item">
                                     <div className="dynamic-document-title">
-                                        {user.nickname}
+                                        {documentName}
                                     </div>
                                 </div>
                             </div>
@@ -54,11 +54,11 @@ const DynamicListItem = (props) => {
                             <div className="dynamic-document-action"
                                  onClick={() => goDynamicDetail()}
                             >
-                                修改了文档名称 {newValue}
+                                {user.nickname} 修改了文档名称
                             </div>
                             <div className="dynamic-document-update">
                                 <div className="dynamic-document-newValue">
-                                    {user.nickname}
+                                    {newValue}
                                 </div>
                             </div>
                         </div>

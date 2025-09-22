@@ -1,212 +1,284 @@
 .repository-survey-row {
     height: 100%;
     overflow: auto;
-}
-.repository-survey {
-    padding: var(--tiklab-padding);
-    .repository-top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: var(--tiklab-padding);
-        background: var(--tiklab-gray-600);
-        border-radius: 4px;
-
-        .sward-listname-icon {
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
-            font-size: 16px;
-        }
-
-        .top-left {
+    .repository-survey {
+        .repository-top {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            padding: var(--tiklab-padding);
+            background: var(--tiklab-gray-600);
+            border-radius: 4px;
 
-            .top-icon {
-                width: 80px;
-                height: 80px;
-                margin-right: 15px;
+            .sward-listname-icon {
+                width: 40px;
+                height: 40px;
+                line-height: 40px;
+                font-size: 16px;
             }
 
-            .top-name {
-                .name {
-                    font-size: 20px;
+            .top-left {
+                display: flex;
+                align-items: center;
+
+                .top-icon {
+                    width: 80px;
+                    height: 80px;
+                    margin-right: 15px;
                 }
 
-                .user {
+                .top-name {
+                    .name {
+                        font-size: 20px;
+                    }
+
+                    .user {
+                        display: flex;
+                        align-items: center;
+                        .ant-avatar{
+                            width: 20px;
+                            height: 20px;
+                            font-size: 12px;
+                            background: #ddd;
+                        }
+                        .user-more {
+                            width: 20px;
+                            height: 20px;
+                            border-radius: 20px;
+                            font-size: 12px;
+                            background: #ddd;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            color: #fff;
+                            cursor: pointer;
+                        }
+
+                        .user-more-icon {
+                            width: 20px;
+                            height: 20px;
+                        }
+                    }
+
+                    .user-img {
+                        margin-left: -5px;
+                    }
+
+                    .desc {
+                        color: var(--tiklab-gray-500);
+                        display: flex;
+                        gap: 10px;
+                    }
+                }
+            }
+
+            .top-right {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                .top-add-botton {
+                    color: #fff;
+                    font-weight: 500;
+                    background-color: var(--tiklab-blue);
+                    padding: 5px 15px;
+                    border-radius: 4px;
                     display: flex;
                     align-items: center;
-                    .ant-avatar{
-                        width: 20px;
-                        height: 20px;
-                        font-size: 12px;
-                        background: #ddd;
-                    }
-                    .user-more {
-                        width: 20px;
-                        height: 20px;
-                        border-radius: 20px;
-                        font-size: 12px;
-                        background: #ddd;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        color: #fff;
-                        cursor: pointer;
-                    }
+                    cursor: pointer;
+                    height: 32px;
+                    line-height: 32px;
+                    white-space: nowrap;
+                }
+            }
+        }
 
-                    .user-more-icon {
-                        width: 20px;
-                        height: 20px;
-                    }
+        .repository-menu {
+            .repository-menu-submenu {
+                height: 40px;
+                line-height: 40px;
+                display: flex;
+                align-items: center;
+            }
+
+            .repository-menu-submenu-hidden {
+                display: none;
+            }
+
+            .category-line {
+                flex: 1;
+                margin: 0 16px;
+                border-top: 1px dashed var(--tiklab-gray-500);
+            }
+
+            .open-icon {
+                width: 14px;
+                height: 14px;
+                margin-right: 5px;
+            }
+
+        }
+
+        .home-dynamic {
+            background-color: #fff;
+            border-radius: 4px;
+            margin-top: 20px;
+
+            .dynamic-box-title {
+                width: 100%;
+                height: 40px;
+                line-height: 40px;
+                font-weight: var(--tiklab-font-weight-bold);
+                display: flex;
+                justify-content: space-between;
+
+                .more:hover {
+                    text-decoration: underline;
                 }
 
-                .user-img {
-                    margin-left: -5px;
-                }
-
-                .desc {
-                    color: var(--tiklab-gray-500);
+                .more {
+                    margin-left: 10px;
+                    cursor: pointer;
                     display: flex;
+                    align-items: center;
+                }
+            }
+
+            .dynamic-list {
+                margin-top: 10px;
+                padding-bottom: 20px;
+                .dynamic-item {
+                    margin-bottom: 10px;
+
+                    .dynamic-repository-title:hover {
+                        color: var(--tiklab-blue);
+                    }
+                }
+
+                .dynamic-item:nth-child(4n+1) {
+                    .dynamic-user-icon {
+                        background-color: #cadbf3;
+                    }
+                }
+
+                .dynamic-item:nth-child(4n+2) {
+                    .dynamic-user-icon {
+                        background-color: #deedd7;
+                    }
+                }
+
+                .dynamic-item:nth-child(4n+3) {
+                    .dynamic-user-icon {
+                        background-color: #ffebee;
+                    }
+                }
+
+                .dynamic-item:nth-child(4n+4) {
+                    .dynamic-user-icon {
+                        background-color: #e8eaf6;
+                    }
+                }
+            }
+
+        }
+
+        .home-collect{
+            background-color: #fff;
+            border-radius: 4px;
+            margin-top: 20px;
+            .collect-box-title {
+                width: 100%;
+                height: 40px;
+                line-height: 40px;
+                font-weight: var(--tiklab-font-weight-bold);
+                display: flex;
+                justify-content: space-between;
+                .more:hover {
+                    text-decoration: underline;
+                }
+                .more {
+                    margin-left: 10px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                }
+            }
+            .collect-list{
+                .collect-list-item {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    line-height: 25px;
                     gap: 10px;
+                    margin-top: 10px;
+                    flex-shrink: 1;
+                    min-width: 0;
+                    .collect-list-left {
+                        flex: 1;
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+                        flex-shrink: 1;
+                        min-width: 0;
+                        .collect-icon {
+                            width: 32px;
+                            height: 32px;
+                            margin-right: 10px;
+                        }
+                        .collect-item-text {
+                            flex-shrink: 1;
+                            min-width: 0;
+                            margin-right: 10px;
+                            .collect-title {
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                overflow: hidden;
+                            }
+                            .collect-title:hover {
+                                cursor: pointer;
+                                color: var(--tiklab-blue);
+                            }
+                            .collect-master {
+                                font-size: 12px;
+                                color: var(--tiklab-gray-500);
+                            }
+                        }
+                    }
+                    .document-time {
+                        width: 150px;
+                        flex-shrink: 0;
+                    }
                 }
             }
         }
 
-        .top-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .home-document {
+            background: #fff;
+            border-radius: 4px;
+            margin-top: 20px;
 
-            .top-add-botton {
-                color: #fff;
-                font-weight: 500;
-                background-color: var(--tiklab-blue);
-                padding: 5px 15px;
-                border-radius: 4px;
+            .document-box-title {
+                width: 100%;
+                height: 40px;
+                line-height: 40px;
+                font-weight: var(--tiklab-font-weight-bold);
                 display: flex;
-                align-items: center;
-                cursor: pointer;
-                height: 32px;
-                line-height: 32px;
-                white-space: nowrap;
-            }
-        }
-    }
+                justify-content: space-between;
 
-    .repository-menu {
-        .repository-menu-submenu {
-            height: 40px;
-            line-height: 40px;
-            display: flex;
-            align-items: center;
-        }
+                .more:hover {
+                    text-decoration: underline;
+                }
 
-        .repository-menu-submenu-hidden {
-            display: none;
-        }
-
-        .category-line {
-            flex: 1;
-            margin: 0 16px;
-            border-top: 1px dashed var(--tiklab-gray-500);
-        }
-
-        .open-icon {
-            width: 14px;
-            height: 14px;
-            margin-right: 5px;
-        }
-
-    }
-
-    .home-dynamic {
-        background-color: #fff;
-        border-radius: 4px;
-        margin-top: 20px;
-
-        .dynamic-box-title {
-            width: 100%;
-            height: 40px;
-            line-height: 40px;
-            font-weight: var(--tiklab-font-weight-bold);
-            display: flex;
-            justify-content: space-between;
-
-            .more:hover {
-                text-decoration: underline;
-            }
-
-            .more {
-                margin-left: 10px;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-            }
-        }
-
-        .dynamic-list {
-            margin-top: 10px;
-            padding-bottom: 20px;
-            .dynamic-item {
-                margin-bottom: 10px;
-
-                .dynamic-repository-title:hover {
+                .more {
                     color: var(--tiklab-blue);
+                    margin-left: 10px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
                 }
             }
 
-            .dynamic-item:nth-child(4n+1) {
-                .dynamic-user-icon {
-                    background-color: #cadbf3;
-                }
-            }
-
-            .dynamic-item:nth-child(4n+2) {
-                .dynamic-user-icon {
-                    background-color: #deedd7;
-                }
-            }
-
-            .dynamic-item:nth-child(4n+3) {
-                .dynamic-user-icon {
-                    background-color: #ffebee;
-                }
-            }
-
-            .dynamic-item:nth-child(4n+4) {
-                .dynamic-user-icon {
-                    background-color: #e8eaf6;
-                }
-            }
-        }
-
-    }
-
-    .home-collect{
-        background-color: #fff;
-        border-radius: 4px;
-        margin-top: 20px;
-        .collect-box-title {
-            width: 100%;
-            height: 40px;
-            line-height: 40px;
-            font-weight: var(--tiklab-font-weight-bold);
-            display: flex;
-            justify-content: space-between;
-            .more:hover {
-                text-decoration: underline;
-            }
-            .more {
-                margin-left: 10px;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-            }
-        }
-        .collect-list{
-            .collect-list-item {
+            .document-list-item {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -215,32 +287,33 @@
                 margin-top: 10px;
                 flex-shrink: 1;
                 min-width: 0;
-                .collect-list-left {
+                .document-item-left {
                     flex: 1;
                     display: flex;
                     align-items: center;
                     gap: 5px;
                     flex-shrink: 1;
                     min-width: 0;
-                    .collect-icon {
+                    .document-icon {
                         width: 32px;
                         height: 32px;
                         margin-right: 10px;
                     }
-                    .collect-item-text {
+                    .document-item-text {
                         flex-shrink: 1;
                         min-width: 0;
                         margin-right: 10px;
-                        .collect-title {
+                        .document-title {
+
                             text-overflow: ellipsis;
                             white-space: nowrap;
                             overflow: hidden;
                         }
-                        .collect-title:hover {
+                        .document-title:hover {
                             cursor: pointer;
                             color: var(--tiklab-blue);
                         }
-                        .collect-master {
+                        .document-master {
                             font-size: 12px;
                             color: var(--tiklab-gray-500);
                         }
@@ -250,80 +323,6 @@
                     width: 150px;
                     flex-shrink: 0;
                 }
-            }
-        }
-    }
-
-    .home-document {
-        background: #fff;
-        border-radius: 4px;
-        margin-top: 20px;
-
-        .document-box-title {
-            width: 100%;
-            height: 40px;
-            line-height: 40px;
-            font-weight: var(--tiklab-font-weight-bold);
-            display: flex;
-            justify-content: space-between;
-
-            .more:hover {
-                text-decoration: underline;
-            }
-
-            .more {
-                color: var(--tiklab-blue);
-                margin-left: 10px;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-            }
-        }
-
-        .document-list-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            line-height: 25px;
-            gap: 10px;
-            margin-top: 10px;
-            flex-shrink: 1;
-            min-width: 0;
-            .document-item-left {
-                flex: 1;
-                display: flex;
-                align-items: center;
-                gap: 5px;
-                flex-shrink: 1;
-                min-width: 0;
-                .document-icon {
-                    width: 32px;
-                    height: 32px;
-                    margin-right: 10px;
-                }
-                .document-item-text {
-                    flex-shrink: 1;
-                    min-width: 0;
-                    margin-right: 10px;
-                    .document-title {
-
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                        overflow: hidden;
-                    }
-                    .document-title:hover {
-                        cursor: pointer;
-                        color: var(--tiklab-blue);
-                    }
-                    .document-master {
-                        font-size: 12px;
-                        color: var(--tiklab-gray-500);
-                    }
-                }
-            }
-            .document-time {
-                width: 150px;
-                flex-shrink: 0;
             }
         }
     }

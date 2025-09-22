@@ -59,7 +59,7 @@ const CategoryDetail = (props) => {
         <Provider {...store}>
             <Row className="log-detail">
                 <Col xs={24} xl={{ span: "18", offset: "3" }} xxl={{ span: "18", offset: "3" }}>
-                    <div className="log-detail-content">
+                    <div className="sward-home-limited">
                         {
                             logDetail &&
                             <div className="log-title">

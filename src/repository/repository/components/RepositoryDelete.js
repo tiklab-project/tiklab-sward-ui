@@ -18,12 +18,18 @@ const RepositoryDelete = (props) => {
     const [confirmForm] = Form.useForm();
 
     const [confirmProjectName, setConfirmProjectName] = useState();
+    //加载
+    const [spinning,setSpinning] = useState(false);
 
     /**
      * 确定
      */
     const handleOk = () => {
         confirmForm.validateFields().then(() => {
+            if(spinning){
+                return
+            }
+            setSpinning(true)
             delerepositoryList(repository.id).then(response => {
                 if (response.code === 0) {
                     message.success('删除成功');
@@ -34,7 +40,7 @@ const RepositoryDelete = (props) => {
                         props.history.push("/repository")
                     }
                 }
-            })
+            }).finally(()=>setSpinning(false))
         })
     }
 
@@ -42,8 +48,10 @@ const RepositoryDelete = (props) => {
      * 关闭弹出框
      */
     const handleCancel = () => {
-        confirmForm.resetFields();
-        setDelVisible(false);
+        if(!spinning){
+            confirmForm.resetFields();
+            setDelVisible(false);
+        }
     }
 
     return (

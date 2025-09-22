@@ -5,10 +5,9 @@
  * @LastEditTime: 2024-12-31 17:05:41
  * @Description: 知识库添加详情
  */
-import React, { useEffect,forwardRef ,useImperativeHandle} from "react";
-import { Form, Input, message } from 'antd';
+import React, { useEffect,forwardRef ,useImperativeHandle, useState} from "react";
+import {Form, Input, message, Spin} from 'antd';
 import "./repositoryAddInfo.scss";
-import { useState } from "react";
 import { observer } from "mobx-react";
 import repositoryStore from "../store/RepositoryStore";
 
@@ -17,34 +16,27 @@ const RepositoryAddInfo =  forwardRef((props, ref)  => {
     const { repository,changFresh,onCancel } = props;
 
     const [form] = Form.useForm();
-    const [iconUrl, setIconUrl] = useState("repository1.png")
-    const [iconList, setIconList] = useState();
-    const { findIconList, addRepositorylist, updateRepository } = repositoryStore;
+    const { addRepositorylist, updateRepository } = repositoryStore;
 
-    useEffect(() => {
-        // getIconList()
-    }, [])
+    //加载
+    const [spinning,setSpinning] = useState(false);
+
 
     useEffect(() => {
         if(repository){
-            setIconUrl(repository.iconUrl);
             form.setFieldsValue(repository);
         }
     }, [repository]);
 
-    const getIconList = () => {
-        findIconList({ iconType: "repository" }).then((res) => {
-            setIconList(res.data)
-            if(!repository){
-                setIconUrl(res.data[0]?.iconUrl)
-            }
-        })
-    }
 
     const icons = ['repository1.png','repository2.png','repository3.png','repository4.png'];
 
     const onFinish = () => {
         form.validateFields().then((values) => {
+            if(spinning){
+                return
+            }
+            setSpinning(true);
             if(repository){
                 updateRepository({
                     ...values,
@@ -57,7 +49,7 @@ const RepositoryAddInfo =  forwardRef((props, ref)  => {
                     } else {
                         message.error(res.msg)
                     }
-                })
+                }).finally(()=>setSpinning(false))
             } else {
                 addRepositorylist({
                     ...values,
@@ -71,7 +63,7 @@ const RepositoryAddInfo =  forwardRef((props, ref)  => {
                         onCancel()
                         props.history.push(`/repository/${res.data}/overview`)
                     }
-                })
+                }).finally(()=>setSpinning(false))
             }
         })
     }
@@ -124,54 +116,56 @@ const RepositoryAddInfo =  forwardRef((props, ref)  => {
     }
 
     return (
-        <div className="repository-addinfo">
-            <Form
-                name="basic"
-                initialValues={{
-                    remember: true,
-                    limits: "0"
-                }}
-                form={form}
-                layout="vertical"
-            >
-                <Form.Item
-                    label="知识库名称"
-                    name="name"
-                    rules={[
-                        {
-                            required: true,
-                            message: '使用中英文、数字、空格组合',
-                        },
-                    ]}
+        <Spin spinning={spinning}>
+            <div className="repository-addinfo">
+                <Form
+                    name="basic"
+                    initialValues={{
+                        remember: true,
+                        limits: "0"
+                    }}
+                    form={form}
+                    layout="vertical"
                 >
-                    <Input placeholder="使用中英文、数字、空格组合" />
-                </Form.Item>
+                    <Form.Item
+                        label="知识库名称"
+                        name="name"
+                        rules={[
+                            {
+                                required: true,
+                                message: '使用中英文、数字、空格组合',
+                            },
+                        ]}
+                    >
+                        <Input placeholder="使用中英文、数字、空格组合" />
+                    </Form.Item>
 
-                <Form.Item
-                    label="可见范围"
-                    name="limits"
-                    rules={[
-                        {
-                            validator: checkLimit,
-                        }
-                    ]}
-                >
-                    <LimitComponents />
-                </Form.Item>
-                <Form.Item
-                    label="知识库描述"
-                    name="desc"
-                    rules={[
-                        {
-                            required: false,
-                            message: '请输入知识库描述',
-                        },
-                    ]}
-                >
-                    <Input.TextArea rows={3} placeholder="知识库描述" />
-                </Form.Item>
-            </Form>
-        </div>
+                    <Form.Item
+                        label="可见范围"
+                        name="limits"
+                        rules={[
+                            {
+                                validator: checkLimit,
+                            }
+                        ]}
+                    >
+                        <LimitComponents />
+                    </Form.Item>
+                    <Form.Item
+                        label="知识库描述"
+                        name="desc"
+                        rules={[
+                            {
+                                required: false,
+                                message: '请输入知识库描述',
+                            },
+                        ]}
+                    >
+                        <Input.TextArea rows={3} placeholder="知识库描述" />
+                    </Form.Item>
+                </Form>
+            </div>
+        </Spin>
     )
 })
 

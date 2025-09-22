@@ -4,6 +4,13 @@ export function useDebounce(fn, delay, dep = []) {
     useEffect(function () {
         current.fn = fn;
     }, [fn]);
+    useEffect(() => {
+        return () => {
+            if (current.timer) {
+                clearTimeout(current.timer);
+            }
+        };
+    }, []);
     return useCallback(function f(...args) {
         if (current.timer) {
             clearTimeout(current.timer);

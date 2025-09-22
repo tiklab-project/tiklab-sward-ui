@@ -55,7 +55,7 @@ const TemplateEdit = (props) => {
             detailText: editRef.current.innerText,
             details: value
         })
-    }, [500])
+    }, 500)
 
     const submit = async () =>{
         let canvas = await html2canvas(document.getElementById("template-detail"), {

@@ -11,12 +11,11 @@ import { SystemRole } from 'tiklab-privilege-ui';
 // 系统角色
 const SystemRoleWrap = props => {
 
-
     return (
-            <SystemRole
-                {...props}
-                bgroup={'sward'}
-            />
+        <SystemRole
+            {...props}
+            bgroup={'sward'}
+        />
     )
 }
 

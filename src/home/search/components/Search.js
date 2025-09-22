@@ -14,10 +14,10 @@ import { useDebounce } from "../../../common/utils/debounce";
 import { getUser } from "tiklab-core-ui";
 import {Empty, Input, Spin} from "antd";
 import { withRouter } from "react-router";
-import Img from "../../../common/components/img/Img";
 import DocumentIcon from "../../../common/components/icon/DocumentIcon";
 import {documentPush} from "../../../common/utils/overall";
 import BaseModal from "../../../common/components/modal/Modal";
+import ListIcon from "../../../common/components/icon/ListIcon";
 
 const Search = (props) => {
     const { isShowText, theme } = props;
@@ -174,12 +174,13 @@ const Search = (props) => {
                                                                     return (
                                                                         <div className="item-box" key={wikiItem.id}>
                                                                             <div className="item-one" onClick={() => toRepository(wikiItem)}>
-                                                                                <Img
-                                                                                    src={wikiItem.iconUrl}
-                                                                                    alt=""
+                                                                                <ListIcon
+                                                                                    icon={wikiItem.iconUrl}
+                                                                                    text={wikiItem.name}
+                                                                                    isMar={false}
                                                                                 />
-                                                                                <span>{wikiItem?.name}</span>
-                                                                                <div className="item-desc">
+                                                                                <span className='item-one-name'>{wikiItem?.name}</span>
+                                                                                <div className="item-one-desc">
                                                                                     {wikiItem?.createTime}
                                                                                 </div>
                                                                             </div>
@@ -204,10 +205,10 @@ const Search = (props) => {
                                                                             <DocumentIcon
                                                                                 documentName={node?.name}
                                                                                 documentType={documentType}
-                                                                                className={"img-icon"}
+                                                                                className={"icon-18"}
                                                                             />
-                                                                            <span>{node?.name}</span>
-                                                                            <div className="item-desc">
+                                                                            <span className='item-one-name'>{node?.name}</span>
+                                                                            <div className="item-one-desc">
                                                                                 {node?.wikiRepository?.name}
                                                                             </div>
                                                                         </div>
@@ -234,12 +235,13 @@ const Search = (props) => {
                                                     return (
                                                         <div className="item-box" key={wikiItem.id}>
                                                             <div className="item-one" onClick={() => toRepository(wikiItem)}>
-                                                                <Img
-                                                                    src={wikiItem.iconUrl}
-                                                                    alt=""
+                                                                <ListIcon
+                                                                    icon={wikiItem.iconUrl}
+                                                                    text={wikiItem.name}
+                                                                    isMar={false}
                                                                 />
-                                                                <span>{wikiItem.name}</span>
-                                                                <div className="item-desc">
+                                                                <span className='item-one-name'>{wikiItem.name}</span>
+                                                                <div className="item-one-desc">
                                                                     {wikiItem.createTime}
                                                                 </div>
                                                             </div>
@@ -264,10 +266,10 @@ const Search = (props) => {
                                                                 <DocumentIcon
                                                                     documentName={documentItem?.name}
                                                                     documentType={documentType}
-                                                                    className={"img-icon"}
+                                                                    className={"icon-18"}
                                                                 />
-                                                                <span>{documentItem.name}</span>
-                                                                <div className="item-desc">
+                                                                <span className='item-one-name'>{documentItem.name}</span>
+                                                                <div className="item-one-desc">
                                                                     {documentItem.wikiRepository?.name}
                                                                 </div>
                                                             </div>
