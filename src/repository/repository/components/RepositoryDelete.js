@@ -57,17 +57,12 @@ const RepositoryDelete = (props) => {
     return (
         <Modal
             title="确定删除"
-            getContainer={false}
             visible={delVisible}
             onOk={handleOk}
             onCancel={handleCancel}
-            okText={"确定"}
-            cancelText={"取消"}
-            okType="danger"
-            okButtonProps={{ type: "primary" }}
         >
             <Alert message=" 此知识库及其目录、文档、附件和评论将被永久删除" type="error" showIcon />
-            <div style={{ padding: "20px 0" }}>
+            <div style={{ paddingTop: 20 }}>
                 <Form
                     form={confirmForm}
                     name="dependencies"

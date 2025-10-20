@@ -12,9 +12,8 @@ import "./SearchModal.scss";
 import { getUser } from 'tiklab-core-ui';
 import { withRouter } from 'react-router';
 import { inject, observer } from 'mobx-react';
-import { useDebounce } from '../../../common/utils/debounce';
 import DocumentIcon from "../../../common/components/icon/DocumentIcon";
-import {documentPush} from "../../../common/utils/overall";
+import {documentPush,useDebounce} from "../../../common/utils/overall";
 import BaseModal from "../../../common/components/modal/Modal";
 
 const SearchModal = (props) => {

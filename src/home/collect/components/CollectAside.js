@@ -10,7 +10,7 @@ import React from "react";
 import { Empty, Layout } from "antd";
 import "./CollectAside.scss"
 import SearchInput from "../../../common/components/search/SearchInput";
-import { useDebounce } from "../../../common/utils/debounce";
+import { useDebounce } from "../../../common/utils/overall";
 import DocumentIcon from "../../../common/components/icon/DocumentIcon";
 const { Sider } = Layout;
 

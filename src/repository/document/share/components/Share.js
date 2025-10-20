@@ -12,13 +12,12 @@ import "./Share.scss";
 import shareStore from "../store/ShareStore";
 import {getUser} from "tiklab-core-ui";
 import DocumentIcon from "../../../../common/components/icon/DocumentIcon";
-import {deleteSuccessReturnCurrenPage} from "../../../../common/utils/overall";
+import {deleteSuccessReturnCurrenPage, useDebounce} from "../../../../common/utils/overall";
 import Profile from "../../../../common/components/profile/Profile";
 import Page from "../../../../common/components/page/Page";
 import {ShareAltOutlined} from "@ant-design/icons";
 import SearchInput from "../../../../common/components/search/SearchInput";
-import {useDebounce} from "../../../../common/utils/debounce";
-import {PrivilegeButton,PrivilegeProjectButton} from "tiklab-privilege-ui";
+import {PrivilegeProjectButton} from "tiklab-privilege-ui";
 
 const pageSize = 10;
 
@@ -159,7 +158,7 @@ const Share = props =>{
                             className={'icon-24'}
                         />
                         {
-                            props.route.path === '/index'  ? (
+                            type === 'home'  ? (
                                 <div className='home-name-text'>
                                     <div className='home-name-text-name'>
                                         {text}
@@ -217,20 +216,23 @@ const Share = props =>{
             width: "10%",
             ellipsis: true,
             render:(_,record)=>{
+                const { permissions={} } = record;
                 return (
                     <Space size={'middle'}>
                         {
                             type === 'home' ?
                                 <>
-                                    <PrivilegeButton code={'wiki_find_share'}>
+                                    {
+                                        permissions?.view &&
                                         <Tooltip title={'查看分享'}>
                                             <ShareAltOutlined
                                                 className='action-button'
                                                 onClick={()=>toShare(record)}
                                             />
                                         </Tooltip>
-                                    </PrivilegeButton>
-                                    <PrivilegeButton code={'wiki_delete_share'}>
+                                    }
+                                    {
+                                        permissions?.delete &&
                                         <Dropdown
                                             overlay={
                                                 <div className="sward-dropdown-more">
@@ -248,7 +250,7 @@ const Share = props =>{
                                                 </svg>
                                             </Tooltip>
                                         </Dropdown>
-                                    </PrivilegeButton>
+                                    }
                                 </>
                                 :
                                 <>
@@ -336,7 +338,7 @@ const Share = props =>{
         </div>
     )
 
-    return props.route.path === '/index' ? (
+    return type === 'home' ? (
         <div className='document-share-home'>
             {commonHtml}
         </div>

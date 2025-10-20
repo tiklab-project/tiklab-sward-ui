@@ -11,11 +11,18 @@ import "./DocumentActionMenu.scss";
 import {disableFunction} from 'tiklab-core-ui';
 import EnhanceEntranceModal from "../../../common/components/modal/EnhanceEntranceModal";
 import {PrivilegeProjectButton} from "tiklab-privilege-ui";
+import {
+    ClockCircleOutlined,
+    FilePdfOutlined,
+    FileTextOutlined,
+    FileWordOutlined, FlagOutlined,
+    MessageOutlined
+} from "@ant-design/icons";
 
 const DocumentActionMenu = (props) => {
 
     const {
-        document,commentNum,setShowComment,setValue,documentVersion,setDocumentVersion,
+        document:documentInfo,commentNum,setShowComment,setValue,documentVersion,setDocumentVersion,
         DocumentVersionAdd,DocumentVersionList,DocumentReviewAdd,exportsWord,updateNode
     } = props;
 
@@ -38,49 +45,50 @@ const DocumentActionMenu = (props) => {
     //下拉框
     const [dropdownVisible,setDropdownVisible] = useState(false);
 
+
     /**
      * 文档更多操作
      */
-    const selectMoreType = (key) => {
+    const
+        selectMoreType = async (key) => {
         setDropdownVisible(false);
-        if(key==='comment'){
-            setShowComment(true);
-            return;
-        }
-        if(key==='export-word'){
-            if(typeof exportsWord === 'function'){
-                exportsWord()
-            }
-            return;
-        }
-        if(disable){
-            setArchivedFreeVisable(true);
-            switch (key) {
-                case 'version-add':
-                case 'version-view':
-                    setArchivedFreeType('documentVersion')
-                    break
-                case 'review':
-                    setArchivedFreeType('documentReview')
-            }
-            return;
-        }
         switch (key) {
-            case 'review':
-                const nodeStatus = document?.node?.nodeStatus;
-                if(nodeStatus===3){
-                    if(typeof updateNode === 'function'){
-                        updateNode()
-                    }
-                    return;
-                }
-                setReviewAddVisible(true);
-                return
+            case 'comment':
+                setShowComment(true);
+                break;
+            case 'export-word':
+                exportsWord();
+                break
             case 'version-add':
-                setVersionAddVisible(true);
-                return;
+                if(disable){
+                    setArchivedFreeVisable(true);
+                    setArchivedFreeType('documentVersion')
+                } else {
+                    setVersionAddVisible(true);
+                }
+                break;
             case 'version-view':
-                setVersionViewVisible(true);
+                if(disable){
+                    setArchivedFreeVisable(true);
+                    setArchivedFreeType('documentVersion')
+                } else {
+                    setVersionViewVisible(true);
+                }
+                break;
+            case 'review':
+                if(disable){
+                    setArchivedFreeVisable(true);
+                    setArchivedFreeType('documentReview')
+                } else {
+                    const nodeStatus = documentInfo?.node?.nodeStatus;
+                    if(nodeStatus===3 && typeof updateNode === 'function'){
+                        // 下线
+                        updateNode()
+                    } else {
+                        // 评审
+                        setReviewAddVisible(true);
+                    }
+                }
         }
     }
 
@@ -119,14 +127,12 @@ const DocumentActionMenu = (props) => {
                 }}
                 overlay={ documentVersion ?
                     <div className='sward-dropdown-more'>
-                        <PrivilegeProjectButton domainId={document?.repositoryId} code={disable ? null:'wi_doc_find_version'}>
+                        <PrivilegeProjectButton domainId={documentInfo?.repositoryId} code={disable ? null:'wi_doc_find_version'}>
                             <div
                                 className='document-more-actions dropdown-more-item'
                                 onClick={() => selectMoreType('version-view')}
                             >
-                                <svg className="document-more-actions-icon" aria-hidden="true">
-                                    <use xlinkHref="#icon-history"></use>
-                                </svg>
+                                <ClockCircleOutlined className='document-more-actions-icon'/>
                                 查看版本
                             </div>
                         </PrivilegeProjectButton>
@@ -134,13 +140,13 @@ const DocumentActionMenu = (props) => {
                     :
                     <div className='sward-dropdown-more'>
                         {
-                            document?.node?.nodeStatus === 2 ? null :
+                            documentInfo?.node?.nodeStatus === 2 ? null :
                                 <>
                                     <PrivilegeProjectButton
-                                        domainId={document?.repositoryId}
+                                        domainId={documentInfo?.repositoryId}
                                         code={
                                             disable ? null :
-                                            document?.node?.nodeStatus === 3 ? 'wi_doc_offline' : 'wi_doc_commit_review'
+                                            documentInfo?.node?.nodeStatus === 3 ? 'wi_doc_offline' : 'wi_doc_commit_review'
                                         }
                                     >
                                         <div
@@ -150,60 +156,66 @@ const DocumentActionMenu = (props) => {
                                             <svg className="document-more-actions-icon" aria-hidden="true">
                                                 <use xlinkHref="#icon-commit"></use>
                                             </svg>
-                                            {document?.node?.nodeStatus === 3 ? '下线' : '提交评审'}
+                                            {documentInfo?.node?.nodeStatus === 3 ? '下线' : '提交评审'}
                                         </div>
                                     </PrivilegeProjectButton>
                                     <Divider />
                                 </>
                         }
-                        <PrivilegeProjectButton domainId={document?.repositoryId} code={disable ? null:'wi_doc_add_version'}>
+                        <PrivilegeProjectButton domainId={documentInfo?.repositoryId} code={disable ? null:'wi_doc_add_version'}>
                             <div
                                 className='document-more-actions dropdown-more-item'
                                 onClick={() => selectMoreType('version-add')}
                             >
-                                <svg className="document-more-actions-icon" aria-hidden="true">
-                                    <use xlinkHref="#icon-flag"></use>
-                                </svg>
+                                <FlagOutlined className='document-more-actions-icon'/>
                                 添加版本
                             </div>
                         </PrivilegeProjectButton>
-                        <PrivilegeProjectButton domainId={document?.repositoryId} code={disable ? null:'wi_doc_find_version'}>
+                        <PrivilegeProjectButton domainId={documentInfo?.repositoryId} code={disable ? null:'wi_doc_find_version'}>
                             <div
                                 className='document-more-actions dropdown-more-item'
                                 onClick={() => selectMoreType('version-view')}
                             >
-                                <svg className="document-more-actions-icon" aria-hidden="true">
-                                    <use xlinkHref="#icon-history"></use>
-                                </svg>
+                                <ClockCircleOutlined className='document-more-actions-icon'/>
                                 查看版本
                             </div>
                         </PrivilegeProjectButton>
                         {
-                            document?.node?.documentType === 'document' &&
+                            documentInfo?.node?.documentType === 'document' &&
                             <>
                                 <Divider />
-                                <PrivilegeProjectButton domainId={document?.repositoryId} code={'wi_doc_import_word'}>
+                                <PrivilegeProjectButton domainId={documentInfo?.repositoryId} code={'wi_doc_import_word'}>
                                     <div
                                         className='document-more-actions dropdown-more-item'
                                         onClick={() => selectMoreType('export-word')}
                                     >
-                                        <svg className="document-more-actions-icon" aria-hidden="true">
-                                            <use xlinkHref="#icon-history"></use>
-                                        </svg>
+                                        <FileWordOutlined className='document-more-actions-icon'/>
                                         导出Word
                                     </div>
                                 </PrivilegeProjectButton>
+                                {/*<div*/}
+                                {/*    className='document-more-actions dropdown-more-item'*/}
+                                {/*    onClick={() => selectMoreType('export-pdf')}*/}
+                                {/*>*/}
+                                {/*    <FilePdfOutlined className='document-more-actions-icon'/>*/}
+                                {/*    导出Pdf*/}
+                                {/*</div>*/}
+                                {/*<div*/}
+                                {/*    className='document-more-actions dropdown-more-item'*/}
+                                {/*    onClick={() => selectMoreType('export-html')}*/}
+                                {/*>*/}
+                                {/*    <FileTextOutlined className='document-more-actions-icon'/>*/}
+                                {/*    导出Html*/}
+                                {/*</div>*/}
                             </>
                         }
                         <Divider />
-                        <PrivilegeProjectButton domainId={document?.repositoryId} code={'wi_doc_comment'}>
+                        <PrivilegeProjectButton domainId={documentInfo?.repositoryId} code={'wi_doc_comment'}>
                             <div
                                 className='document-more-actions dropdown-more-item'
                                 onClick={() => selectMoreType('comment')}
                             >
-                                <svg className="document-more-actions-icon" aria-hidden="true">
-                                    <use xlinkHref="#icon-comment"></use>
-                                </svg>
+                                <MessageOutlined className='document-more-actions-icon'/>
                                 评论
                                 <div className='action-comment-num'>
                                     {commentNum}
@@ -221,7 +233,7 @@ const DocumentActionMenu = (props) => {
             {
                 DocumentVersionAdd && (
                     <DocumentVersionAdd
-                        document={document}
+                        document={documentInfo}
                         versionAddVisible={versionAddVisible}
                         setVersionAddVisible={setVersionAddVisible}
                         editData={editData}
@@ -233,7 +245,7 @@ const DocumentActionMenu = (props) => {
             {
                 DocumentVersionList &&
                 <DocumentVersionList
-                    document={document}
+                    document={documentInfo}
                     versionViewVisible={versionViewVisible}
                     setVersionViewVisible={setVersionViewVisible}
                     setValue={setValue}
@@ -246,7 +258,7 @@ const DocumentActionMenu = (props) => {
             {
                 DocumentReviewAdd &&
                 <DocumentReviewAdd
-                    document={document}
+                    document={documentInfo}
                     visible={reviewAddVisible}
                     setVisible={setReviewAddVisible}
                 />

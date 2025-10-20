@@ -169,7 +169,7 @@
 
     .comment-box {
         box-shadow: rgb(112 144 176 / 24%) 0px 0px 1px 0px, rgb(112 144 176 / 12%) 0px 6px 24px 4px;
-        padding: 6px;
+        padding: 8px;
         border-radius: 6px;
         background-color: rgb(255, 255, 255);
         position: absolute;
@@ -177,6 +177,8 @@
         right: 20px;
         .comment-box-item {
             cursor: pointer;
+            font-size: 18px;
+            color: #666;
         }
 
         .comment-item {

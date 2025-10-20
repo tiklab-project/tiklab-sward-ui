@@ -2,10 +2,11 @@
   display: flex;
   align-items: center;
   min-width: 120px;
+  gap: 5px;
   .document-more-actions-icon {
     width: 18px;
     height: 18px;
-    margin-right: 5px;
+    font-size: 16px;
   }
   .action-comment-num{
     height: 14px;

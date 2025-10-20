@@ -16,7 +16,7 @@ import Breadcrumb from "../../../common/components/breadcrumb/Breadcrumb";
 import templateStore from "../store/TemplateStore";
 import "./templateEdit.scss"
 import { getUser } from "tiklab-core-ui";
-import {useDebounce} from "../../../common/utils/debounce";
+import {useDebounce} from "../../../common/utils/overall";
 import html2canvas from "html2canvas";
 
 const TemplateEdit = (props) => {

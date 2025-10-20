@@ -57,8 +57,10 @@ const SettingHome = props => {
                 return;
             }
         }
-        props.history.push(id)
-        setOpenOrClose(data.parentUrl)
+        if(id){
+            props.history.push(id)
+            setOpenOrClose(data.parentUrl)
+        }
     }
 
     const array = [
@@ -69,7 +71,7 @@ const SettingHome = props => {
                 {
                     title: '用户',
                     id: version === "cloud" ? '/enterprise/user':'/setting/user',
-                    parentUrl: '/setting/orga',
+                    parentUrl: 'user',
                     icon: <UserOutlined />,
                     islink: true,
                     num: count?.user || 0
@@ -78,7 +80,7 @@ const SettingHome = props => {
                     title: "部门",
                     id: version === "cloud" ? '/enterprise/orga':'/setting/orga',
                     islink: true,
-                    parentUrl: '/setting/orga',
+                    parentUrl: 'user',
                     icon: <ApartmentOutlined />,
                     num: count?.orga
                 },
@@ -86,7 +88,7 @@ const SettingHome = props => {
                 {
                     title: '用户组',
                     id: version === "cloud" ? '/enterprise/userGroup':'/setting/userGroup',
-                    parentUrl: '/setting/orga',
+                    parentUrl: 'user',
                     islink: true,
                     icon: <GroupOutlined />,
                     num: count?.userGroup || 0
@@ -95,7 +97,7 @@ const SettingHome = props => {
 
                     title: "用户目录",
                     id: version === "cloud" ? '/enterprise/dir':'/setting/dir',
-                    parentUrl: '/setting/orga',
+                    parentUrl: 'user',
                     islink: true,
                     icon: <IdcardOutlined />,
                     num: count?.userDir || 0
@@ -103,7 +105,7 @@ const SettingHome = props => {
                 {
                     title: '权限',
                     id: "/setting/systemRole",
-                    parentUrl: '/setting/systemRole',
+                    parentUrl: 'user',
                     icon: <ScheduleOutlined />,
                     num: count?.role || 0
                 }
@@ -138,22 +140,23 @@ const SettingHome = props => {
                 {
                     title: "上次备份",
                     id: '/setting/backup',
-                    parentUrl: '/setting/log',
+                    parentUrl: 'security',
                     iseEnhance: version === "cloud",
                     icon: <HistoryOutlined />,
                     num: count?.lastBackups && moment(count.lastBackups).format('MM-DD') || '无'
                 },
                 {
                     title: '操作日志',
-                    id: '/setting/log',
-                    parentUrl: '/setting/log',
+                    id: version==='ce' ? null : '/setting/log',
+                    parentUrl: 'security',
                     iseEnhance: true,
                     icon: <InsertRowBelowOutlined />,
                     num: log?.totalRecord || '0'
                 },
                 {
                     title: '归档',
-                    id: '/setting/archived',
+                    id: version==='ce' ? null : '/setting/archived',
+                    parentUrl: 'security',
                     iseEnhance: true,
                     icon: <svg className="icon-15" aria-hidden="true">
                         <use xlinkHref={`#icon-systemreset`}></use>
@@ -162,7 +165,8 @@ const SettingHome = props => {
                 },
                 {
                     title: '回收站',
-                    id: '/setting/recycle',
+                    id: version==='ce' ? null : '/setting/recycle',
+                    parentUrl: 'security',
                     iseEnhance: true,
                     icon: <svg className="icon-15" aria-hidden="true">
                         <use xlinkHref={`#icon-systemrecycle`}></use>

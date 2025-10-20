@@ -21,6 +21,7 @@ import RepositoryDetailStore from "../../../common/store/RepositoryDetailStore";
 import Button from "../../../../common/components/button/Button";
 import DocumentActionMenu from "../../common/DocumentActionMenu";
 import {
+    MessageOutlined,
     ProfileOutlined,
     VerticalLeftOutlined
 } from "@ant-design/icons";
@@ -178,32 +179,24 @@ const DocumentExamine = (props) => {
      * 导出worid
      */
     const exportsWord = async () => {
-        setLoading(true);
-        fetch(`${upload_url}/documentExport/exportWord?docId=${documentId}`, {
-            method: 'GET',
-            headers:{
-                ticket: user.ticket,
-                tenant: user.tenant
-            }
-        })
-            .then(response => {
-                if (!response.ok) throw new Error("文件下载失败");
-                return response.blob().then(blob => ({ blob, filename:response.headers.get('filename') }));
-            })
-            .then(({ blob, filename }) => {
-                const link = document.createElement('a');
-                link.href = window.URL.createObjectURL(blob);
-                link.download = decodeURIComponent(filename);
-                link.click();
-            })
-            .catch(error => {
-                console.error('文件下载失败', error);
-            })
-            .finally(()=>{
-                setLoading(false)
-            })
+        try {
+            setLoading(true);
+            const url = `${upload_url}/documentExport/exportWord?docId=${documentId}&ticket=${user.ticket}${user.tenant ? `&tenant=${user.tenant}` : ''}`;
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        } finally {
+            setLoading(false)
+        }
+
     };
 
+    /**
+     * 下线
+     */
     const updateNode= () => {
         if(typeof updateNodeEntity === 'function'){
             updateNodeEntity({
@@ -380,11 +373,9 @@ const DocumentExamine = (props) => {
                                     </div> : <></>
                             }
                             <PrivilegeProjectButton domainId={repositoryId} code={'wi_doc_comment'}>
-                                <div className="comment-box">
+                                <div className="comment-box" onClick={() => setShowComment(!showComment)}>
                                     <div className="comment-box-item">
-                                        <svg className="midden-icon" aria-hidden="true" onClick={() => setShowComment(!showComment)}>
-                                            <use xlinkHref="#icon-comment"></use>
-                                        </svg>
+                                        <MessageOutlined />
                                         {/*<div className="commnet-num">{commentNum}</div>*/}
                                     </div>
                                 </div>

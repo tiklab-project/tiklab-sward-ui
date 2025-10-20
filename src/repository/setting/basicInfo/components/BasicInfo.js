@@ -100,6 +100,8 @@ const BasicInfo = props => {
                 if (res.code === 0) {
                     findRepository(repositoryId)
                     message.info('修改成功');
+                } else {
+                    message.error(res.msg)
                 }
             })
         })

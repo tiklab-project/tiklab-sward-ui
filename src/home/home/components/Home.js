@@ -91,6 +91,7 @@ const Home = (props) => {
                 lg={{ span: 18, offset: 3 }}
                 md={{ span: 20, offset: 2 }}
                 xs={{ span: 24 }}
+                sm={{ span: 24 }}
             >
                 <div className='sward-home-limited'>
                     <div className='home-tabs'>
@@ -111,7 +112,7 @@ const Home = (props) => {
                         <>
                             <div className="home-repository">
                                 <div className="repository-title">常用知识库</div>
-                                <Spin wrapperClassName="repository-spin" spinning={recentLoading} tip="加载中..." >
+                                <Spin spinning={recentLoading} tip="加载中..." >
                                     {
                                         recentRepositoryDocumentList.length > 0 ?
                                             <div className="repository-box">
@@ -134,10 +135,7 @@ const Home = (props) => {
                                                 }
                                             </div>
                                             :
-                                            <div className="repository-box-empty">
-                                                {!recentLoading && <Empty description="暂时没有查看过知识库~" />}
-                                            </div>
-
+                                            <Empty description="暂时没有查看过知识库~" />
                                     }
                                 </Spin>
                             </div>
@@ -145,12 +143,12 @@ const Home = (props) => {
                                 <div className="document-box-title">
                                     <span className="name">常用文档</span>
                                 </div>
-                                <Spin wrapperClassName="document-spin" spinning={recentDocLoading} tip="加载中..." >
+                                <Spin spinning={recentDocLoading} tip="加载中..." >
                                     {
                                         recentViewDocumentList && recentViewDocumentList.length > 0 ?
-                                            recentViewDocumentList.map((item) => {
+                                            recentViewDocumentList.map((item,index) => {
                                                 return <div className="document-list-item" key={item.id} >
-                                                    <div className='document-item-left' style={{ flex: 1 }}>
+                                                    <div className='document-item-left'>
                                                         <div>
                                                             <DocumentIcon
                                                                 documentType={item.node?.documentType}
@@ -160,7 +158,7 @@ const Home = (props) => {
                                                         </div>
                                                         <div className="document-item-text">
                                                             <div className="document-title" onClick={() => goDocumentDetail(item.node)}>{item.name}</div>
-                                                            <div className="document-master" style={{ flex: 1 }}>{item.wikiRepository?.name}</div>
+                                                            <div className="document-master">{item.wikiRepository?.name}</div>
                                                         </div>
                                                     </div>
                                                     <div className="document-master-name">
@@ -173,12 +171,7 @@ const Home = (props) => {
                                                 </div>
                                             })
                                             :
-                                            <>
-                                                {
-                                                    !recentDocLoading && <Empty description="暂时没有数据~" />
-                                                }
-                                            </>
-
+                                            <Empty description="暂时没有数据~" />
                                     }
                                 </Spin>
                             </div>

@@ -10,12 +10,11 @@ import React, { Fragment, useEffect, useState, useRef } from "react";
 import "../components/Search.scss"
 import SearchStore from "../store/Search";
 import { observer } from "mobx-react";
-import { useDebounce } from "../../../common/utils/debounce";
 import { getUser } from "tiklab-core-ui";
 import {Empty, Input, Spin} from "antd";
 import { withRouter } from "react-router";
 import DocumentIcon from "../../../common/components/icon/DocumentIcon";
-import {documentPush} from "../../../common/utils/overall";
+import {documentPush,useDebounce} from "../../../common/utils/overall";
 import BaseModal from "../../../common/components/modal/Modal";
 import ListIcon from "../../../common/components/icon/ListIcon";
 

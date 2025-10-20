@@ -139,7 +139,7 @@ const AddDropDown = (props) => {
         }
         if(documentType==='markdown'){
             params.details = JSON.stringify([
-                {type: 'paragraph', children: [{text: '',},],},
+                {type: 'paragraph', children: [{text: ''}]},
             ])
         }
         if(documentType==='file' && value ){

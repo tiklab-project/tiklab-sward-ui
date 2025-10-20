@@ -21,6 +21,7 @@ import MarkdownStore from "../store/MarkdownStore";
 import RepositoryDetailStore from "../../../common/store/RepositoryDetailStore";
 import DocumentActionMenu from "../../common/DocumentActionMenu";
 import {PrivilegeProjectButton} from "tiklab-privilege-ui";
+import {MessageOutlined} from "@ant-design/icons";
 
 const MarkdownDocument = (props) => {
 
@@ -309,11 +310,9 @@ const MarkdownDocument = (props) => {
                                 </>
                             }
                             <PrivilegeProjectButton domainId={repositoryId} code={'wi_doc_comment'}>
-                                <div className="comment-box">
+                                <div className="comment-box" onClick={() => setShowComment(!showComment)}>
                                     <div className="comment-box-item">
-                                        <svg className="midden-icon" aria-hidden="true" onClick={() => setShowComment(!showComment)}>
-                                            <use xlinkHref="#icon-comment"></use>
-                                        </svg>
+                                        <MessageOutlined />
                                         {/*<div className="commnet-num">{commentNum}</div>*/}
                                     </div>
                                 </div>

@@ -1,3 +1,5 @@
+import {useCallback, useEffect, useRef} from "react";
+
 /**
  * 文件类型图标
  */
@@ -115,3 +117,32 @@ export const deleteSuccessReturnCurrenPage = (totalRecord, pageSize, current) =>
  * @returns {Promise<unknown>}
  */
 export const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+/**
+ * 防抖
+ * @param fn
+ * @param delay
+ * @param dep
+ * @returns {(function(...[*]): void)|*}
+ */
+export function useDebounce(fn, delay, dep = []) {
+    const { current } = useRef({ fn, timer: null });
+    useEffect(function () {
+        current.fn = fn;
+    }, [fn]);
+    useEffect(() => {
+        return () => {
+            if (current.timer) {
+                clearTimeout(current.timer);
+            }
+        };
+    }, []);
+    return useCallback(function f(...args) {
+        if (current.timer) {
+            clearTimeout(current.timer);
+        }
+        current.timer = setTimeout(() => {
+            current.fn.call(this, ...args);
+        }, delay);
+    }, dep)
+}

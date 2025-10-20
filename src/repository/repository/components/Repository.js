@@ -13,13 +13,12 @@ import SearchInput from "../../../common/components/search/SearchInput";
 import Button from "../../../common/components/button/Button";
 import "./Repository.scss";
 import RepositoryStore from "../store/RepositoryStore";
-import { useDebounce } from "../../../common/utils/debounce";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import RepositoryAdd from "./RepositoryAdd";
 import {PrivilegeButton} from "tiklab-privilege-ui";
 import RepositoryDelete from "./RepositoryDelete";
 import Profile from "../../../common/components/profile/Profile";
-import {deleteSuccessReturnCurrenPage} from "../../../common/utils/overall";
+import {deleteSuccessReturnCurrenPage, useDebounce} from "../../../common/utils/overall";
 import PaginationCommon from "../../../common/components/page/Page";
 import ListIcon from "../../../common/components/icon/ListIcon";
 
@@ -142,22 +141,6 @@ const Repository = (props) => {
     }
 
     /**
-     * 编辑
-     */
-    const toEdit = (record) => {
-        setDropVisible(null);
-        setAddVisible(true);
-    }
-
-    /**
-     * 删除
-     */
-    const toDelete = (record) => {
-        setDropVisible(null);
-        setDelVisible(true);
-    }
-
-    /**
      * 删除后重新获取列表
      */
     const changFresh = (type) => {
@@ -184,14 +167,10 @@ const Repository = (props) => {
     }
 
     /**
-     * 设置
+     * 跳转知识库
+     * @param repository
      */
-    const toSetting = (record) =>{
-        setDropVisible(null);
-        props.history.push(`/repository/${record.id}/set/basicInfo`)
-    }
-
-    const goRepositorydetail = (repository) => {
+    const goRepositoryDetail = (repository) => {
         props.history.push(`/repository/${repository.id}/overview`)
     }
 
@@ -269,6 +248,32 @@ const Repository = (props) => {
         setAddVisible(true);
     }
 
+    /**
+     * 更多操作
+     * @param record
+     * @param code
+     */
+    const moreAction = (record,code) => {
+        setDropVisible(null);
+        switch (code) {
+            case 'edit':
+                setAddVisible(true);
+                break;
+            case 'delete':
+                setDelVisible(true);
+                break
+            case 'setting':
+                props.history.push(`/repository/${record.id}/set/basicInfo`)
+                break
+        }
+    }
+
+    const moreActList = [
+        {code:'edit',icon: <EditOutlined />, title: '编辑'},
+        {code:'delete',icon: <DeleteOutlined />, title:'删除'},
+        {code:'setting',icon: <svg className="icon-16" aria-hidden="true"><use xlinkHref="#icon-setting"></use></svg>, title:'设置'},
+    ]
+
     const columns = [
         {
             title: "知识库名称",
@@ -278,7 +283,7 @@ const Repository = (props) => {
             width:"30%",
             ellipsis:true,
             render: (text, record) => (
-                <span onClick={() => goRepositorydetail(record)} className="repository-title">
+                <span onClick={() => goRepositoryDetail(record)} className="repository-title">
                     <ListIcon
                         icon={record.iconUrl}
                         text={text}
@@ -322,61 +327,67 @@ const Repository = (props) => {
             key: "action",
             align: "left",
             width: "15%",
-            render: (text, record) => (
-                <Space size="middle">
-                    <Tooltip title="收藏">
-                        {
-                            focusRepositoryList.indexOf(record.id) !== -1 ?
-                                <svg className="svg-icon" aria-hidden="true" onClick={() => deleteFocusRepository(record.id)}>
-                                    <use xlinkHref="#icon-focus"></use>
-                                </svg>
-                                :
-                                <svg className="svg-icon" aria-hidden="true" onClick={() => addFocusRepository(record.id)}>
-                                    <use xlinkHref="#icon-xingxing_kong"></use>
-                                </svg>
-                        }
-                    </Tooltip>
-                    <Dropdown
-                        overlay={
-                            <div className="sward-dropdown-more">
-                                <PrivilegeButton code={"wiki_update"}>
-                                    <div className="dropdown-more-item" onClick={()=>toEdit(record)}>
-                                        <EditOutlined /> 编辑
-                                    </div>
-                                </PrivilegeButton>
-                                <PrivilegeButton code={"wiki_delete"}>
-                                    <div className="dropdown-more-item" onClick={()=>toDelete(record)}>
-                                        <DeleteOutlined /> 删除
-                                    </div>
-                                </PrivilegeButton>
-                                <PrivilegeButton code={"wiki_setting"}>
-                                    <div className="dropdown-more-item dropdown-more-item-last" onClick={()=>toSetting(record)}>
-                                        <svg className="icon-16" aria-hidden="true">
-                                            <use xlinkHref="#icon-setting"></use>
-                                        </svg>
-                                        <span>设置</span>
-                                    </div>
-                                </PrivilegeButton>
-                            </div>
-                        }
-                        trigger={['click']}
-                        placement={"bottomRight"}
-                        visible={dropVisible === record.id}
-                        onVisibleChange={visible => {
-                            if(visible){
-                                setRepository(record)
+            render: (text, record) => {
+                const {permissions={}} = record;
+                const safePermissions = permissions || {};
+                const actList = moreActList.filter(item => {
+                    const per = safePermissions[item.code];
+                    return per === true;
+                });
+                return (
+                    <Space size="middle">
+                        <Tooltip title="收藏">
+                            {
+                                focusRepositoryList.indexOf(record.id) !== -1 ?
+                                    <svg className="svg-icon" aria-hidden="true" onClick={() => deleteFocusRepository(record.id)}>
+                                        <use xlinkHref="#icon-focus"></use>
+                                    </svg>
+                                    :
+                                    <svg className="svg-icon" aria-hidden="true" onClick={() => addFocusRepository(record.id)}>
+                                        <use xlinkHref="#icon-xingxing_kong"></use>
+                                    </svg>
                             }
-                            setDropVisible(visible ? record.id : null);
-                        }}
-                    >
-                        <Tooltip title="更多">
-                            <svg className="svg-icon" aria-hidden="true" >
-                                <use xlinkHref="#icon-more-default"></use>
-                            </svg>
                         </Tooltip>
-                    </Dropdown>
-                </Space>
-            ),
+                        {
+                            actList?.length > 0 &&
+                            <Dropdown
+                                overlay={
+                                    <div className="sward-dropdown-more">
+                                        {
+                                            actList.map(({code,icon,title})=>{
+                                                return (
+                                                    <div
+                                                        key={code}
+                                                        className={`dropdown-more-item dropdown-more-item-${code}`}
+                                                        onClick={()=>moreAction(record,code)}
+                                                    >
+                                                        {icon} {title}
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                }
+                                trigger={['click']}
+                                placement={"bottomRight"}
+                                visible={dropVisible === record.id}
+                                onVisibleChange={visible => {
+                                    if(visible){
+                                        setRepository(record)
+                                    }
+                                    setDropVisible(visible ? record.id : null);
+                                }}
+                            >
+                                <Tooltip title="更多">
+                                    <svg className="svg-icon" aria-hidden="true" >
+                                        <use xlinkHref="#icon-more-default"></use>
+                                    </svg>
+                                </Tooltip>
+                            </Dropdown>
+                        }
+                    </Space>
+                )
+            },
         },
     ]
 
@@ -388,7 +399,7 @@ const Repository = (props) => {
 
     return (
         <Row className="repository-row">
-            <Col xs={{span:24}} xl={{ span: 18, offset: 3 }} lg={{ span: 18, offset: 3 }} md={{ span: 20, offset: 2 }}>
+            <Col xs={{span:24}} sm={{span:24}} xl={{ span: 18, offset: 3 }} lg={{ span: 20, offset: 2 }}>
                 <div className="repository sward-home-limited">
                     <Breadcrumb firstText="知识库">
                         <PrivilegeButton code={'wiki_create'}>
@@ -418,7 +429,7 @@ const Repository = (props) => {
                                     <div className="repository-box">{
                                         recentRepositoryDocumentList.map(item => {
                                             return (
-                                                <div className="repository-item" key={item.id} onClick={() => goRepositorydetail(item)} >
+                                                <div className="repository-item" key={item.id} onClick={() => goRepositoryDetail(item)} >
                                                     <div className="item-title">
                                                         <ListIcon
                                                             icon={item.iconUrl}

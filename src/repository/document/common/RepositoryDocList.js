@@ -428,15 +428,17 @@ const RepositoryDocList = (props) => {
                     分享
                 </div>
             </PrivilegeProjectButton>
-            <div
-                className='content-add-menu dropdown-more-item'
-                onClick={e => editCatelogue('permission', item, index, e)}
-            >
-                <svg className="content-add-icon" aria-hidden="true">
-                    <use xlinkHref="#icon-systempermissions"></use>
-                </svg>
-                权限管理
-            </div>
+            <PrivilegeProjectButton code="wi_doc_permission" domainId={repositoryId}>
+                <div
+                    className='content-add-menu dropdown-more-item'
+                    onClick={e => editCatelogue('permission', item, index, e)}
+                >
+                    <svg className="content-add-icon" aria-hidden="true">
+                        <use xlinkHref="#icon-systempermissions"></use>
+                    </svg>
+                    权限管理
+                </div>
+            </PrivilegeProjectButton>
             <PrivilegeProjectButton code="wi_doc_archive" domainId={repositoryId}>
                 <div
                     className='content-add-menu dropdown-more-item'

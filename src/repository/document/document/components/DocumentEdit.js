@@ -17,11 +17,10 @@ import Button from "../../../../common/components/button/Button";
 import DocumentStore from "../store/DocumentStore";
 import RepositoryDetailStore from "../../../common/store/RepositoryDetailStore";
 import { getUser } from "tiklab-core-ui";
-import { useDebounce } from "../../../../common/utils/debounce";
 import { updateNodeName } from "../../../../common/utils/treeDataAction";
 import SelectTemplateList from "./SelectTemplateList";
 import Template from "../../../../assets/images/template.png";
-import {delay} from "../../../../common/utils/overall";
+import { delay, useDebounce } from "../../../../common/utils/overall";
 
 const DocumentEdit = (props) => {
 

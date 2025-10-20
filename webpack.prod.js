@@ -91,13 +91,6 @@ module.exports = merge(baseWebpackConfig, {
                     priority: 2,
                     reuseExistingChunk: true
                 },
-                // tiklabEamUI: {
-                //     name: "chunk-tiklab-eam-ui",
-                //     chunks: "all",
-                //     test: /tiklab-eam-ui/,
-                //     priority: 2,
-                //     reuseExistingChunk: true
-                // },
                 moment: {
                     name: "chunk-moment",
                     chunks: "all",

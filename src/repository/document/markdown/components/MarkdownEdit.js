@@ -16,8 +16,7 @@ import "tiklab-markdown-ui/es/tiklab-markdown.css";
 import RepositoryDetailStore from "../../../common/store/RepositoryDetailStore";
 import { Node } from "slate";
 import { Empty, message } from "antd";
-import { useDebounce } from "../../../../common/utils/debounce";
-import {delay} from "../../../../common/utils/overall";
+import { delay, useDebounce } from "../../../../common/utils/overall";
 
 const MarkdownEdit = (props) => {
 

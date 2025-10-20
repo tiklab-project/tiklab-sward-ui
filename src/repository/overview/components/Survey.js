@@ -172,7 +172,7 @@ const Survey = (props) => {
                         <div className="document-box-title">
                             <span className="name">常用文档</span>
                         </div>
-                        <Spin wrapperClassName="document-spin" spinning={spinning.recentSpinning}>
+                        <Spin spinning={spinning.recentSpinning}>
                             {
                                 recentViewDocumentList.length > 0 ?
                                     <div>

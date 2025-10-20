@@ -285,7 +285,6 @@
                 line-height: 25px;
                 gap: 10px;
                 margin-top: 10px;
-                flex-shrink: 1;
                 min-width: 0;
                 .document-item-left {
                     flex: 1;
@@ -316,6 +315,9 @@
                         .document-master {
                             font-size: 12px;
                             color: var(--tiklab-gray-500);
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;
                         }
                     }
                 }

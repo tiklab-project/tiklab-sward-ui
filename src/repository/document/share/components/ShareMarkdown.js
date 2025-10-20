@@ -15,6 +15,7 @@ import "tiklab-markdown-ui/es/tiklab-markdown.css";
 import "./ShareMarkdown.scss"
 import CommentShare from "./ShareComment";
 import { withRouter } from "react-router";
+import {MessageOutlined} from "@ant-design/icons";
 
 const initValue = [{
     type: 'code',
@@ -87,11 +88,9 @@ const ShareMarkdown = (props) => {
                     />
                 }
             </div>
-            <div className="comment-box">
+            <div className="comment-box" onClick={() => setShowComment(!showComment)}>
                 <div className="comment-box-item">
-                    <svg className="midden-icon" aria-hidden="true" onClick={() => setShowComment(!showComment)}>
-                        <use xlinkHref="#icon-comment"></use>
-                    </svg>
+                    <MessageOutlined />
                     <div className="commnet-num">{docInfo.commentNumber}</div>
                 </div>
             </div>

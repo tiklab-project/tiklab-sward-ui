@@ -16,6 +16,7 @@ import "./ShareDocument.scss"
 import CommentShare from "./ShareComment";
 import { withRouter } from "react-router";
 import { getUser } from "tiklab-core-ui";
+import {MessageOutlined} from "@ant-design/icons";
 const ShareDocument = (props) => {
     const { shareStore, relationWorkStore } = props;
     const { documentView, commentView } = shareStore;
@@ -81,11 +82,9 @@ const ShareDocument = (props) => {
                     </Col>
                 </Row>
             </div>
-            <div className="comment-box">
+            <div className="comment-box" onClick={() => setShowComment(!showComment)}>
                 <div className="comment-box-item">
-                    <svg className="midden-icon" aria-hidden="true" onClick={() => setShowComment(!showComment)}>
-                        <use xlinkHref="#icon-comment"></use>
-                    </svg>
+                    <MessageOutlined />
                     <div className="commnet-num">{docInfo.commentNumber}</div>
                 </div>
             </div>
